@@ -3,28 +3,18 @@
 #include "Controller.h"
 #include "PathManager.h"
 
-/* Loop Flag & Signal */
-bool MainFlag = true;
-bool SocketFlag = true;
-bool MCUSendSignal = false;
-bool SRCSendSignal = false;
-bool PathReceiveSignal = true;
-
 /* (Global) Struct Variable */
 GPSStruct GPS;
 VehicleStruct Vehicle;
 GlobalPathStruct Global;
 LocalPathStruct Local;
-ControlStruct Control;
 PedestrianStruct Pedestrian;
 
 /* Loop Flag & Signal */
 bool MainFlag = true;
 bool SocketFlag = true;
-bool MCUSendSignal = false;
 bool SRCSendSignal = false;
 bool PathReceiveSignal = true;
-bool ViewerSendSignal = false;
 
 /* ------------------------------- Main ------------------------------- */
 int main()
@@ -47,7 +37,7 @@ int main()
     VehicleThread = thread(VehicleReceiver);
 
     /* Path Initialize */
-    if (ReceivePathFlag)
+    if (ReceivePathFlag) // 기본 False
         SRCThread = thread(SRCCommunication);
     else
         PathManager.ImportFile(ReferenceFile.c_str());
@@ -72,7 +62,6 @@ int main()
                 PathManager.GenerateLocalPath();
                 MinimumPedestrianidx, PedestrianClass, MinimumPedestrianDistance = PathManager.PedestrianDistance(); // 차량-보행자 최소거리
 
-                MCUSendSignal = true;
                 SRCSendSignal = true;
                 PathReceiveSignal = true;
 
