@@ -3,7 +3,7 @@
 #include <pthread.h>
 #include "Communicator.h"
 
-#define timeFlag 20
+#define TimeCycle 20
 
 using namespace std; // Standard로써 iostream 내부에 입출력에 관한 함수들을 가지고 있는 네임스페이스
 
@@ -98,34 +98,18 @@ uint32_t CRCTable[256] = {
 /* ------------------------------- Key Function ------------------------------- */
 int getch(void)
 {
-    /* 터미널 입력을 비동기적으로 받아오기 위한 함수
-        터미널에서 키보드 입력을 받아오는 동작을 수행하며, 입력을 처리한 후 해당 입력값을 반환 */
     int ch;
-
-    /* struct termios
-        POSIX가 지정하는 표준 인터페이스
-        인터페이스 제어: 5가지 모드(입력, 출력, 제어, 로컬, 특수 제어문자)로 구분 */
     struct termios buf;
     struct termios save;
 
-    /* 터미널의 속성을 변경하기 위해서는 현재 터미널의 속성을 알아야한다
-       그 후, 변경하고픈 터미널의 속성값을 비트연산을 사용하여 on/off 시킨다
-       현재 터미널 설정을 읽는 함수: int tcgetattr(int fd, struct termios *termios_p)
-                                                    ㄴfd: 속성을 알기위한 open file */
     tcgetattr(0, &save);
     buf = save;
-    /* ICANON(정규모드), ECHO(입력 에코) 플래그를 비트 마스크를 통해 제거하여 비정규 모드 설정
-       비정규 모드에서는 문자가 입력될 때마다 즉시 반환 */
     buf.c_lflag &= ~(ICANON | ECHO);
-    /* 문자를 입력하면 즉시 반환 */
-    buf.c_cc[VMIN] = 1;             // 입력을 기다리는 최소 문자 수를 1로 설정
-    buf.c_cc[VTIME] = 0;            // 입력을 기다리는 최대 시간을 0으로 설정
-    
-    tcsetattr(0, TCSAFLUSH, &buf);  // buf 터미널 설정 변경하고 기존 입력 버퍼 삭제
-    
-    ch = getchar();                 // 키보드 입력받은 문자 저장
-    tcsetattr(0, TCSAFLUSH, &save); // 입력 받은 후, 원래의 터미널 설정 복원
-    
+    buf.c_cc[VMIN] = 1;
+    buf.c_cc[VTIME] = 0;
+    tcsetattr(0, TCSAFLUSH, &buf);
+    ch = getchar();
+    tcsetattr(0, TCSAFLUSH, &save);
     return ch;
 }
 
@@ -186,7 +170,7 @@ void AEBComControl() // Common Situation Control
 
     VehicleCANFD.FrameFd.data[0] = CRCDataHigh; // CRC High byte
     VehicleCANFD.FrameFd.data[1] = CRCDataLow;  // CRC Low byte
-    VehicleCANFD.FrameFd.data[2] = AliveCnt;      // Alive count
+    VehicleCANFD.FrameFd.data[2] = AliveCnt;    // Alive count
     VehicleCANFD.FrameFd.data[3] = (0xC0&(FCA_WrngLvlSta<<6))+ (0x38&(FCA_SysFlrSta<<3)) + (0x07&(FCA_OnOffEquipSta));
     VehicleCANFD.FrameFd.data[4] = (0x60&(FCA_HydrlcBstAsstlSta<<5)) + (0x1C&(FCA_StbltActvReq<<2)) + (0x03&(FCA_VehStpReq));
     VehicleCANFD.FrameFd.data[5] = FCA_DclReqVal;
@@ -278,48 +262,6 @@ void AEBStopControl() // FCA Control
     VehicleCANFD.SendCANFD();
 }
 
-/* ------------------------------- Class Function ------------------------------- */
-void CANClass::SetSocket(const std::string &ifname, const int canfd)
-{
-    if ((sock = socket(PF_CAN, SOCK_RAW, CAN_RAW)) == -1)
-        perror("<CAN> socket open error");
-
-    strcpy(ifr.ifr_name, ifname.c_str());
-    if (ioctl(sock, SIOCGIFINDEX, &ifr) < 0)
-    {
-        perror("<CAN> Error with SIOCGIFINDEX ioctl");
-        close(sock);
-        exit(EXIT_FAILURE);
-    }
-
-    memset(&addr, 0, sizeof(addr));
-    addr.can_family = AF_CAN;
-    addr.can_ifindex = ifr.ifr_ifindex;
-
-    if (bind(sock, (struct sockaddr *)&addr, sizeof(addr)) < 0)
-    {
-        perror("<CAN> Error in socket bind");
-        close(sock);
-        exit(EXIT_FAILURE);
-    }
-
-    if (canfd)
-    {
-        if (setsockopt(sock, SOL_CAN_RAW, CAN_RAW_FD_FRAMES, &canfd, sizeof(canfd)))
-        {
-            perror("<CAN> Error enabling CAN FD support");
-            close(sock);
-            exit(EXIT_FAILURE);
-        }
-    }
-}
-
-void CANClass::SendCANFD()
-{
-    if (write(sock, &FrameFd, sizeof(struct canfd_frame)) != sizeof(struct canfd_frame))
-        perror("<CANFD> Send Error");
-}
-
 /* ------------------------------- Main ------------------------------- */
 int main() // 50ms
 {
@@ -337,7 +279,7 @@ int main() // 50ms
         gettimeofday(&endTime, NULL);
         double timeGap = ((endTime.tv_sec - startTime.tv_sec) * 1000) + ((endTime.tv_usec - startTime.tv_usec) / 1000); // 1ms
 
-        if (timeGap >= timeFlag) // 20ms Alive count
+        if (timeGap >= TimeCycle) // 20ms Alive count
         {
             if (AEBComFlag)
             {
