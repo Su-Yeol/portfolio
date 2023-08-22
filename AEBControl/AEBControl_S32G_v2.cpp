@@ -1,14 +1,18 @@
 /* V2 : 일반 및 AEB 모드 + key 입력 */
 #include <time.h>
 #include <pthread.h>
+
+#include "ControlModule.h"
 #include "Communicator.h"
 
 #define TimeCycle 20
+#define WrngCycle 15
 
 using namespace std; // Standard로써 iostream 내부에 입출력에 관한 함수들을 가지고 있는 네임스페이스
 
 /* ------------------------------- AEB Control Flag ------------------------------- */
 CANClass VehicleCANFD;
+GPSStruct GPS;
 
 uint8_t AliveCnt = 0; // Alive Count
 uint8_t CRCDataHigh = 0;
@@ -114,7 +118,7 @@ int getch(void)
     return ch;
 }
 
-void Key()
+void Key1()
 {
     try
     {
@@ -219,12 +223,10 @@ void AEBStopControl() // FCA Control
     /* WrngLvlSta 0 > 1, PrefillActvReq 0 > 1, FCA_WrngTrgtDis 0 > 5, FCA_HydrlcBstAsstlSta 0 > 3, FCA_WrngSndSta 0 > 1
        -> WrngLvlSta 2, FCA_StbltActvReq 2, PrefillActvReq 0, FCA_PartialActvReq 1, FCA_HydrlcBstAsstlSta 3
           FCA_WrngTrgtDis 5, FCA_WrngSndSta 2 */
-          
-    // FCA_PartialActvReq = 0; FCA_PrefillActvReq = 1;
-    // FCA_WrngLvlSta = 2; FCA_WrngSndSta = 2; FCA_WrngTrgtDis = 5;
+
     FCA_RelVel = 0x117;
     FCA_TimetoCllsn = 0x57;
-    FCA_DclReqVal = 60; // 40 = 0.4g, 60 = 0.6g
+    FCA_DclReqVal = 90; // 40 = 0.4g, 60 = 0.6g etc
 
     /* Standard Data */
     VehicleCANFD.FrameFd.can_id = 0x160;
@@ -233,7 +235,7 @@ void AEBStopControl() // FCA Control
     VehicleCANFD.FrameFd.__res0 = 0;
     VehicleCANFD.FrameFd.__res1 = 0;
 
-    if (WrngLvlCnt <= 15) // 0.3초
+    if (WrngLvlCnt <= WrngCycle) // cnt 15 = 300ms(0.3s)
     {
         FCA_WrngLvlSta = 1;
         FCA_WrngSndSta = 1;
@@ -248,7 +250,8 @@ void AEBStopControl() // FCA Control
         FCA_WrngSndSta = 2;
         FCA_WrngTrgtDis = 5;
         FCA_PrefillActvReq = 0;
-        FCA_PartialActvReq = 1;
+        // FCA_PartialActvReq = 1;
+        FCA_FullActvReq = 1; // 0.6g 이상
         FCA_HydrlcBstAsstlSta = 3;
         FCA_StbltActvReq = 2;
 
@@ -344,7 +347,23 @@ void CANClass::SendCANFD()
 /* ------------------------------- Main ------------------------------- */
 int main() // 50ms
 {
-    thread KeyThread = thread(Key);
+    thread KeyThread = thread(Key1);
+    thread GPSThread = thread(GPSReceiver);
+
+    // Save File Setting
+    time_t t = time(NULL);
+    struct tm tm = *localtime(&t);
+    char TimeBuffer[50], SavePath[100], format[5] = ".txt";
+    sprintf(TimeBuffer, "%02d.%02d.%02d-%02d:%02d:%02d", tm.tm_year % 100, tm.tm_mon + 1, tm.tm_mday, tm.tm_hour, tm.tm_min, tm.tm_sec);
+    sprintf(SavePath, "%s%s.txt", GPSRecordPath.c_str(), TimeBuffer);
+
+    FILE *RecordFile;
+    RecordFile = fopen(SavePath, "w");
+    if (RecordFile == NULL)
+    {
+        printf("<Error Opening File>\n");
+        return 1;
+    }
 
     // 20ms time
     struct timeval startTime, endTime;
@@ -370,11 +389,15 @@ int main() // 50ms
             {
                 std::cout << "[Communicator]----------- Stop Mode -------------" << endl;
                 AEBStopControl();
+
+                // Save File
+                fprintf(RecordFile, "%.7f/%.7f\n", GPS.Latitude, GPS.Longitude);
             }
 
             gettimeofday(&startTime, NULL); // time init
         }
     }
-
+    GPSThread.join();
+    fclose(RecordFile);
     KeyThread.join();
 }
