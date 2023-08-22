@@ -45,7 +45,7 @@ void VehicleReceiver()
 
             switch (VehicleCANFD.FrameFd.can_id)
             {
-            case 0x4A:
+            case 0x4A: // IMU Sensor
                 VehicleCache.YawRate = ((VehicleCANFD.FrameFd.data[9] << 8) + VehicleCANFD.FrameFd.data[8]) * 0.005 - 163.84;                       // [deg/s]
                 VehicleCache.LateralAccel = ((VehicleCANFD.FrameFd.data[11] << 8) + VehicleCANFD.FrameFd.data[10]) * 0.000127465 - 4.17677312;      // [g]
                 VehicleCache.LongitudinalAccel = ((VehicleCANFD.FrameFd.data[13] << 8) + VehicleCANFD.FrameFd.data[12]) * 0.000127465 - 4.17677312; // [g]
@@ -62,7 +62,7 @@ void VehicleReceiver()
                 VehicleCache.HandleSpd = (VehicleCANFD.FrameFd.data[5]) * 4;                                           // [deg/s]
                 break;
 
-            case 0x1A0:
+            case 0x1A0: // SCC
                 VehicleCache.Radar.Distance = (((VehicleCANFD.FrameFd.data[4] & 0x07) << 8) + VehicleCANFD.FrameFd.data[3]) * 0.1;
                 VehicleCache.Radar.RelativeVelocity = (((VehicleCANFD.FrameFd.data[5] & 0x7F) << 5) + ((VehicleCANFD.FrameFd.data[4] & 0xF8) >> 3)) * 0.1 - 170;
                 break;

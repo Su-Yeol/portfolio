@@ -15,11 +15,12 @@ uint8_t CRCDataHigh = 0;
 uint8_t CRCDataLow = 0;
 
 uint8_t AEBStopAliveCnt = 0; // Stop -> Active counting
+uint8_t WrngLvlCnt = 0;      // WrngLvlstat 1 -> 2
 
 bool AEBComFlag = true;
 bool AEBStopFlag = false;
 
-uint8_t FCA_WrngLvlSta = 0; // 0 -> 2
+uint8_t FCA_WrngLvlSta = 0; // 0 -> 1 -> 2
 uint8_t FCA_SysFlrSta = 0;
 uint8_t FCA_OnOffEquipSta = 3;
 // (0xC0&(FCA_WrngLvlSta<<6))+ (0x38&(FCA_SysFlrSta<<3)) + (0x07&(FCA_OnOffEquipSta))
@@ -40,7 +41,7 @@ uint8_t FCA_WrngSndSta = 0; // 0 -> 2
 uint8_t FCA_SnstvtyModRetVal = 2;
 // (0xE0&(FCA_WrngSndSta<<5)) + (0x07&(FCA_SnstvtyModRetVal))
 
-uint16_t FCA_RelVel = 0xFF; // FF > 117
+uint16_t FCA_RelVel = 0xFF;     // FF > 117
 uint8_t FCA_TimetoCllsn = 0xFE; // FE > 57
 // (0xFF&(FCA_RelVel))
 // (0xFE&(FCA_TimetoCllsn<<1)) + (0x01&(FCA_RelVel>>8))
@@ -126,13 +127,13 @@ void Key()
             {
                 AEBComFlag = true;
                 AEBStopFlag = false;
-                //break;
+                // break;
             }
             else if (key == '0')
             {
                 AEBComFlag = false;
                 AEBStopFlag = true;
-                //break;
+                // break;
             }
         }
     }
@@ -156,10 +157,18 @@ void AEBComControl() // Common Situation Control
 {
     // cout << "[Communicator]-----------Start-------------" << endl;
     AliveCnt++;
+    WrngLvlCnt = 0;
 
-    FCA_WrngLvlSta = 0; FCA_WrngSndSta = 0; FCA_WrngTrgtDis = 0;
-    FCA_RelVel = 0xFF; FCA_TimetoCllsn = 0xFE;
-    FCA_PartialActvReq = 0; FCA_FullActvReq = 0; FCA_DclReqVal = 0;
+    FCA_RelVel = 0xFF;
+    FCA_TimetoCllsn = 0xFE;
+    FCA_DclReqVal = 0;
+
+    FCA_WrngLvlSta = 0;
+    FCA_WrngSndSta = 0;
+    FCA_WrngTrgtDis = 0;
+    FCA_PartialActvReq = 0;
+    FCA_PrefillActvReq = 0;
+    FCA_HydrlcBstAsstlSta = 0;
 
     /* Standard Data */
     VehicleCANFD.FrameFd.can_id = 0x160; // ADAS_CMD_10_20ms
@@ -171,15 +180,15 @@ void AEBComControl() // Common Situation Control
     VehicleCANFD.FrameFd.data[0] = CRCDataHigh; // CRC High byte
     VehicleCANFD.FrameFd.data[1] = CRCDataLow;  // CRC Low byte
     VehicleCANFD.FrameFd.data[2] = AliveCnt;    // Alive count
-    VehicleCANFD.FrameFd.data[3] = (0xC0&(FCA_WrngLvlSta<<6))+ (0x38&(FCA_SysFlrSta<<3)) + (0x07&(FCA_OnOffEquipSta));
-    VehicleCANFD.FrameFd.data[4] = (0x60&(FCA_HydrlcBstAsstlSta<<5)) + (0x1C&(FCA_StbltActvReq<<2)) + (0x03&(FCA_VehStpReq));
+    VehicleCANFD.FrameFd.data[3] = (0xC0 & (FCA_WrngLvlSta << 6)) + (0x38 & (FCA_SysFlrSta << 3)) + (0x07 & (FCA_OnOffEquipSta));
+    VehicleCANFD.FrameFd.data[4] = (0x60 & (FCA_HydrlcBstAsstlSta << 5)) + (0x1C & (FCA_StbltActvReq << 2)) + (0x03 & (FCA_VehStpReq));
     VehicleCANFD.FrameFd.data[5] = FCA_DclReqVal;
-    VehicleCANFD.FrameFd.data[6] = (0x30&(FCA_FullActvReq<<4)) + (0x0C&(FCA_PartialActvReq<<2)) + (0x03&(FCA_PrefillActvReq));
-    VehicleCANFD.FrameFd.data[7] = (0xE0&(FCA_WrngSndSta<<5)) + (0x07&(FCA_SnstvtyModRetVal));
-    VehicleCANFD.FrameFd.data[8] = (0xFF&(FCA_RelVel));
-    VehicleCANFD.FrameFd.data[9] = (0xFE&(FCA_TimetoCllsn<<1)) + (0x01&(FCA_RelVel>>8));
-    VehicleCANFD.FrameFd.data[10] = (0x18&(FCA_Jnctn_OnOffEquipSta<<3)) + (0x06&(Nmode_FCAOff_Sta<<1)) + 0x01&(FCA_TimetoCllsn>>7);
-    VehicleCANFD.FrameFd.data[11] = (0x60&(ADAS_DRV_FCA_Plus_Sta<<5))+ (0x1F&(FCA_WrngTrgtDis));
+    VehicleCANFD.FrameFd.data[6] = (0x30 & (FCA_FullActvReq << 4)) + (0x0C & (FCA_PartialActvReq << 2)) + (0x03 & (FCA_PrefillActvReq));
+    VehicleCANFD.FrameFd.data[7] = (0xE0 & (FCA_WrngSndSta << 5)) + (0x07 & (FCA_SnstvtyModRetVal));
+    VehicleCANFD.FrameFd.data[8] = (0xFF & (FCA_RelVel));
+    VehicleCANFD.FrameFd.data[9] = (0xFE & (FCA_TimetoCllsn << 1)) + (0x01 & (FCA_RelVel >> 8));
+    VehicleCANFD.FrameFd.data[10] = (0x18 & (FCA_Jnctn_OnOffEquipSta << 3)) + (0x06 & (Nmode_FCAOff_Sta << 1)) + 0x01 & (FCA_TimetoCllsn >> 7);
+    VehicleCANFD.FrameFd.data[11] = (0x60 & (ADAS_DRV_FCA_Plus_Sta << 5)) + (0x1F & (FCA_WrngTrgtDis));
     VehicleCANFD.FrameFd.data[12] = 0x00;
     VehicleCANFD.FrameFd.data[13] = 0x00;
     VehicleCANFD.FrameFd.data[14] = 0x00;
@@ -205,11 +214,17 @@ void AEBComControl() // Common Situation Control
 void AEBStopControl() // FCA Control
 {
     AliveCnt++;
-    
-    FCA_WrngLvlSta = 2; FCA_WrngSndSta = 2; FCA_WrngTrgtDis = 5;
-    FCA_RelVel = 0x117; FCA_TimetoCllsn = 0x57;
-    // 0.4g: 1, 0, 40 || 0.6g: 0, 1, 60
-    FCA_PartialActvReq = 0; FCA_FullActvReq = 1; FCA_DclReqVal = 60;
+    WrngLvlCnt++;
+
+    /* WrngLvlSta 0 > 1, PrefillActvReq 0 > 1, FCA_WrngTrgtDis 0 > 5, FCA_HydrlcBstAsstlSta 0 > 3, FCA_WrngSndSta 0 > 1
+       -> WrngLvlSta 2, FCA_StbltActvReq 2, PrefillActvReq 0, FCA_PartialActvReq 1, FCA_HydrlcBstAsstlSta 3
+          FCA_WrngTrgtDis 5, FCA_WrngSndSta 2 */
+          
+    // FCA_PartialActvReq = 0; FCA_PrefillActvReq = 1;
+    // FCA_WrngLvlSta = 2; FCA_WrngSndSta = 2; FCA_WrngTrgtDis = 5;
+    FCA_RelVel = 0x117;
+    FCA_TimetoCllsn = 0x57;
+    FCA_DclReqVal = 60; // 40 = 0.4g, 60 = 0.6g
 
     /* Standard Data */
     VehicleCANFD.FrameFd.can_id = 0x160;
@@ -218,18 +233,40 @@ void AEBStopControl() // FCA Control
     VehicleCANFD.FrameFd.__res0 = 0;
     VehicleCANFD.FrameFd.__res1 = 0;
 
+    if (WrngLvlCnt <= 15) // 0.3초
+    {
+        FCA_WrngLvlSta = 1;
+        FCA_WrngSndSta = 1;
+        FCA_WrngTrgtDis = 5;
+        FCA_PrefillActvReq = 1;
+        FCA_HydrlcBstAsstlSta = 3;
+    }
+
+    else
+    {
+        FCA_WrngLvlSta = 2;
+        FCA_WrngSndSta = 2;
+        FCA_WrngTrgtDis = 5;
+        FCA_PrefillActvReq = 0;
+        FCA_PartialActvReq = 1;
+        FCA_HydrlcBstAsstlSta = 3;
+        FCA_StbltActvReq = 2;
+
+        WrngLvlCnt = 16;
+    }
+
     VehicleCANFD.FrameFd.data[0] = CRCDataHigh; // CRC High byte
     VehicleCANFD.FrameFd.data[1] = CRCDataLow;  // CRC Low byte
-    VehicleCANFD.FrameFd.data[2] = AliveCnt;      // Alive count
-    VehicleCANFD.FrameFd.data[3] = (0xC0&(FCA_WrngLvlSta<<6))+ (0x38&(FCA_SysFlrSta<<3)) + (0x07&(FCA_OnOffEquipSta));
-    VehicleCANFD.FrameFd.data[4] = (0x60&(FCA_HydrlcBstAsstlSta<<5)) + (0x1C&(FCA_StbltActvReq<<2)) + (0x03&(FCA_VehStpReq));
+    VehicleCANFD.FrameFd.data[2] = AliveCnt;    // Alive count
+    VehicleCANFD.FrameFd.data[3] = (0xC0 & (FCA_WrngLvlSta << 6)) + (0x38 & (FCA_SysFlrSta << 3)) + (0x07 & (FCA_OnOffEquipSta));
+    VehicleCANFD.FrameFd.data[4] = (0x60 & (FCA_HydrlcBstAsstlSta << 5)) + (0x1C & (FCA_StbltActvReq << 2)) + (0x03 & (FCA_VehStpReq));
     VehicleCANFD.FrameFd.data[5] = FCA_DclReqVal;
-    VehicleCANFD.FrameFd.data[6] = (0x30&(FCA_FullActvReq<<4)) + (0x0C&(FCA_PartialActvReq<<2)) + (0x03&(FCA_PrefillActvReq));
-    VehicleCANFD.FrameFd.data[7] = (0xE0&(FCA_WrngSndSta<<5)) + (0x07&(FCA_SnstvtyModRetVal));
-    VehicleCANFD.FrameFd.data[8] = (0xFF&(FCA_RelVel));
-    VehicleCANFD.FrameFd.data[9] = (0xFE&(FCA_TimetoCllsn<<1)) + (0x01&(FCA_RelVel>>8));
-    VehicleCANFD.FrameFd.data[10] = (0x18&(FCA_Jnctn_OnOffEquipSta<<3)) + (0x06&(Nmode_FCAOff_Sta<<1)) + 0x01&(FCA_TimetoCllsn>>7);
-    VehicleCANFD.FrameFd.data[11] = (0x60&(ADAS_DRV_FCA_Plus_Sta<<5))+ (0x1F&(FCA_WrngTrgtDis));
+    VehicleCANFD.FrameFd.data[6] = (0x30 & (FCA_FullActvReq << 4)) + (0x0C & (FCA_PartialActvReq << 2)) + (0x03 & (FCA_PrefillActvReq));
+    VehicleCANFD.FrameFd.data[7] = (0xE0 & (FCA_WrngSndSta << 5)) + (0x07 & (FCA_SnstvtyModRetVal));
+    VehicleCANFD.FrameFd.data[8] = (0xFF & (FCA_RelVel));
+    VehicleCANFD.FrameFd.data[9] = (0xFE & (FCA_TimetoCllsn << 1)) + (0x01 & (FCA_RelVel >> 8));
+    VehicleCANFD.FrameFd.data[10] = (0x18 & (FCA_Jnctn_OnOffEquipSta << 3)) + (0x06 & (Nmode_FCAOff_Sta << 1)) + 0x01 & (FCA_TimetoCllsn >> 7);
+    VehicleCANFD.FrameFd.data[11] = (0x60 & (ADAS_DRV_FCA_Plus_Sta << 5)) + (0x1F & (FCA_WrngTrgtDis));
     VehicleCANFD.FrameFd.data[12] = 0x00;
     VehicleCANFD.FrameFd.data[13] = 0x00;
     VehicleCANFD.FrameFd.data[14] = 0x00;
@@ -260,6 +297,48 @@ void AEBStopControl() // FCA Control
     }
 
     VehicleCANFD.SendCANFD();
+}
+
+/* ------------------------------- Class Function ------------------------------- */
+void CANClass::SetSocket(const std::string &ifname, const int canfd)
+{
+    if ((sock = socket(PF_CAN, SOCK_RAW, CAN_RAW)) == -1)
+        perror("<CAN> socket open error");
+
+    strcpy(ifr.ifr_name, ifname.c_str());
+    if (ioctl(sock, SIOCGIFINDEX, &ifr) < 0)
+    {
+        perror("<CAN> Error with SIOCGIFINDEX ioctl");
+        close(sock);
+        exit(EXIT_FAILURE);
+    }
+
+    memset(&addr, 0, sizeof(addr));
+    addr.can_family = AF_CAN;
+    addr.can_ifindex = ifr.ifr_ifindex;
+
+    if (bind(sock, (struct sockaddr *)&addr, sizeof(addr)) < 0)
+    {
+        perror("<CAN> Error in socket bind");
+        close(sock);
+        exit(EXIT_FAILURE);
+    }
+
+    if (canfd)
+    {
+        if (setsockopt(sock, SOL_CAN_RAW, CAN_RAW_FD_FRAMES, &canfd, sizeof(canfd)))
+        {
+            perror("<CAN> Error enabling CAN FD support");
+            close(sock);
+            exit(EXIT_FAILURE);
+        }
+    }
+}
+
+void CANClass::SendCANFD()
+{
+    if (write(sock, &FrameFd, sizeof(struct canfd_frame)) != sizeof(struct canfd_frame))
+        perror("<CANFD> Send Error");
 }
 
 /* ------------------------------- Main ------------------------------- */
