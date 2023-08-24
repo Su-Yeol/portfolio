@@ -1,6 +1,5 @@
 #include "ControlModule.h"
 #include "Communicator.h"
-#include "Controller.h"
 #include "PathManager.h"
 
 /* (Global) Struct Variable */
@@ -21,20 +20,21 @@ int main()
 {
     struct timeval startTime, endTime;
     thread PedestrianThread;
-    thread KeyThread; thread GPSThread;
-    thread VehicleThread; thread SRCThread;
-    
+    thread KeyThread;
+    thread GPSThread;
+    thread VehicleThread;
+    thread SRCThread;
+
     double MinimumPedestrianDistance = 0.0; // Vertex - 보행자 최소거리
-    int MinimumPedestrianidx = 0; // 최소거리 index
-    char PedestrianClass; // 최소거리 Class
+    double CurrentPedestrianDistance = 0.0;
 
     PathConverter PathManager; // 경로 데이터
 
     /* thread of Communication */
     KeyThread = thread(Key);
-    PedestrianThread = thread(PedestrianReceiver); // Mobileye 보행자 상대좌표
     GPSThread = thread(GPSReceiver);
     VehicleThread = thread(VehicleReceiver);
+    PedestrianThread = thread(PedestrianReceiver); // Mobileye 보행자 상대좌표
 
     /* Path Initialize */
     if (ReceivePathFlag) // 기본 False
@@ -60,7 +60,25 @@ int main()
                     PathManager.InitializePath();
 
                 PathManager.GenerateLocalPath();
-                MinimumPedestrianidx, PedestrianClass, MinimumPedestrianDistance = PathManager.PedestrianDistance(); // 차량-보행자 최소거리
+
+                /* Mobileye */
+                PathManager.PedestrianDistance(); // 차량-보행자 최소거리
+
+                /* for (uint32_t p = 0; p < Local.Length; p++) // Vertex
+                {
+                    for (uint32_t r = 0; r < 10; r++) // Mobileye Object count = 10
+                    {
+                        CurrentPedestrianDistance = sqrt(pow((Local.X[p] - Pedestrian.X[r]), 2) + pow((Local.Y[p] - Pedestrian.Y[r]), 2));
+
+                        if (CurrentPedestrianDistance < MinimumPedestrianDistance)
+                        {
+                            MinimumPedestrianDistance = CurrentPedestrianDistance;
+                            Pedestrian.MinimumPedestrianDistance = MinimumPedestrianDistance;
+                        }
+                    }
+                }  */
+
+                std::cout << "[Communicator]----------- Pedestrian Distance" << Pedestrian.MinimumPedestrianDistance << "-----------" << endl;
 
                 SRCSendSignal = true;
                 PathReceiveSignal = true;
@@ -89,7 +107,7 @@ int main()
     VehicleThread.join();
     if (ReceivePathFlag)
         SRCThread.join();
-    cout << "------------------ ControlModule END ! ------------------" << endl;
+    cout << "------------------ Pedestrian Distance Module END ! ------------------" << endl;
     KeyThread.join();
 
     return 1;

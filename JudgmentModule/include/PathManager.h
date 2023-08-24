@@ -25,12 +25,11 @@ class PathConverter
         void InitializePath();
         void GenerateLocalPath();
 
-        double PedestrianDistance(); // Vertex와 보행자 간의 최소거리
+        void PedestrianDistance(); // Vertex와 보행자 간의 최소거리
 
     private:
         void UpdatePosition(GPSStruct* pos);
         double CalCulateDistance(GPSStruct* pos1, GPSStruct* pos2);
-        double CalCulatePedestrianDistance(uint32_t length, LocalPathStruct* pos1, PedestrianStruct* pos2);
         void SetTargetVertex(uint32_t idx, GPSStruct* TargetPos);
 
         uint32_t WayPointNum;

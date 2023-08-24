@@ -19,6 +19,7 @@
 
    unistd.h - write(), read(), close() */
 #include <fcntl.h>
+#include <stdlib.h>
 
 #include "ControlModule.h"
 #include "ConfigParser.h"

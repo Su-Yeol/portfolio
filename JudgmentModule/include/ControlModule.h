@@ -103,7 +103,8 @@ struct PedestrianStruct
     double X[10];
     double Y[10];
     char Direction[10]; // left, right Camera
-    double Class[10]; // 객체 인식(차량, 보행자 등)
+    double MinimumPedestrianDistance;
+    //double Class[10]; // 객체 인식(차량, 보행자 등)
 };
 
 // ------------------------------ Config ------------------------------------- //

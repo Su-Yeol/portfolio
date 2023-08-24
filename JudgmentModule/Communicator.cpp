@@ -45,7 +45,7 @@ void VehicleReceiver()
 
             switch (VehicleCANFD.FrameFd.can_id)
             {
-            case 0x4A: // IMU Sensor
+            case 0x4A:                                                                                                                              // IMU Sensor
                 VehicleCache.YawRate = ((VehicleCANFD.FrameFd.data[9] << 8) + VehicleCANFD.FrameFd.data[8]) * 0.005 - 163.84;                       // [deg/s]
                 VehicleCache.LateralAccel = ((VehicleCANFD.FrameFd.data[11] << 8) + VehicleCANFD.FrameFd.data[10]) * 0.000127465 - 4.17677312;      // [g]
                 VehicleCache.LongitudinalAccel = ((VehicleCANFD.FrameFd.data[13] << 8) + VehicleCANFD.FrameFd.data[12]) * 0.000127465 - 4.17677312; // [g]
@@ -205,8 +205,12 @@ void PedestrianReceiver()
     /* Mobileye */
     CANClass PedestrianCANFD;
     PedestrianStruct PedestrianCashe;
-    double MobileyeFactor = 1.838e-4;
-    double MobileyeOffset = -0.305;
+    // Y
+    double MobileyeYFactor = 5.4054054;
+    double MobileyeYOffset = -154;
+    // X
+    double MobileyeXFactor = 1.3;
+    double MobileyeXOffset = 0.0;
 
     PedestrianCANFD.SetSocket("can1", 1); // CAN FD
     cout << "[Communicator]-----------Pedestrian Thread start!-------------" << endl;
@@ -215,82 +219,133 @@ void PedestrianReceiver()
     {
         try
         {
-            //return 객체 1개당 x, y, distance
+            PedestrianCANFD.ReceiveCANFD();
+            /* Class(L idx = 7(56), R idx = 23 1byte) : start bit 56, 사람 0x50, 차량 0x22
+               X(L idx = 9>>4 + 10<<4 (76~87), R idx 25>>4 + 26<<4 1.5byte) : start bit 64
+               Y(L idx = 8 + 9<<4 (64~75), R idx 24 + 25<<8 1.5byte) : start bit 76 */
             switch (PedestrianCANFD.FrameFd.can_id)
             {
             case 0x180:
-                /* Change index */
-                if (PedestrianCANFD.FrameFd.data[1] == 0x50)
+                if (PedestrianCANFD.FrameFd.data[7] == 0x50) // 왼쪽 사람
                 {
                     // Left
-                    PedestrianCashe.X[0] = ((PedestrianCANFD.FrameFd.data[2] << 8) + PedestrianCANFD.FrameFd.data[3]) * MobileyeFactor + MobileyeOffset;
-                    PedestrianCashe.Y[0] = ((PedestrianCANFD.FrameFd.data[4] << 8) + PedestrianCANFD.FrameFd.data[5]) * MobileyeFactor + MobileyeOffset;
-                    PedestrianCashe.Class[0] = '180L';
-                    // Right
-                    PedestrianCashe.X[1] = ((PedestrianCANFD.FrameFd.data[10] << 8) + PedestrianCANFD.FrameFd.data[11]) * MobileyeFactor + MobileyeOffset;
-                    PedestrianCashe.Y[1] = ((PedestrianCANFD.FrameFd.data[12] << 8) + PedestrianCANFD.FrameFd.data[13]) * MobileyeFactor + MobileyeOffset;
-                    PedestrianCashe.Class[1] = '180R';
+                    PedestrianCashe.Y[0] = (PedestrianCANFD.FrameFd.data[8] + ((PedestrianCANFD.FrameFd.data[9] & 0x0F) << 8)) * MobileyeYFactor + MobileyeYOffset;
+                    PedestrianCashe.X[0] = ((PedestrianCANFD.FrameFd.data[9] & 0xF0) >> 4) + (PedestrianCANFD.FrameFd.data[10] << 4);
+                    if (PedestrianCashe.X[0] > 2048) // 음수 확인
+                        PedestrianCashe.X[0] = PedestrianCashe.X[0] - 4096;
+
+                    PedestrianCashe.X[0] = PedestrianCashe.X[0] * MobileyeXFactor + MobileyeXOffset;
+                }
+
+                if (PedestrianCANFD.FrameFd.data[23] == 0x50) // 오른쪽 사람
+                {
+                    //  Right
+                    PedestrianCashe.Y[1] = (PedestrianCANFD.FrameFd.data[24] + ((PedestrianCANFD.FrameFd.data[25] & 0x0F) << 8)) * MobileyeYFactor + MobileyeYOffset;
+                    PedestrianCashe.X[1] = ((PedestrianCANFD.FrameFd.data[25] & 0xF0) >> 4) + (PedestrianCANFD.FrameFd.data[26] << 4);
+                    if (PedestrianCashe.X[1] > 2048)
+                        PedestrianCashe.X[1] = PedestrianCashe.X[1] - 4096;
+
+                    PedestrianCashe.X[1] = PedestrianCashe.X[1] * MobileyeXFactor + MobileyeXOffset;
                 }
                 break;
 
             case 0x181:
-                if (PedestrianCANFD.FrameFd.data[1] == 0x50)
+                if (PedestrianCANFD.FrameFd.data[7] == 0x50)
                 {
                     // Left
-                    PedestrianCashe.X[2] = ((PedestrianCANFD.FrameFd.data[2] << 8) + PedestrianCANFD.FrameFd.data[3]) * MobileyeFactor + MobileyeOffset;
-                    PedestrianCashe.Y[2] = ((PedestrianCANFD.FrameFd.data[4] << 8) + PedestrianCANFD.FrameFd.data[5]) * MobileyeFactor + MobileyeOffset;
-                    PedestrianCashe.Class[2] = '181L';
-                    // Right
-                    PedestrianCashe.X[3] = ((PedestrianCANFD.FrameFd.data[10] << 8) + PedestrianCANFD.FrameFd.data[11]) * MobileyeFactor + MobileyeOffset;
-                    PedestrianCashe.Y[3] = ((PedestrianCANFD.FrameFd.data[12] << 8) + PedestrianCANFD.FrameFd.data[13]) * MobileyeFactor + MobileyeOffset;
-                    PedestrianCashe.Class[3] = '181R';
+                    PedestrianCashe.Y[2] = (PedestrianCANFD.FrameFd.data[8] + ((PedestrianCANFD.FrameFd.data[9] & 0x0F) << 8)) * MobileyeYFactor + MobileyeYOffset;
+                    PedestrianCashe.X[2] = ((PedestrianCANFD.FrameFd.data[9] & 0xF0) >> 4) + (PedestrianCANFD.FrameFd.data[10] << 4);
+                    if (PedestrianCashe.X[2] > 2048)
+                        PedestrianCashe.X[2] = PedestrianCashe.X[2] - 4096;
+
+                    PedestrianCashe.X[2] = PedestrianCashe.X[2] * MobileyeXFactor + MobileyeXOffset;
+                }
+
+                if (PedestrianCANFD.FrameFd.data[23] == 0x50)
+                {
+                    //  Right
+                    PedestrianCashe.Y[3] = (PedestrianCANFD.FrameFd.data[24] + ((PedestrianCANFD.FrameFd.data[25] & 0x0F) << 8)) * MobileyeYFactor + MobileyeYOffset;
+                    PedestrianCashe.X[3] = ((PedestrianCANFD.FrameFd.data[25] & 0xF0) >> 4) + (PedestrianCANFD.FrameFd.data[26] << 4);
+                    if (PedestrianCashe.X[3] > 2048)
+                        PedestrianCashe.X[3] = PedestrianCashe.X[3] - 4096;
+
+                    PedestrianCashe.X[3] = PedestrianCashe.X[3] * MobileyeXFactor + MobileyeXOffset;
                 }
                 break;
 
             case 0x182:
-                if (PedestrianCANFD.FrameFd.data[1] == 0x50)
+                if (PedestrianCANFD.FrameFd.data[7] == 0x50)
                 {
                     // Left
-                    PedestrianCashe.X[4] = ((PedestrianCANFD.FrameFd.data[2] << 8) + PedestrianCANFD.FrameFd.data[3]) * MobileyeFactor + MobileyeOffset;
-                    PedestrianCashe.Y[4] = ((PedestrianCANFD.FrameFd.data[4] << 8) + PedestrianCANFD.FrameFd.data[5]) * MobileyeFactor + MobileyeOffset;
-                    PedestrianCashe.Class[4] = '182L';
-                    // Right
-                    PedestrianCashe.X[5] = ((PedestrianCANFD.FrameFd.data[10] << 8) + PedestrianCANFD.FrameFd.data[11]) * MobileyeFactor + MobileyeOffset;
-                    PedestrianCashe.Y[5] = ((PedestrianCANFD.FrameFd.data[12] << 8) + PedestrianCANFD.FrameFd.data[13]) * MobileyeFactor + MobileyeOffset;
-                    PedestrianCashe.Class[5] = '182R';
+                    PedestrianCashe.Y[4] = (PedestrianCANFD.FrameFd.data[8] + ((PedestrianCANFD.FrameFd.data[9] & 0x0F) << 8)) * MobileyeYFactor + MobileyeYOffset;
+                    PedestrianCashe.X[4] = ((PedestrianCANFD.FrameFd.data[9] & 0xF0) >> 4) + (PedestrianCANFD.FrameFd.data[10] << 4);
+                    if (PedestrianCashe.X[4] > 2048)
+                        PedestrianCashe.X[4] = PedestrianCashe.X[4] - 4096;
+
+                    PedestrianCashe.X[4] = PedestrianCashe.X[4] * MobileyeXFactor + MobileyeXOffset;
+                }
+
+                if (PedestrianCANFD.FrameFd.data[23] == 0x50)
+                {
+                    //  Right
+                    PedestrianCashe.Y[5] = (PedestrianCANFD.FrameFd.data[24] + ((PedestrianCANFD.FrameFd.data[25] & 0x0F) << 8)) * MobileyeYFactor + MobileyeYOffset;
+                    PedestrianCashe.X[5] = ((PedestrianCANFD.FrameFd.data[25] & 0xF0) >> 4) + (PedestrianCANFD.FrameFd.data[26] << 4);
+                    if (PedestrianCashe.X[5] > 2048)
+                        PedestrianCashe.X[5] = PedestrianCashe.X[5] - 4096;
+
+                    PedestrianCashe.X[5] = PedestrianCashe.X[5] * MobileyeXFactor + MobileyeXOffset;
                 }
                 break;
 
             case 0x183:
-                if (PedestrianCANFD.FrameFd.data[1] == 0x50)
+                if (PedestrianCANFD.FrameFd.data[7] == 0x50)
                 {
                     // Left
-                    PedestrianCashe.X[6] = ((PedestrianCANFD.FrameFd.data[2] << 8) + PedestrianCANFD.FrameFd.data[3]) * MobileyeFactor + MobileyeOffset;
-                    PedestrianCashe.Y[6] = ((PedestrianCANFD.FrameFd.data[4] << 8) + PedestrianCANFD.FrameFd.data[5]) * MobileyeFactor + MobileyeOffset;
-                    PedestrianCashe.Class[6] = '183L';
-                    // Right
-                    PedestrianCashe.X[7] = ((PedestrianCANFD.FrameFd.data[10] << 8) + PedestrianCANFD.FrameFd.data[11]) * MobileyeFactor + MobileyeOffset;
-                    PedestrianCashe.Y[7] = ((PedestrianCANFD.FrameFd.data[12] << 8) + PedestrianCANFD.FrameFd.data[13]) * MobileyeFactor + MobileyeOffset;
-                    PedestrianCashe.Class[7] = '183R';
+                    PedestrianCashe.Y[6] = (PedestrianCANFD.FrameFd.data[8] + ((PedestrianCANFD.FrameFd.data[9] & 0x0F) << 8)) * MobileyeYFactor + MobileyeYOffset;
+                    PedestrianCashe.X[6] = ((PedestrianCANFD.FrameFd.data[9] & 0xF0) >> 4) + (PedestrianCANFD.FrameFd.data[10] << 4);
+                    if (PedestrianCashe.X[6] > 2048)
+                        PedestrianCashe.X[6] = PedestrianCashe.X[6] - 4096;
+
+                    PedestrianCashe.X[6] = PedestrianCashe.X[6] * MobileyeXFactor + MobileyeXOffset;
+                }
+
+                if (PedestrianCANFD.FrameFd.data[23] == 0x50)
+                {
+                    //  Right
+                    PedestrianCashe.Y[7] = (PedestrianCANFD.FrameFd.data[24] + ((PedestrianCANFD.FrameFd.data[25] & 0x0F) << 8)) * MobileyeYFactor + MobileyeYOffset;
+                    PedestrianCashe.X[7] = ((PedestrianCANFD.FrameFd.data[25] & 0xF0) >> 4) + (PedestrianCANFD.FrameFd.data[26] << 4);
+                    if (PedestrianCashe.X[7] > 2048)
+                        PedestrianCashe.X[7] = PedestrianCashe.X[7] - 4096;
+
+                    PedestrianCashe.X[7] = PedestrianCashe.X[7] * MobileyeXFactor + MobileyeXOffset;
                 }
                 break;
 
             case 0x184:
-                if (PedestrianCANFD.FrameFd.data[1] == 0x50)
+                if (PedestrianCANFD.FrameFd.data[7] == 0x50)
                 {
                     // Left
-                    PedestrianCashe.X[8] = ((PedestrianCANFD.FrameFd.data[2] << 8) + PedestrianCANFD.FrameFd.data[3]) * MobileyeFactor + MobileyeOffset;
-                    PedestrianCashe.Y[8] = ((PedestrianCANFD.FrameFd.data[4] << 8) + PedestrianCANFD.FrameFd.data[5]) * MobileyeFactor + MobileyeOffset;
-                    PedestrianCashe.Class[8] = '184L';
-                    // Right
-                    PedestrianCashe.X[9] = ((PedestrianCANFD.FrameFd.data[10] << 8) + PedestrianCANFD.FrameFd.data[11]) * MobileyeFactor + MobileyeOffset;
-                    PedestrianCashe.Y[9] = ((PedestrianCANFD.FrameFd.data[12] << 8) + PedestrianCANFD.FrameFd.data[13]) * MobileyeFactor + MobileyeOffset;
-                    PedestrianCashe.Class[9] = '184R';
+                    PedestrianCashe.Y[8] = (PedestrianCANFD.FrameFd.data[8] + ((PedestrianCANFD.FrameFd.data[9] & 0x0F) << 8)) * MobileyeYFactor + MobileyeYOffset;
+                    PedestrianCashe.X[8] = ((PedestrianCANFD.FrameFd.data[9] & 0xF0) >> 4) + (PedestrianCANFD.FrameFd.data[10] << 4);
+                    if (PedestrianCashe.X[8] > 2048)
+                        PedestrianCashe.X[8] = PedestrianCashe.X[8] - 4096;
+
+                    PedestrianCashe.X[8] = PedestrianCashe.X[8] * MobileyeXFactor + MobileyeXOffset;
+                }
+
+                if (PedestrianCANFD.FrameFd.data[23] == 0x50)
+                {
+                    //  Right
+                    PedestrianCashe.Y[9] = (PedestrianCANFD.FrameFd.data[24] + ((PedestrianCANFD.FrameFd.data[25] & 0x0F) << 8)) * MobileyeYFactor + MobileyeYOffset;
+                    PedestrianCashe.X[9] = ((PedestrianCANFD.FrameFd.data[25] & 0xF0) >> 4) + (PedestrianCANFD.FrameFd.data[26] << 4);
+                    if (PedestrianCashe.X[9] > 2048)
+                        PedestrianCashe.X[9] = PedestrianCashe.X[9] - 4096;
+
+                    PedestrianCashe.X[9] = PedestrianCashe.X[9] * MobileyeXFactor + MobileyeXOffset;
                 }
                 break;
 
-            default:
-                break;
+                Pedestrian = PedestrianCashe;
             }
         }
 
@@ -313,78 +368,13 @@ void PedestrianReceiver()
     cout << "[Communicator]-----------PedestrianUDPReceiver Socket Closed!-------------" << endl;
 }
 
-/* S32G -> VCU */
-void MCUSender()
-{
-    UDPClass MCU;
-    MCU.SetServerSocket(S32GIp, S32GPort);
-    MCU.SetClientSocket(MCUIp, MCUPort);
-    uint8_t AliveCnt = 0;
-    int handle, Ax;
-
-    cout << "[Communicator]-----------MCUSender Thread start!-------------" << endl;
-    while (SocketFlag)
-    {
-        try
-        {
-            if (MCUSendSignal)
-            {
-                handle = (int)(Control.Handle * 10. + 3600.);
-                Ax = (int)Control.Acceleration;
-
-                MCU.SendBuffer[0] = 0x01;
-                MCU.SendBuffer[1] = 0x02;
-                MCU.SendBuffer[2] = 0x03;
-                MCU.SendBuffer[3] = 0x04;
-                MCU.SendBuffer[4] = AliveCnt;
-                MCU.SendBuffer[5] = AliveCnt >> 8;
-                MCU.SendBuffer[6] = 0;
-                MCU.SendBuffer[7] = 0;
-                MCU.SendBuffer[8] = 0;
-                MCU.SendBuffer[9] = 0;
-                MCU.SendBuffer[10] = 0;
-                MCU.SendBuffer[12] = TargetSpeed;
-                MCU.SendBuffer[15] = 0; // PathFollower
-                MCU.SendBuffer[16] = handle;
-                MCU.SendBuffer[17] = handle >> 8;
-                MCU.SendBuffer[18] = handle >> 16;
-                MCU.SendBuffer[19] = handle >> 24;
-                MCU.SendBuffer[20] = Ax;
-                MCU.SendBuffer[21] = Ax >> 8;
-
-                if (AliveCnt == 255)
-                    AliveCnt = 0;
-                else
-                    AliveCnt++;
-                MCU.Send(22);
-
-                MCUSendSignal = false;
-            }
-        }
-        catch (std::out_of_range &e)
-        {
-            std::cout << "<MCUSender> Out_of_range Error" << '\n';
-        }
-        catch (std::length_error &e)
-        {
-            std::cout << "<MCUSender> Length Error" << '\n';
-        }
-        catch (std::exception &e)
-        {
-            std::cout << "<MCUSender> EXCEPTION " << '\n';
-            std::cout << e.what() << '\n';
-        }
-    }
-    MCU.CloseSocket();
-    cout << "[Communicator]-----------MCUSender Socket Closed!-------------" << endl;
-}
-
 void SRCCommunication()
 {
     UDPClass SRC;
     GlobalPathStruct GlobalCache;
     GPSStruct GPSCache;
     VehicleStruct VehicleCache;
+    // S32G 안에서 서로 다른 프로세스간의 통신을 위해서 사용(Teleconce) -> 수가 많아지면 문제 -> IPC, DDS
     SRC.SetServerSocket(S32GIp, ExternalPortReceive);
     SRC.SetClientSocket(ExternalIp, ExternalPortReceive);
 
@@ -433,7 +423,7 @@ void SRCCommunication()
                 GlobalCache.Latitude[i] = 0.0000001 * (uint32_t)((SRC.ReceiveBuffer[8 * i + 7] << 24) + (SRC.ReceiveBuffer[8 * i + 6] << 16) + (SRC.ReceiveBuffer[8 * i + 5] << 8) + SRC.ReceiveBuffer[8 * i + 4]);
             }
 
-            if (PathReceiveSignal)
+            if (PathReceiveSignal) // 기본 true
             {
                 Global = GlobalCache;
                 PathReceiveSignal = false;
@@ -455,102 +445,6 @@ void SRCCommunication()
     }
     SRC.CloseSocket();
     cout << "[Communicator]-----------SRCCommunication Thread end!-------------" << endl;
-}
-
-void ViewerSender()
-{
-    TCPClass Viewer;
-
-    Viewer.SetServerSocket(S32GIp, ViewerPortClient);
-    cout << "[Communicator]-----------ViewerSender Thread start!-------------" << endl;
-
-    while (SocketFlag)
-    {
-        try
-        {
-            if (ViewerSendSignal)
-            {
-                printf("%lf    %lf\n", Global.GapLatitude, Global.GapLongitude);
-                // Location
-                Viewer.SendBuffer[0] = (uint32_t)(Global.GapLatitude);
-                Viewer.SendBuffer[1] = ((uint32_t)(Global.GapLatitude)) >> 8;
-                Viewer.SendBuffer[2] = ((uint32_t)(Global.GapLatitude)) >> 16;
-                Viewer.SendBuffer[3] = ((uint32_t)(Global.GapLatitude)) >> 24;
-                Viewer.SendBuffer[4] = (uint32_t)(Global.GapLongitude);
-                Viewer.SendBuffer[5] = ((uint32_t)(Global.GapLongitude)) >> 8;
-                Viewer.SendBuffer[6] = ((uint32_t)(Global.GapLongitude)) >> 16;
-                Viewer.SendBuffer[7] = ((uint32_t)(Global.GapLongitude)) >> 24;
-                Viewer.SendBuffer[8] = (uint32_t)(Global.Heading * 100);
-                Viewer.SendBuffer[9] = ((uint32_t)(Global.Heading * 100)) >> 8;
-                Viewer.SendBuffer[10] = ((uint32_t)(Global.Heading * 100)) >> 16;
-                Viewer.SendBuffer[11] = ((uint32_t)(Global.Heading * 100)) >> 24;
-
-                // Vehicle
-                Viewer.SendBuffer[12] = (int)(Vehicle.Velocity * 3.6);
-                Viewer.SendBuffer[13] = (int)(Vehicle.LongitudinalAccel * 100);
-                Viewer.SendBuffer[14] = ((int)(Vehicle.LongitudinalAccel * 100)) >> 8;
-                Viewer.SendBuffer[15] = (int)(Vehicle.LateralAccel * 100);
-                Viewer.SendBuffer[16] = ((int)(Vehicle.LateralAccel * 100)) >> 8;
-                Viewer.SendBuffer[17] = (int)(Vehicle.YawRate * 100);
-                Viewer.SendBuffer[18] = ((int)(Vehicle.YawRate * 100)) >> 8;
-                Viewer.SendBuffer[19] = (uint32_t)(Vehicle.HandleAngle);
-                Viewer.SendBuffer[20] = ((uint32_t)(Vehicle.HandleAngle)) >> 8;
-                Viewer.SendBuffer[21] = ((uint32_t)(Vehicle.HandleAngle)) >> 16;
-                Viewer.SendBuffer[22] = ((uint32_t)(Vehicle.HandleAngle)) >> 24;
-
-                // Control Input
-                Viewer.SendBuffer[23] = (uint32_t)(Control.Curvature * 10000);
-                Viewer.SendBuffer[24] = ((uint32_t)(Control.Curvature * 10000)) >> 8;
-                Viewer.SendBuffer[25] = ((uint32_t)(Control.Curvature * 10000)) >> 16;
-                Viewer.SendBuffer[26] = ((uint32_t)(Control.Curvature * 10000)) >> 24;
-                Viewer.SendBuffer[27] = (int)(Control.LateralDeviation * 100);
-                Viewer.SendBuffer[28] = ((int)(Control.LateralDeviation * 100)) >> 8;
-                Viewer.SendBuffer[29] = (int)(Control.RelativeHeadingAngle * 100);
-                Viewer.SendBuffer[30] = ((int)(Control.RelativeHeadingAngle * 100)) >> 8;
-
-                // Control Output
-                Viewer.SendBuffer[31] = (uint32_t)(Control.Handle * 100);
-                Viewer.SendBuffer[32] = ((uint32_t)(Control.Handle * 100)) >> 8;
-                Viewer.SendBuffer[33] = ((uint32_t)(Control.Handle * 100)) >> 16;
-                Viewer.SendBuffer[34] = ((uint32_t)(Control.Handle * 100)) >> 24;
-                Viewer.SendBuffer[35] = (int)(Control.Acceleration * 100);
-                Viewer.SendBuffer[36] = ((int)(Control.Acceleration * 100)) >> 8;
-
-                // Path
-                Viewer.SendBuffer[37] = Local.Length;
-                Viewer.SendBuffer[38] = Local.Length >> 8;
-                for (uint32_t i = 0; i < Local.Length; i++)
-                {
-                    Viewer.SendBuffer[8 * i + 39] = (uint32_t)(Global.ValidLatitude[i]);
-                    Viewer.SendBuffer[8 * i + 40] = ((uint32_t)(Global.ValidLatitude[i])) >> 8;
-                    Viewer.SendBuffer[8 * i + 41] = ((uint32_t)(Global.ValidLatitude[i])) >> 16;
-                    Viewer.SendBuffer[8 * i + 42] = ((uint32_t)(Global.ValidLatitude[i])) >> 24;
-                    Viewer.SendBuffer[8 * i + 43] = (uint32_t)(Global.ValidLongitude[i]);
-                    Viewer.SendBuffer[8 * i + 44] = ((uint32_t)(Global.ValidLongitude[i])) >> 8;
-                    Viewer.SendBuffer[8 * i + 45] = ((uint32_t)(Global.ValidLongitude[i])) >> 16;
-                    Viewer.SendBuffer[8 * i + 46] = ((uint32_t)(Global.ValidLongitude[i])) >> 24;
-                }
-                Viewer.Send(BufferSize * 4);
-
-                ViewerSendSignal = false;
-            }
-        }
-        catch (std::out_of_range &e)
-        {
-            std::cout << "<ViewerSender> Out_of_range Error" << '\n';
-        }
-        catch (std::length_error &e)
-        {
-            std::cout << "<ViewerSender> Length Error" << '\n';
-        }
-        catch (std::exception &e)
-        {
-            std::cout << "<ViewerSender> EXCEPTION " << '\n';
-            std::cout << e.what() << '\n';
-        }
-    }
-    Viewer.CloseSocket();
-    cout << "[Communicator]-----------ViewerSender Socket Closed!-------------" << endl;
 }
 
 /* Key 입력 */
@@ -576,14 +470,14 @@ int getch(void)
        비정규 모드에서는 문자가 입력될 때마다 즉시 반환 */
     buf.c_lflag &= ~(ICANON | ECHO);
     /* 문자를 입력하면 즉시 반환 */
-    buf.c_cc[VMIN] = 1;             // 입력을 기다리는 최소 문자 수를 1로 설정
-    buf.c_cc[VTIME] = 0;            // 입력을 기다리는 최대 시간을 0으로 설정
-    
-    tcsetattr(0, TCSAFLUSH, &buf);  // buf 터미널 설정 변경하고 기존 입력 버퍼 삭제
-    
+    buf.c_cc[VMIN] = 1;  // 입력을 기다리는 최소 문자 수를 1로 설정
+    buf.c_cc[VTIME] = 0; // 입력을 기다리는 최대 시간을 0으로 설정
+
+    tcsetattr(0, TCSAFLUSH, &buf); // buf 터미널 설정 변경하고 기존 입력 버퍼 삭제
+
     ch = getchar();                 // 키보드 입력받은 문자 저장
     tcsetattr(0, TCSAFLUSH, &save); // 입력 받은 후, 원래의 터미널 설정 복원
-    
+
     return ch;
 }
 
