@@ -30,6 +30,26 @@ int main()
 
     PathConverter PathManager; // 경로 데이터
 
+    /* GPS Path Save File */
+    time_t t = time(NULL);
+    struct tm tm = *localtime(&t);
+    char TimeBuffer[50], SavePath[100], format[5] = ".txt";
+
+    // Path name
+    sprintf(TimeBuffer, "%02d.%02d.%02d-%02d:%02d:%02d",  tm.tm_year % 100, tm.tm_mon + 1, tm.tm_mday, tm.tm_hour, tm.tm_min, tm.tm_sec);
+    sprintf(SavePath, "%s%s.txt", GPSRecordPath.c_str(), TimeBuffer);
+
+    FILE* RecordFile;
+    if (GPSRecord) // default: false
+    {
+        RecordFile = fopen(SavePath, "w");
+        if(RecordFile == NULL)
+        {
+            printf("<Error Opening File>\n");
+            return 1;
+        }
+    }
+
     /* thread of Communication */
     KeyThread = thread(Key);
     GPSThread = thread(GPSReceiver);
@@ -82,6 +102,9 @@ int main()
 
                 SRCSendSignal = true;
                 PathReceiveSignal = true;
+                
+                // Save File
+                fprintf(RecordFile, "%.7f/%.7f\n", GPS.Latitude, GPS.Longitude);
 
                 gettimeofday(&startTime, NULL);
             }
@@ -108,6 +131,7 @@ int main()
     if (ReceivePathFlag)
         SRCThread.join();
     cout << "------------------ Pedestrian Distance Module END ! ------------------" << endl;
+    fclose(RecordFile);
     KeyThread.join();
 
     return 1;

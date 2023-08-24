@@ -22,15 +22,15 @@ void PathConverter::ImportFile(const char *file)
         size_t num: 바이트 단위의 메모리 크기 */
     memset(&Global.Latitude, 0, PathSize); // why? pathsize 8192 -> 8bit 1024
     memset(&Global.Longitude, 0, PathSize);
-    //memset(&Local.X, 0, PathSize);
-    //memset(&Local.Y, 0, PathSize);
+    // memset(&Local.X, 0, PathSize);
+    // memset(&Local.Y, 0, PathSize);
     memset(&VertexDistance, 0, PathSize);
     WayPointNum = 0;
     EndVertex = 0;   // 마지막 지점
     StartVertex = 0; // 시작 지점
     LastVertex = 0;  // 이전의 EndVertex
     MinimumDistanceIdx = 0;
-    //FrontPathIdx = 0;
+    // FrontPathIdx = 0;
 
     /* WayPoint 정보를 읽어와 그 개수를 계산하는 부분
        각 줄마다 파일에서 한 줄 씩 읽어오고 해당 줄의 길이를 확인하여 WayPoint ++ */
@@ -120,15 +120,15 @@ void PathConverter::InitializePath()
     double MinimumDistance = 500.0, dist = 0.0;
 
     // Communicator memset Global
-    //memset(&Local.X, 0, PathSize);
-    //memset(&Local.Y, 0, PathSize);
+    // memset(&Local.X, 0, PathSize);
+    // memset(&Local.Y, 0, PathSize);
     memset(&VertexDistance, 0, PathSize);
     WayPointNum = 0;
     EndVertex = 0;
     StartVertex = 0;
     LastVertex = 0;
     MinimumDistanceIdx = 0;
-    //FrontPathIdx = 0;
+    // FrontPathIdx = 0;
 
     for (int i = 0; i < (PathSize / 8) - 1; i++)
     {
@@ -224,6 +224,8 @@ void PathConverter::GenerateLocalPath()
         FrontDistance += VertexDistance[k]; // WayPoint 간의 간격
     }
 
+    // FrontDistance = Vertex 전방 앞거리
+
     // PathDencity = 0.2+속도(km/h)*0.01 (속도 max 60)
     /* 얼마나 많은 WayPoint를 방문해야 하는지 */
     FrontPathIdx = (uint32_t)(FrontDistance / PathDencity);
@@ -254,7 +256,7 @@ void PathConverter::GenerateLocalPath()
             for (uint32_t m = StartVertex; m < EndVertex; m++)
             {
                 FrontDistance += VertexDistance[m];
-                if (FrontDistance < PathDencity * n) //
+                if (FrontDistance < PathDencity * n) // 일정한 간격으로 찍기 위해서
                 {
                     // n번째 WayPoint의 좌표를 설정하고, 해당 좌표를 로컬 좌표로 변환
                     SetTargetVertex(m, &TargetVertex);
@@ -282,13 +284,18 @@ void PathConverter::PedestrianDistance()
     {
         for (uint32_t r = 0; r < 10; r++) // Mobileye Object count = 10
         {
-            Pedestrian.Direction[r] = sqrt(pow((Local.X[p] - Pedestrian.X[r]), 2) + pow((Local.Y[p] - Pedestrian.Y[r]), 2));
-            CurrentPedestrianDistance = Pedestrian.Direction[r];
+            cout << " Vehicle GPS Vertex " << p << " : " << Local.X[0] << ", " << Local.Y[0] << endl;
 
-            if (CurrentPedestrianDistance < MinimumPedestrianDistance)
+            if (Pedestrian.X[r] != 0 && Pedestrian.Y[r] != 0)
             {
-                MinimumPedestrianDistance = CurrentPedestrianDistance;
-                Pedestrian.MinimumPedestrianDistance = MinimumPedestrianDistance;
+                Pedestrian.Direction[r] = sqrt(pow((Local.X[p] - Pedestrian.X[r]), 2) + pow((Local.Y[p] - Pedestrian.Y[r]), 2));
+                CurrentPedestrianDistance = Pedestrian.Direction[r];
+
+                if (CurrentPedestrianDistance < MinimumPedestrianDistance)
+                {
+                    MinimumPedestrianDistance = CurrentPedestrianDistance;
+                    Pedestrian.MinimumPedestrianDistance = MinimumPedestrianDistance;
+                }
             }
         }
     }
