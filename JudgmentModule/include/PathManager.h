@@ -26,6 +26,7 @@ class PathConverter
         void GenerateLocalPath();
 
         void PedestrianDistance(); // Vertex와 보행자 간의 최소거리
+        double FrontVertexDistance; // 보행자 인지 시 앞으로 남은 전방거리
 
     private:
         void UpdatePosition(GPSStruct* pos);
@@ -39,7 +40,7 @@ class PathConverter
         uint32_t MinimumDistanceIdx;
         uint32_t FrontPathIdx;
 
-        double VertexDistance[PathSize];
+        double VertexDistance[PathSize]; // Start vertex ~ End vertex 까지 전방거리
 };
 
 #endif

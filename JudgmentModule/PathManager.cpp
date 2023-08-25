@@ -218,16 +218,16 @@ void PathConverter::GenerateLocalPath()
         LastVertex = MinimumDistanceIdx;
     }
 
-    FrontDistance = 0; // 앞으로 이동할 거리를 계산하기 위한 누적값
+    FrontDistance = 0; // 앞으로 이동할 거리
     for (uint32_t k = StartVertex; k < EndVertex; k++)
     {
-        FrontDistance += VertexDistance[k]; // WayPoint 간의 간격
+        FrontDistance += VertexDistance[k];
     }
 
-    // FrontDistance = Vertex 전방 앞거리
+    FrontVertexDistance = FrontDistance; // VCU로 반환할 Vertex 전방거리
 
     // PathDencity = 0.2+속도(km/h)*0.01 (속도 max 60)
-    /* 얼마나 많은 WayPoint를 방문해야 하는지 */
+    /* 속도에 따라 경로 간격을 얼마나 볼 것인가?ㄴ */
     FrontPathIdx = (uint32_t)(FrontDistance / PathDencity);
 
     /* 현재 방향을 계산하고, 위치 정보를 업데이트 */

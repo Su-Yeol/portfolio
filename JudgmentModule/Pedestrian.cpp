@@ -99,6 +99,13 @@ int main()
                 }  */
 
                 std::cout << "[Communicator]----------- Pedestrian Distance" << Pedestrian.MinimumPedestrianDistance << "-----------" << endl;
+                
+                /* // 경로 상에 보행자가 있다면 Vertex 전방거리 반환
+                if (Pedestrian.MinimumPedestrianDistance <= 20 )
+                {
+                    std::cout << "[Communicator]----------- Vertex Front Distance" << PathManager.FrontVertexDistance << "-----------" << endl;
+                    
+                } */
 
                 SRCSendSignal = true;
                 PathReceiveSignal = true;
