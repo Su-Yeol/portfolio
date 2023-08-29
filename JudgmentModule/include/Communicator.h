@@ -32,12 +32,12 @@ extern bool PathReceiveSignal;
 extern bool ViewerSendSignal;
 
 // ControlModule.h class
-extern GPSStruct GPS;
+/* extern GPSStruct GPS;
 extern VehicleStruct Vehicle;
 extern GlobalPathStruct Global;
 extern LocalPathStruct Local;
 extern ControlStruct Control;
-extern PedestrianStruct Pedestrian;
+extern PedestrianStruct Pedestrian; */
 
 /* 클래스 생성
     class 클래스 이름{

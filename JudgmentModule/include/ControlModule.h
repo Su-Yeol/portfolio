@@ -102,8 +102,8 @@ struct PedestrianStruct
     /* UDP Data = [0, Class, X, Y, 1, Class, X, Y] */
     double X[10];
     double Y[10];
-    char Direction[10]; // left, right Camera
-    double MinimumPedestrianDistance ;
+    double Direction[10]; // left, right Camera
+    double MinimumPedestrianDistance;
 };
 
 // ------------------------------ Config ------------------------------------- //
@@ -114,5 +114,13 @@ extern const bool GPSRecord; // GPS 데이터 기록 플래그 변수
 extern const string GPSRecordPath; //  GPS 데이터 기록 경로를 나타내는 문자열 상수
 extern const string ReferenceFile; // 참조 파일 경로를 나타내는 문자열 상수
 extern const int MainCycle; // 프로그램의 동작 속도를 조절
+
+// ------------------------------ Struct ------------------------------------- //
+GlobalPathStruct Global;
+LocalPathStruct Local;
+GPSStruct GPS;
+VehicleStruct Vehicle;
+PedestrianStruct Pedestrian;
+PathConverter PathManager;
 
 #endif

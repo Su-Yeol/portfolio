@@ -2,19 +2,12 @@
 #include "Communicator.h"
 #include "PathManager.h"
 
-/* (Global) Struct Variable */
-GPSStruct GPS;
-VehicleStruct Vehicle;
-GlobalPathStruct Global;
-LocalPathStruct Local;
-PedestrianStruct Pedestrian;
-
 /* Loop Flag & Signal */
 bool MainFlag = true;
 bool SocketFlag = true;
 bool SRCSendSignal = false;
 bool PathReceiveSignal = true;
-
+// 30 ~ 130 byte low
 /* ------------------------------- Main ------------------------------- */
 int main()
 {
@@ -28,8 +21,6 @@ int main()
     double MinimumPedestrianDistance = 0.0; // Vertex - 보행자 최소거리
     double CurrentPedestrianDistance = 0.0;
 
-    PathConverter PathManager; // 경로 데이터
-
     /* GPS Path Save File */
     time_t t = time(NULL);
     struct tm tm = *localtime(&t);
@@ -37,7 +28,7 @@ int main()
 
     // Path name
     sprintf(TimeBuffer, "%02d.%02d.%02d-%02d:%02d:%02d",  tm.tm_year % 100, tm.tm_mon + 1, tm.tm_mday, tm.tm_hour, tm.tm_min, tm.tm_sec);
-    sprintf(SavePath, "%s%s.txt", GPSRecordPath.c_str(), TimeBuffer);
+    sprintf(SavePath, "%s%s.txt", GPSRecordPath.c_str(), TimeBuffer); // ./data/GPS
 
     FILE* RecordFile;
     if (GPSRecord) // default: false
@@ -57,14 +48,14 @@ int main()
     PedestrianThread = thread(PedestrianReceiver); // Mobileye 보행자 상대좌표
 
     /* Path Initialize */
-    if (ReceivePathFlag) // 기본 False
-        SRCThread = thread(SRCCommunication);
+    if (ReceivePathFlag) // config.ini 기본 False -> Path 실시간 true
+        SRCThread = thread(SRCCommunication); // 경로 새로 탐색
     else
-        PathManager.ImportFile(ReferenceFile.c_str());
+        PathManager.ImportFile(ReferenceFile.c_str()); // 저장되어 있는 경로
 
     std::cout << "------------------ Project START ! ------------------" << endl;
     gettimeofday(&startTime, NULL);
-
+    // thread update 대기 코드
     while (MainFlag)
     {
         try
@@ -83,36 +74,20 @@ int main()
 
                 /* Mobileye */
                 PathManager.PedestrianDistance(); // 차량-보행자 최소거리
-
-                /* for (uint32_t p = 0; p < Local.Length; p++) // Vertex
-                {
-                    for (uint32_t r = 0; r < 10; r++) // Mobileye Object count = 10
-                    {
-                        CurrentPedestrianDistance = sqrt(pow((Local.X[p] - Pedestrian.X[r]), 2) + pow((Local.Y[p] - Pedestrian.Y[r]), 2));
-
-                        if (CurrentPedestrianDistance < MinimumPedestrianDistance)
-                        {
-                            MinimumPedestrianDistance = CurrentPedestrianDistance;
-                            Pedestrian.MinimumPedestrianDistance = MinimumPedestrianDistance;
-                        }
-                    }
-                }  */
-
-                std::cout << "[Communicator]----------- Pedestrian Distance" << Pedestrian.MinimumPedestrianDistance << "-----------" << endl;
                 
-                /* // 경로 상에 보행자가 있다면 Vertex 전방거리 반환
-                if (Pedestrian.MinimumPedestrianDistance <= 20 )
+                // 경로 상에 보행자가 있다면 Vertex 전방거리 반환
+                if (Pedestrian.MinimumPedestrianDistance <= 1.8 )
                 {
-                    std::cout << "[Communicator]----------- Vertex Front Distance" << PathManager.FrontVertexDistance << "-----------" << endl;
+                    cout << "[Communicator]----------- Vertex Front Distance : " << PathManager.FrontVertexDistance << "[m]-----------" << endl;
                     
-                } */
-
+                }
+                
                 SRCSendSignal = true;
                 PathReceiveSignal = true;
                 
-                // Save File
-                fprintf(RecordFile, "%.7f/%.7f\n", GPS.Latitude, GPS.Longitude);
-
+                // Save File - 저장할 때만 사용
+                //fprintf(RecordFile, "%.7f/%.7f\n", GPS.Latitude, GPS.Longitude);
+                
                 gettimeofday(&startTime, NULL);
             }
         }

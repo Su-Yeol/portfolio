@@ -13,10 +13,10 @@ using namespace std;
 #define Lat2meter 110979.309
 #define Lon2meter 88907.949
 
-extern GlobalPathStruct Global;
+/* extern GlobalPathStruct Global;
 extern LocalPathStruct Local;
 extern GPSStruct GPS;
-extern PedestrianStruct Pedestrian;
+extern PedestrianStruct Pedestrian; */
 
 class PathConverter
 {
@@ -40,7 +40,7 @@ class PathConverter
         uint32_t MinimumDistanceIdx;
         uint32_t FrontPathIdx;
 
-        double VertexDistance[PathSize]; // Start vertex ~ End vertex 까지 전방거리
+        double VertexDistance[PathSize]; // Start vertex ~ End vertex (50m)까지 전방거리
 };
 
 #endif
