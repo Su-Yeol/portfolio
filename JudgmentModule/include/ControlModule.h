@@ -115,12 +115,4 @@ extern const string GPSRecordPath; //  GPS 데이터 기록 경로를 나타내�
 extern const string ReferenceFile; // 참조 파일 경로를 나타내는 문자열 상수
 extern const int MainCycle; // 프로그램의 동작 속도를 조절
 
-// ------------------------------ Struct ------------------------------------- //
-GlobalPathStruct Global;
-LocalPathStruct Local;
-GPSStruct GPS;
-VehicleStruct Vehicle;
-PedestrianStruct Pedestrian;
-PathConverter PathManager;
-
 #endif

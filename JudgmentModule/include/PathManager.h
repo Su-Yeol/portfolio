@@ -13,10 +13,11 @@ using namespace std;
 #define Lat2meter 110979.309
 #define Lon2meter 88907.949
 
-/* extern GlobalPathStruct Global;
+extern GlobalPathStruct Global;
 extern LocalPathStruct Local;
 extern GPSStruct GPS;
-extern PedestrianStruct Pedestrian; */
+extern PedestrianStruct Pedestrian;
+extern PathConverter PathManager;
 
 class PathConverter
 {

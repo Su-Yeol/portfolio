@@ -300,7 +300,7 @@ void PathConverter::PedestrianDistance()
         }
 
         printf("보행자 X : %.1lf, Y축 : %.1lf\n", Pedestrian.X[0], Pedestrian.Y[0]);
-        printf("현재 최소 거리 : %.1lf, %.1lf\n", Pedestrian.MinimumPedestrianDistance);
+        printf("현재 최소 거리 : %.1lf\n", Pedestrian.MinimumPedestrianDistance);
         printf("MinimumPedestrianIdx : %d\n", MinimumPedestrianIdx);
         //}
     }
