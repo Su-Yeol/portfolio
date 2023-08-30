@@ -280,7 +280,6 @@ void PathConverter::PedestrianDistance()
     FrontVertexDistance = 0.0;
     Mobileye.MinimumPedestrianDistance = 500.0;
     std::fill_n(Mobileye.MinimumPedestrianIdx, 10, 200);
-    //Mobileye.MinimumPedestrianIdx[10] = {200, 200, 200, 200, 200, 200, 200, 200, 200, 200};
     int MinimumIdx = 200;
 
     for (uint32_t p = 0; p < 10; p++) // Mobileye Object count = 10
