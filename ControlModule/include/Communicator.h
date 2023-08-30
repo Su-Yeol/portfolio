@@ -5,8 +5,8 @@
 #include <termios.h>  
 #include <fcntl.h>
 
-#include "ControlModule/include/ControlModule.h"
-#include "ControlModule/include/ConfigParser.h"
+#include "/home/KATECH/ControlModule/include/ControlModule.h"
+#include "/home/KATECH/ControlModule/include/ConfigParser.h"
 
 
 extern bool MainFlag;

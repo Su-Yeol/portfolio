@@ -1,5 +1,5 @@
-#ifndef CONTROLMODULE_H
-#define CONTROLMODULE_H
+#ifndef ACONTROLMODULE_H
+#define ACONTROLMODULE_H
 
 #include <iostream> // = stdio.h, C++ 표준 입출력 스트림을 다루는 라이브러리
 #include <string.h>

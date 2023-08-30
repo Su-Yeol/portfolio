@@ -4,8 +4,8 @@
 
 /* #ifndef ~ #endif
     구조체 중복 정의로 인해 발생하는 오류 방지 */
-#ifndef COMMUNICATOR_H
-#define COMMUNICATOR_H
+#ifndef ACOMMUNICATOR_H
+#define ACOMMUNICATOR_H
 
 // key
 /* termios.h
@@ -20,8 +20,8 @@
    unistd.h - write(), read(), close() */
 #include <fcntl.h>
 
-#include "ControlModule.h"
-#include "ConfigParser.h"
+#include "AControlModule.h"
+#include "AConfigParser.h"
 
 
 extern bool MainFlag;

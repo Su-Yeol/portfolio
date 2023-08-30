@@ -1,4 +1,4 @@
-#include "ConfigParser.h"
+#include "/home/KATECH/ControlModule/include/ConfigParser.h"
 #include <fstream>
 #include <iostream>
 #include <stdexcept>

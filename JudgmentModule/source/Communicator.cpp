@@ -1,4 +1,4 @@
-#include "Communicator.h"
+#include "JCommunicator.h"
 
 // ------------------------------ Config --------------------------------- //
 CConfigParser Configuration("./config.ini");
@@ -101,7 +101,8 @@ void GPSReceiver()
 {
     UDPClass GPSBD;
     GPSStruct GPSCache;
-    GPSBD.SetServerSocket(BroadCastIp, S32GPort); // S32G
+    GPSBD.SetServerSocket("192.168.100.255", S32GPort); // S32G
+    // GPSBD.SetServerSocket(BroadCastIp, S32GPort); // S32G
     struct timeval FirstTime, SecondTime;
     double TimeGap;
 
@@ -145,230 +146,176 @@ void GPSReceiver()
 }
 
 /* 보행자 데이터 수신 */
-/* void PedestrianReceiver()
-{
-    // 주형연권님
-    UDPClass PedestrianUDP;
-    PedestrianStruct PedestrianCashe;
-    struct timeval startTime, endTime;
-
-    PedestrianUDP.SetServerSocket(S32GIp, ExternalPortReceive); // ip, port 선정 ft.주형 연구원님
-    cout << "[Communicator]-----------Pedestrian Thread start!-------------" << endl;
-
-    gettimeofday(&startTime, NULL);
-
-    while (SocketFlag)
-    {
-        try
-        {
-            gettimeofday(&endTime, NULL);
-            double timeGap = ((endTime.tv_sec - startTime.tv_sec) * 1000) + ((endTime.tv_usec - startTime.tv_usec) / 1000); // 1ms
-
-            if (timeGap >= MCUReceiveCycle)
-            {
-                PedestrianUDP.Receive(8); // [left camera, class, X, Y, right camera, class, X, Y]
-                PedestrianCashe.Direction[0] = PedestrianUDP.ReceiveBuffer[0];
-                PedestrianCashe.Direction[1] = PedestrianUDP.ReceiveBuffer[4];
-                PedestrianCashe.Class[0] = PedestrianUDP.ReceiveBuffer[1];
-                PedestrianCashe.Class[1] = PedestrianUDP.ReceiveBuffer[5];
-                PedestrianCashe.X[0] = PedestrianUDP.ReceiveBuffer[2];
-                PedestrianCashe.Y[0] = PedestrianUDP.ReceiveBuffer[3];
-                PedestrianCashe.X[1] = PedestrianUDP.ReceiveBuffer[6];
-                PedestrianCashe.Y[1] = PedestrianUDP.ReceiveBuffer[7];
-
-                Pedestrian = PedestrianCashe;
-
-                gettimeofday(&startTime, NULL);
-            }
-        }
-
-        catch (std::out_of_range &e)
-        {
-            std::cout << "<PedestrianReceiver> Out_of_range Error" << '\n';
-        }
-        catch (std::length_error &e)
-        {
-            std::cout << "<PedestrianReceiver> Length Error" << '\n';
-        }
-        catch (std::exception &e)
-        {
-            std::cout << "<PedestrianReceiver> EXCEPTION " << '\n';
-            std::cout << e.what() << '\n';
-        }
-    }
-    PedestrianUDP.CloseSocket();
-    cout << "[Communicator]-----------PedestrianUDPReceiver Socket Closed!-------------" << endl;
-} */
-
-/* 보행자 데이터 수신 */
-void PedestrianReceiver()
+void MobileyeReceiver()
 {
     /* Mobileye */
     CANClass PedestrianCANFD;
-    PedestrianStruct PedestrianCashe;
+    MobileyeStruct MobileyeCahse;
     // Y
     double MobileyeYFactor = 5.4054054;
     double MobileyeYOffset = -154;
-    // X
+    // X - 
     double MobileyeXFactor = 1.3;
     double MobileyeXOffset = 0.0;
 
     PedestrianCANFD.SetSocket("can1", 1); // CAN FD
-    cout << "[Communicator]-----------Pedestrian Thread start!-------------" << endl;
+    cout << "[Communicator]-----------Mobileye Thread start!-------------" << endl;
 
     while (SocketFlag)
     {
         try
         {
             PedestrianCANFD.ReceiveCANFD();
-            /* Class(idx = 7, idx = 23 1byte) : start bit 56, 사람 0x50, 차량 0x22
-               X(L idx = 9>>4 + 10<<4 (76~87), R idx 25>>4 + 26<<4 1.5byte) : start bit 64
-               Y(L idx = 8 + 9<<4 (64~75), R idx 24 + 25<<8 1.5byte) : start bit 76 */
-            switch (PedestrianCANFD.FrameFd.can_id)
+            switch (PedestrianCANFD.FrameFd.can_id) // 사람(차량, 자전거 등) 확인
             {
             case 0x180:
                 if (PedestrianCANFD.FrameFd.data[7] == 0x50)
                 {
-                    PedestrianCashe.Y[0] = (PedestrianCANFD.FrameFd.data[8] + ((PedestrianCANFD.FrameFd.data[9] & 0x0F) << 8)) * MobileyeYFactor + MobileyeYOffset;
-                    PedestrianCashe.X[0] = ((PedestrianCANFD.FrameFd.data[9] & 0xF0) >> 4) + (PedestrianCANFD.FrameFd.data[10] << 4);
-                    if (PedestrianCashe.X[0] > 2048) // 음수 확인
-                        PedestrianCashe.X[0] = PedestrianCashe.X[0] - 4096;
+                    MobileyeCahse.Y[0] = (PedestrianCANFD.FrameFd.data[8] + ((PedestrianCANFD.FrameFd.data[9] & 0x0F) << 8)) * MobileyeYFactor + MobileyeYOffset;
+                    MobileyeCahse.X[0] = ((PedestrianCANFD.FrameFd.data[9] & 0xF0) >> 4) + (PedestrianCANFD.FrameFd.data[10] << 4);
+                    if (MobileyeCahse.X[0] > 2048) // 음수 확인
+                        MobileyeCahse.X[0] = MobileyeCahse.X[0] - 4096;
 
-                    PedestrianCashe.X[0] = PedestrianCashe.X[0] * MobileyeXFactor + MobileyeXOffset;
-                    
+                    MobileyeCahse.X[0] = MobileyeCahse.X[0] * MobileyeXFactor + MobileyeXOffset;
+
                     // [m]
-                    PedestrianCashe.X[0] = PedestrianCashe.X[0]/100; 
-                    PedestrianCashe.Y[0] = PedestrianCashe.Y[0]/100;
+                    MobileyeCahse.X[0] = MobileyeCahse.X[0] / 100;
+                    MobileyeCahse.Y[0] = MobileyeCahse.Y[0] / 100;
                 }
 
                 if (PedestrianCANFD.FrameFd.data[23] == 0x50)
                 {
-                    PedestrianCashe.Y[1] = (PedestrianCANFD.FrameFd.data[24] + ((PedestrianCANFD.FrameFd.data[25] & 0x0F) << 8)) * MobileyeYFactor + MobileyeYOffset;
-                    PedestrianCashe.X[1] = ((PedestrianCANFD.FrameFd.data[25] & 0xF0) >> 4) + (PedestrianCANFD.FrameFd.data[26] << 4);
-                    if (PedestrianCashe.X[1] > 2048)
-                        PedestrianCashe.X[1] = PedestrianCashe.X[1] - 4096;
+                    MobileyeCahse.Y[1] = (PedestrianCANFD.FrameFd.data[24] + ((PedestrianCANFD.FrameFd.data[25] & 0x0F) << 8)) * MobileyeYFactor + MobileyeYOffset;
+                    MobileyeCahse.X[1] = ((PedestrianCANFD.FrameFd.data[25] & 0xF0) >> 4) + (PedestrianCANFD.FrameFd.data[26] << 4);
+                    if (MobileyeCahse.X[1] > 2048)
+                        MobileyeCahse.X[1] = MobileyeCahse.X[1] - 4096;
 
-                    PedestrianCashe.X[1] = PedestrianCashe.X[1] * MobileyeXFactor + MobileyeXOffset;
+                    MobileyeCahse.X[1] = MobileyeCahse.X[1] * MobileyeXFactor + MobileyeXOffset;
 
-                    PedestrianCashe.X[1] = PedestrianCashe.X[1]/100;
-                    PedestrianCashe.Y[1] = PedestrianCashe.Y[1]/100;
+                    MobileyeCahse.X[1] = MobileyeCahse.X[1] / 100;
+                    MobileyeCahse.Y[1] = MobileyeCahse.Y[1] / 100;
                 }
+
                 break;
 
             case 0x181:
                 if (PedestrianCANFD.FrameFd.data[7] == 0x50)
                 {
-                    PedestrianCashe.Y[2] = (PedestrianCANFD.FrameFd.data[8] + ((PedestrianCANFD.FrameFd.data[9] & 0x0F) << 8)) * MobileyeYFactor + MobileyeYOffset;
-                    PedestrianCashe.X[2] = ((PedestrianCANFD.FrameFd.data[9] & 0xF0) >> 4) + (PedestrianCANFD.FrameFd.data[10] << 4);
-                    if (PedestrianCashe.X[2] > 2048)
-                        PedestrianCashe.X[2] = PedestrianCashe.X[2] - 4096;
+                    MobileyeCahse.Y[2] = (PedestrianCANFD.FrameFd.data[8] + ((PedestrianCANFD.FrameFd.data[9] & 0x0F) << 8)) * MobileyeYFactor + MobileyeYOffset;
+                    MobileyeCahse.X[2] = ((PedestrianCANFD.FrameFd.data[9] & 0xF0) >> 4) + (PedestrianCANFD.FrameFd.data[10] << 4);
+                    if (MobileyeCahse.X[2] > 2048)
+                        MobileyeCahse.X[2] = MobileyeCahse.X[2] - 4096;
 
-                    PedestrianCashe.X[2] = PedestrianCashe.X[2] * MobileyeXFactor + MobileyeXOffset;
+                    MobileyeCahse.X[2] = MobileyeCahse.X[2] * MobileyeXFactor + MobileyeXOffset;
 
-                    PedestrianCashe.X[2] = PedestrianCashe.X[2]/100;
-                    PedestrianCashe.Y[2] = PedestrianCashe.Y[2]/100;
+                    MobileyeCahse.X[2] = MobileyeCahse.X[2] / 100;
+                    MobileyeCahse.Y[2] = MobileyeCahse.Y[2] / 100;
                 }
 
                 if (PedestrianCANFD.FrameFd.data[23] == 0x50)
                 {
-                    PedestrianCashe.Y[3] = (PedestrianCANFD.FrameFd.data[24] + ((PedestrianCANFD.FrameFd.data[25] & 0x0F) << 8)) * MobileyeYFactor + MobileyeYOffset;
-                    PedestrianCashe.X[3] = ((PedestrianCANFD.FrameFd.data[25] & 0xF0) >> 4) + (PedestrianCANFD.FrameFd.data[26] << 4);
-                    if (PedestrianCashe.X[3] > 2048)
-                        PedestrianCashe.X[3] = PedestrianCashe.X[3] - 4096;
+                    MobileyeCahse.Y[3] = (PedestrianCANFD.FrameFd.data[24] + ((PedestrianCANFD.FrameFd.data[25] & 0x0F) << 8)) * MobileyeYFactor + MobileyeYOffset;
+                    MobileyeCahse.X[3] = ((PedestrianCANFD.FrameFd.data[25] & 0xF0) >> 4) + (PedestrianCANFD.FrameFd.data[26] << 4);
+                    if (MobileyeCahse.X[3] > 2048)
+                        MobileyeCahse.X[3] = MobileyeCahse.X[3] - 4096;
 
-                    PedestrianCashe.X[3] = PedestrianCashe.X[3] * MobileyeXFactor + MobileyeXOffset;
+                    MobileyeCahse.X[3] = MobileyeCahse.X[3] * MobileyeXFactor + MobileyeXOffset;
 
-                    PedestrianCashe.X[3] = PedestrianCashe.X[3]/100;
-                    PedestrianCashe.Y[3] = PedestrianCashe.Y[3]/100;
+                    MobileyeCahse.X[3] = MobileyeCahse.X[3] / 100;
+                    MobileyeCahse.Y[3] = MobileyeCahse.Y[3] / 100;
                 }
                 break;
 
             case 0x182:
                 if (PedestrianCANFD.FrameFd.data[7] == 0x50)
                 {
-                    PedestrianCashe.Y[4] = (PedestrianCANFD.FrameFd.data[8] + ((PedestrianCANFD.FrameFd.data[9] & 0x0F) << 8)) * MobileyeYFactor + MobileyeYOffset;
-                    PedestrianCashe.X[4] = ((PedestrianCANFD.FrameFd.data[9] & 0xF0) >> 4) + (PedestrianCANFD.FrameFd.data[10] << 4);
-                    if (PedestrianCashe.X[4] > 2048)
-                        PedestrianCashe.X[4] = PedestrianCashe.X[4] - 4096;
+                    MobileyeCahse.Y[4] = (PedestrianCANFD.FrameFd.data[8] + ((PedestrianCANFD.FrameFd.data[9] & 0x0F) << 8)) * MobileyeYFactor + MobileyeYOffset;
+                    MobileyeCahse.X[4] = ((PedestrianCANFD.FrameFd.data[9] & 0xF0) >> 4) + (PedestrianCANFD.FrameFd.data[10] << 4);
+                    if (MobileyeCahse.X[4] > 2048)
+                        MobileyeCahse.X[4] = MobileyeCahse.X[4] - 4096;
 
-                    PedestrianCashe.X[4] = PedestrianCashe.X[4] * MobileyeXFactor + MobileyeXOffset;
+                    MobileyeCahse.X[4] = MobileyeCahse.X[4] * MobileyeXFactor + MobileyeXOffset;
 
-                    PedestrianCashe.X[4] = PedestrianCashe.X[4]/100;
-                    PedestrianCashe.Y[4] = PedestrianCashe.Y[4]/100;
+                    MobileyeCahse.X[4] = MobileyeCahse.X[4] / 100;
+                    MobileyeCahse.Y[4] = MobileyeCahse.Y[4] / 100;
                 }
 
                 if (PedestrianCANFD.FrameFd.data[23] == 0x50)
                 {
-                    PedestrianCashe.Y[5] = (PedestrianCANFD.FrameFd.data[24] + ((PedestrianCANFD.FrameFd.data[25] & 0x0F) << 8)) * MobileyeYFactor + MobileyeYOffset;
-                    PedestrianCashe.X[5] = ((PedestrianCANFD.FrameFd.data[25] & 0xF0) >> 4) + (PedestrianCANFD.FrameFd.data[26] << 4);
-                    if (PedestrianCashe.X[5] > 2048)
-                        PedestrianCashe.X[5] = PedestrianCashe.X[5] - 4096;
+                    MobileyeCahse.Y[5] = (PedestrianCANFD.FrameFd.data[24] + ((PedestrianCANFD.FrameFd.data[25] & 0x0F) << 8)) * MobileyeYFactor + MobileyeYOffset;
+                    MobileyeCahse.X[5] = ((PedestrianCANFD.FrameFd.data[25] & 0xF0) >> 4) + (PedestrianCANFD.FrameFd.data[26] << 4);
+                    if (MobileyeCahse.X[5] > 2048)
+                        MobileyeCahse.X[5] = MobileyeCahse.X[5] - 4096;
 
-                    PedestrianCashe.X[5] = PedestrianCashe.X[5] * MobileyeXFactor + MobileyeXOffset;
+                    MobileyeCahse.X[5] = MobileyeCahse.X[5] * MobileyeXFactor + MobileyeXOffset;
 
-                    PedestrianCashe.X[5] = PedestrianCashe.X[5]/100;
-                    PedestrianCashe.Y[5] = PedestrianCashe.Y[5]/100;
+                    MobileyeCahse.X[5] = MobileyeCahse.X[5] / 100;
+                    MobileyeCahse.Y[5] = MobileyeCahse.Y[5] / 100;
                 }
                 break;
 
             case 0x183:
                 if (PedestrianCANFD.FrameFd.data[7] == 0x50)
                 {
-                    PedestrianCashe.Y[6] = (PedestrianCANFD.FrameFd.data[8] + ((PedestrianCANFD.FrameFd.data[9] & 0x0F) << 8)) * MobileyeYFactor + MobileyeYOffset;
-                    PedestrianCashe.X[6] = ((PedestrianCANFD.FrameFd.data[9] & 0xF0) >> 4) + (PedestrianCANFD.FrameFd.data[10] << 4);
-                    if (PedestrianCashe.X[6] > 2048)
-                        PedestrianCashe.X[6] = PedestrianCashe.X[6] - 4096;
+                    MobileyeCahse.Y[6] = (PedestrianCANFD.FrameFd.data[8] + ((PedestrianCANFD.FrameFd.data[9] & 0x0F) << 8)) * MobileyeYFactor + MobileyeYOffset;
+                    MobileyeCahse.X[6] = ((PedestrianCANFD.FrameFd.data[9] & 0xF0) >> 4) + (PedestrianCANFD.FrameFd.data[10] << 4);
+                    if (MobileyeCahse.X[6] > 2048)
+                        MobileyeCahse.X[6] = MobileyeCahse.X[6] - 4096;
 
-                    PedestrianCashe.X[6] = PedestrianCashe.X[6] * MobileyeXFactor + MobileyeXOffset;
+                    MobileyeCahse.X[6] = MobileyeCahse.X[6] * MobileyeXFactor + MobileyeXOffset;
 
-                    PedestrianCashe.X[6] = PedestrianCashe.X[6]/100;
-                    PedestrianCashe.Y[6] = PedestrianCashe.Y[6]/100;
+                    MobileyeCahse.X[6] = MobileyeCahse.X[6] / 100;
+                    MobileyeCahse.Y[6] = MobileyeCahse.Y[6] / 100;
                 }
 
                 if (PedestrianCANFD.FrameFd.data[23] == 0x50)
                 {
-                    PedestrianCashe.Y[7] = (PedestrianCANFD.FrameFd.data[24] + ((PedestrianCANFD.FrameFd.data[25] & 0x0F) << 8)) * MobileyeYFactor + MobileyeYOffset;
-                    PedestrianCashe.X[7] = ((PedestrianCANFD.FrameFd.data[25] & 0xF0) >> 4) + (PedestrianCANFD.FrameFd.data[26] << 4);
-                    if (PedestrianCashe.X[7] > 2048)
-                        PedestrianCashe.X[7] = PedestrianCashe.X[7] - 4096;
+                    MobileyeCahse.Y[7] = (PedestrianCANFD.FrameFd.data[24] + ((PedestrianCANFD.FrameFd.data[25] & 0x0F) << 8)) * MobileyeYFactor + MobileyeYOffset;
+                    MobileyeCahse.X[7] = ((PedestrianCANFD.FrameFd.data[25] & 0xF0) >> 4) + (PedestrianCANFD.FrameFd.data[26] << 4);
+                    if (MobileyeCahse.X[7] > 2048)
+                        MobileyeCahse.X[7] = MobileyeCahse.X[7] - 4096;
 
-                    PedestrianCashe.X[7] = PedestrianCashe.X[7] * MobileyeXFactor + MobileyeXOffset;
+                    MobileyeCahse.X[7] = MobileyeCahse.X[7] * MobileyeXFactor + MobileyeXOffset;
 
-                    PedestrianCashe.X[7] = PedestrianCashe.X[7]/100;
-                    PedestrianCashe.Y[7] = PedestrianCashe.Y[7]/100;
+                    MobileyeCahse.X[7] = MobileyeCahse.X[7] / 100;
+                    MobileyeCahse.Y[7] = MobileyeCahse.Y[7] / 100;
                 }
                 break;
 
             case 0x184:
                 if (PedestrianCANFD.FrameFd.data[7] == 0x50)
                 {
-                    PedestrianCashe.Y[8] = (PedestrianCANFD.FrameFd.data[8] + ((PedestrianCANFD.FrameFd.data[9] & 0x0F) << 8)) * MobileyeYFactor + MobileyeYOffset;
-                    PedestrianCashe.X[8] = ((PedestrianCANFD.FrameFd.data[9] & 0xF0) >> 4) + (PedestrianCANFD.FrameFd.data[10] << 4);
-                    if (PedestrianCashe.X[8] > 2048)
-                        PedestrianCashe.X[8] = PedestrianCashe.X[8] - 4096;
+                    MobileyeCahse.Y[8] = (PedestrianCANFD.FrameFd.data[8] + ((PedestrianCANFD.FrameFd.data[9] & 0x0F) << 8)) * MobileyeYFactor + MobileyeYOffset;
+                    MobileyeCahse.X[8] = ((PedestrianCANFD.FrameFd.data[9] & 0xF0) >> 4) + (PedestrianCANFD.FrameFd.data[10] << 4);
+                    if (MobileyeCahse.X[8] > 2048)
+                        MobileyeCahse.X[8] = MobileyeCahse.X[8] - 4096;
 
-                    PedestrianCashe.X[8] = PedestrianCashe.X[8] * MobileyeXFactor + MobileyeXOffset;
+                    MobileyeCahse.X[8] = MobileyeCahse.X[8] * MobileyeXFactor + MobileyeXOffset;
 
-                    PedestrianCashe.X[8] = PedestrianCashe.X[8]/100;
-                    PedestrianCashe.Y[8] = PedestrianCashe.Y[8]/100;
+                    MobileyeCahse.X[8] = MobileyeCahse.X[8] / 100;
+                    MobileyeCahse.Y[8] = MobileyeCahse.Y[8] / 100;
                 }
 
                 if (PedestrianCANFD.FrameFd.data[23] == 0x50)
                 {
-                    PedestrianCashe.Y[9] = (PedestrianCANFD.FrameFd.data[24] + ((PedestrianCANFD.FrameFd.data[25] & 0x0F) << 8)) * MobileyeYFactor + MobileyeYOffset;
-                    PedestrianCashe.X[9] = ((PedestrianCANFD.FrameFd.data[25] & 0xF0) >> 4) + (PedestrianCANFD.FrameFd.data[26] << 4);
-                    if (PedestrianCashe.X[9] > 2048)
-                        PedestrianCashe.X[9] = PedestrianCashe.X[9] - 4096;
+                    MobileyeCahse.Y[9] = (PedestrianCANFD.FrameFd.data[24] + ((PedestrianCANFD.FrameFd.data[25] & 0x0F) << 8)) * MobileyeYFactor + MobileyeYOffset;
+                    MobileyeCahse.X[9] = ((PedestrianCANFD.FrameFd.data[25] & 0xF0) >> 4) + (PedestrianCANFD.FrameFd.data[26] << 4);
+                    if (MobileyeCahse.X[9] > 2048)
+                        MobileyeCahse.X[9] = MobileyeCahse.X[9] - 4096;
 
-                    PedestrianCashe.X[9] = PedestrianCashe.X[9] * MobileyeXFactor + MobileyeXOffset;
+                    MobileyeCahse.X[9] = MobileyeCahse.X[9] * MobileyeXFactor + MobileyeXOffset;
 
-                    PedestrianCashe.X[9] = PedestrianCashe.X[9]/100;
-                    PedestrianCashe.Y[9] = PedestrianCashe.Y[9]/100;
+                    MobileyeCahse.X[9] = MobileyeCahse.X[9] / 100;
+                    MobileyeCahse.Y[9] = MobileyeCahse.Y[9] / 100;
                 }
                 break;
-
             }
-            Pedestrian = PedestrianCashe;
+
+            if(MobileyeFlag)
+            {
+                Mobileye = MobileyeCahse;
+                MobileyeFlag = false;
+            }
         }
 
         catch (std::out_of_range &e)
@@ -387,7 +334,7 @@ void PedestrianReceiver()
     }
 
     PedestrianCANFD.CloseSocket();
-    cout << "[Communicator]-----------PedestrianUDPReceiver Socket Closed!-------------" << endl;
+    cout << "[Communicator]-----------MobileyeReceiver Socket Closed!-------------" << endl;
 }
 
 void SRCCommunication()

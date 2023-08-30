@@ -1,7 +1,7 @@
-#ifndef PathManager_H
-#define PathManager_H
+#ifndef APathManager_H
+#define APathManager_H
 
-#include "ControlModule.h"
+#include "AControlModule.h"
 
 using namespace std;
 

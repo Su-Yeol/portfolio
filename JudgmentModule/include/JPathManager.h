@@ -1,7 +1,7 @@
-#ifndef PathManager_H
-#define PathManager_H
+#ifndef JPathManager_H
+#define JPathManager_H
 
-#include "ControlModule.h"
+#include "JControlModule.h"
 
 using namespace std;
 
@@ -13,12 +13,6 @@ using namespace std;
 #define Lat2meter 110979.309
 #define Lon2meter 88907.949
 
-extern GlobalPathStruct Global;
-extern LocalPathStruct Local;
-extern GPSStruct GPS;
-extern PedestrianStruct Pedestrian;
-extern PathConverter PathManager;
-
 class PathConverter
 {
     public:
@@ -28,13 +22,13 @@ class PathConverter
 
         void PedestrianDistance(); // Vertex와 보행자 간의 최소거리
         double FrontVertexDistance; // 보행자 인지 시 앞으로 남은 전방거리
+        uint32_t WayPointNum;
 
     private:
         void UpdatePosition(GPSStruct* pos);
         double CalCulateDistance(GPSStruct* pos1, GPSStruct* pos2);
         void SetTargetVertex(uint32_t idx, GPSStruct* TargetPos);
 
-        uint32_t WayPointNum;
         uint32_t EndVertex; // [t] frontPath End index
         uint32_t StartVertex; // [t] frontPath Start index
         uint32_t LastVertex; // [t-1] position on Path

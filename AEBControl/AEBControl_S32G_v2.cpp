@@ -2,8 +2,8 @@
 #include <time.h>
 #include <pthread.h>
 
-#include "ControlModule.h"
-#include "Communicator.h"
+#include "AControlModule.h"
+#include "ACommunicator.h"
 
 #define TimeCycle 20
 #define WrngCycle 15

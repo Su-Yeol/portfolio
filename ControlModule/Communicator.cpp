@@ -1,4 +1,4 @@
-#include "ControlModule/include/Communicator.h"
+#include "/home/KATECH/ControlModule/include/Communicator.h"
 
 // ------------------------------ Config --------------------------------- //
 CConfigParser Configuration("./config.ini");

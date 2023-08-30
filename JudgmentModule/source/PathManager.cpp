@@ -1,4 +1,6 @@
-#include "PathManager.h"
+#include "JPathManager.h"
+
+using namespace std;
 
 GPSStruct Position; // 현재 차량 위치
 
@@ -183,6 +185,7 @@ void PathConverter::GenerateLocalPath()
     GPSStruct TargetVertex;
     double CurrentDistance, FrontDistance = 0.0;
     double MinimumDistance = 500.0;
+    // double PathDencity;
 
     UpdatePosition(&Position);
 
@@ -222,9 +225,8 @@ void PathConverter::GenerateLocalPath()
     {
         FrontDistance += VertexDistance[k];
     }
-
-    // PathDencity = 0.2+속도(km/h)*0.01 (속도 max 60)
     /* 속도에 따라 경로 간격을 얼마나 볼 것인가? */
+    // PathDencity = 0.2 + (Vehicle.Velocity * 3.6) * 0.01;
     FrontPathIdx = (uint32_t)(FrontDistance / PathDencity);
 
     /* 현재 방향을 계산하고, 위치 정보를 업데이트 */
@@ -274,42 +276,65 @@ void PathConverter::GenerateLocalPath()
 /* 현재 차량위치와 보행자의 거리 */
 void PathConverter::PedestrianDistance()
 {
+    /* Init */
     FrontVertexDistance = 0.0;
-    Pedestrian.MinimumPedestrianDistance = 0.0;
-    int MinimumPedestrianIdx = 0;
-    //double MinimumPedestrianDistance = 500.0;
+    Mobileye.MinimumPedestrianDistance = 500.0;
+    std::fill_n(Mobileye.MinimumPedestrianIdx, 10, 200);
+    //Mobileye.MinimumPedestrianIdx[10] = {200, 200, 200, 200, 200, 200, 200, 200, 200, 200};
+    int MinimumIdx = 200;
 
-    for (uint32_t p = 0; p < Local.Length; p++) // Local.Length = FrontPathIdx
+    for (uint32_t p = 0; p < 10; p++) // Mobileye Object count = 10
     {
-        // for (uint32_t r = 0; r < 10; r++) // Mobileye Object count = 10
-        //{
-        if (Pedestrian.X[0] != 0 && Pedestrian.Y[0] != 0)
+        for (uint32_t r = 0; r < Local.Length; r++) // Local.Length = FrontPathIdx
         {
-            // Path 종: X, 횡: Y || Mobileye 종: Y, 횡: X
-            Pedestrian.Direction[0] = sqrt(pow((Local.X[p] - Pedestrian.Y[0]), 2) + pow((Local.Y[p] - Pedestrian.X[0]), 2));
+            //bool checkflag = ((Mobileye.X[p] == 0) && (Mobileye.Y[p] == 0));
+            if ((Mobileye.X[p] != 0) && (Mobileye.Y[p] != 0))
+            {            
+                printf("보행자 X : %.1lf, Y축 : %.1lf\n", Mobileye.X[p], Mobileye.Y[p]);
+                
+                // Path 종: X, 횡: Y || Mobileye 종: Y, 횡: X
+                Mobileye.Distance[p] = sqrt(pow((Local.X[r] - Mobileye.Y[p]), 2) + pow((Local.Y[r] - Mobileye.X[p]), 2));
+                //printf("현재거리 : %.1lf\n", Mobileye.Distance[p]);
 
-            if (Pedestrian.Direction[0] != 0)
-            {
-                if (Pedestrian.Direction[0] < Pedestrian.MinimumPedestrianDistance)
+                if (Mobileye.Distance[p] < Mobileye.MinimumPedestrianDistance)
                 {
-                    Pedestrian.MinimumPedestrianDistance = Pedestrian.Direction[0];
-                    //Pedestrian.MinimumPedestrianDistance = MinimumPedestrianDistance;
-                    MinimumPedestrianIdx = p;
+                    // Pedestrian.MinimumPedestrianDistance = MinimumPedestrianDistance;
+                    Mobileye.MinimumPedestrianDistance = Mobileye.Distance[p];
+                    if (Mobileye.MinimumPedestrianDistance < 1.8)
+                    {
+                        // object당 최소거리 index 값 저장 --> min() 가장최소 index 반환 --> 전방거리 계산
+                        Mobileye.MinimumPedestrianIdx[p] = r;
+                    }
                 }
             }
+            //printf("가장 가까운 Object의 Vertex index 값 : %d\n", Mobileye.MinimumPedestrianIdx[p]);
         }
 
-        printf("보행자 X : %.1lf, Y축 : %.1lf\n", Pedestrian.X[0], Pedestrian.Y[0]);
-        printf("현재 최소 거리 : %.1lf\n", Pedestrian.MinimumPedestrianDistance);
-        printf("MinimumPedestrianIdx : %d\n", MinimumPedestrianIdx);
-        //}
+        //printf("현재 최소 거리 : %.1lf\n", Mobileye.MinimumPedestrianDistance);
     }
 
-    for (uint32_t s = 0; s < MinimumPedestrianIdx; s++) // Local idx 0 : 차량의 위치 ~ 보행자의 위치까지의 거리
+    /* Minimum index 구하기 */
+    for (uint32_t s = 0; s < 10; s++)
     {
-        FrontVertexDistance += sqrt(pow((Local.X[s] - Local.X[s+1]), 2) + pow((Local.Y[s] - Local.Y[s+1]), 2));
+        if (Mobileye.MinimumPedestrianIdx[s] < MinimumIdx)
+        {
+            MinimumIdx = Mobileye.MinimumPedestrianIdx[s]; // finding min number in nums
+            //printf("index 값 : %d\n", MinimumIdx);
+        }
     }
-    printf("Vertex 전방거리 : %.1lf\n", FrontVertexDistance);
+    //printf("가장 가까운 Object의 Vertex index 값 : %d\n", MinimumIdx);
+
+    for (uint32_t t = 0; t < MinimumIdx; t++) // Local idx 0 : 차량의 위치 ~ 보행자의 위치까지의 거리
+    {
+        FrontVertexDistance += sqrt(pow((Local.X[t] - Local.X[t + 1]), 2) + pow((Local.Y[t] - Local.Y[t + 1]), 2));
+
+        if (FrontVertexDistance > 100)
+            FrontVertexDistance = 100;
+        else if (FrontVertexDistance == 0)
+            FrontVertexDistance = 100;
+    }
+    //printf("Vertex 전방거리 : %.1lf\n", FrontVertexDistance);
+    printf("%.1lf  /  %.1lf  /  %d\n", FrontVertexDistance, Mobileye.MinimumPedestrianDistance, MinimumIdx);
 }
 
 // --------------------------------------------------------------------------------------------------- //

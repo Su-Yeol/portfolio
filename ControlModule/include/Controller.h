@@ -1,7 +1,7 @@
 #ifndef Controller_H
 #define Controller_H
 
-#include "ControlModule/include/ControlModule.h"
+#include "/home/KATECH/ControlModule/include/ControlModule.h"
 
 #define Gravity 9.81
 #define LookAheadGain 0.6

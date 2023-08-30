@@ -1,7 +1,7 @@
-#ifndef Controller_H
-#define Controller_H
+#ifndef AController_H
+#define AController_H
 
-#include "ControlModule.h"
+#include "AControlModule.h"
 
 
 #define Gravity 9.80665

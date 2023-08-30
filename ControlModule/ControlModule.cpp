@@ -19,7 +19,7 @@ bool PathReceiveSignal = true;
 bool ViewerSendSignal = false;
 bool PathErrorFlag = false;
 
-//static PathConvert PathManager;
+static PathConvert PathManager;
 static ControlLogic Controller;
 
 // ------------------------------ MAIN -------------------------------------- //

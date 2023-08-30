@@ -1,7 +1,7 @@
 #ifndef PathManager_H
 #define PathManager_H
 
-#include "ControlModule/include/ControlModule.h"
+#include "/home/KATECH/ControlModule/include/ControlModule.h"
 
 using namespace std;
 

@@ -1,4 +1,4 @@
-#include "Communicator.h"
+#include "ACommunicator.h"
 
 // ------------------------------ Config --------------------------------- //
 CConfigParser Configuration("./config.ini");

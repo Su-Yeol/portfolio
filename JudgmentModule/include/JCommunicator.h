@@ -4,8 +4,8 @@
 
 /* #ifndef ~ #endif
     구조체 중복 정의로 인해 발생하는 오류 방지 */
-#ifndef COMMUNICATOR_H
-#define COMMUNICATOR_H
+#ifndef JCOMMUNICATOR_H
+#define JCOMMUNICATOR_H
 
 // key
 /* termios.h
@@ -21,8 +21,8 @@
 #include <fcntl.h>
 #include <stdlib.h>
 
-#include "ControlModule.h"
-#include "ConfigParser.h"
+#include "JControlModule.h"
+#include "JConfigParser.h"
 
 extern bool MainFlag;
 extern bool SocketFlag;
@@ -30,14 +30,6 @@ extern bool MCUSendSignal;
 extern bool SRCSendSignal;
 extern bool PathReceiveSignal;
 extern bool ViewerSendSignal;
-
-// ControlModule.h class
-extern GPSStruct GPS;
-extern VehicleStruct Vehicle;
-extern GlobalPathStruct Global;
-extern LocalPathStruct Local;
-extern ControlStruct Control;
-extern PedestrianStruct Pedestrian;
 
 /* 클래스 생성
     class 클래스 이름{
@@ -145,7 +137,7 @@ private:
 void Key();
 void VehicleReceiver();
 void GPSReceiver();
-void PedestrianReceiver();
+void MobileyeReceiver();
 void SRCCommunication();
 void MCUSender();
 void ViewerSender();

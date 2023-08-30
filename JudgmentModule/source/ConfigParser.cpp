@@ -1,4 +1,4 @@
-#include "ConfigParser.h"
+#include "JConfigParser.h"
 #include <fstream>
 #include <iostream>
 #include <stdexcept>
