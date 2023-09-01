@@ -11,11 +11,10 @@ const string GPSRecordPath = Configuration.GetString("GPSRecordPath");
 const bool ReceivePathFlag = Configuration.GetBool("ReceivePathFlag");
 const string ReferenceFile = Configuration.GetString("ReferenceFile");
 const string ExternalIp = Configuration.GetString("ExternalIp");
-const int ExternalPortReceive = Configuration.GetInt("ExternalPortReceive");
-const int ExternalPortSend = Configuration.GetInt("ExternalPortSend");
+const int ForwardPort = Configuration.GetInt("ForwardPort");
+const int BackPort = Configuration.GetInt("BackPort");
 
 const int MainCycle = Configuration.GetInt("MainCycle");
-const int MCUReceiveCycle = Configuration.GetInt("MCUReceiveCycle");
 
 const string S32GIp = Configuration.GetString("S32GIp");
 const int S32GPort = Configuration.GetInt("S32GPort");
@@ -25,19 +24,25 @@ const string BroadCastIp = Configuration.GetString("BroadCastIp");
 
 const bool ViewerFlag = Configuration.GetBool("ViewerFlag");
 const string ViewerIp = Configuration.GetString("ViewerIp");
-const int ViewerPortClient = Configuration.GetInt("ViewerPortClient");
-const int ViewerPortServer = Configuration.GetInt("ViewerPortServer");
+const int ViewerPort = Configuration.GetInt("ViewerPort");
+
+char GPSRaw[100];
 
 // ------------------------------ Communicator Function ----------------------- //
 void VehicleReceiver()
 {
     // local //
     double WheelSpeedFL, WheelSpeedFR;
+    float IbeoVehicleSpeed, IbeoSteerAngle, IbeoYawRate;
+
     VehicleStruct VehicleCache;
     CANClass VehicleCANFD;
+    CANClass IbeoSend;
     VehicleCANFD.SetSocket("can0", 1);
+    IbeoSend.SetSocket("can1", 0);
 
-    cout << "[Communicator]-----------VehicleReceiver Thread start!-------------" << endl;
+    cout << "[Communicator]----------- VehicleReceiver Thread start! " << endl;
+
     while (SocketFlag)
     {
         try
@@ -50,17 +55,41 @@ void VehicleReceiver()
                 VehicleCache.YawRate = ((VehicleCANFD.FrameFd.data[9] << 8) + VehicleCANFD.FrameFd.data[8]) * 0.005 - 163.84;                       // [deg/s]
                 VehicleCache.LateralAccel = ((VehicleCANFD.FrameFd.data[11] << 8) + VehicleCANFD.FrameFd.data[10]) * 0.000127465 - 4.17677312;      // [g]
                 VehicleCache.LongitudinalAccel = ((VehicleCANFD.FrameFd.data[13] << 8) + VehicleCANFD.FrameFd.data[12]) * 0.000127465 - 4.17677312; // [g]
+
+                IbeoSend.InitFrame();
+                IbeoYawRate = (VehicleCache.YawRate + 0.714700) / 0.000174;
+                IbeoSend.Frame.can_id = 0x220;
+                IbeoSend.Frame.can_dlc = 7;
+                IbeoSend.Frame.data[5] = (int16_t)(IbeoVehicleSpeed);
+                IbeoSend.Frame.data[6] = ((int16_t)(IbeoVehicleSpeed) >> 8) & 0x3F;
+                IbeoSend.SendCAN();
                 break;
 
             case 0xA0:
                 WheelSpeedFL = (((VehicleCANFD.FrameFd.data[9] & 0x3F) << 8) + VehicleCANFD.FrameFd.data[8]) * 0.03125;   // [kph]
                 WheelSpeedFR = (((VehicleCANFD.FrameFd.data[11] & 0x3F) << 8) + VehicleCANFD.FrameFd.data[10]) * 0.03125; // [kph]
                 VehicleCache.Velocity = (WheelSpeedFL + WheelSpeedFR) / (2. * 3.6);                                       // [m/s]
+
+                IbeoSend.InitFrame();
+                IbeoVehicleSpeed = (VehicleCache.Velocity * 3.6) / 0.138889; // [kph]
+                IbeoSend.Frame.can_id = 0x4F1;
+                IbeoSend.Frame.can_dlc = 7;
+                IbeoSend.Frame.data[1] = (uint16_t)(IbeoVehicleSpeed);
+                IbeoSend.Frame.data[2] = (uint16_t)(IbeoVehicleSpeed) >> 8;
+                IbeoSend.SendCAN();
                 break;
 
             case 0x125:
                 VehicleCache.HandleAngle = ((VehicleCANFD.FrameFd.data[4] << 8) + VehicleCANFD.FrameFd.data[3]) * 0.1; // [deg]
                 VehicleCache.HandleSpd = (VehicleCANFD.FrameFd.data[5]) * 4;                                           // [deg/s]
+
+                IbeoSend.InitFrame();
+                IbeoSteerAngle = VehicleCache.HandleAngle / 0.001745;
+                IbeoSend.Frame.can_id = 0x2B0;
+                IbeoSend.Frame.can_dlc = 7;
+                IbeoSend.Frame.data[0] = (int16_t)(IbeoSteerAngle);
+                IbeoSend.Frame.data[1] = (int16_t)(IbeoSteerAngle) >> 8;
+                IbeoSend.SendCAN();
                 break;
 
             case 0x1A0: // SCC
@@ -75,6 +104,9 @@ void VehicleReceiver()
             case 0x3C1:
                 VehicleCache.LeftTurnSwitch = (VehicleCANFD.FrameFd.data[3] & 0xC0) >> 6;
                 VehicleCache.RightTurnSwitch = VehicleCANFD.FrameFd.data[4] & 0x03;
+
+            case 0xEA:
+                VehicleCache.MDPSmode = VehicleCANFD.FrameFd.data[5] & 0x0F;
             }
 
             Vehicle = VehicleCache;
@@ -94,55 +126,201 @@ void VehicleReceiver()
         }
     }
     VehicleCANFD.CloseSocket();
-    cout << "[Communicator]-----------VehicleReceiver Socket Closed!-------------" << endl;
+    IbeoSend.CloseSocket();
+    cout << "[Communicator]----------- VehicleReceiver Socket Closed! " << endl;
 }
 
-void GPSReceiver()
+void IbeoReceiver()
 {
-    UDPClass GPSBD;
-    GPSStruct GPSCache;
-    GPSBD.SetServerSocket("192.168.100.255", S32GPort); // S32G
-    // GPSBD.SetServerSocket(BroadCastIp, S32GPort); // S32G
-    struct timeval FirstTime, SecondTime;
-    double TimeGap;
+    CANClass IbeoRecv;
+    VehicleStruct VehicleCache;
+    IbeoRecv.SetSocket("can1", 0);
+    uint8_t ObjectCnt = 0;
 
-    cout << "[Communicator]-----------GPSReceiver Thread start!-------------" << endl;
-    gettimeofday(&FirstTime, NULL);
+    cout << "[Communicator] ------------------- IbeoReceiver Thread start! " << endl;
     while (SocketFlag)
     {
         try
         {
-            gettimeofday(&SecondTime, NULL);
-            TimeGap = (SecondTime.tv_sec - FirstTime.tv_sec) * 1000 + ((SecondTime.tv_usec - FirstTime.tv_usec) / 1000);
-            if (TimeGap >= MCUReceiveCycle)
+            IbeoRecv.ReceiveCAN();
+            switch (IbeoRecv.Frame.can_id)
             {
-                GPSBD.Receive(24);
-                GPSCache.Time = 0.001 * (uint32_t)((GPSBD.ReceiveBuffer[8] << 24) + (GPSBD.ReceiveBuffer[7] << 16) + (GPSBD.ReceiveBuffer[6] << 8) + GPSBD.ReceiveBuffer[5]);
-                GPSCache.Latitude = 0.0000001 * (uint32_t)((GPSBD.ReceiveBuffer[12] << 24) + (GPSBD.ReceiveBuffer[11] << 16) + (GPSBD.ReceiveBuffer[10] << 8) + GPSBD.ReceiveBuffer[9]);
-                GPSCache.Longitude = 0.0000001 * (uint32_t)((GPSBD.ReceiveBuffer[16] << 24) + (GPSBD.ReceiveBuffer[15] << 16) + (GPSBD.ReceiveBuffer[14] << 8) + GPSBD.ReceiveBuffer[13]);
-                GPSCache.Azimuth = 0.01 * ((uint32_t)((GPSBD.ReceiveBuffer[20] << 24) + (GPSBD.ReceiveBuffer[19] << 16) + (GPSBD.ReceiveBuffer[18] << 8) + GPSBD.ReceiveBuffer[17]));
-                GPSCache.State = GPSBD.ReceiveBuffer[21];
+            case 0x500:
+                VehicleCache.Ibeo.Object[0] = ObjectCnt;
+                // 최신화 타이밍
+                Vehicle.Ibeo = VehicleCache.Ibeo;
+                ObjectCnt = 0;
+                VehicleCache.Ibeo.Object[0] = (int)(IbeoRecv.Frame.data[1]);
+                break;
 
-                GPS = GPSCache;
-                gettimeofday(&FirstTime, NULL);
+            case 0x502:
+                VehicleCache.Ibeo.ObjectID = IbeoRecv.Frame.data[0];
+                VehicleCache.Ibeo.X = (IbeoRecv.Frame.data[1] << 8) + IbeoRecv.Frame.data[2];
+                VehicleCache.Ibeo.Y = (IbeoRecv.Frame.data[3] << 8) + IbeoRecv.Frame.data[4];
+                VehicleCache.Ibeo.Vx = (IbeoRecv.Frame.data[5] << 4) + ((IbeoRecv.Frame.data[6] & 0xF0) >> 4);
+                VehicleCache.Ibeo.Vy = ((IbeoRecv.Frame.data[6] & 0x0F) << 8) + IbeoRecv.Frame.data[7];
+
+                if (VehicleCache.Ibeo.Vx > 2048)
+                    VehicleCache.Ibeo.Vx -= 4096;
+                if (VehicleCache.Ibeo.Vy > 2048)
+                    VehicleCache.Ibeo.Vy -= 4096;
+                break;
+
+            case 0x504:
+                VehicleCache.Ibeo.Objectclassification = IbeoRecv.Frame.data[1];
+                VehicleCache.Ibeo.Object[ObjectCnt * 3 + 1] = (int)VehicleCache.Ibeo.Objectclassification;
+                VehicleCache.Ibeo.Object[ObjectCnt * 3 + 2] = (int)VehicleCache.Ibeo.X;
+                VehicleCache.Ibeo.Object[ObjectCnt * 3 + 3] = (int)VehicleCache.Ibeo.Y;
+                ObjectCnt += 1;
+                break;
             }
         }
         catch (std::out_of_range &e)
         {
-            std::cout << "<GPSReceiver> Out_of_range Error" << '\n';
+            std::cout << "<IbeoReceiver> Out_of_range Error" << '\n';
         }
         catch (std::length_error &e)
         {
-            std::cout << "<GPSReceiver> Length Error" << '\n';
+            std::cout << "<IbeoReceiver> Length Error" << '\n';
         }
         catch (std::exception &e)
         {
-            std::cout << "<GPSReceiver> EXCEPTION " << '\n';
+            std::cout << "<IbeoReceiver> EXCEPTION " << '\n';
+            std::cout << e.what() << '\n';
+        }
+    }
+    IbeoRecv.CloseSocket();
+    cout << "[Communicator] ------------------- IbeoReceiver Socket Closed! " << endl;
+}
+
+void GPSParser()
+{
+    UDPClass GPSBD, Back;
+    GPSStruct GPSCache;
+    VehicleStruct VehicleCache;
+
+    GPSBD.SetSocket(BroadCastIp, S32GPort, 1); // GPS 정보를 수신 99, 4488
+    // Back.SetSocket(S32GIp, BackPort, 0);       // GPS 정보를 송신 99, 4488
+    cout << "[Communicator] ------------------- GPSReceiver Thread start! " << endl;
+
+    while (SocketFlag)
+    {
+        try
+        {
+            GPSBD.Receive(131);
+            GPSCache.Time = 0.001 * (uint32_t)((GPSBD.Buffer[8] << 24) + (GPSBD.Buffer[7] << 16) + (GPSBD.Buffer[6] << 8) + GPSBD.Buffer[5]);
+            GPSCache.Latitude = 0.0000001 * (uint32_t)((GPSBD.Buffer[12] << 24) + (GPSBD.Buffer[11] << 16) + (GPSBD.Buffer[10] << 8) + GPSBD.Buffer[9]);
+            GPSCache.Longitude = 0.0000001 * (uint32_t)((GPSBD.Buffer[16] << 24) + (GPSBD.Buffer[15] << 16) + (GPSBD.Buffer[14] << 8) + GPSBD.Buffer[13]);
+            GPSCache.Azimuth = 0.01 * ((uint32_t)((GPSBD.Buffer[20] << 24) + (GPSBD.Buffer[19] << 16) + (GPSBD.Buffer[18] << 8) + GPSBD.Buffer[17]));
+            GPSCache.State = GPSBD.Buffer[21];
+
+            // 30~130 GPS Raw data
+            for (uint8_t i = 0; i < 100; i++)
+            {
+                GPSRaw[i] = GPSBD.Buffer[i + 30];
+            }
+
+            GPS = GPSCache;
+            /* VehicleCache = Vehicle;
+            Back.Buffer[0] = (uint32_t)(GPSCache.Time * 1000);
+            Back.Buffer[1] = ((uint32_t)(GPSCache.Time * 1000)) >> 8;
+            Back.Buffer[2] = ((uint32_t)(GPSCache.Time * 1000)) >> 16;
+            Back.Buffer[3] = ((uint32_t)(GPSCache.Time * 1000)) >> 24;
+            Back.Buffer[4] = (uint32_t)(GPSCache.Latitude * 10000000);
+            Back.Buffer[5] = ((uint32_t)(GPSCache.Latitude * 10000000)) >> 8;
+            Back.Buffer[6] = ((uint32_t)(GPSCache.Latitude * 10000000)) >> 16;
+            Back.Buffer[7] = ((uint32_t)(GPSCache.Latitude * 10000000)) >> 24;
+            Back.Buffer[8] = (uint32_t)(GPSCache.Longitude * 10000000);
+            Back.Buffer[9] = ((uint32_t)(GPSCache.Longitude * 10000000)) >> 8;
+            Back.Buffer[10] = ((uint32_t)(GPSCache.Longitude * 10000000)) >> 16;
+            Back.Buffer[11] = ((uint32_t)(GPSCache.Longitude * 10000000)) >> 24;
+            Back.Buffer[12] = (uint32_t)(GPSCache.Azimuth * 100);
+            Back.Buffer[13] = ((uint32_t)(GPSCache.Azimuth * 100)) >> 8;
+            Back.Buffer[14] = ((uint32_t)(GPSCache.Azimuth * 100)) >> 16;
+            Back.Buffer[15] = ((uint32_t)(GPSCache.Azimuth * 100)) >> 24;
+            Back.Buffer[16] = GPSCache.State;
+            Back.Buffer[17] = (uint32_t)(VehicleCache.Velocity * 3.6 * 100);
+            Back.Buffer[18] = ((uint32_t)(VehicleCache.Velocity * 3.6 * 100)) >> 8;
+            Back.Buffer[19] = ((uint32_t)(VehicleCache.Velocity * 3.6 * 100)) >> 16;
+            Back.Buffer[20] = ((uint32_t)(VehicleCache.Velocity * 3.6 * 100)) >> 24;
+            Back.Buffer[21] = VehicleCache.LeftTurnSwitch;
+            Back.Buffer[22] = VehicleCache.RightTurnSwitch;
+            Back.Send(23); */
+        }
+        catch (std::out_of_range &e)
+        {
+            std::cout << "<GPSParser> Out_of_range Error" << '\n';
+        }
+        catch (std::length_error &e)
+        {
+            std::cout << "<GPSParser> Length Error" << '\n';
+        }
+        catch (std::exception &e)
+        {
+            std::cout << "<GPSParser> EXCEPTION " << '\n';
             std::cout << e.what() << '\n';
         }
     }
     GPSBD.CloseSocket();
-    cout << "[Communicator]-----------GPSReceiver Socket Closed!-------------" << endl;
+    // Back.CloseSocket();
+    cout << "[Communicator] ------------------- GPSReceiver Socket Closed! " << endl;
+}
+
+/* KCITY 도로경로 받아오는 함수 */
+void PathReceiver()
+{
+    UDPClass Forward;
+    GlobalPathStruct GlobalCache;
+    struct timeval FirstTime, SecondTime;
+    Forward.SetSocket(S32GIp, ForwardPort, 1);
+    uint32_t RecvCnt = 0;
+    double TimeGap;
+
+    cout << "[Communicator] ------------------- PathReceiver Thread start! " << endl;
+
+    while (SocketFlag)
+    {
+        try
+        {
+            uint32_t ErrorCnt = 0, TotalCnt = 0;
+            gettimeofday(&FirstTime, NULL);
+            Forward.Receive(BufferSize);
+            gettimeofday(&SecondTime, NULL);
+            TimeGap = (SecondTime.tv_sec - FirstTime.tv_sec) * 1000 + ((SecondTime.tv_usec - FirstTime.tv_usec) / 1000); // [ms]
+            RecvCnt++;
+            memset(&GlobalCache.Latitude, 0, BufferSize);
+            memset(&GlobalCache.Longitude, 0, BufferSize);
+            for (uint32_t i = 0; i < BufferSize / 8; i++)
+            {
+                GlobalCache.Longitude[i] = 0.0000001 * (uint32_t)((Forward.Buffer[8 * i + 3] << 24) + (Forward.Buffer[8 * i + 2] << 16) + (Forward.Buffer[8 * i + 1] << 8) + Forward.Buffer[8 * i]);
+                GlobalCache.Latitude[i] = 0.0000001 * (uint32_t)((Forward.Buffer[8 * i + 7] << 24) + (Forward.Buffer[8 * i + 6] << 16) + (Forward.Buffer[8 * i + 5] << 8) + Forward.Buffer[8 * i + 4]);
+                if (GlobalCache.Longitude[i] == 0 || GlobalCache.Latitude[i] == 0)
+                    ErrorCnt++;
+                TotalCnt++;
+            }
+            ErrorCnt = 0;
+            if (PathReceiveSignal)
+            {
+                Global = GlobalCache;
+                PathReceiveSignal = false;
+            }
+        }
+        catch (std::out_of_range &e)
+        {
+            std::cout << "<PathReceiver> Out_of_range Error" << '\n';
+        }
+        catch (std::length_error &e)
+        {
+            std::cout << "<PathReceiver> Length Error" << '\n';
+        }
+        catch (std::exception &e)
+        {
+            std::cout << "<PathReceiver> EXCEPTION " << '\n';
+            std::cout << e.what() << '\n';
+        }
+    }
+    Forward.CloseSocket();
+    cout << "[Communicator] ------------------- PathReceiver Socket Closed!" << endl;
 }
 
 /* 보행자 데이터 수신 */
@@ -150,170 +328,231 @@ void MobileyeReceiver()
 {
     /* Mobileye */
     CANClass PedestrianCANFD;
-    MobileyeStruct MobileyeCahse;
-    // Y
+    MobileyeStruct MobileyeCache;
+
+    // Y(종) - [cm]
     double MobileyeYFactor = 5.4054054;
     double MobileyeYOffset = -154;
-    // X - 
+    // X(횡) - [cm]
     double MobileyeXFactor = 1.3;
     double MobileyeXOffset = 0.0;
 
-    PedestrianCANFD.SetSocket("can1", 1); // CAN FD
-    cout << "[Communicator]-----------Mobileye Thread start!-------------" << endl;
+    PedestrianCANFD.SetSocket("can1", 1); // CAN FD - Mobileye: A-CAN, CAMERA: L-CAN
+    cout << "[Communicator]----------- Mobileye Thread start! " << endl;
 
     while (SocketFlag)
     {
         try
         {
             PedestrianCANFD.ReceiveCANFD();
+
             switch (PedestrianCANFD.FrameFd.can_id) // 사람(차량, 자전거 등) 확인
             {
             case 0x180:
                 if (PedestrianCANFD.FrameFd.data[7] == 0x50)
                 {
-                    MobileyeCahse.Y[0] = (PedestrianCANFD.FrameFd.data[8] + ((PedestrianCANFD.FrameFd.data[9] & 0x0F) << 8)) * MobileyeYFactor + MobileyeYOffset;
-                    MobileyeCahse.X[0] = ((PedestrianCANFD.FrameFd.data[9] & 0xF0) >> 4) + (PedestrianCANFD.FrameFd.data[10] << 4);
-                    if (MobileyeCahse.X[0] > 2048) // 음수 확인
-                        MobileyeCahse.X[0] = MobileyeCahse.X[0] - 4096;
+                    MobileyeCache.Y[0] = (PedestrianCANFD.FrameFd.data[8] + ((PedestrianCANFD.FrameFd.data[9] & 0x0F) << 8)) * MobileyeYFactor + MobileyeYOffset;
+                    MobileyeCache.X[0] = ((PedestrianCANFD.FrameFd.data[9] & 0xF0) >> 4) + (PedestrianCANFD.FrameFd.data[10] << 4);
+                    if (MobileyeCache.X[0] > 2048) // 음수 확인
+                        MobileyeCache.X[0] = MobileyeCache.X[0] - 4096;
 
-                    MobileyeCahse.X[0] = MobileyeCahse.X[0] * MobileyeXFactor + MobileyeXOffset;
+                    MobileyeCache.X[0] = MobileyeCache.X[0] * MobileyeXFactor + MobileyeXOffset;
 
                     // [m]
-                    MobileyeCahse.X[0] = MobileyeCahse.X[0] / 100;
-                    MobileyeCahse.Y[0] = MobileyeCahse.Y[0] / 100;
+                    MobileyeCache.X[0] = MobileyeCache.X[0] / 100;
+                    MobileyeCache.Y[0] = MobileyeCache.Y[0] / 100; // 경로와 object 좌표값 고정
+                }
+
+                else
+                {
+                    MobileyeCache.X[0] = 0;
+                    MobileyeCache.Y[0] = 0;
                 }
 
                 if (PedestrianCANFD.FrameFd.data[23] == 0x50)
                 {
-                    MobileyeCahse.Y[1] = (PedestrianCANFD.FrameFd.data[24] + ((PedestrianCANFD.FrameFd.data[25] & 0x0F) << 8)) * MobileyeYFactor + MobileyeYOffset;
-                    MobileyeCahse.X[1] = ((PedestrianCANFD.FrameFd.data[25] & 0xF0) >> 4) + (PedestrianCANFD.FrameFd.data[26] << 4);
-                    if (MobileyeCahse.X[1] > 2048)
-                        MobileyeCahse.X[1] = MobileyeCahse.X[1] - 4096;
+                    MobileyeCache.Y[1] = (PedestrianCANFD.FrameFd.data[24] + ((PedestrianCANFD.FrameFd.data[25] & 0x0F) << 8)) * MobileyeYFactor + MobileyeYOffset;
+                    MobileyeCache.X[1] = ((PedestrianCANFD.FrameFd.data[25] & 0xF0) >> 4) + (PedestrianCANFD.FrameFd.data[26] << 4);
+                    if (MobileyeCache.X[1] > 2048)
+                        MobileyeCache.X[1] = MobileyeCache.X[1] - 4096;
 
-                    MobileyeCahse.X[1] = MobileyeCahse.X[1] * MobileyeXFactor + MobileyeXOffset;
+                    MobileyeCache.X[1] = MobileyeCache.X[1] * MobileyeXFactor + MobileyeXOffset;
 
-                    MobileyeCahse.X[1] = MobileyeCahse.X[1] / 100;
-                    MobileyeCahse.Y[1] = MobileyeCahse.Y[1] / 100;
+                    MobileyeCache.X[1] = MobileyeCache.X[1] / 100;
+                    MobileyeCache.Y[1] = MobileyeCache.Y[1] / 100;
                 }
 
+                else
+                {
+                    MobileyeCache.X[1] = 0;
+                    MobileyeCache.Y[1] = 0;
+                }
                 break;
 
             case 0x181:
                 if (PedestrianCANFD.FrameFd.data[7] == 0x50)
                 {
-                    MobileyeCahse.Y[2] = (PedestrianCANFD.FrameFd.data[8] + ((PedestrianCANFD.FrameFd.data[9] & 0x0F) << 8)) * MobileyeYFactor + MobileyeYOffset;
-                    MobileyeCahse.X[2] = ((PedestrianCANFD.FrameFd.data[9] & 0xF0) >> 4) + (PedestrianCANFD.FrameFd.data[10] << 4);
-                    if (MobileyeCahse.X[2] > 2048)
-                        MobileyeCahse.X[2] = MobileyeCahse.X[2] - 4096;
+                    MobileyeCache.Y[2] = (PedestrianCANFD.FrameFd.data[8] + ((PedestrianCANFD.FrameFd.data[9] & 0x0F) << 8)) * MobileyeYFactor + MobileyeYOffset;
+                    MobileyeCache.X[2] = ((PedestrianCANFD.FrameFd.data[9] & 0xF0) >> 4) + (PedestrianCANFD.FrameFd.data[10] << 4);
+                    if (MobileyeCache.X[2] > 2048)
+                        MobileyeCache.X[2] = MobileyeCache.X[2] - 4096;
 
-                    MobileyeCahse.X[2] = MobileyeCahse.X[2] * MobileyeXFactor + MobileyeXOffset;
+                    MobileyeCache.X[2] = MobileyeCache.X[2] * MobileyeXFactor + MobileyeXOffset;
 
-                    MobileyeCahse.X[2] = MobileyeCahse.X[2] / 100;
-                    MobileyeCahse.Y[2] = MobileyeCahse.Y[2] / 100;
+                    MobileyeCache.X[2] = MobileyeCache.X[2] / 100;
+                    MobileyeCache.Y[2] = MobileyeCache.Y[2] / 100;
+                }
+
+                else
+                {
+                    MobileyeCache.X[2] = 0;
+                    MobileyeCache.Y[2] = 0;
                 }
 
                 if (PedestrianCANFD.FrameFd.data[23] == 0x50)
                 {
-                    MobileyeCahse.Y[3] = (PedestrianCANFD.FrameFd.data[24] + ((PedestrianCANFD.FrameFd.data[25] & 0x0F) << 8)) * MobileyeYFactor + MobileyeYOffset;
-                    MobileyeCahse.X[3] = ((PedestrianCANFD.FrameFd.data[25] & 0xF0) >> 4) + (PedestrianCANFD.FrameFd.data[26] << 4);
-                    if (MobileyeCahse.X[3] > 2048)
-                        MobileyeCahse.X[3] = MobileyeCahse.X[3] - 4096;
+                    MobileyeCache.Y[3] = (PedestrianCANFD.FrameFd.data[24] + ((PedestrianCANFD.FrameFd.data[25] & 0x0F) << 8)) * MobileyeYFactor + MobileyeYOffset;
+                    MobileyeCache.X[3] = ((PedestrianCANFD.FrameFd.data[25] & 0xF0) >> 4) + (PedestrianCANFD.FrameFd.data[26] << 4);
+                    if (MobileyeCache.X[3] > 2048)
+                        MobileyeCache.X[3] = MobileyeCache.X[3] - 4096;
 
-                    MobileyeCahse.X[3] = MobileyeCahse.X[3] * MobileyeXFactor + MobileyeXOffset;
+                    MobileyeCache.X[3] = MobileyeCache.X[3] * MobileyeXFactor + MobileyeXOffset;
 
-                    MobileyeCahse.X[3] = MobileyeCahse.X[3] / 100;
-                    MobileyeCahse.Y[3] = MobileyeCahse.Y[3] / 100;
+                    MobileyeCache.X[3] = MobileyeCache.X[3] / 100;
+                    MobileyeCache.Y[3] = MobileyeCache.Y[3] / 100;
+                }
+
+                else
+                {
+                    MobileyeCache.X[3] = 0;
+                    MobileyeCache.Y[3] = 0;
                 }
                 break;
 
             case 0x182:
                 if (PedestrianCANFD.FrameFd.data[7] == 0x50)
                 {
-                    MobileyeCahse.Y[4] = (PedestrianCANFD.FrameFd.data[8] + ((PedestrianCANFD.FrameFd.data[9] & 0x0F) << 8)) * MobileyeYFactor + MobileyeYOffset;
-                    MobileyeCahse.X[4] = ((PedestrianCANFD.FrameFd.data[9] & 0xF0) >> 4) + (PedestrianCANFD.FrameFd.data[10] << 4);
-                    if (MobileyeCahse.X[4] > 2048)
-                        MobileyeCahse.X[4] = MobileyeCahse.X[4] - 4096;
+                    MobileyeCache.Y[4] = (PedestrianCANFD.FrameFd.data[8] + ((PedestrianCANFD.FrameFd.data[9] & 0x0F) << 8)) * MobileyeYFactor + MobileyeYOffset;
+                    MobileyeCache.X[4] = ((PedestrianCANFD.FrameFd.data[9] & 0xF0) >> 4) + (PedestrianCANFD.FrameFd.data[10] << 4);
+                    if (MobileyeCache.X[4] > 2048)
+                        MobileyeCache.X[4] = MobileyeCache.X[4] - 4096;
 
-                    MobileyeCahse.X[4] = MobileyeCahse.X[4] * MobileyeXFactor + MobileyeXOffset;
+                    MobileyeCache.X[4] = MobileyeCache.X[4] * MobileyeXFactor + MobileyeXOffset;
 
-                    MobileyeCahse.X[4] = MobileyeCahse.X[4] / 100;
-                    MobileyeCahse.Y[4] = MobileyeCahse.Y[4] / 100;
+                    MobileyeCache.X[4] = MobileyeCache.X[4] / 100;
+                    MobileyeCache.Y[4] = MobileyeCache.Y[4] / 100;
+                }
+
+                else
+                {
+                    MobileyeCache.X[4] = 0;
+                    MobileyeCache.Y[4] = 0;
                 }
 
                 if (PedestrianCANFD.FrameFd.data[23] == 0x50)
                 {
-                    MobileyeCahse.Y[5] = (PedestrianCANFD.FrameFd.data[24] + ((PedestrianCANFD.FrameFd.data[25] & 0x0F) << 8)) * MobileyeYFactor + MobileyeYOffset;
-                    MobileyeCahse.X[5] = ((PedestrianCANFD.FrameFd.data[25] & 0xF0) >> 4) + (PedestrianCANFD.FrameFd.data[26] << 4);
-                    if (MobileyeCahse.X[5] > 2048)
-                        MobileyeCahse.X[5] = MobileyeCahse.X[5] - 4096;
+                    MobileyeCache.Y[5] = (PedestrianCANFD.FrameFd.data[24] + ((PedestrianCANFD.FrameFd.data[25] & 0x0F) << 8)) * MobileyeYFactor + MobileyeYOffset;
+                    MobileyeCache.X[5] = ((PedestrianCANFD.FrameFd.data[25] & 0xF0) >> 4) + (PedestrianCANFD.FrameFd.data[26] << 4);
+                    if (MobileyeCache.X[5] > 2048)
+                        MobileyeCache.X[5] = MobileyeCache.X[5] - 4096;
 
-                    MobileyeCahse.X[5] = MobileyeCahse.X[5] * MobileyeXFactor + MobileyeXOffset;
+                    MobileyeCache.X[5] = MobileyeCache.X[5] * MobileyeXFactor + MobileyeXOffset;
 
-                    MobileyeCahse.X[5] = MobileyeCahse.X[5] / 100;
-                    MobileyeCahse.Y[5] = MobileyeCahse.Y[5] / 100;
+                    MobileyeCache.X[5] = MobileyeCache.X[5] / 100;
+                    MobileyeCache.Y[5] = MobileyeCache.Y[5] / 100;
+                }
+
+                else
+                {
+                    MobileyeCache.X[5] = 0;
+                    MobileyeCache.Y[5] = 0;
                 }
                 break;
 
             case 0x183:
                 if (PedestrianCANFD.FrameFd.data[7] == 0x50)
                 {
-                    MobileyeCahse.Y[6] = (PedestrianCANFD.FrameFd.data[8] + ((PedestrianCANFD.FrameFd.data[9] & 0x0F) << 8)) * MobileyeYFactor + MobileyeYOffset;
-                    MobileyeCahse.X[6] = ((PedestrianCANFD.FrameFd.data[9] & 0xF0) >> 4) + (PedestrianCANFD.FrameFd.data[10] << 4);
-                    if (MobileyeCahse.X[6] > 2048)
-                        MobileyeCahse.X[6] = MobileyeCahse.X[6] - 4096;
+                    MobileyeCache.Y[6] = (PedestrianCANFD.FrameFd.data[8] + ((PedestrianCANFD.FrameFd.data[9] & 0x0F) << 8)) * MobileyeYFactor + MobileyeYOffset;
+                    MobileyeCache.X[6] = ((PedestrianCANFD.FrameFd.data[9] & 0xF0) >> 4) + (PedestrianCANFD.FrameFd.data[10] << 4);
+                    if (MobileyeCache.X[6] > 2048)
+                        MobileyeCache.X[6] = MobileyeCache.X[6] - 4096;
 
-                    MobileyeCahse.X[6] = MobileyeCahse.X[6] * MobileyeXFactor + MobileyeXOffset;
+                    MobileyeCache.X[6] = MobileyeCache.X[6] * MobileyeXFactor + MobileyeXOffset;
 
-                    MobileyeCahse.X[6] = MobileyeCahse.X[6] / 100;
-                    MobileyeCahse.Y[6] = MobileyeCahse.Y[6] / 100;
+                    MobileyeCache.X[6] = MobileyeCache.X[6] / 100;
+                    MobileyeCache.Y[6] = MobileyeCache.Y[6] / 100;
+                }
+
+                else
+                {
+                    MobileyeCache.X[6] = 0;
+                    MobileyeCache.Y[6] = 0;
                 }
 
                 if (PedestrianCANFD.FrameFd.data[23] == 0x50)
                 {
-                    MobileyeCahse.Y[7] = (PedestrianCANFD.FrameFd.data[24] + ((PedestrianCANFD.FrameFd.data[25] & 0x0F) << 8)) * MobileyeYFactor + MobileyeYOffset;
-                    MobileyeCahse.X[7] = ((PedestrianCANFD.FrameFd.data[25] & 0xF0) >> 4) + (PedestrianCANFD.FrameFd.data[26] << 4);
-                    if (MobileyeCahse.X[7] > 2048)
-                        MobileyeCahse.X[7] = MobileyeCahse.X[7] - 4096;
+                    MobileyeCache.Y[7] = (PedestrianCANFD.FrameFd.data[24] + ((PedestrianCANFD.FrameFd.data[25] & 0x0F) << 8)) * MobileyeYFactor + MobileyeYOffset;
+                    MobileyeCache.X[7] = ((PedestrianCANFD.FrameFd.data[25] & 0xF0) >> 4) + (PedestrianCANFD.FrameFd.data[26] << 4);
+                    if (MobileyeCache.X[7] > 2048)
+                        MobileyeCache.X[7] = MobileyeCache.X[7] - 4096;
 
-                    MobileyeCahse.X[7] = MobileyeCahse.X[7] * MobileyeXFactor + MobileyeXOffset;
+                    MobileyeCache.X[7] = MobileyeCache.X[7] * MobileyeXFactor + MobileyeXOffset;
 
-                    MobileyeCahse.X[7] = MobileyeCahse.X[7] / 100;
-                    MobileyeCahse.Y[7] = MobileyeCahse.Y[7] / 100;
+                    MobileyeCache.X[7] = MobileyeCache.X[7] / 100;
+                    MobileyeCache.Y[7] = MobileyeCache.Y[7] / 100;
+                }
+
+                else
+                {
+                    MobileyeCache.X[7] = 0;
+                    MobileyeCache.Y[7] = 0;
                 }
                 break;
 
             case 0x184:
                 if (PedestrianCANFD.FrameFd.data[7] == 0x50)
                 {
-                    MobileyeCahse.Y[8] = (PedestrianCANFD.FrameFd.data[8] + ((PedestrianCANFD.FrameFd.data[9] & 0x0F) << 8)) * MobileyeYFactor + MobileyeYOffset;
-                    MobileyeCahse.X[8] = ((PedestrianCANFD.FrameFd.data[9] & 0xF0) >> 4) + (PedestrianCANFD.FrameFd.data[10] << 4);
-                    if (MobileyeCahse.X[8] > 2048)
-                        MobileyeCahse.X[8] = MobileyeCahse.X[8] - 4096;
+                    MobileyeCache.Y[8] = (PedestrianCANFD.FrameFd.data[8] + ((PedestrianCANFD.FrameFd.data[9] & 0x0F) << 8)) * MobileyeYFactor + MobileyeYOffset;
+                    MobileyeCache.X[8] = ((PedestrianCANFD.FrameFd.data[9] & 0xF0) >> 4) + (PedestrianCANFD.FrameFd.data[10] << 4);
+                    if (MobileyeCache.X[8] > 2048)
+                        MobileyeCache.X[8] = MobileyeCache.X[8] - 4096;
 
-                    MobileyeCahse.X[8] = MobileyeCahse.X[8] * MobileyeXFactor + MobileyeXOffset;
+                    MobileyeCache.X[8] = MobileyeCache.X[8] * MobileyeXFactor + MobileyeXOffset;
 
-                    MobileyeCahse.X[8] = MobileyeCahse.X[8] / 100;
-                    MobileyeCahse.Y[8] = MobileyeCahse.Y[8] / 100;
+                    MobileyeCache.X[8] = MobileyeCache.X[8] / 100;
+                    MobileyeCache.Y[8] = MobileyeCache.Y[8] / 100;
+                }
+
+                else
+                {
+                    MobileyeCache.X[8] = 0;
+                    MobileyeCache.Y[8] = 0;
                 }
 
                 if (PedestrianCANFD.FrameFd.data[23] == 0x50)
                 {
-                    MobileyeCahse.Y[9] = (PedestrianCANFD.FrameFd.data[24] + ((PedestrianCANFD.FrameFd.data[25] & 0x0F) << 8)) * MobileyeYFactor + MobileyeYOffset;
-                    MobileyeCahse.X[9] = ((PedestrianCANFD.FrameFd.data[25] & 0xF0) >> 4) + (PedestrianCANFD.FrameFd.data[26] << 4);
-                    if (MobileyeCahse.X[9] > 2048)
-                        MobileyeCahse.X[9] = MobileyeCahse.X[9] - 4096;
+                    MobileyeCache.Y[9] = (PedestrianCANFD.FrameFd.data[24] + ((PedestrianCANFD.FrameFd.data[25] & 0x0F) << 8)) * MobileyeYFactor + MobileyeYOffset;
+                    MobileyeCache.X[9] = ((PedestrianCANFD.FrameFd.data[25] & 0xF0) >> 4) + (PedestrianCANFD.FrameFd.data[26] << 4);
+                    if (MobileyeCache.X[9] > 2048)
+                        MobileyeCache.X[9] = MobileyeCache.X[9] - 4096;
 
-                    MobileyeCahse.X[9] = MobileyeCahse.X[9] * MobileyeXFactor + MobileyeXOffset;
+                    MobileyeCache.X[9] = MobileyeCache.X[9] * MobileyeXFactor + MobileyeXOffset;
 
-                    MobileyeCahse.X[9] = MobileyeCahse.X[9] / 100;
-                    MobileyeCahse.Y[9] = MobileyeCahse.Y[9] / 100;
+                    MobileyeCache.X[9] = MobileyeCache.X[9] / 100;
+                    MobileyeCache.Y[9] = MobileyeCache.Y[9] / 100;
+                }
+
+                else
+                {
+                    MobileyeCache.X[9] = 0;
+                    MobileyeCache.Y[9] = 0;
                 }
                 break;
             }
 
-            if(MobileyeFlag)
+            if (MobileyeFlag)
             {
-                Mobileye = MobileyeCahse;
+                Mobileye = MobileyeCache;
                 MobileyeFlag = false;
             }
         }
@@ -334,86 +573,7 @@ void MobileyeReceiver()
     }
 
     PedestrianCANFD.CloseSocket();
-    cout << "[Communicator]-----------MobileyeReceiver Socket Closed!-------------" << endl;
-}
-
-void SRCCommunication()
-{
-    UDPClass SRC;
-    GlobalPathStruct GlobalCache;
-    GPSStruct GPSCache;
-    VehicleStruct VehicleCache;
-    // S32G 안에서 서로 다른 프로세스간의 통신을 위해서 사용(Teleconce) -> 수가 많아지면 문제 -> IPC, DDS
-    SRC.SetServerSocket(S32GIp, ExternalPortReceive);
-    SRC.SetClientSocket(ExternalIp, ExternalPortReceive);
-
-    cout << "[Communicator]-----------SRCCommunication Thread start!-------------" << endl;
-    while (SocketFlag)
-    {
-        try
-        {
-            if (SRCSendSignal)
-            {
-                GPSCache = GPS;
-                VehicleCache = Vehicle;
-                SRC.SendBuffer[0] = (uint32_t)(GPSCache.Time * 1000);
-                SRC.SendBuffer[1] = ((uint32_t)(GPSCache.Time * 1000)) >> 8;
-                SRC.SendBuffer[2] = ((uint32_t)(GPSCache.Time * 1000)) >> 16;
-                SRC.SendBuffer[3] = ((uint32_t)(GPSCache.Time * 1000)) >> 24;
-                SRC.SendBuffer[4] = (uint32_t)(GPSCache.Latitude * 10000000);
-                SRC.SendBuffer[5] = ((uint32_t)(GPSCache.Latitude * 10000000)) >> 8;
-                SRC.SendBuffer[6] = ((uint32_t)(GPSCache.Latitude * 10000000)) >> 16;
-                SRC.SendBuffer[7] = ((uint32_t)(GPSCache.Latitude * 10000000)) >> 24;
-                SRC.SendBuffer[8] = (uint32_t)(GPSCache.Longitude * 10000000);
-                SRC.SendBuffer[9] = ((uint32_t)(GPSCache.Longitude * 10000000)) >> 8;
-                SRC.SendBuffer[10] = ((uint32_t)(GPSCache.Longitude * 10000000)) >> 16;
-                SRC.SendBuffer[11] = ((uint32_t)(GPSCache.Longitude * 10000000)) >> 24;
-                SRC.SendBuffer[12] = (uint32_t)(GPSCache.Azimuth * 100);
-                SRC.SendBuffer[13] = ((uint32_t)(GPSCache.Azimuth * 100)) >> 8;
-                SRC.SendBuffer[14] = ((uint32_t)(GPSCache.Azimuth * 100)) >> 16;
-                SRC.SendBuffer[15] = ((uint32_t)(GPSCache.Azimuth * 100)) >> 24;
-                SRC.SendBuffer[16] = GPS.State;
-                SRC.SendBuffer[17] = (uint32_t)(VehicleCache.Velocity * 3.6 * 100);
-                SRC.SendBuffer[18] = ((uint32_t)(VehicleCache.Velocity * 3.6 * 100)) >> 8;
-                SRC.SendBuffer[19] = ((uint32_t)(VehicleCache.Velocity * 3.6 * 100)) >> 16;
-                SRC.SendBuffer[20] = ((uint32_t)(VehicleCache.Velocity * 3.6 * 100)) >> 24;
-                SRC.SendBuffer[21] = VehicleCache.LeftTurnSwitch;
-                SRC.SendBuffer[22] = VehicleCache.RightTurnSwitch;
-                SRC.Send(23);
-                SRCSendSignal = false;
-            }
-
-            SRC.Receive(PathSize);
-            memset(&GlobalCache.Latitude, 0, PathSize);
-            memset(&GlobalCache.Longitude, 0, PathSize);
-            for (uint32_t i = 0; i < PathSize / 8; i++)
-            {
-                GlobalCache.Longitude[i] = 0.0000001 * (uint32_t)((SRC.ReceiveBuffer[8 * i + 3] << 24) + (SRC.ReceiveBuffer[8 * i + 2] << 16) + (SRC.ReceiveBuffer[8 * i + 1] << 8) + SRC.ReceiveBuffer[8 * i]);
-                GlobalCache.Latitude[i] = 0.0000001 * (uint32_t)((SRC.ReceiveBuffer[8 * i + 7] << 24) + (SRC.ReceiveBuffer[8 * i + 6] << 16) + (SRC.ReceiveBuffer[8 * i + 5] << 8) + SRC.ReceiveBuffer[8 * i + 4]);
-            }
-
-            if (PathReceiveSignal) // 기본 true
-            {
-                Global = GlobalCache;
-                PathReceiveSignal = false;
-            }
-        }
-        catch (std::out_of_range &e)
-        {
-            std::cout << "<SRCCommunication> Out_of_range Error" << '\n';
-        }
-        catch (std::length_error &e)
-        {
-            std::cout << "<SRCCommunication> Length Error" << '\n';
-        }
-        catch (std::exception &e)
-        {
-            std::cout << "<SRCCommunication> EXCEPTION " << '\n';
-            std::cout << e.what() << '\n';
-        }
-    }
-    SRC.CloseSocket();
-    cout << "[Communicator]-----------SRCCommunication Thread end!-------------" << endl;
+    cout << "[Communicator]----------- MobileyeReceiver Socket Closed! " << endl;
 }
 
 /* Key 입력 */
@@ -546,45 +706,48 @@ void CANClass::SendCAN()
         perror("<CANFD> Send Error");
 }
 
+void CANClass::InitFrame()
+{
+    Frame.can_id = 0x00;
+    Frame.can_dlc = 8;
+    for (uint8_t i = 0; i < Frame.can_dlc; i++)
+    {
+        Frame.data[i] = 0x00;
+    }
+}
+
 void CANClass::CloseSocket()
 {
     close(sock);
 }
 
-void UDPClass::SetServerSocket(const std::string &ip, const uint16_t port)
+void UDPClass::SetSocket(const std::string &ip, const int port, const bool BindFlag)
 {
-    /* 소켓 생성 */
     if ((sock = socket(AF_INET, SOCK_DGRAM, 0)) < 0)
         perror("<UDP> socket Open Error");
 
-    /* 소켓 주소 구조체 설정 */
-    memset(&ServerAddr, 0x00, sizeof(ServerAddr));
-    ServerAddr.sin_family = AF_INET;                    // AF_INET(IP용 Address Family), IPv4 주소 체계 사용
-    ServerAddr.sin_addr.s_addr = inet_addr(ip.c_str()); // ip 네트워크 인터페이스로부터 수신
-    ServerAddr.sin_port = htons(port);                  // htons: host-to-network short, 포트 번호 설정
+    memset(&Addr, 0x00, sizeof(Addr));
+    Addr.sin_family = AF_INET;
+    Addr.sin_addr.s_addr = inet_addr(ip.c_str());
+    Addr.sin_port = htons(port);
 
-    /* 소켓 바인딩 */
-    if (bind(sock, (struct sockaddr *)&ServerAddr, sizeof(ServerAddr)) < 0)
-        perror("<UDP> bind Error");
-}
-
-void UDPClass::SetClientSocket(const std::string &ip, const uint16_t port)
-{
-    ClientAddr.sin_family = AF_INET;
-    ClientAddr.sin_addr.s_addr = inet_addr(ip.c_str());
-    ClientAddr.sin_port = htons(port);
+    if (BindFlag)
+    {
+        if (bind(sock, (struct sockaddr *)&Addr, sizeof(Addr)) < 0)
+            perror("<UDP> bind Error");
+    }
 }
 
 void UDPClass::Receive(const uint16_t buffersize)
 {
     addrlen = sizeof(ClientAddr);
-    if ((nbytes = recvfrom(sock, ReceiveBuffer, buffersize, 0, (struct sockaddr *)&ClientAddr, &addrlen)) < 0)
+    if ((nbytes = recvfrom(sock, Buffer, buffersize, 0, (struct sockaddr *)&ClientAddr, &addrlen)) < 0)
         perror("<UDP> Receive Error");
 }
 
 void UDPClass::Send(const uint16_t SendByte)
 {
-    if (sendto(sock, SendBuffer, SendByte, 0, (struct sockaddr *)&ClientAddr, sizeof(ClientAddr)) < 0)
+    if (sendto(sock, Buffer, SendByte, 0, (struct sockaddr *)&ClientAddr, sizeof(ClientAddr)) < 0)
         perror("<UDP> Send Error");
 }
 

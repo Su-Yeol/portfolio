@@ -26,6 +26,7 @@
 
 extern bool MainFlag;
 extern bool SocketFlag;
+
 extern bool MCUSendSignal;
 extern bool SRCSendSignal;
 extern bool PathReceiveSignal;
@@ -60,6 +61,7 @@ public:
     void SendCAN();
     // 소켓 닫기
     void CloseSocket();
+    void InitFrame();
     // CAN FD 프레임을 저장하는 구조체
     struct canfd_frame FrameFd;
     // CAN 표준 프레임을 저장하는 구조체
@@ -86,26 +88,22 @@ class UDPClass // 속도 >> 신뢰성
         비연결 지향 프로토콜: 연결 절차 없이 발신자가 일방적으로 데이터를 발산하는 방식
         ex) VCU(5748 - GPS 정보) -> S32G  */
 public:
-    // 지정된 IP 주소와 포트 번호를 사용하여 서버 소켓 설정
-    void SetServerSocket(const std::string &ip, const uint16_t port);
-    // 클라이언트 소켓 설정
-    void SetClientSocket(const std::string &ip, const uint16_t port);
+    // 지정된 IP 주소와 포트 번호를 사용하여 소켓 설정
+    void SetSocket(const std::string& ip, const int port, const bool BindFlag);
     // 데이터 수신
     void Receive(const uint16_t buffersize);
     // 데이터 송신
     void Send(const uint16_t SendByte);
     // 소켓 닫기
     void CloseSocket();
-    // 데이터 수신을 위한 버퍼
-    uint8_t ReceiveBuffer[BufferSize]; // Buffersize = 8192
-    // 데이터 수신을 위한 버퍼
-    uint8_t SendBuffer[BufferSize];
+    // 데이터 송수신을 위한 버퍼
+    uint8_t Buffer[BufferSize];
 
 private:
     // UDP 통신을 위한 소켓 파일
     int sock;
     // 서버, 클라이언트 주소 정보를 저장하는 구조체 변수
-    struct sockaddr_in ServerAddr, ClientAddr;
+    struct sockaddr_in Addr, JunkAddr, ServerAddr, ClientAddr;
     // 수신한 바이트 수를 저장하는 변수
     uint16_t nbytes;
     // 소켓 주소 길이를 저장하는 변수
@@ -135,11 +133,11 @@ private:
 };
 
 void Key();
+void GPSParser();
+void PathReceiver();
 void VehicleReceiver();
-void GPSReceiver();
 void MobileyeReceiver();
-void SRCCommunication();
+void IbeoReceiver();
 void MCUSender();
 void ViewerSender();
-
 #endif

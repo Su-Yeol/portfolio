@@ -15,6 +15,7 @@
 #include <sys/socket.h>    // 소켓 프로그래밍을 위한 시스템 레벨의 함수와 구조체들을 제공
 #include <linux/can.h>     // Linux 환경에서 CAN(Controller Area Network) 통신을 위한 구조체와 상수들을 정의하는 헤더 파일
 #include <linux/can/raw.h> // Linux CAN 프로토콜에서 사용되는 raw 소켓과 관련된 구조체와 상수들을 정의
+
 #include <math.h>
 
 #define BufferSize 8192
@@ -48,6 +49,8 @@ struct VehicleStruct
     uint8_t LeftTurnSwitch;
     uint8_t RightTurnSwitch;
 
+    uint8_t MDPSmode;
+
     struct RadarStruct
     {
         /* 레이더 센서로부터 수신된 정보를 저장하는 구조체 */
@@ -56,8 +59,21 @@ struct VehicleStruct
     } Radar;
 
     // struct Ibeo
+    struct IbeoVariable
+    {
+        uint8_t ObjectID;
+        int16_t X;
+        int16_t Y;
+        int16_t Vx;
+        int16_t Vy;
+        int16_t BoxOrientation;
 
-    // struct Mobileye
+        int BoxSizeX;
+        int BoxSizeY;
+        int ObjectID4;
+        int Objectclassification;
+        int Object[100];
+    } Ibeo;
 };
 
 struct GlobalPathStruct
@@ -96,11 +112,11 @@ struct ControlStruct
     double Acceleration; // 가속도
 };
 
-struct MobileyeStruct
+struct MobileyeStruct // A-CAN
 {
-    /* Class(idx = 7, idx = 23 1byte) : start bit 56, 사람 0x50, 차량 0x22
-        X(L idx = 9>>4 + 10<<4 (76~87), R idx 25>>4 + 26<<4 1.5byte) : start bit 64
-        Y(L idx = 8 + 9<<4 (64~75), R idx 24 + 25<<8 1.5byte) : start bit 76 */
+    // Class(idx = 7, idx = 23 1byte) : start bit 56, 사람 0x50, 차량 0x22
+    // X(L idx = 9>>4 + 10<<4 (76~87), R idx 25>>4 + 26<<4 1.5byte) : start bit 64
+    // Y(L idx = 8 + 9<<4 (64~75), R idx 24 + 25<<8 1.5byte) : start bit 76
     double X[10];
     double Y[10];
     double Distance[10]; // left, right Camera
@@ -117,6 +133,7 @@ extern const string GPSRecordPath; //  GPS 데이터 기록 경로를 나타내�
 extern const string ReferenceFile; // 참조 파일 경로를 나타내는 문자열 상수
 extern const int MainCycle;        // 프로그램의 동작 속도를 조절
 extern bool MobileyeFlag;
+extern char GPSRaw[100]; // GPS Raw 데이터 저장
 
 // ------------------------------ Struct ------------------------------------- //
 extern GPSStruct GPS;
