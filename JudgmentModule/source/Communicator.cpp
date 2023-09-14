@@ -41,7 +41,7 @@ void VehicleReceiver()
     VehicleCANFD.SetSocket("can0", 1);
     IbeoSend.SetSocket("can1", 0);
 
-    cout << "[Communicator]----------- VehicleReceiver Thread start! " << endl;
+    std::cout << "[Communicator] ------------------- VehicleReceiver Thread start! " << endl;
 
     while (SocketFlag)
     {
@@ -127,17 +127,18 @@ void VehicleReceiver()
     }
     VehicleCANFD.CloseSocket();
     IbeoSend.CloseSocket();
-    cout << "[Communicator]----------- VehicleReceiver Socket Closed! " << endl;
+    std::cout << "[Communicator] ------------------- VehicleReceiver Socket Closed! " << endl;
 }
 
 void IbeoReceiver()
 {
     CANClass IbeoRecv;
     VehicleStruct VehicleCache;
+    IbeoVariable IbeoCache;
     IbeoRecv.SetSocket("can1", 0);
     uint8_t ObjectCnt = 0;
 
-    cout << "[Communicator] ------------------- IbeoReceiver Thread start! " << endl;
+    std::cout << "[Communicator] ------------------- IbeoReceiver Thread start! " << endl;
     while (SocketFlag)
     {
         try
@@ -146,33 +147,60 @@ void IbeoReceiver()
             switch (IbeoRecv.Frame.can_id)
             {
             case 0x500:
-                VehicleCache.Ibeo.Object[0] = ObjectCnt;
-                // 최신화 타이밍
-                Vehicle.Ibeo = VehicleCache.Ibeo;
+                // VehicleCache.Ibeo.Object[0] = (int)ObjectCnt; // object count
+                // Vehicle.Ibeo = VehicleCache.Ibeo;
+                // VehicleCache.Ibeo.Object[0] = (int)(IbeoRecv.Frame.data[1]);
+
+                IbeoCache.ObjectCnt = (int)(IbeoRecv.Frame.data[1]);
                 ObjectCnt = 0;
-                VehicleCache.Ibeo.Object[0] = (int)(IbeoRecv.Frame.data[1]);
                 break;
 
             case 0x502:
-                VehicleCache.Ibeo.ObjectID = IbeoRecv.Frame.data[0];
-                VehicleCache.Ibeo.X = (IbeoRecv.Frame.data[1] << 8) + IbeoRecv.Frame.data[2];
-                VehicleCache.Ibeo.Y = (IbeoRecv.Frame.data[3] << 8) + IbeoRecv.Frame.data[4];
-                VehicleCache.Ibeo.Vx = (IbeoRecv.Frame.data[5] << 4) + ((IbeoRecv.Frame.data[6] & 0xF0) >> 4);
-                VehicleCache.Ibeo.Vy = ((IbeoRecv.Frame.data[6] & 0x0F) << 8) + IbeoRecv.Frame.data[7];
+                IbeoCache.ObjectID = IbeoRecv.Frame.data[0]; // 트랙킹 ID 값
+                IbeoCache.X = (IbeoRecv.Frame.data[1] << 8) + IbeoRecv.Frame.data[2];
+                IbeoCache.Y = (IbeoRecv.Frame.data[3] << 8) + IbeoRecv.Frame.data[4];
+                IbeoCache.Vx = (IbeoRecv.Frame.data[5] << 4) + ((IbeoRecv.Frame.data[6] & 0xF0) >> 4);
+                IbeoCache.Vy = ((IbeoRecv.Frame.data[6] & 0x0F) << 8) + IbeoRecv.Frame.data[7];
 
-                if (VehicleCache.Ibeo.Vx > 2048)
-                    VehicleCache.Ibeo.Vx -= 4096;
-                if (VehicleCache.Ibeo.Vy > 2048)
-                    VehicleCache.Ibeo.Vy -= 4096;
+                if (IbeoCache.Vx > 2048)
+                    IbeoCache.Vx -= 4096;
+                if (IbeoCache.Vy > 2048)
+                    IbeoCache.Vy -= 4096;
                 break;
 
             case 0x504:
-                VehicleCache.Ibeo.Objectclassification = IbeoRecv.Frame.data[1];
-                VehicleCache.Ibeo.Object[ObjectCnt * 3 + 1] = (int)VehicleCache.Ibeo.Objectclassification;
-                VehicleCache.Ibeo.Object[ObjectCnt * 3 + 2] = (int)VehicleCache.Ibeo.X;
-                VehicleCache.Ibeo.Object[ObjectCnt * 3 + 3] = (int)VehicleCache.Ibeo.Y;
-                ObjectCnt += 1;
+                // idx 0: Object Count, idx 1: Object Class, idx 2: Object X, idx 3: Object y
+                // 종 횡 확인
+                IbeoCache.Objectclassification = IbeoRecv.Frame.data[1];
+
+                // 1: Unknown big || 2: Unknown small || 3: 사람
+                if (IbeoCache.Objectclassification == 1 || IbeoCache.Objectclassification == 2 || IbeoCache.Objectclassification == 3)
+                {
+                    IbeoCache.Object[ObjectCnt * 3 + 1] = (int)IbeoCache.Objectclassification;
+                    IbeoCache.Object[ObjectCnt * 3 + 2] = ((double)IbeoCache.X / 100);     // [m]
+                    IbeoCache.Object[ObjectCnt * 3 + 3] = ((double)IbeoCache.Y / 100);     // [m]
+                    ObjectCnt += 1;
+                }
+
+                else
+                {
+                    IbeoCache.Object[ObjectCnt * 3 + 1] = 500;
+                    IbeoCache.Object[ObjectCnt * 3 + 2] = 500;
+                    IbeoCache.Object[ObjectCnt * 3 + 3] = 500;
+                    ObjectCnt += 1;
+                }
                 break;
+            }
+
+            if (IbeoFlag)
+            {
+                Ibeo = IbeoCache;
+                /* for (uint8_t i = 0; i < Ibeo.ObjectCnt; i++)
+                {
+                    printf("Ibeo Object Count : %d || Objectclassification : %d || Ibeo X : %.4lf || Ibeo Y : %.4lf\n", i, Ibeo.Objectclassification,
+                           Ibeo.Object[i * 3 + 2], Ibeo.Object[i * 3 + 3]);
+                } */
+                IbeoFlag = false;
             }
         }
         catch (std::out_of_range &e)
@@ -190,7 +218,7 @@ void IbeoReceiver()
         }
     }
     IbeoRecv.CloseSocket();
-    cout << "[Communicator] ------------------- IbeoReceiver Socket Closed! " << endl;
+    std::cout << "[Communicator] ------------------- IbeoReceiver Socket Closed! " << endl;
 }
 
 void GPSParser()
@@ -199,15 +227,17 @@ void GPSParser()
     GPSStruct GPSCache;
     VehicleStruct VehicleCache;
 
-    GPSBD.SetSocket(BroadCastIp, S32GPort, 1); // GPS 정보를 수신 99, 4488
-    // Back.SetSocket(S32GIp, BackPort, 0);       // GPS 정보를 송신 99, 4488
-    cout << "[Communicator] ------------------- GPSReceiver Thread start! " << endl;
+    GPSBD.SetSocket(BroadCastIp, S32GPort, 1); // .255, 3004
+    Back.SetSocket(S32GIp, BackPort, 0); // .99, 3862
+    std::cout << "[Communicator] ------------------- GPSReceiver Thread start! " << endl;
 
     while (SocketFlag)
     {
         try
         {
-            GPSBD.Receive(131);
+            // GPS Raw data 저장: Receive(131) , for문, main에서 저장 파일형태 변경
+            // GPSBD.Receive(131);
+            GPSBD.Receive(24);
             GPSCache.Time = 0.001 * (uint32_t)((GPSBD.Buffer[8] << 24) + (GPSBD.Buffer[7] << 16) + (GPSBD.Buffer[6] << 8) + GPSBD.Buffer[5]);
             GPSCache.Latitude = 0.0000001 * (uint32_t)((GPSBD.Buffer[12] << 24) + (GPSBD.Buffer[11] << 16) + (GPSBD.Buffer[10] << 8) + GPSBD.Buffer[9]);
             GPSCache.Longitude = 0.0000001 * (uint32_t)((GPSBD.Buffer[16] << 24) + (GPSBD.Buffer[15] << 16) + (GPSBD.Buffer[14] << 8) + GPSBD.Buffer[13]);
@@ -215,13 +245,15 @@ void GPSParser()
             GPSCache.State = GPSBD.Buffer[21];
 
             // 30~130 GPS Raw data
-            for (uint8_t i = 0; i < 100; i++)
+            /* for (uint8_t i = 0; i < 100; i++)
             {
                 GPSRaw[i] = GPSBD.Buffer[i + 30];
-            }
+            } */
 
             GPS = GPSCache;
-            /* VehicleCache = Vehicle;
+
+            // TC KCITY Path 시 필요
+            VehicleCache = Vehicle;
             Back.Buffer[0] = (uint32_t)(GPSCache.Time * 1000);
             Back.Buffer[1] = ((uint32_t)(GPSCache.Time * 1000)) >> 8;
             Back.Buffer[2] = ((uint32_t)(GPSCache.Time * 1000)) >> 16;
@@ -245,7 +277,7 @@ void GPSParser()
             Back.Buffer[20] = ((uint32_t)(VehicleCache.Velocity * 3.6 * 100)) >> 24;
             Back.Buffer[21] = VehicleCache.LeftTurnSwitch;
             Back.Buffer[22] = VehicleCache.RightTurnSwitch;
-            Back.Send(23); */
+            Back.Send(23);
         }
         catch (std::out_of_range &e)
         {
@@ -262,8 +294,8 @@ void GPSParser()
         }
     }
     GPSBD.CloseSocket();
-    // Back.CloseSocket();
-    cout << "[Communicator] ------------------- GPSReceiver Socket Closed! " << endl;
+    Back.CloseSocket();
+    std::cout << "[Communicator] ------------------- GPSReceiver Socket Closed! " << endl;
 }
 
 /* KCITY 도로경로 받아오는 함수 */
@@ -276,7 +308,7 @@ void PathReceiver()
     uint32_t RecvCnt = 0;
     double TimeGap;
 
-    cout << "[Communicator] ------------------- PathReceiver Thread start! " << endl;
+    std::cout << "[Communicator] ------------------- PathReceiver Thread start! " << endl;
 
     while (SocketFlag)
     {
@@ -299,6 +331,7 @@ void PathReceiver()
                 TotalCnt++;
             }
             ErrorCnt = 0;
+
             if (PathReceiveSignal)
             {
                 Global = GlobalCache;
@@ -320,7 +353,7 @@ void PathReceiver()
         }
     }
     Forward.CloseSocket();
-    cout << "[Communicator] ------------------- PathReceiver Socket Closed!" << endl;
+    std::cout << "[Communicator] ------------------- PathReceiver Socket Closed!" << endl;
 }
 
 /* 보행자 데이터 수신 */
@@ -338,7 +371,7 @@ void MobileyeReceiver()
     double MobileyeXOffset = 0.0;
 
     PedestrianCANFD.SetSocket("can1", 1); // CAN FD - Mobileye: A-CAN, CAMERA: L-CAN
-    cout << "[Communicator]----------- Mobileye Thread start! " << endl;
+    std::cout << "[Communicator] ------------------- Mobileye Thread start! " << endl;
 
     while (SocketFlag)
     {
@@ -573,7 +606,7 @@ void MobileyeReceiver()
     }
 
     PedestrianCANFD.CloseSocket();
-    cout << "[Communicator]----------- MobileyeReceiver Socket Closed! " << endl;
+    std::cout << "[Communicator] ------------------- MobileyeReceiver Socket Closed! " << endl;
 }
 
 /* Key 입력 */
@@ -740,14 +773,14 @@ void UDPClass::SetSocket(const std::string &ip, const int port, const bool BindF
 
 void UDPClass::Receive(const uint16_t buffersize)
 {
-    addrlen = sizeof(ClientAddr);
-    if ((nbytes = recvfrom(sock, Buffer, buffersize, 0, (struct sockaddr *)&ClientAddr, &addrlen)) < 0)
+    addrlen = sizeof(Addr);
+    if ((nbytes = recvfrom(sock, Buffer, buffersize, 0, (struct sockaddr *)&Addr, &addrlen)) < 0)
         perror("<UDP> Receive Error");
 }
 
 void UDPClass::Send(const uint16_t SendByte)
 {
-    if (sendto(sock, Buffer, SendByte, 0, (struct sockaddr *)&ClientAddr, sizeof(ClientAddr)) < 0)
+    if (sendto(sock, Buffer, SendByte, 0, (struct sockaddr *)&Addr, sizeof(Addr)) < 0)
         perror("<UDP> Send Error");
 }
 

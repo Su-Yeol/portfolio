@@ -8,10 +8,10 @@ GPSStruct Position; // 현재 차량 위치
 /* config.ini에서 올려놓은 경로를 이용할 때 사용 */
 void PathConverter::ImportFile(const char *file)
 {
-    /* ODD 경로 탐색 */
+    /* LastVertex, StartVertex, EndVertex, VertexDistance를 초기 업데이트 시켜주는 함수 */
+    // ODD 경로 탐색
     FILE *ref = fopen(file, "ro"); // file을 읽기모드(ro)로 열기
     char line[1024], c;            // why? line 1024
-
     GPSStruct FirstVertex, SecondVertex, TargetVertex;
     double MinimumDistance = 500.0, dist = 0.0;
 
@@ -53,6 +53,9 @@ void PathConverter::ImportFile(const char *file)
     for (int i = 0; i < (WayPointNum - 1); i++)
     {
         fscanf(ref, "%lf/%lf", &Global.Latitude[i], &Global.Longitude[i]);
+
+        // test
+        //printf("%d번째 Global GPS 읽어오기 : %lf/%lf\n", i, Global.Latitude[i], Global.Longitude[i]);
     }
 
     /* WayPoint 사이의 거리를 계산하고 해당 값을 VertexDistance에 저장 */
@@ -66,38 +69,56 @@ void PathConverter::ImportFile(const char *file)
             SecondVertex.Latitude = Global.Latitude[i + 1];
             VertexDistance[i] = CalCulateDistance(&FirstVertex, &SecondVertex);
         }
-        cout << "[PathManager]------------File Waypoint size : " << WayPointNum << "---------------" << endl;
+        std::cout << "[PathManager] ------------ File Waypoint size : " << WayPointNum << " --------------- " << endl;
     }
     else
-        cout << "[PathManager]------------File Waypoints are not existed---------------" << endl;
+        std::cout << "[PathManager] ------------ File Waypoints are not existed ---------------" << endl;
 
     // 초기 차량 위치 GPS 위도 경도 업데이트
     while (Position.Latitude == 0 || Position.Longitude == 0)
     {
         UpdatePosition(&Position);
+
+        // test
+        // printf("[ImportFile] Position.Latitude : %.2lf || Position.Longitude : %.2lf\n", Position.Latitude, Position.Longitude);
     }
 
     /* 현재 차량 위치를 설정하고 WayPoint들 사이의 거리를 계산하여 최단 거리를 찾는 과정 */
     for (uint32_t i = 0; i < WayPointNum; i++)
     {
-        SetTargetVertex(i, &TargetVertex);                  // WayPoint의 위,경도 정보를 TargetVertex에 설정
+        SetTargetVertex(i, &TargetVertex); // WayPoint의 위,경도 정보를 TargetVertex에 설정
+
+        // test
+        // printf("[ImportFile 1] TargetVertex.Latitude : %.2lf || TargetVertex.Longitude : %.2lf\n", TargetVertex.Latitude, TargetVertex.Longitude);
+
         dist = CalCulateDistance(&Position, &TargetVertex); // 현재 위치(차랑)와 TargetVertex 사이의 거리를 계산하여 dist에 저장
 
+        // test
+        // printf("[ImportFile 1] i : %d || dist : %.2lf\n", i, dist);
+
+        // ************************
         if (dist < MinimumDistance)
         {
             // 현재 차량 위치와 경로상의 최단거리 및 인덱스 값 저장
             MinimumDistance = dist;
             MinimumDistanceIdx = i;
+
+            // test
+            // printf("[ImportFile] MinimumDistanceIdx : %d || MinimumDistance : %.1lf\n", MinimumDistanceIdx, MinimumDistance);
         }
     }
 
-    // -------------------------------------------//
     if (MinimumDistanceIdx == WayPointNum)
+    {
         MinimumDistanceIdx--;
+    }
+
     LastVertex = MinimumDistanceIdx;
     StartVertex = MinimumDistanceIdx;
     EndVertex = MinimumDistanceIdx + 1;
-    // -------------------------------------------//
+
+    // test
+    // printf("[ImportFile] 초기 LastVertex: %d, StartVertex: %d, EndVertex: %d\n", LastVertex, StartVertex, EndVertex);
 
     /* 현재 차량 위치와 Minimum 다음 WayPoint 간의 거리를 계산한다. 전방 50m 보다 작은 거리면 EndVertex(WayPoint index)를 증가시킨다. */
     for (uint32_t i = EndVertex; i < (WayPointNum - 1); i++)
@@ -105,16 +126,25 @@ void PathConverter::ImportFile(const char *file)
         // Global.~[i]: WayPoint 위도, 경도
         TargetVertex.Longitude = Global.Longitude[i];
         TargetVertex.Latitude = Global.Latitude[i];
+
         dist = CalCulateDistance(&Position, &TargetVertex);
 
-        if (dist < FrontLength) // 전방 50m 안에서 Vertex 1개씩 증가
+        // test
+        // printf("[ImportFile 2] %d번째 Global 위도: %.1lf, Global 경도: %.1lf, 거리: %.1f\n", i, Global.Longitude[i], Global.Latitude[i], dist);
+
+        if (dist < FrontLength) // 증가X
+        {
+            // 전방 50m 안에서 Vertex 1개씩 증가
             EndVertex++;
+        }
         else
             break;
     }
+
+    // test
+    // printf("[ImportFile] 최종 EndVertex: %d\n", EndVertex);
 }
 
-/* TC에서 수시로 Log를 올려줄 경우 사용 - Port 4488(receive), 4444(send) */
 void PathConverter::InitializePath()
 {
     GPSStruct FirstVertex, SecondVertex, TargetVertex;
@@ -147,14 +177,14 @@ void PathConverter::InitializePath()
             break;
     }
 
-    UpdatePosition(&Position); // 현재 차량 위치 update
+    UpdatePosition(&Position);
 
     for (uint32_t i = 0; i < WayPointNum; i++)
     {
-        SetTargetVertex(i, &TargetVertex);                  // 각 WayPoint의 위도, 경도
-        dist = CalCulateDistance(&Position, &TargetVertex); // 현재 차량 위치와 각 WayPoint의 거리
+        SetTargetVertex(i, &TargetVertex);
+        dist = CalCulateDistance(&Position, &TargetVertex);
 
-        if (dist < MinimumDistance) // 현재 차량 위치와 WayPoint의 최소 거리
+        if (dist < MinimumDistance)
         {
             MinimumDistance = dist;
             MinimumDistanceIdx = i;
@@ -164,7 +194,7 @@ void PathConverter::InitializePath()
     if (MinimumDistance > 7)
     {
         PathErrorFlag = true;
-        cout << "[PathManager/InitializePath] ------------------  GPS not Matched with Received Path. Distance : " << (int)MinimumDistance << endl;
+        std::cout << "[PathManager/InitializePath] ------------------  GPS not Matched with Received Path. Distance : " << (int)MinimumDistance << endl;
         return;
     }
     else
@@ -173,6 +203,7 @@ void PathConverter::InitializePath()
     // -------------------------------------------//
     if (MinimumDistanceIdx == WayPointNum)
         MinimumDistanceIdx--;
+
     LastVertex = MinimumDistanceIdx;
     StartVertex = MinimumDistanceIdx;
     EndVertex = MinimumDistanceIdx + 1;
@@ -182,6 +213,7 @@ void PathConverter::InitializePath()
     {
         TargetVertex.Longitude = Global.Longitude[i];
         TargetVertex.Latitude = Global.Latitude[i];
+
         dist = CalCulateDistance(&Position, &TargetVertex);
 
         if (dist < FrontLength)
@@ -194,7 +226,7 @@ void PathConverter::InitializePath()
 /* Global -> Local(상대좌표계) */
 void PathConverter::GenerateLocalPath()
 {
-    /* GlobalPath -> LocalPath */
+    /* 움직이는 차량에 대해 Vertex 값 갱신 및 Global 좌표 → Local 좌표로 변환하는 구간 */
     GPSStruct TargetVertex;
     double CurrentDistance, FrontDistance = 0.0;
     double MinimumDistance = 500.0;
@@ -202,23 +234,36 @@ void PathConverter::GenerateLocalPath()
 
     UpdatePosition(&Position);
 
+    // 움직이는 현재 차량위치와 Vertex 간의 거리를 갱신하여 새롭게 업데이트
     for (uint32_t i = LastVertex; i < EndVertex; i++) // LastVertex = MinimumDistanceIdx
     {
         SetTargetVertex(i, &TargetVertex);
         CurrentDistance = CalCulateDistance(&Position, &TargetVertex); // 현재 차량 위치와 다음 WayPoint 사이의 현재거리
+
+        // test
+        // printf("[GenerateLocalPath 1] %d번째 || TargetVertex 위도: %.4lf || TargetVertex 경도: %.4lf || 거리: %.4f\n", i, TargetVertex.Longitude, TargetVertex.Latitude, CurrentDistance);
+
         if (CurrentDistance < MinimumDistance)
         {
             MinimumDistance = CurrentDistance;
             MinimumDistanceIdx = i;
+
+            // test
+            // printf("[GenerateLocalPath] MinimumDistance : %.4lf || MinimumDistanceIdx : %d\n", MinimumDistance, MinimumDistanceIdx);
         }
     }
-    // 안전장치. endvertex가 waypoint를 넘는경우(50m가 안남았을때)
+
+    // 자동차가 전진했을 때 EndVertex를 갱신해주는 구간
     if (EndVertex < (WayPointNum - 1))
     {
         for (uint32_t j = EndVertex; j < (WayPointNum - 1); j++)
         {
             SetTargetVertex(j, &TargetVertex);
             CurrentDistance = CalCulateDistance(&Position, &TargetVertex);
+
+            // test
+            // printf("[GenerateLocalPath 2] %d번째 || TargetVertex 위도: %.4lf || TargetVertex 경도: %.4lf || 거리: %.4f\n", j, TargetVertex.Longitude, TargetVertex.Latitude, CurrentDistance);
+
             if (CurrentDistance < FrontLength)
                 EndVertex++;
             else
@@ -233,17 +278,23 @@ void PathConverter::GenerateLocalPath()
         LastVertex = MinimumDistanceIdx;
     }
 
+    // test
+    // printf("[GenerateLocalPath] LastVertex : %d || StartVertex : %d || EndVertex : %d\n", LastVertex, StartVertex, EndVertex);
+
     FrontDistance = 0; // 앞으로 이동할 거리
     for (uint32_t k = StartVertex; k < EndVertex; k++)
     {
         FrontDistance += VertexDistance[k];
     }
-    
+
     /* 속도에 따라 경로 간격을 얼마나 볼 것인가? */
     PathDencity = 0.2 + (Vehicle.Velocity * 3.6) * 0.01;
     FrontPathIdx = (uint32_t)(FrontDistance / PathDencity);
 
-    /* 현재 방향을 계산하고, 위치 정보를 업데이트 */
+    // test
+    // printf("Vehicle.Velocity : %f || PathDencity : %f || FrontDistance : %f || FrontPathIdx : %d\n", Vehicle.Velocity, PathDencity, FrontDistance, FrontPathIdx);
+
+    /* 현재 차량의 위치 정보를 업데이트 */
     Global.Heading = (Position.Azimuth * (-1) + 90) * (M_PI / 180.); // 현재 방향(0~360도)
     Global.GapLatitude = Position.Latitude * Lat2meter;              // 위도 위치 정보를 미터 단위로 변환
     Global.GapLongitude = Position.Longitude * Lon2meter;            // 경도 위치 정보를 미터 단위로 변환
@@ -251,7 +302,7 @@ void PathConverter::GenerateLocalPath()
     Global.GapLongitude += OffsetLongitude * cos(Global.Heading);
     Global.Heading = Global.Heading * (-1);
 
-    /* 로컬 경로 생성 */
+    /* ---------- FrontPathIdx(< 50m)의 로컬 경로 생성 ---------- */
     if (FrontPathIdx)
     {
         SetTargetVertex(StartVertex, &TargetVertex); // StartVertex의 위도, 경도 값
@@ -282,6 +333,9 @@ void PathConverter::GenerateLocalPath()
                 else
                     break;
             }
+
+            // test
+            // printf("[GenerateLocalPath] Local.X[%d], Local.Y[%d] : %.1lf, %.1lf\n", n, n, Local.X[n], Local.Y[n]);
         }
         Local.Length = FrontPathIdx;
     }
@@ -290,42 +344,92 @@ void PathConverter::GenerateLocalPath()
 /* 현재 차량위치와 보행자의 거리 */
 void PathConverter::PedestrianDistance()
 {
-    // 모빌아이 튜닝해서 최대한 동일하게 맞추기 - 대각선, 종 방향 합당 --> PathReciever thread로 돌려서 경로받으면 된다. ./run.sh 경로생성, flag = true
-    /* Init */
+    /* Mobileye, Ibeo 사용 시 배열 index 및 변수들 수정필요 */
     FrontVertexDistance = 0.0;
-    Mobileye.MinimumPedestrianDistance = 500.0;
-    std::fill_n(Mobileye.MinimumPedestrianIdx, 10, Local.Length - 1);
-    int MinimumIdx = Local.Length; // FrontPathIdx
+    Ibeo.MinimumPedestrianDistance = 500.0;
+    std::fill_n(Ibeo.MinimumPedestrianIdx, 30, Local.Length-1); // Mobileye 10, Ibeo 30
+    int MinimumIdx = 500;
 
-    for (uint32_t p = 0; p < 10; p++) // Mobileye Object count = 10
+    for(uint8_t i =0; i<Local.Length; i++)
+    {
+        printf("%.4lf, %.4lf\n", Local.X[i], Local.Y[i]);
+    }
+
+    // Mobileye
+    /* for (uint32_t p = 0; p < 10; p++) // Mobileye Object count = 10
     {
         // for문이 Local.Length까지 해버리면 마지막 X, Y값이 0, 0으로 찍힌다.
         for (uint32_t r = 0; r < Local.Length - 1; r++)
         {
+            //printf("Local.Length - 1: %d\n", Local.Length - 1);
             bool PCheckFlag = (Mobileye.X[p] == 0) && (Mobileye.Y[p] == 0);
             if (PCheckFlag == false)
             {
                 // Path 종: X, 횡: Y || Mobileye 종: Y, 횡: X
                 Mobileye.Distance[p] = sqrt(pow((Local.X[r] - Mobileye.Y[p]), 2) + pow((Local.Y[r] - Mobileye.X[p]), 2));
+                //printf("X: %.1lf/%.1lf  Y: %.1lf/%.1lf\n", Local.X[r], Mobileye.Y[p], Local.Y[r], Mobileye.X[p]);
 
                 if (Mobileye.Distance[p] < Mobileye.MinimumPedestrianDistance)
                 {
                     Mobileye.MinimumPedestrianDistance = Mobileye.Distance[p];
-                    if (Mobileye.MinimumPedestrianDistance < 1.8)
-                        // object당 최소거리 index 값 저장 --> min() 가장최소 index 반환 --> 전방거리 계산
+                    if(Mobileye.MinimumPedestrianDistance < 1.8)
+                    {
                         Mobileye.MinimumPedestrianIdx[p] = r;
+                    }
                 }
             }
-            printf("Idx: %d  X: %.1lf/%.1lf  Y: %.1lf/%.1lf\n", Mobileye.MinimumPedestrianIdx[p], Local.Y[Mobileye.MinimumPedestrianIdx[p]], Mobileye.X[p],
-                   Local.X[Mobileye.MinimumPedestrianIdx[p]], Mobileye.Y[p]);
+            //printf("Idx: %d  X: %.1lf/%.1lf  Y: %.1lf/%.1lf\n", Mobileye.MinimumPedestrianIdx[p], Local.Y[Mobileye.MinimumPedestrianIdx[p]], Mobileye.X[p],
+                   //Local.X[Mobileye.MinimumPedestrianIdx[p]], Mobileye.Y[p]);
+        }
+    } */
+
+    // Ibeo RADARS
+    for (uint32_t p = 0; p < Ibeo.ObjectCnt; p++) // Ibeo Object count = (max)30, Mobileye Object count = (max)10
+    {
+        // printf("%.4lf, %.4lf\n", Ibeo.Object[p * 3 + 2], Ibeo.Object[p * 3 + 3]);
+        if (Local.Length != 0)
+        {
+            //  for문이 Local.Length까지 해버리면 마지막 X, Y값이 0, 0으로 찍힌다.
+            for (uint32_t r = 0; r < Local.Length - 1; r++)
+            {
+                bool PCheckFlag = (Ibeo.Object[p * 3 + 2] == 500) && (Ibeo.Object[p * 3 + 3] == 500); // Ibeo = 500, Mobileye = 0
+                if (PCheckFlag == false)
+                {
+                    // test
+                    //printf("[PedestrianDistance] X: %.4lf, %.4lf / Y: %.4lf, %.4lf\n", Local.X[r], Ibeo.Object[p * 3 + 2], Local.Y[r], Ibeo.Object[p * 3 + 3]);
+                    // Path 종: X, 횡: Y || Mobileye 종: Y, 횡: X || Ibeo 종: X, 횡: Y
+                    Ibeo.Distance[p] = sqrt(pow((Local.X[r] - Ibeo.Object[p * 3 + 2]), 2) + pow((Local.Y[r] - Ibeo.Object[p * 3 + 3]), 2));
+
+                    // test
+                    //printf("[PedestrianDistance] Vertex와 Object Distance: %.4lf\n", Ibeo.Distance[p]);
+
+                    if (Ibeo.Distance[p] < Ibeo.MinimumPedestrianDistance)
+                    {
+                        Ibeo.MinimumPedestrianDistance = Ibeo.Distance[p];
+
+                        // test
+                        //printf("[PedestrianDistance] Vertex와 Object 최소 Distance: %.4lf\n", Ibeo.MinimumPedestrianDistance);
+
+                        if (Ibeo.MinimumPedestrianDistance < 1.8)
+                        {
+                            Ibeo.MinimumPedestrianIdx[p] = r;
+
+                            // test
+                            //printf("[PedestrianDistance] X: %.4lf, %.4lf / Y: %.4lf, %.4lf\n", Local.X[r], Ibeo.Object[p * 3 + 2], Local.Y[r], Ibeo.Object[p * 3 + 3]);
+                        }
+                    }
+                }
+            }
         }
     }
 
     /* Minimum index 구하기 */
-    for (uint32_t s = 0; s < 10; s++)
+    for (uint32_t s = 0; s < Ibeo.ObjectCnt; s++)
     {
-        if (Mobileye.MinimumPedestrianIdx[s] < MinimumIdx)
-            MinimumIdx = Mobileye.MinimumPedestrianIdx[s];
+        if (Ibeo.MinimumPedestrianIdx[s] < MinimumIdx)
+        {
+            MinimumIdx = Ibeo.MinimumPedestrianIdx[s];
+        }
     }
 
     /* 보행자까지 Vertex 전방거리 */
@@ -335,18 +439,20 @@ void PathConverter::PedestrianDistance()
         {
             FrontVertexDistance += sqrt(pow((Local.X[t] - Local.X[t + 1]), 2) + pow((Local.Y[t] - Local.Y[t + 1]), 2));
 
-            if (FrontVertexDistance > 100)
-                FrontVertexDistance = 100;
-            else if (FrontVertexDistance == 0)
-                FrontVertexDistance = 100;
+            // test
+            //printf("%d번 ~ %d번째 Local X %.4lf, %.4lf || Local Y %.4lf, %.4lf || 전방거리 : %.4lf\n", t, t+1, Local.X[t], Local.X[t+1], Local.Y[t], Local.Y[t+1], FrontVertexDistance);
         }
     }
     else
         FrontVertexDistance = 100;
 
-    // 초기값, 100 / 500 / Local.Length
-    // 기본 idx 200 고정 - 연산
-    printf("%.1lf  /  %.1lf  /  %d\n", FrontVertexDistance, Mobileye.MinimumPedestrianDistance, MinimumIdx);
+    /* OverFlow 방지 */
+    if (Ibeo.MinimumPedestrianDistance == 0) Ibeo.MinimumPedestrianDistance = 500;
+    if (MinimumIdx == 0) MinimumIdx = 500;
+    if (FrontVertexDistance > 100) FrontVertexDistance = 100;
+    else if (FrontVertexDistance == 0) FrontVertexDistance = 100;
+
+    printf("[PedestrianDistance] Vertex 전방거리 %.4lf  /  Vertex와 보행자 최소거리 %.4lf  / 최소거리 Vertex index %d\n", FrontVertexDistance, Ibeo.MinimumPedestrianDistance, MinimumIdx);
 }
 
 // --------------------------------------------------------------------------------------------------- //

@@ -15,11 +15,12 @@
 #include <sys/socket.h>    // 소켓 프로그래밍을 위한 시스템 레벨의 함수와 구조체들을 제공
 #include <linux/can.h>     // Linux 환경에서 CAN(Controller Area Network) 통신을 위한 구조체와 상수들을 정의하는 헤더 파일
 #include <linux/can/raw.h> // Linux CAN 프로토콜에서 사용되는 raw 소켓과 관련된 구조체와 상수들을 정의
+#include <time.h>
 
 #include <math.h>
 
 #define BufferSize 8192
-#define PathSize 1024
+#define PathSize 8192
 
 using namespace std;
 
@@ -57,23 +58,6 @@ struct VehicleStruct
         double Distance;         // 차량과 다른 물체 간의 거리
         double RelativeVelocity; // 다른 물체와의 상대적인 속도
     } Radar;
-
-    // struct Ibeo
-    struct IbeoVariable
-    {
-        uint8_t ObjectID;
-        int16_t X;
-        int16_t Y;
-        int16_t Vx;
-        int16_t Vy;
-        int16_t BoxOrientation;
-
-        int BoxSizeX;
-        int BoxSizeY;
-        int ObjectID4;
-        int Objectclassification;
-        int Object[100];
-    } Ibeo;
 };
 
 struct GlobalPathStruct
@@ -119,9 +103,32 @@ struct MobileyeStruct // A-CAN
     // Y(L idx = 8 + 9<<4 (64~75), R idx 24 + 25<<8 1.5byte) : start bit 76
     double X[10];
     double Y[10];
-    double Distance[10]; // left, right Camera
+    double Distance[10];
     double MinimumPedestrianDistance;
     uint16_t MinimumPedestrianIdx[10];
+};
+
+struct IbeoVariable
+{
+    uint8_t ObjectID;
+    int16_t X;
+    int16_t Y;
+    int16_t Vx;
+    int16_t Vy;
+    int16_t BoxOrientation;
+
+    int BoxSizeX;
+    int BoxSizeY;
+    int ObjectID4;
+    int Objectclassification;
+    int ObjectCnt;
+    double Object[100];
+
+    // 보행자 판단
+    double Distance[30];
+    double MinimumPedestrianDistance;
+    uint16_t MinimumPedestrianIdx[30];
+
 };
 
 // ------------------------------ Config ------------------------------------- //
@@ -133,6 +140,8 @@ extern const string GPSRecordPath; //  GPS 데이터 기록 경로를 나타내�
 extern const string ReferenceFile; // 참조 파일 경로를 나타내는 문자열 상수
 extern const int MainCycle;        // 프로그램의 동작 속도를 조절
 extern bool MobileyeFlag;
+extern bool IbeoFlag;
+extern bool PedestrianFlag; // PedestrianDistance 함수 호출
 extern char GPSRaw[100]; // GPS Raw 데이터 저장
 
 // ------------------------------ Struct ------------------------------------- //
@@ -141,5 +150,6 @@ extern GlobalPathStruct Global;
 extern LocalPathStruct Local;
 extern VehicleStruct Vehicle;
 extern MobileyeStruct Mobileye;
+extern IbeoVariable Ibeo;
 
 #endif

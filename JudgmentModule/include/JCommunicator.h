@@ -103,7 +103,7 @@ private:
     // UDP 통신을 위한 소켓 파일
     int sock;
     // 서버, 클라이언트 주소 정보를 저장하는 구조체 변수
-    struct sockaddr_in Addr, JunkAddr, ServerAddr, ClientAddr;
+    struct sockaddr_in Addr;
     // 수신한 바이트 수를 저장하는 변수
     uint16_t nbytes;
     // 소켓 주소 길이를 저장하는 변수
