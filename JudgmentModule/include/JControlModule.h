@@ -75,6 +75,8 @@ struct GlobalPathStruct
     double GapLongitude;
     double Heading; // 주행 경로의 방향(pre, next 위경도를 이용하여 차의 방향(0~360도)을 나타냄.
     // 일반적으로 각도로 표현, GPS 방위각(azimous) - error를 구해서 wheel 각도 구하는데 사용
+
+    double LocalizationGap;
 };
 
 struct LocalPathStruct
@@ -128,7 +130,8 @@ struct IbeoVariable
     double Distance[30];
     double MinimumPedestrianDistance;
     uint16_t MinimumPedestrianIdx[30];
-
+    int FrameCont;
+    int FrameFlag;
 };
 
 // ------------------------------ Config ------------------------------------- //

@@ -64,19 +64,22 @@ int main(int argc, const char *argv[])
     MobileyeThread = thread(MobileyeReceiver); // Mobileye 보행자 상대좌표
     IbeoThread = thread(IbeoReceiver);         // Ibeo Data 수신
 
+    // --------------------------------------------------------------------------------------------------------------------------- //
     gettimeofday(&startTime, NULL);
-    while(Vehicle.MDPSmode != 3)
+    while (Vehicle.MDPSmode != 3)
     {
         gettimeofday(&endTime, NULL);
         TimeGap = (endTime.tv_sec - startTime.tv_sec) * 1000 + ((endTime.tv_usec - startTime.tv_usec) / 1000); // [ms]
-        if( TimeGap > 500)
+        if (TimeGap > 500)
         {
-            cout << "[ControlModule] ------------------ VehicleData updating...... MDPSMode : "<<(int)Vehicle.MDPSmode << endl;
+            cout << "[ControlModule] ------------------ VehicleData updating...... MDPSMode : " << (int)Vehicle.MDPSmode << endl;
             gettimeofday(&startTime, NULL);
         }
     }
     cout << "[ControlModule] ------------------ VehicleData update success! " << endl;
+    // --------------------------------------------------------------------------------------------------------------------------- //
 
+    // --------------------------------------------------------------------------------------------------------------------------- //
     gettimeofday(&startTime, NULL);
     while (GPS.Time == 0)
     {
@@ -89,9 +92,11 @@ int main(int argc, const char *argv[])
         }
     }
     std::cout << "[JudgmentModule] ------------------ GPSData update success! " << endl;
+    // --------------------------------------------------------------------------------------------------------------------------- //
 
+    // --------------------------------------------------------------------------------------------------------------------------- //
     /* Path Initialize */
-    if (ReceivePathFlag) // config.ini 기본 False -> Path 실시간 true(K-CITY - run.sh) 
+    if (ReceivePathFlag) // config.ini 기본 False -> Path 실시간 true(K-CITY - run.sh)
     {
         PathThread = thread(PathReceiver); // 경로 새로 탐색 - PathReceiveSignal true -> false
 
@@ -108,10 +113,10 @@ int main(int argc, const char *argv[])
         }
     }
     else // ReceivePathFlag = false : 저장된 위치의 Path를 사용할 경우
-    {   
+    {
         PathManager.ImportFile(ReferenceFile.c_str()); // 저장되어 있는 경로
 
-        //test
+        // test
         printf("Path 경로 : %s\n", ReferenceFile.c_str());
 
         gettimeofday(&startTime, NULL);
@@ -127,6 +132,7 @@ int main(int argc, const char *argv[])
         }
     }
     std::cout << "[JudgmentModule] ------------------ PathVertex update success! " << endl;
+    // --------------------------------------------------------------------------------------------------------------------------- //
 
     std::cout << "[JudgmentModule] ------------------ JudgmentModule START! ------------------ " << endl;
     gettimeofday(&startTime, NULL);
@@ -142,33 +148,33 @@ int main(int argc, const char *argv[])
                 MobileyeFlag = true;
                 IbeoFlag = true;
 
-                //test
-                //printf("%s\n", ReceivePathFlag ? "[JudgmentModule] ReceivePathFlag: true":"ReceivePathFlag: false");
+                // test
+                // printf("%s\n", ReceivePathFlag ? "[JudgmentModule] ReceivePathFlag: true":"ReceivePathFlag: false");
 
                 if (ReceivePathFlag) // config.ini에서 default: ReceivePathFlag = false
                 {
-                    //test
-                    //printf("%s\n", PathReceiveSignal ? "[JudgmentModule] PathReceiveSignal: true":"PathReceiveSignal: false");
+                    // test
+                    // printf("%s\n", PathReceiveSignal ? "[JudgmentModule] PathReceiveSignal: true":"PathReceiveSignal: false");
 
                     if (PathReceiveSignal == false) // thread(PathReceiver)에서 Path 경로를 다 받아오면 false 시킨 후 동작
                     {
                         PathManager.InitializePath();
-                    }    
-                        
+                    }
                 }
+
+                // test
+                // printf("%s\n", PathErrorFlag ? "[JudgmentModule] PathErrorFlag: true":"PathErrorFlag: false");
                 
-                //test
-                //printf("%s\n", PathErrorFlag ? "[JudgmentModule] PathErrorFlag: true":"PathErrorFlag: false");
-                
+                //printf("[JudgmentModule] Gap: %.4lf || ", Global.LocalizationGap);
                 if (PathErrorFlag == false)
                 {
                     PathManager.GenerateLocalPath();
 
-                    //SensorStartTime = clock();
+                    // SensorStartTime = clock();
                     PathManager.PedestrianDistance();
-                    //SensorEndTime = clock();
-                    //SensorTimeGap = (double)(SensorEndTime - SensorStartTime);
-                    //cout << "[JudgmentModule] PedestrainDistance Run Time : " << IbeoTimeGap << "[s]" << endl;
+                    // SensorEndTime = clock();
+                    // SensorTimeGap = (double)(SensorEndTime - SensorStartTime);
+                    // cout << "[JudgmentModule] PedestrainDistance Run Time : " << IbeoTimeGap << "[s]" << endl;
                 }
 
                 PathReceiveSignal = true;
@@ -176,7 +182,7 @@ int main(int argc, const char *argv[])
                 if (GPSRecord)
                 {
                     fprintf(GPSFile, "%.7f/%.7f\n", GPS.Latitude, GPS.Longitude);
-                 
+
                     /* fprintf(GPSFile, "%.7f/%.7f/\n", GPS.Latitude, GPS.Longitude);
                     for (uint8_t i = 0; i < 100; i++) // GPS raw 데이터 저장
                         fprintf(GPSFile, "%c", GPSRaw[i]);
@@ -198,7 +204,7 @@ int main(int argc, const char *argv[])
         }
         catch (exception &e)
         {
-            std::cout << "<MAIN> EXCEPTION " << '\n';
+            std::cout << "<MAIN> EXCEPTION" << '\n';
             std::cout << e.what() << '\n';
         }
     }

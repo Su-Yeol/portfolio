@@ -52,7 +52,7 @@ int main(int argc, const char *argv[])
         TimeGap = (endTime.tv_sec - startTime.tv_sec) * 1000 + ((endTime.tv_usec - startTime.tv_usec) / 1000); // [ms]
         if (TimeGap > 500)
         {
-            std::cout << "[JudgmentModule] ------------------ GPSData updating...... GPSTime : " << (int)GPS.Time << endl;
+            std::cout << "[JudgmentModule] ------------------ GPSData updating ...... GPSTime : " << (int)GPS.Time << endl;
             gettimeofday(&startTime, NULL);
         }
     }
@@ -70,6 +70,7 @@ int main(int argc, const char *argv[])
             {
                 if (GPSRecord)
                 {
+                    printf("GPS.Latitude %.7f | GPS.Longitude %.7f\n", GPS.Latitude, GPS.Longitude);
                     fprintf(GPSFile, "%.7f/%.7f\n", GPS.Latitude, GPS.Longitude);
                 }
                 gettimeofday(&startTime, NULL);

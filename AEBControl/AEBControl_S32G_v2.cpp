@@ -5,7 +5,7 @@
 #include "AControlModule.h"
 #include "ACommunicator.h"
 
-#define TimeCycle 20
+#define TimeCycle 20 // 0x160 Cycle time
 #define WrngCycle 15
 
 using namespace std; // Standard로써 iostream 내부에 입출력에 관한 함수들을 가지고 있는 네임스페이스
@@ -250,7 +250,7 @@ void AEBStopControl() // FCA Control
         FCA_WrngSndSta = 2;
         FCA_WrngTrgtDis = 5;
         FCA_PrefillActvReq = 0;
-        // FCA_PartialActvReq = 1;
+        // FCA_PartialActvReq = 1; // 0.6g 미만
         FCA_FullActvReq = 1; // 0.6g 이상
         FCA_HydrlcBstAsstlSta = 3;
         FCA_StbltActvReq = 2;
@@ -300,48 +300,6 @@ void AEBStopControl() // FCA Control
     }
 
     VehicleCANFD.SendCANFD();
-}
-
-/* ------------------------------- Class Function ------------------------------- */
-void CANClass::SetSocket(const std::string &ifname, const int canfd)
-{
-    if ((sock = socket(PF_CAN, SOCK_RAW, CAN_RAW)) == -1)
-        perror("<CAN> socket open error");
-
-    strcpy(ifr.ifr_name, ifname.c_str());
-    if (ioctl(sock, SIOCGIFINDEX, &ifr) < 0)
-    {
-        perror("<CAN> Error with SIOCGIFINDEX ioctl");
-        close(sock);
-        exit(EXIT_FAILURE);
-    }
-
-    memset(&addr, 0, sizeof(addr));
-    addr.can_family = AF_CAN;
-    addr.can_ifindex = ifr.ifr_ifindex;
-
-    if (bind(sock, (struct sockaddr *)&addr, sizeof(addr)) < 0)
-    {
-        perror("<CAN> Error in socket bind");
-        close(sock);
-        exit(EXIT_FAILURE);
-    }
-
-    if (canfd)
-    {
-        if (setsockopt(sock, SOL_CAN_RAW, CAN_RAW_FD_FRAMES, &canfd, sizeof(canfd)))
-        {
-            perror("<CAN> Error enabling CAN FD support");
-            close(sock);
-            exit(EXIT_FAILURE);
-        }
-    }
-}
-
-void CANClass::SendCANFD()
-{
-    if (write(sock, &FrameFd, sizeof(struct canfd_frame)) != sizeof(struct canfd_frame))
-        perror("<CANFD> Send Error");
 }
 
 /* ------------------------------- Main ------------------------------- */
@@ -400,4 +358,46 @@ int main() // 50ms
     GPSThread.join();
     fclose(RecordFile);
     KeyThread.join();
+}
+
+/* ------------------------------- Class Function ------------------------------- */
+void CANClass::SetSocket(const std::string &ifname, const int canfd)
+{
+    if ((sock = socket(PF_CAN, SOCK_RAW, CAN_RAW)) == -1)
+        perror("<CAN> socket open error");
+
+    strcpy(ifr.ifr_name, ifname.c_str());
+    if (ioctl(sock, SIOCGIFINDEX, &ifr) < 0)
+    {
+        perror("<CAN> Error with SIOCGIFINDEX ioctl");
+        close(sock);
+        exit(EXIT_FAILURE);
+    }
+
+    memset(&addr, 0, sizeof(addr));
+    addr.can_family = AF_CAN;
+    addr.can_ifindex = ifr.ifr_ifindex;
+
+    if (bind(sock, (struct sockaddr *)&addr, sizeof(addr)) < 0)
+    {
+        perror("<CAN> Error in socket bind");
+        close(sock);
+        exit(EXIT_FAILURE);
+    }
+
+    if (canfd)
+    {
+        if (setsockopt(sock, SOL_CAN_RAW, CAN_RAW_FD_FRAMES, &canfd, sizeof(canfd)))
+        {
+            perror("<CAN> Error enabling CAN FD support");
+            close(sock);
+            exit(EXIT_FAILURE);
+        }
+    }
+}
+
+void CANClass::SendCANFD()
+{
+    if (write(sock, &FrameFd, sizeof(struct canfd_frame)) != sizeof(struct canfd_frame))
+        perror("<CANFD> Send Error");
 }

@@ -3,30 +3,36 @@
 // ------------------------------ Config --------------------------------- //
 CConfigParser Configuration("./config.ini");
 
+const int MainCycle = Configuration.GetInt("MainCycle");
 const int TargetSpeed = Configuration.GetInt("TargetSpeed"); // [kph]
 
+// GPSParser
 const bool GPSRecord = Configuration.GetBool("GPSRecord");
 const string GPSRecordPath = Configuration.GetString("GPSRecordPath");
+char GPSRaw[100]; // GPS raw
 
+// PathReceiver
 const bool ReceivePathFlag = Configuration.GetBool("ReceivePathFlag");
 const string ReferenceFile = Configuration.GetString("ReferenceFile");
-const string ExternalIp = Configuration.GetString("ExternalIp");
-const int ForwardPort = Configuration.GetInt("ForwardPort");
-const int BackPort = Configuration.GetInt("BackPort");
 
-const int MainCycle = Configuration.GetInt("MainCycle");
+// IP
+const string S32GIp = Configuration.GetString("S32GIp");           // GPSParser, PathReceiver
+const string BroadCastIp = Configuration.GetString("BroadCastIp"); // GPSParser
+// const string ExternalIp = Configuration.GetString("ExternalIp");
 
-const string S32GIp = Configuration.GetString("S32GIp");
-const int S32GPort = Configuration.GetInt("S32GPort");
+// Port
+const int S32GPort = Configuration.GetInt("S32GPort");       // 3004, GPSParser
+const int BackPort = Configuration.GetInt("BackPort");       // 3862, GPSParser
+const int ForwardPort = Configuration.GetInt("ForwardPort"); // 1785, PathReceiver
+
+// ControlModule - No use
 const string MCUIp = Configuration.GetString("MCUIp");
 const int MCUPort = Configuration.GetInt("MCUPort");
-const string BroadCastIp = Configuration.GetString("BroadCastIp");
 
+// Viewer - No use
 const bool ViewerFlag = Configuration.GetBool("ViewerFlag");
 const string ViewerIp = Configuration.GetString("ViewerIp");
 const int ViewerPort = Configuration.GetInt("ViewerPort");
-
-char GPSRaw[100];
 
 // ------------------------------ Communicator Function ----------------------- //
 void VehicleReceiver()
@@ -156,6 +162,7 @@ void IbeoReceiver()
                 break;
 
             case 0x502:
+                // Boxsize
                 IbeoCache.ObjectID = IbeoRecv.Frame.data[0]; // 트랙킹 ID 값
                 IbeoCache.X = (IbeoRecv.Frame.data[1] << 8) + IbeoRecv.Frame.data[2];
                 IbeoCache.Y = (IbeoRecv.Frame.data[3] << 8) + IbeoRecv.Frame.data[4];
@@ -173,33 +180,38 @@ void IbeoReceiver()
                 // 종 횡 확인
                 IbeoCache.Objectclassification = IbeoRecv.Frame.data[1];
 
+                IbeoCache.Object[ObjectCnt * 3 + 1] = (int)IbeoCache.Objectclassification;
+                IbeoCache.Object[ObjectCnt * 3 + 2] = ((double)IbeoCache.X / 100); // [m]
+                IbeoCache.Object[ObjectCnt * 3 + 3] = ((double)IbeoCache.Y / 100); // [m]
+                ObjectCnt += 1;
+                
                 // 1: Unknown big || 2: Unknown small || 3: 사람
-                if (IbeoCache.Objectclassification == 1 || IbeoCache.Objectclassification == 2 || IbeoCache.Objectclassification == 3)
-                {
-                    IbeoCache.Object[ObjectCnt * 3 + 1] = (int)IbeoCache.Objectclassification;
-                    IbeoCache.Object[ObjectCnt * 3 + 2] = ((double)IbeoCache.X / 100);     // [m]
-                    IbeoCache.Object[ObjectCnt * 3 + 3] = ((double)IbeoCache.Y / 100);     // [m]
-                    ObjectCnt += 1;
-                }
+                // if (IbeoCache.Objectclassification == 1 || IbeoCache.Objectclassification == 2 || IbeoCache.Objectclassification == 3)
+                // {
+                //     IbeoCache.Object[ObjectCnt * 3 + 1] = (int)IbeoCache.Objectclassification;
+                //     IbeoCache.Object[ObjectCnt * 3 + 2] = ((double)IbeoCache.X / 100); // [m]
+                //     IbeoCache.Object[ObjectCnt * 3 + 3] = ((double)IbeoCache.Y / 100); // [m]
+                //     ObjectCnt += 1;
+                // }
 
-                else
-                {
-                    IbeoCache.Object[ObjectCnt * 3 + 1] = 500;
-                    IbeoCache.Object[ObjectCnt * 3 + 2] = 500;
-                    IbeoCache.Object[ObjectCnt * 3 + 3] = 500;
-                    ObjectCnt += 1;
-                }
+                // else
+                // {
+                //     IbeoCache.Object[ObjectCnt * 3 + 1] = 500;
+                //     IbeoCache.Object[ObjectCnt * 3 + 2] = 500;
+                //     IbeoCache.Object[ObjectCnt * 3 + 3] = 500;
+                //     ObjectCnt += 1;
+                // }
                 break;
             }
 
             if (IbeoFlag)
             {
                 Ibeo = IbeoCache;
-                /* for (uint8_t i = 0; i < Ibeo.ObjectCnt; i++)
-                {
-                    printf("Ibeo Object Count : %d || Objectclassification : %d || Ibeo X : %.4lf || Ibeo Y : %.4lf\n", i, Ibeo.Objectclassification,
-                           Ibeo.Object[i * 3 + 2], Ibeo.Object[i * 3 + 3]);
-                } */
+                // for (uint8_t i = 0; i < Ibeo.ObjectCnt; i++)
+                // {
+                //     printf("Ibeo Object Count : %d || Objectclassification : %d || Ibeo X : %.4lf || Ibeo Y : %.4lf\n", i, Ibeo.Objectclassification,
+                //            Ibeo.Object[i * 3 + 2], Ibeo.Object[i * 3 + 3]);
+                // }
                 IbeoFlag = false;
             }
         }
@@ -228,7 +240,7 @@ void GPSParser()
     VehicleStruct VehicleCache;
 
     GPSBD.SetSocket(BroadCastIp, S32GPort, 1); // .255, 3004
-    Back.SetSocket(S32GIp, BackPort, 0); // .99, 3862
+    Back.SetSocket(S32GIp, BackPort, 0);       // .99, 3862
     std::cout << "[Communicator] ------------------- GPSReceiver Thread start! " << endl;
 
     while (SocketFlag)
@@ -304,7 +316,7 @@ void PathReceiver()
     UDPClass Forward;
     GlobalPathStruct GlobalCache;
     struct timeval FirstTime, SecondTime;
-    Forward.SetSocket(S32GIp, ForwardPort, 1);
+    Forward.SetSocket(S32GIp, ForwardPort, 1); // 1785
     uint32_t RecvCnt = 0;
     double TimeGap;
 
