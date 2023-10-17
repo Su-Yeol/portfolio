@@ -17,9 +17,11 @@ PathConverter PathManager;
 bool MainFlag = true;
 bool SocketFlag = true;
 bool PathReceiveSignal = true; // PathReceiver에서 Global = GlobalCache 이후 다시 false
-bool MobileyeFlag = false;
-bool IbeoFlag = false;
 bool PathErrorFlag = false;
+int MobileyeFlag = 1;
+int IbeoFlag = 1;
+
+char GPSRaw[100] = {0, }; // GPS raw
 
 // 30 ~ 130 byte low
 /* ------------------------------- Main ------------------------------- */
@@ -27,9 +29,6 @@ int main(int argc, const char *argv[])
 {
     (void)(argc); // 메인함수에 전달되는 정보의 갯수
     (void)(argv); // 메인함수에 전달되는 실질적인 정보로, 문자열의 배열
-
-    clock_t SensorStartTime, SensorEndTime;
-    double SensorTimeGap;
 
     thread KeyThread, GPSThread, PathThread, VehicleThread, MobileyeThread, IbeoThread;
 
@@ -115,9 +114,7 @@ int main(int argc, const char *argv[])
     else // ReceivePathFlag = false : 저장된 위치의 Path를 사용할 경우
     {
         PathManager.ImportFile(ReferenceFile.c_str()); // 저장되어 있는 경로
-
-        // test
-        printf("Path 경로 : %s\n", ReferenceFile.c_str());
+        printf("[JudgmentModule ImportFile] ------------------ Path 경로 : %s\n", ReferenceFile.c_str());
 
         gettimeofday(&startTime, NULL);
         while (PathManager.WayPointNum == 0)
@@ -142,11 +139,12 @@ int main(int argc, const char *argv[])
         {
             gettimeofday(&endTime, NULL);
             TimeGap = (endTime.tv_sec - startTime.tv_sec) * 1000 + ((endTime.tv_usec - startTime.tv_usec) / 1000); // [ms]
+            
             if (TimeGap >= MainCycle)
             {
                 // Mobileye Pedestrian
-                MobileyeFlag = true;
-                IbeoFlag = true;
+                MobileyeFlag = 1;
+                IbeoFlag = 1;
 
                 // test
                 // printf("%s\n", ReceivePathFlag ? "[JudgmentModule] ReceivePathFlag: true":"ReceivePathFlag: false");
@@ -164,17 +162,11 @@ int main(int argc, const char *argv[])
 
                 // test
                 // printf("%s\n", PathErrorFlag ? "[JudgmentModule] PathErrorFlag: true":"PathErrorFlag: false");
-                
-                //printf("[JudgmentModule] Gap: %.4lf || ", Global.LocalizationGap);
+
                 if (PathErrorFlag == false)
                 {
                     PathManager.GenerateLocalPath();
-
-                    // SensorStartTime = clock();
                     PathManager.PedestrianDistance();
-                    // SensorEndTime = clock();
-                    // SensorTimeGap = (double)(SensorEndTime - SensorStartTime);
-                    // cout << "[JudgmentModule] PedestrainDistance Run Time : " << IbeoTimeGap << "[s]" << endl;
                 }
 
                 PathReceiveSignal = true;

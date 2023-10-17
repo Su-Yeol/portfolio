@@ -22,8 +22,9 @@ class PathConverter
         void InitializePath();
         void GenerateLocalPath();
 
-        void PedestrianDistance(); // Vertex와 보행자 간의 최소거리
-        double FrontVertexDistance; // 보행자 인지 시 앞으로 남은 전방거리
+        void PedestrianDistance();      // Vertex와 보행자 간의 최소거리
+        double FrontVertexDistance;     // 보행자 인지 시 앞으로 남은 전방거리
+        double PreFrontVertexDistance;  // Prevent data overshoot : save previous data
         uint32_t WayPointNum;
 
     private:

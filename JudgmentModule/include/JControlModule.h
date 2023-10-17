@@ -18,6 +18,7 @@
 #include <time.h>
 
 #include <math.h>
+#include <cmath>
 
 #define BufferSize 8192
 #define PathSize 8192
@@ -113,25 +114,31 @@ struct MobileyeStruct // A-CAN
 struct IbeoVariable
 {
     uint8_t ObjectID;
+    // Position
     int16_t X;
     int16_t Y;
+    // Relative Velocity(0.1 m/s)
     int16_t Vx;
     int16_t Vy;
-    int16_t BoxOrientation;
+    // Box data
+    int16_t BoxOrientation; // Object box orientation in the reference coordinate system in 1/100
+    int8_t Boxflag;         // 0: object boxes, 1: bounding boxes
+    uint16_t BoxSizeX;
+    uint16_t BoxSizeY;
+    // int16_t BoxCenterX;
+    // int16_t BoxCenterY;
 
-    int BoxSizeX;
-    int BoxSizeY;
-    int ObjectID4;
-    int Objectclassification;
-    int ObjectCnt;
-    double Object[100];
+    int Objectclassification; // object class
+    int ObjectCnt;            // Object detection count
+    double Object[100];       // Data(class, x, y, ..., class30, x30, y30)
 
     // 보행자 판단
     double Distance[30];
     double MinimumPedestrianDistance;
     uint16_t MinimumPedestrianIdx[30];
-    int FrameCont;
-    int FrameFlag;
+    
+    // uint16_t FrameCnt; // Data overshoot check
+    // int FrameFlag; // 경로상 장애물 판단 flag
 };
 
 // ------------------------------ Config ------------------------------------- //
@@ -142,9 +149,10 @@ extern const bool GPSRecord;       // GPS 데이터 기록 플래그 변수
 extern const string GPSRecordPath; //  GPS 데이터 기록 경로를 나타내는 문자열 상수
 extern const string ReferenceFile; // 참조 파일 경로를 나타내는 문자열 상수
 extern const int MainCycle;        // 프로그램의 동작 속도를 조절
-extern bool MobileyeFlag;
-extern bool IbeoFlag;
-extern bool PedestrianFlag; // PedestrianDistance 함수 호출
+
+// ------------------------------ Sensor ------------------------------------- //
+extern int MobileyeFlag;
+extern int IbeoFlag;
 extern char GPSRaw[100]; // GPS Raw 데이터 저장
 
 // ------------------------------ Struct ------------------------------------- //

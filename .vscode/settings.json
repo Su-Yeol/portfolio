@@ -53,5 +53,6 @@
         "streambuf": "cpp",
         "thread": "cpp",
         "typeinfo": "cpp"
-    }
+    },
+    "cmake.sourceDirectory": "/home/KATECH/networkap_sdk_r22-11-SDK_230623/sample_code/Control"
 }

@@ -9,7 +9,6 @@ const int TargetSpeed = Configuration.GetInt("TargetSpeed"); // [kph]
 // GPSParser
 const bool GPSRecord = Configuration.GetBool("GPSRecord");
 const string GPSRecordPath = Configuration.GetString("GPSRecordPath");
-char GPSRaw[100]; // GPS raw
 
 // PathReceiver
 const bool ReceivePathFlag = Configuration.GetBool("ReceivePathFlag");
@@ -113,6 +112,11 @@ void VehicleReceiver()
 
             case 0xEA:
                 VehicleCache.MDPSmode = VehicleCANFD.FrameFd.data[5] & 0x0F;
+
+                // case 0x1016:
+                //     IbeoRecv.Frame.data[0] = 1; // relative velocitiesb
+                //     IbeoRecv.Frame.data[1] = 0; // object boxes
+                //     break;
             }
 
             Vehicle = VehicleCache;
@@ -138,34 +142,49 @@ void VehicleReceiver()
 
 void IbeoReceiver()
 {
+    // struct timeval startTime, endTime;
+    // uint16_t TimeGap;
+
     CANClass IbeoRecv;
-    VehicleStruct VehicleCache;
     IbeoVariable IbeoCache;
     IbeoRecv.SetSocket("can1", 0);
     uint8_t ObjectCnt = 0;
 
     std::cout << "[Communicator] ------------------- IbeoReceiver Thread start! " << endl;
+
+    // gettimeofday(&startTime, NULL);
     while (SocketFlag)
     {
         try
         {
+            // gettimeofday(&endTime, NULL);
+            // TimeGap = (endTime.tv_sec - startTime.tv_sec) * 1000 + ((endTime.tv_usec - startTime.tv_usec) / 1000); // [ms]
+
             IbeoRecv.ReceiveCAN();
             switch (IbeoRecv.Frame.can_id)
             {
             case 0x500:
-                // VehicleCache.Ibeo.Object[0] = (int)ObjectCnt; // object count
-                // Vehicle.Ibeo = VehicleCache.Ibeo;
-                // VehicleCache.Ibeo.Object[0] = (int)(IbeoRecv.Frame.data[1]);
-
                 IbeoCache.ObjectCnt = (int)(IbeoRecv.Frame.data[1]);
+                /* bit 0
+                    0 = absolute velocities
+                    1 = relative velocities
+
+                   bit 1
+                    0 = object boxes
+                    1 = bounding boxes */
+                IbeoCache.Boxflag = IbeoRecv.Frame.data[4];
                 ObjectCnt = 0;
+
+                // printf("\nObject Count : %d\n", IbeoCache.ObjectCnt);
                 break;
 
             case 0x502:
                 // Boxsize
                 IbeoCache.ObjectID = IbeoRecv.Frame.data[0]; // 트랙킹 ID 값
+                // 기준 좌표계(cm)
                 IbeoCache.X = (IbeoRecv.Frame.data[1] << 8) + IbeoRecv.Frame.data[2];
                 IbeoCache.Y = (IbeoRecv.Frame.data[3] << 8) + IbeoRecv.Frame.data[4];
+                // 기준 좌표게에서 물체속도(0.1m/s) - 0x800: an invalid veloctiy
                 IbeoCache.Vx = (IbeoRecv.Frame.data[5] << 4) + ((IbeoRecv.Frame.data[6] & 0xF0) >> 4);
                 IbeoCache.Vy = ((IbeoRecv.Frame.data[6] & 0x0F) << 8) + IbeoRecv.Frame.data[7];
 
@@ -176,15 +195,17 @@ void IbeoReceiver()
                 break;
 
             case 0x504:
-                // idx 0: Object Count, idx 1: Object Class, idx 2: Object X, idx 3: Object y
-                // 종 횡 확인
                 IbeoCache.Objectclassification = IbeoRecv.Frame.data[1];
 
+                // 0: unclassified, 1: unknown small, 2: unknown big, 3: pedestrian, 4: bike, 5: car, 6: truck
                 IbeoCache.Object[ObjectCnt * 3 + 1] = (int)IbeoCache.Objectclassification;
                 IbeoCache.Object[ObjectCnt * 3 + 2] = ((double)IbeoCache.X / 100); // [m]
                 IbeoCache.Object[ObjectCnt * 3 + 3] = ((double)IbeoCache.Y / 100); // [m]
+
+                //IbeoCache.BoxCenterX = (IbeoRecv.Frame.data[4] << 8) + IbeoRecv.Frame.data[5];
+                //IbeoCache.BoxCenterY = (IbeoRecv.Frame.data[6] << 8) + IbeoRecv.Frame.data[7];
                 ObjectCnt += 1;
-                
+
                 // 1: Unknown big || 2: Unknown small || 3: 사람
                 // if (IbeoCache.Objectclassification == 1 || IbeoCache.Objectclassification == 2 || IbeoCache.Objectclassification == 3)
                 // {
@@ -193,7 +214,6 @@ void IbeoReceiver()
                 //     IbeoCache.Object[ObjectCnt * 3 + 3] = ((double)IbeoCache.Y / 100); // [m]
                 //     ObjectCnt += 1;
                 // }
-
                 // else
                 // {
                 //     IbeoCache.Object[ObjectCnt * 3 + 1] = 500;
@@ -202,17 +222,25 @@ void IbeoReceiver()
                 //     ObjectCnt += 1;
                 // }
                 break;
+
+            case 0x505:
+                // 0x8000 : an invalid orientation
+                IbeoCache.BoxSizeX = (IbeoRecv.Frame.data[1] << 8) + IbeoRecv.Frame.data[2];
+                IbeoCache.BoxSizeY = (IbeoRecv.Frame.data[3] << 8) + IbeoRecv.Frame.data[4];
+                IbeoCache.BoxOrientation = (IbeoRecv.Frame.data[5] << 8) + IbeoRecv.Frame.data[6];
+
+                // printf("Class : %d || Ibeo X : %.4lf || Ibeo Y : %.4lf  || ", IbeoCache.Objectclassification, ((double)IbeoCache.X / 100), ((double)IbeoCache.Y / 100));
+                // printf("Box Flag : %d || Box Size X, Y : %d, %d || Box Orientation %d\n", IbeoCache.Boxflag, IbeoCache.BoxSizeX, IbeoCache.BoxSizeY, IbeoCache.BoxOrientation);
+
+                // printf("%d\n", TimeGap);
+                // gettimeofday(&startTime, NULL);
+                break;
             }
 
             if (IbeoFlag)
             {
                 Ibeo = IbeoCache;
-                // for (uint8_t i = 0; i < Ibeo.ObjectCnt; i++)
-                // {
-                //     printf("Ibeo Object Count : %d || Objectclassification : %d || Ibeo X : %.4lf || Ibeo Y : %.4lf\n", i, Ibeo.Objectclassification,
-                //            Ibeo.Object[i * 3 + 2], Ibeo.Object[i * 3 + 3]);
-                // }
-                IbeoFlag = false;
+                IbeoFlag = 0;
             }
         }
         catch (std::out_of_range &e)
@@ -239,8 +267,8 @@ void GPSParser()
     GPSStruct GPSCache;
     VehicleStruct VehicleCache;
 
-    GPSBD.SetSocket(BroadCastIp, S32GPort, 1); // .255, 3004
-    Back.SetSocket(S32GIp, BackPort, 0);       // .99, 3862
+    GPSBD.SetSocket(BroadCastIp, S32GPort, 1); // .255, 3004 -> 임의로 가능하지 않을까? S32GPort
+    // Back.SetSocket(S32GIp, BackPort, 0);       // .99, 3862
     std::cout << "[Communicator] ------------------- GPSReceiver Thread start! " << endl;
 
     while (SocketFlag)
@@ -265,31 +293,31 @@ void GPSParser()
             GPS = GPSCache;
 
             // TC KCITY Path 시 필요
-            VehicleCache = Vehicle;
-            Back.Buffer[0] = (uint32_t)(GPSCache.Time * 1000);
-            Back.Buffer[1] = ((uint32_t)(GPSCache.Time * 1000)) >> 8;
-            Back.Buffer[2] = ((uint32_t)(GPSCache.Time * 1000)) >> 16;
-            Back.Buffer[3] = ((uint32_t)(GPSCache.Time * 1000)) >> 24;
-            Back.Buffer[4] = (uint32_t)(GPSCache.Latitude * 10000000);
-            Back.Buffer[5] = ((uint32_t)(GPSCache.Latitude * 10000000)) >> 8;
-            Back.Buffer[6] = ((uint32_t)(GPSCache.Latitude * 10000000)) >> 16;
-            Back.Buffer[7] = ((uint32_t)(GPSCache.Latitude * 10000000)) >> 24;
-            Back.Buffer[8] = (uint32_t)(GPSCache.Longitude * 10000000);
-            Back.Buffer[9] = ((uint32_t)(GPSCache.Longitude * 10000000)) >> 8;
-            Back.Buffer[10] = ((uint32_t)(GPSCache.Longitude * 10000000)) >> 16;
-            Back.Buffer[11] = ((uint32_t)(GPSCache.Longitude * 10000000)) >> 24;
-            Back.Buffer[12] = (uint32_t)(GPSCache.Azimuth * 100);
-            Back.Buffer[13] = ((uint32_t)(GPSCache.Azimuth * 100)) >> 8;
-            Back.Buffer[14] = ((uint32_t)(GPSCache.Azimuth * 100)) >> 16;
-            Back.Buffer[15] = ((uint32_t)(GPSCache.Azimuth * 100)) >> 24;
-            Back.Buffer[16] = GPSCache.State;
-            Back.Buffer[17] = (uint32_t)(VehicleCache.Velocity * 3.6 * 100);
-            Back.Buffer[18] = ((uint32_t)(VehicleCache.Velocity * 3.6 * 100)) >> 8;
-            Back.Buffer[19] = ((uint32_t)(VehicleCache.Velocity * 3.6 * 100)) >> 16;
-            Back.Buffer[20] = ((uint32_t)(VehicleCache.Velocity * 3.6 * 100)) >> 24;
-            Back.Buffer[21] = VehicleCache.LeftTurnSwitch;
-            Back.Buffer[22] = VehicleCache.RightTurnSwitch;
-            Back.Send(23);
+            // VehicleCache = Vehicle;
+            // Back.Buffer[0] = (uint32_t)(GPSCache.Time * 1000);
+            // Back.Buffer[1] = ((uint32_t)(GPSCache.Time * 1000)) >> 8;
+            // Back.Buffer[2] = ((uint32_t)(GPSCache.Time * 1000)) >> 16;
+            // Back.Buffer[3] = ((uint32_t)(GPSCache.Time * 1000)) >> 24;
+            // Back.Buffer[4] = (uint32_t)(GPSCache.Latitude * 10000000);
+            // Back.Buffer[5] = ((uint32_t)(GPSCache.Latitude * 10000000)) >> 8;
+            // Back.Buffer[6] = ((uint32_t)(GPSCache.Latitude * 10000000)) >> 16;
+            // Back.Buffer[7] = ((uint32_t)(GPSCache.Latitude * 10000000)) >> 24;
+            // Back.Buffer[8] = (uint32_t)(GPSCache.Longitude * 10000000);
+            // Back.Buffer[9] = ((uint32_t)(GPSCache.Longitude * 10000000)) >> 8;
+            // Back.Buffer[10] = ((uint32_t)(GPSCache.Longitude * 10000000)) >> 16;
+            // Back.Buffer[11] = ((uint32_t)(GPSCache.Longitude * 10000000)) >> 24;
+            // Back.Buffer[12] = (uint32_t)(GPSCache.Azimuth * 100);
+            // Back.Buffer[13] = ((uint32_t)(GPSCache.Azimuth * 100)) >> 8;
+            // Back.Buffer[14] = ((uint32_t)(GPSCache.Azimuth * 100)) >> 16;
+            // Back.Buffer[15] = ((uint32_t)(GPSCache.Azimuth * 100)) >> 24;
+            // Back.Buffer[16] = GPSCache.State;
+            // Back.Buffer[17] = (uint32_t)(VehicleCache.Velocity * 3.6 * 100);
+            // Back.Buffer[18] = ((uint32_t)(VehicleCache.Velocity * 3.6 * 100)) >> 8;
+            // Back.Buffer[19] = ((uint32_t)(VehicleCache.Velocity * 3.6 * 100)) >> 16;
+            // Back.Buffer[20] = ((uint32_t)(VehicleCache.Velocity * 3.6 * 100)) >> 24;
+            // Back.Buffer[21] = VehicleCache.LeftTurnSwitch;
+            // Back.Buffer[22] = VehicleCache.RightTurnSwitch;
+            // Back.Send(23);
         }
         catch (std::out_of_range &e)
         {
@@ -316,7 +344,7 @@ void PathReceiver()
     UDPClass Forward;
     GlobalPathStruct GlobalCache;
     struct timeval FirstTime, SecondTime;
-    Forward.SetSocket(S32GIp, ForwardPort, 1); // 1785
+    Forward.SetSocket(S32GIp, ForwardPort, 1); // .99, 1785
     uint32_t RecvCnt = 0;
     double TimeGap;
 
@@ -328,18 +356,24 @@ void PathReceiver()
         {
             uint32_t ErrorCnt = 0, TotalCnt = 0;
             gettimeofday(&FirstTime, NULL);
+
             Forward.Receive(BufferSize);
+
             gettimeofday(&SecondTime, NULL);
             TimeGap = (SecondTime.tv_sec - FirstTime.tv_sec) * 1000 + ((SecondTime.tv_usec - FirstTime.tv_usec) / 1000); // [ms]
             RecvCnt++;
+
             memset(&GlobalCache.Latitude, 0, BufferSize);
             memset(&GlobalCache.Longitude, 0, BufferSize);
+
             for (uint32_t i = 0; i < BufferSize / 8; i++)
             {
                 GlobalCache.Longitude[i] = 0.0000001 * (uint32_t)((Forward.Buffer[8 * i + 3] << 24) + (Forward.Buffer[8 * i + 2] << 16) + (Forward.Buffer[8 * i + 1] << 8) + Forward.Buffer[8 * i]);
                 GlobalCache.Latitude[i] = 0.0000001 * (uint32_t)((Forward.Buffer[8 * i + 7] << 24) + (Forward.Buffer[8 * i + 6] << 16) + (Forward.Buffer[8 * i + 5] << 8) + Forward.Buffer[8 * i + 4]);
+
                 if (GlobalCache.Longitude[i] == 0 || GlobalCache.Latitude[i] == 0)
                     ErrorCnt++;
+
                 TotalCnt++;
             }
             ErrorCnt = 0;
@@ -598,7 +632,7 @@ void MobileyeReceiver()
             if (MobileyeFlag)
             {
                 Mobileye = MobileyeCache;
-                MobileyeFlag = false;
+                MobileyeFlag = 0;
             }
         }
 
