@@ -267,8 +267,8 @@ void GPSParser()
     GPSStruct GPSCache;
     VehicleStruct VehicleCache;
 
-    GPSBD.SetSocket(BroadCastIp, S32GPort, 1); // .255, 3004 -> 임의로 가능하지 않을까? S32GPort
-    // Back.SetSocket(S32GIp, BackPort, 0);       // .99, 3862
+    GPSBD.SetSocket(BroadCastIp, S32GPort, 1); // .255, 3004
+    Back.SetSocket(S32GIp, BackPort, 0);       // .99, 3862
     std::cout << "[Communicator] ------------------- GPSReceiver Thread start! " << endl;
 
     while (SocketFlag)
@@ -293,31 +293,35 @@ void GPSParser()
             GPS = GPSCache;
 
             // TC KCITY Path 시 필요
-            // VehicleCache = Vehicle;
-            // Back.Buffer[0] = (uint32_t)(GPSCache.Time * 1000);
-            // Back.Buffer[1] = ((uint32_t)(GPSCache.Time * 1000)) >> 8;
-            // Back.Buffer[2] = ((uint32_t)(GPSCache.Time * 1000)) >> 16;
-            // Back.Buffer[3] = ((uint32_t)(GPSCache.Time * 1000)) >> 24;
-            // Back.Buffer[4] = (uint32_t)(GPSCache.Latitude * 10000000);
-            // Back.Buffer[5] = ((uint32_t)(GPSCache.Latitude * 10000000)) >> 8;
-            // Back.Buffer[6] = ((uint32_t)(GPSCache.Latitude * 10000000)) >> 16;
-            // Back.Buffer[7] = ((uint32_t)(GPSCache.Latitude * 10000000)) >> 24;
-            // Back.Buffer[8] = (uint32_t)(GPSCache.Longitude * 10000000);
-            // Back.Buffer[9] = ((uint32_t)(GPSCache.Longitude * 10000000)) >> 8;
-            // Back.Buffer[10] = ((uint32_t)(GPSCache.Longitude * 10000000)) >> 16;
-            // Back.Buffer[11] = ((uint32_t)(GPSCache.Longitude * 10000000)) >> 24;
-            // Back.Buffer[12] = (uint32_t)(GPSCache.Azimuth * 100);
-            // Back.Buffer[13] = ((uint32_t)(GPSCache.Azimuth * 100)) >> 8;
-            // Back.Buffer[14] = ((uint32_t)(GPSCache.Azimuth * 100)) >> 16;
-            // Back.Buffer[15] = ((uint32_t)(GPSCache.Azimuth * 100)) >> 24;
-            // Back.Buffer[16] = GPSCache.State;
-            // Back.Buffer[17] = (uint32_t)(VehicleCache.Velocity * 3.6 * 100);
-            // Back.Buffer[18] = ((uint32_t)(VehicleCache.Velocity * 3.6 * 100)) >> 8;
-            // Back.Buffer[19] = ((uint32_t)(VehicleCache.Velocity * 3.6 * 100)) >> 16;
-            // Back.Buffer[20] = ((uint32_t)(VehicleCache.Velocity * 3.6 * 100)) >> 24;
-            // Back.Buffer[21] = VehicleCache.LeftTurnSwitch;
-            // Back.Buffer[22] = VehicleCache.RightTurnSwitch;
-            // Back.Send(23);
+            VehicleCache = Vehicle;
+            Back.Buffer[0] = (uint32_t)(GPSCache.Time * 1000);
+            Back.Buffer[1] = ((uint32_t)(GPSCache.Time * 1000)) >> 8;
+            Back.Buffer[2] = ((uint32_t)(GPSCache.Time * 1000)) >> 16;
+            Back.Buffer[3] = ((uint32_t)(GPSCache.Time * 1000)) >> 24;
+            Back.Buffer[4] = (uint32_t)(GPSCache.Latitude * 10000000);
+            Back.Buffer[5] = ((uint32_t)(GPSCache.Latitude * 10000000)) >> 8;
+            Back.Buffer[6] = ((uint32_t)(GPSCache.Latitude * 10000000)) >> 16;
+            Back.Buffer[7] = ((uint32_t)(GPSCache.Latitude * 10000000)) >> 24;
+            Back.Buffer[8] = (uint32_t)(GPSCache.Longitude * 10000000);
+            Back.Buffer[9] = ((uint32_t)(GPSCache.Longitude * 10000000)) >> 8;
+            Back.Buffer[10] = ((uint32_t)(GPSCache.Longitude * 10000000)) >> 16;
+            Back.Buffer[11] = ((uint32_t)(GPSCache.Longitude * 10000000)) >> 24;
+            Back.Buffer[12] = (uint32_t)(GPSCache.Azimuth * 100);
+            Back.Buffer[13] = ((uint32_t)(GPSCache.Azimuth * 100)) >> 8;
+            Back.Buffer[14] = ((uint32_t)(GPSCache.Azimuth * 100)) >> 16;
+            Back.Buffer[15] = ((uint32_t)(GPSCache.Azimuth * 100)) >> 24;
+            Back.Buffer[16] = GPSCache.State;
+            Back.Buffer[17] = (uint32_t)(VehicleCache.Velocity * 3.6 * 100);
+            Back.Buffer[18] = ((uint32_t)(VehicleCache.Velocity * 3.6 * 100)) >> 8;
+            Back.Buffer[19] = ((uint32_t)(VehicleCache.Velocity * 3.6 * 100)) >> 16;
+            Back.Buffer[20] = ((uint32_t)(VehicleCache.Velocity * 3.6 * 100)) >> 24;
+            Back.Buffer[21] = VehicleCache.LeftTurnSwitch;
+            Back.Buffer[22] = VehicleCache.RightTurnSwitch;
+            Back.Buffer[23] = 0;
+            Back.Buffer[24] = 0;
+            Back.Buffer[25] = 0;
+            Back.Buffer[26] = 0;
+            Back.Send(27);
         }
         catch (std::out_of_range &e)
         {

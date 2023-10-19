@@ -7,7 +7,7 @@ import plotly.graph_objects as go
 
 # WSL 경로에서 파일 읽어오기
 # "/home/KATECH/JudgmentModule/Path/KATECH/KATECH_SECRET_0908_23.07.03-18_27_26.txt"
-with open("/home/KATECH/JudgmentModule/Path/KCITY/231004-215115_Gps.txt", 'r') as file:
+with open("/home/KATECH/JudgmentModule/Path/KCITY/KCITY_F2_0911.txt", 'r') as file:
     lines = file.readlines()
 
 latitudes = []

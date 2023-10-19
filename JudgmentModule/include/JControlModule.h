@@ -20,8 +20,8 @@
 #include <math.h>
 #include <cmath>
 
-#define BufferSize 8192
-#define PathSize 8192
+#define BufferSize 8192 // 1024
+#define PathSize 8192   // 8192
 
 using namespace std;
 
@@ -134,8 +134,8 @@ struct IbeoVariable
 
     // 보행자 판단
     double Distance[30];
-    double MinimumPedestrianDistance;
-    uint16_t MinimumPedestrianIdx[30];
+    double MinPedDist;
+    uint16_t MinPedIdx[30];
     
     // uint16_t FrameCnt; // Data overshoot check
     // int FrameFlag; // 경로상 장애물 판단 flag
