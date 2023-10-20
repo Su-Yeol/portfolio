@@ -6,17 +6,22 @@ import plotly.graph_objects as go
 # import plotly.graph_objs as go
 
 # WSL 경로에서 파일 읽어오기
-# "/home/KATECH/JudgmentModule/Path/KATECH/KATECH_SECRET_0908_23.07.03-18_27_26.txt"
-with open("/home/KATECH/JudgmentModule/Path/KCITY/KCITY_F2_0911.txt", 'r') as file:
-    lines = file.readlines()
+# "/home/KATECH/JudgmentModule/data/Ibeo/Incheon_Ibeo_1020_23.10.20-18_52_06.txt"
+with open("/home/KATECH/JudgmentModule/data/Ibeo/Incheon_Ibeo_1020_23.10.20-18_52_06.txt", 'r') as file:
+    lines = file.readlines()#[10000:50000]
 
+cnt = []
+objcnt = []
+localX = []
+localY = []
 latitudes = []
 longitudes = []
 
 for line in lines:
     parts = line.strip().split('/')
-    if len(parts) == 2:
-        latitude, longitude = map(float, parts)
+    if len(parts) == 6:
+        cnt, objcnt, localX, localY, latitude, longitude = map(float, parts)
+        #cnt.append(count)
         latitudes.append(latitude)
         longitudes.append(longitude)
 

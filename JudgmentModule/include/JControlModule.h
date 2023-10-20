@@ -76,7 +76,6 @@ struct GlobalPathStruct
     double GapLongitude;
     double Heading; // 주행 경로의 방향(pre, next 위경도를 이용하여 차의 방향(0~360도)을 나타냄.
     // 일반적으로 각도로 표현, GPS 방위각(azimous) - error를 구해서 wheel 각도 구하는데 사용
-
     double LocalizationGap;
 };
 
@@ -132,6 +131,11 @@ struct IbeoVariable
     int ObjectCnt;            // Object detection count
     double Object[100];       // Data(class, x, y, ..., class30, x30, y30)
 
+    // test
+    double RObject[100];
+    double Longitude[30];
+    double Latitude[30];
+
     // 보행자 판단
     double Distance[30];
     double MinPedDist;
@@ -147,6 +151,12 @@ extern const bool ReceivePathFlag; // TELECONS 시뮬레이션 경로 확인용
 extern const bool ViewerFlag;      //
 extern const bool GPSRecord;       // GPS 데이터 기록 플래그 변수
 extern const string GPSRecordPath; //  GPS 데이터 기록 경로를 나타내는 문자열 상수
+extern const bool PathRecord;
+extern const string PathRecordPath;
+extern const bool PedRecord;
+extern const string PedDataPath;
+extern const bool IbeoRecord;
+extern const string IbeoDataPath;
 extern const string ReferenceFile; // 참조 파일 경로를 나타내는 문자열 상수
 extern const int MainCycle;        // 프로그램의 동작 속도를 조절
 

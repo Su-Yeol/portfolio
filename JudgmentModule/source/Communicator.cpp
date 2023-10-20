@@ -6,9 +6,15 @@ CConfigParser Configuration("./config.ini");
 const int MainCycle = Configuration.GetInt("MainCycle");
 const int TargetSpeed = Configuration.GetInt("TargetSpeed"); // [kph]
 
-// GPSParser
+// GPSParser, Path, Pedestrian, Ibeo
 const bool GPSRecord = Configuration.GetBool("GPSRecord");
 const string GPSRecordPath = Configuration.GetString("GPSRecordPath");
+const bool PathRecord = Configuration.GetBool("PathRecord");
+const string PathRecordPath = Configuration.GetString("PathRecordPath");
+const bool IbeoRecord = Configuration.GetBool("IbeoRecord");
+const string IbeoDataPath = Configuration.GetString("IbeoDataPath");
+const bool PedRecord = Configuration.GetBool("PedRecord");
+const string PedDataPath = Configuration.GetString("PedDataPath");
 
 // PathReceiver
 const bool ReceivePathFlag = Configuration.GetBool("ReceivePathFlag");
@@ -201,6 +207,10 @@ void IbeoReceiver()
                 IbeoCache.Object[ObjectCnt * 3 + 1] = (int)IbeoCache.Objectclassification;
                 IbeoCache.Object[ObjectCnt * 3 + 2] = ((double)IbeoCache.X / 100); // [m]
                 IbeoCache.Object[ObjectCnt * 3 + 3] = ((double)IbeoCache.Y / 100); // [m]
+                // Rotated X, Y
+                IbeoCache.RObject[ObjectCnt * 3 + 1] = (int)IbeoCache.Objectclassification;
+                // IbeoCache.RObject[ObjectCnt * 3 + 2] = (IbeoCache.X * cos(Vehicle.)); // [m]
+                // IbeoCache.RObject[ObjectCnt * 3 + 3] = ((double)IbeoCache.Y / 100); // [m]
 
                 //IbeoCache.BoxCenterX = (IbeoRecv.Frame.data[4] << 8) + IbeoRecv.Frame.data[5];
                 //IbeoCache.BoxCenterY = (IbeoRecv.Frame.data[6] << 8) + IbeoRecv.Frame.data[7];
@@ -231,7 +241,7 @@ void IbeoReceiver()
 
                 // printf("Class : %d || Ibeo X : %.4lf || Ibeo Y : %.4lf  || ", IbeoCache.Objectclassification, ((double)IbeoCache.X / 100), ((double)IbeoCache.Y / 100));
                 // printf("Box Flag : %d || Box Size X, Y : %d, %d || Box Orientation %d\n", IbeoCache.Boxflag, IbeoCache.BoxSizeX, IbeoCache.BoxSizeY, IbeoCache.BoxOrientation);
-
+                // y를 10m 안으로만
                 // printf("%d\n", TimeGap);
                 // gettimeofday(&startTime, NULL);
                 break;
@@ -240,6 +250,8 @@ void IbeoReceiver()
             if (IbeoFlag)
             {
                 Ibeo = IbeoCache;
+                // for(uint8_t i = 0; i<Ibeo.ObjectCnt; i++)
+                //     printf("Class : %d || Ibeo X : %.4lf || Ibeo Y : %.4lf\n", Ibeo.Objectclassification, Ibeo.Object[i*3+2], Ibeo.Object[i*3+3]);
                 IbeoFlag = 0;
             }
         }

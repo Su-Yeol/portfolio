@@ -21,7 +21,9 @@ bool PathErrorFlag = false;
 int MobileyeFlag = 1;
 int IbeoFlag = 1;
 
-char GPSRaw[100] = {0, }; // GPS raw
+char GPSRaw[100] = {
+    0,
+}; // GPS raw
 
 // 30 ~ 130 byte low
 /* ------------------------------- Main ------------------------------- */
@@ -34,16 +36,20 @@ int main(int argc, const char *argv[])
 
     struct timeval startTime, endTime;
     uint16_t TimeGap;
+    uint32_t MainCnt = 0;
 
     /* GPS Path Save File */
     time_t t = time(NULL);
     struct tm tm = *localtime(&t);
     char TimeBuffer[50], format[5] = ".txt";
-    char GPSPath[100];
+    char GPSPath[100], PedData[100], IbeoData[100], PathPath[100];
 
     // Path name
     sprintf(TimeBuffer, "%02d.%02d.%02d-%02d:%02d:%02d", tm.tm_year % 100, tm.tm_mon + 1, tm.tm_mday, tm.tm_hour, tm.tm_min, tm.tm_sec);
     sprintf(GPSPath, "%s%s.txt", GPSRecordPath.c_str(), TimeBuffer);
+    sprintf(PathPath, "%s%s.txt", PathRecordPath.c_str(), TimeBuffer);
+    sprintf(PedData, "%s%s.txt", PedDataPath.c_str(), TimeBuffer);
+    sprintf(IbeoData, "%s%s.txt", IbeoDataPath.c_str(), TimeBuffer);
 
     FILE *GPSFile;
     if (GPSRecord) // default: false -> GPS raw data를 위해서 true
@@ -51,7 +57,37 @@ int main(int argc, const char *argv[])
         GPSFile = fopen(GPSPath, "w");
         if (GPSFile == NULL)
         {
-            printf("<Error Opening File>\n");
+            printf("<Error Opening GPSLogFile>\n");
+            return 1;
+        }
+    }
+    FILE* PathFile;
+    if (PathRecord)
+    {
+        PathFile = fopen(PathPath, "w");
+        if(PathFile == NULL)
+        {
+            printf("<Error Opening PathLogFile>\n");
+            return 1;
+        }
+    }
+    FILE *PedFile;
+    if (PedRecord)
+    {
+        PedFile = fopen(PedData, "w");
+        if (PedFile == NULL)
+        {
+            printf("<Error Opening PedDataFile>\n");
+            return 1;
+        }
+    }
+    FILE *IbeoFile;
+    if (IbeoRecord)
+    {
+        IbeoFile = fopen(IbeoData, "w");
+        if (IbeoFile == NULL)
+        {
+            printf("<Error Opening IbeoDataFile>\n");
             return 1;
         }
     }
@@ -64,20 +100,18 @@ int main(int argc, const char *argv[])
     IbeoThread = thread(IbeoReceiver);         // Ibeo Data 수신
 
     // --------------------------------------------------------------------------------------------------------------------------- //
-    gettimeofday(&startTime, NULL);
-    while (Vehicle.MDPSmode != 3)
-    {
-        gettimeofday(&endTime, NULL);
-        TimeGap = (endTime.tv_sec - startTime.tv_sec) * 1000 + ((endTime.tv_usec - startTime.tv_usec) / 1000); // [ms]
-        if (TimeGap > 500)
-        {
-            cout << "[ControlModule] ------------------ VehicleData updating...... MDPSMode : " << (int)Vehicle.MDPSmode << endl;
-            gettimeofday(&startTime, NULL);
-        }
-    }
-    cout << "[ControlModule] ------------------ VehicleData update success! " << endl;
-    // --------------------------------------------------------------------------------------------------------------------------- //
-
+    // gettimeofday(&startTime, NULL);
+    // while (Vehicle.MDPSmode != 3)
+    // {
+    //     gettimeofday(&endTime, NULL);
+    //     TimeGap = (endTime.tv_sec - startTime.tv_sec) * 1000 + ((endTime.tv_usec - startTime.tv_usec) / 1000); // [ms]
+    //     if (TimeGap > 500)
+    //     {
+    //         cout << "[ControlModule] ------------------ VehicleData updating...... MDPSMode : " << (int)Vehicle.MDPSmode << endl;
+    //         gettimeofday(&startTime, NULL);
+    //     }
+    // }
+    // cout << "[ControlModule] ------------------ VehicleData update success! " << endl;
     // --------------------------------------------------------------------------------------------------------------------------- //
     gettimeofday(&startTime, NULL);
     while (GPS.Time == 0)
@@ -91,9 +125,7 @@ int main(int argc, const char *argv[])
         }
     }
     std::cout << "[JudgmentModule] ------------------ GPSData update success! " << endl;
-    // --------------------------------------------------------------------------------------------------------------------------- //
-
-    // --------------------------------------------------------------------------------------------------------------------------- //
+    
     /* Path Initialize */
     if (ReceivePathFlag) // config.ini 기본 False -> Path 실시간 true(K-CITY - run.sh)
     {
@@ -139,29 +171,20 @@ int main(int argc, const char *argv[])
         {
             gettimeofday(&endTime, NULL);
             TimeGap = (endTime.tv_sec - startTime.tv_sec) * 1000 + ((endTime.tv_usec - startTime.tv_usec) / 1000); // [ms]
-            
+
             if (TimeGap >= MainCycle)
             {
                 // Mobileye Pedestrian
                 MobileyeFlag = 1;
                 IbeoFlag = 1;
 
-                // test
-                // printf("%s\n", ReceivePathFlag ? "[JudgmentModule] ReceivePathFlag: true":"ReceivePathFlag: false");
-
                 if (ReceivePathFlag) // config.ini에서 default: ReceivePathFlag = false
                 {
-                    // test
-                    // printf("%s\n", PathReceiveSignal ? "[JudgmentModule] PathReceiveSignal: true":"PathReceiveSignal: false");
-
                     if (PathReceiveSignal == false) // thread(PathReceiver)에서 Path 경로를 다 받아오면 false 시킨 후 동작
                     {
                         PathManager.InitializePath();
                     }
                 }
-
-                // test
-                // printf("%s\n", PathErrorFlag ? "[JudgmentModule] PathErrorFlag: true":"PathErrorFlag: false");
 
                 if (PathErrorFlag == false)
                 {
@@ -173,13 +196,33 @@ int main(int argc, const char *argv[])
 
                 if (GPSRecord)
                 {
-                    fprintf(GPSFile, "%.7f/%.7f\n", GPS.Latitude, GPS.Longitude);
+                    fprintf(GPSFile, "%d/%.7f/%.7f\n", MainCnt, GPS.Latitude, GPS.Longitude);
 
                     /* fprintf(GPSFile, "%.7f/%.7f/\n", GPS.Latitude, GPS.Longitude);
                     for (uint8_t i = 0; i < 100; i++) // GPS raw 데이터 저장
                         fprintf(GPSFile, "%c", GPSRaw[i]);
 
                     fprintf(GPSFile, "\n"); */
+                }
+                if (PathRecord) 
+                {
+                    for (uint32_t i=0; i<128; i++)
+                    {
+                        fprintf(PathFile, "%d/%.7lf/%.7lf\n", MainCnt, Global.Latitude[i], Global.Longitude[i]);
+                    }
+                }
+                MainCnt++;
+                printf("cnt %d||", MainCnt);
+                if (PedRecord) // Ped
+                {
+                    fprintf(PedFile, "%d/%.4lf/%.4lf\n", MainCnt, Ibeo.MinPedDist, PathManager.FrontVertexDistance);
+                }
+                if (IbeoRecord) // Ibeo
+                {
+                    for (uint8_t i = 0; i < Ibeo.ObjectCnt; i++)
+                    {
+                        fprintf(IbeoFile, "%d/%d/%d/%.4lf/%.4lf/%.7lf/%.7lf\n", MainCnt, i, Ibeo.ObjectID, Ibeo.Object[i * 3 + 2], Ibeo.Object[i * 3 + 3], Ibeo.Latitude[i], Ibeo.Longitude[i]);
+                    }
                 }
 
                 gettimeofday(&startTime, NULL);
@@ -209,6 +252,12 @@ int main(int argc, const char *argv[])
         PathThread.join();
     if (GPSRecord)
         fclose(GPSFile);
+    if (PathRecord)
+        fclose(PathFile);
+    if (PedRecord)
+        fclose(PedFile);
+    if (IbeoRecord)
+        fclose(IbeoFile);
 
     std::cout << "[JudgmentModule] ------------------ JudgmentModule END! ------------------ " << endl;
     KeyThread.join();
