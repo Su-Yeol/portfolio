@@ -4,6 +4,7 @@
 
 /* Struct */
 GPSStruct GPS;
+// GPSStruct Position;
 GlobalPathStruct Global;
 LocalPathStruct Local;
 VehicleStruct Vehicle;
@@ -18,6 +19,7 @@ bool MainFlag = true;
 bool SocketFlag = true;
 bool PathReceiveSignal = true; // PathReceiver에서 Global = GlobalCache 이후 다시 false
 bool PathErrorFlag = false;
+bool MCUSendSignal = false;
 int MobileyeFlag = 1;
 int IbeoFlag = 1;
 
@@ -32,7 +34,7 @@ int main(int argc, const char *argv[])
     (void)(argc); // 메인함수에 전달되는 정보의 갯수
     (void)(argv); // 메인함수에 전달되는 실질적인 정보로, 문자열의 배열
 
-    thread KeyThread, GPSThread, PathThread, VehicleThread, MobileyeThread, IbeoThread;
+    thread KeyThread, GPSThread, PathThread, VehicleThread, MobileyeThread, IbeoThread, MCUThread;
 
     struct timeval startTime, endTime;
     uint16_t TimeGap;
@@ -42,17 +44,17 @@ int main(int argc, const char *argv[])
     time_t t = time(NULL);
     struct tm tm = *localtime(&t);
     char TimeBuffer[50], format[5] = ".txt";
-    char GPSPath[100], PedData[100], IbeoData[100], PathPath[100];
+    char GPSPath[100], PathData[100], PedData[100], IbeoData[100];
 
     // Path name
     sprintf(TimeBuffer, "%02d.%02d.%02d-%02d:%02d:%02d", tm.tm_year % 100, tm.tm_mon + 1, tm.tm_mday, tm.tm_hour, tm.tm_min, tm.tm_sec);
     sprintf(GPSPath, "%s%s.txt", GPSRecordPath.c_str(), TimeBuffer);
-    sprintf(PathPath, "%s%s.txt", PathRecordPath.c_str(), TimeBuffer);
+    sprintf(PathData, "%s%s.txt", PathRecordPath.c_str(), TimeBuffer);
     sprintf(PedData, "%s%s.txt", PedDataPath.c_str(), TimeBuffer);
     sprintf(IbeoData, "%s%s.txt", IbeoDataPath.c_str(), TimeBuffer);
-
-    FILE *GPSFile;
-    if (GPSRecord) // default: false -> GPS raw data를 위해서 true
+    
+    FILE* GPSFile;
+    if (GPSRecord)
     {
         GPSFile = fopen(GPSPath, "w");
         if (GPSFile == NULL)
@@ -63,15 +65,15 @@ int main(int argc, const char *argv[])
     }
     FILE* PathFile;
     if (PathRecord)
-    {
-        PathFile = fopen(PathPath, "w");
+    {   
+        PathFile = fopen(PathData, "w");
         if(PathFile == NULL)
         {
             printf("<Error Opening PathLogFile>\n");
             return 1;
         }
     }
-    FILE *PedFile;
+    FILE* PedFile;
     if (PedRecord)
     {
         PedFile = fopen(PedData, "w");
@@ -81,7 +83,7 @@ int main(int argc, const char *argv[])
             return 1;
         }
     }
-    FILE *IbeoFile;
+    FILE* IbeoFile;
     if (IbeoRecord)
     {
         IbeoFile = fopen(IbeoData, "w");
@@ -98,6 +100,7 @@ int main(int argc, const char *argv[])
     VehicleThread = thread(VehicleReceiver);   // MDPS 3 운전모드, 5 자율주행모드
     MobileyeThread = thread(MobileyeReceiver); // Mobileye 보행자 상대좌표
     IbeoThread = thread(IbeoReceiver);         // Ibeo Data 수신
+    MCUThread = thread(MCUSender);
 
     // --------------------------------------------------------------------------------------------------------------------------- //
     // gettimeofday(&startTime, NULL);
@@ -125,7 +128,7 @@ int main(int argc, const char *argv[])
         }
     }
     std::cout << "[JudgmentModule] ------------------ GPSData update success! " << endl;
-    
+
     /* Path Initialize */
     if (ReceivePathFlag) // config.ini 기본 False -> Path 실시간 true(K-CITY - run.sh)
     {
@@ -174,7 +177,6 @@ int main(int argc, const char *argv[])
 
             if (TimeGap >= MainCycle)
             {
-                // Mobileye Pedestrian
                 MobileyeFlag = 1;
                 IbeoFlag = 1;
 
@@ -193,10 +195,11 @@ int main(int argc, const char *argv[])
                 }
 
                 PathReceiveSignal = true;
+                MCUSendSignal = true;
 
                 if (GPSRecord)
                 {
-                    fprintf(GPSFile, "%d/%.7f/%.7f\n", MainCnt, GPS.Latitude, GPS.Longitude);
+                    fprintf(GPSFile, "%.7f/%.7f\n", GPS.Latitude, GPS.Longitude);
 
                     /* fprintf(GPSFile, "%.7f/%.7f/\n", GPS.Latitude, GPS.Longitude);
                     for (uint8_t i = 0; i < 100; i++) // GPS raw 데이터 저장
@@ -204,24 +207,24 @@ int main(int argc, const char *argv[])
 
                     fprintf(GPSFile, "\n"); */
                 }
-                if (PathRecord) 
+                MainCnt++;
+                if (PathRecord)
                 {
-                    for (uint32_t i=0; i<128; i++)
+                    for (uint32_t i = 0; i < 128; i++)
                     {
                         fprintf(PathFile, "%d/%.7lf/%.7lf\n", MainCnt, Global.Latitude[i], Global.Longitude[i]);
                     }
                 }
-                MainCnt++;
-                printf("cnt %d||", MainCnt);
                 if (PedRecord) // Ped
                 {
-                    fprintf(PedFile, "%d/%.4lf/%.4lf\n", MainCnt, Ibeo.MinPedDist, PathManager.FrontVertexDistance);
+                    fprintf(PedFile, "%s/%d/%.4lf/%.4lf\n", TimeBuffer, MainCnt, Ibeo.MinPedDist, PathManager.FrontVertexDistance);
                 }
                 if (IbeoRecord) // Ibeo
                 {
                     for (uint8_t i = 0; i < Ibeo.ObjectCnt; i++)
                     {
-                        fprintf(IbeoFile, "%d/%d/%d/%.4lf/%.4lf/%.7lf/%.7lf\n", MainCnt, i, Ibeo.ObjectID, Ibeo.Object[i * 3 + 2], Ibeo.Object[i * 3 + 3], Ibeo.Latitude[i], Ibeo.Longitude[i]);
+                        fprintf(IbeoFile, "%s/%d/%d/%d/%d/%.4lf/%.4lf/%.7lf/%.7lf\n", TimeBuffer, MainCnt, i, Ibeo.ObjectID, Ibeo.PathObjectFlag,
+                                Ibeo.Object[i * 3 + 2], Ibeo.Object[i * 3 + 3], Ibeo.Latitude[i], Ibeo.Longitude[i]);
                     }
                 }
 
@@ -248,6 +251,7 @@ int main(int argc, const char *argv[])
     VehicleThread.join();
     MobileyeThread.join();
     IbeoThread.join();
+    MCUThread.join();
     if (ReceivePathFlag)
         PathThread.join();
     if (GPSRecord)

@@ -23,6 +23,9 @@
 #define BufferSize 8192 // 1024
 #define PathSize 8192   // 8192
 
+#define Lat2meter 110979.309
+#define Lon2meter 88907.949
+
 using namespace std;
 
 struct GPSStruct
@@ -131,18 +134,22 @@ struct IbeoVariable
     int ObjectCnt;            // Object detection count
     double Object[100];       // Data(class, x, y, ..., class30, x30, y30)
 
-    // test
-    double RObject[100];
-    double Longitude[30];
     double Latitude[30];
+    double Longitude[30];
+    double preLatitude[30];
+    double preLongitude[30];
+    double Longitude2[30];
+    double Latitude2[30];
 
     // 보행자 판단
     double Distance[30];
     double MinPedDist;
     uint16_t MinPedIdx[30];
-    
-    // uint16_t FrameCnt; // Data overshoot check
-    // int FrameFlag; // 경로상 장애물 판단 flag
+    int PathObjectFlag;
+    uint16_t MinIdx;
+
+    double FinalVertexDistance;
+    double IbeoDistance;
 };
 
 // ------------------------------ Config ------------------------------------- //
@@ -159,6 +166,7 @@ extern const bool IbeoRecord;
 extern const string IbeoDataPath;
 extern const string ReferenceFile; // 참조 파일 경로를 나타내는 문자열 상수
 extern const int MainCycle;        // 프로그램의 동작 속도를 조절
+extern bool MCUSendSignal;
 
 // ------------------------------ Sensor ------------------------------------- //
 extern int MobileyeFlag;

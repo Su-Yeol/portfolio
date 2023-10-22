@@ -10,9 +10,6 @@ using namespace std;
 #define OffsetLatitude 2.5 // 위도 offset
 #define OffsetLongitude 2.5 // 경도 offset`
 
-#define Lat2meter 110979.309
-#define Lon2meter 88907.949
-
 extern bool PathErrorFlag;
 
 class PathConverter
@@ -24,7 +21,7 @@ class PathConverter
 
         void PedestrianDistance();      // Vertex와 보행자 간의 최소거리
         double FrontVertexDistance;     // 보행자 인지 시 앞으로 남은 전방거리
-        //double PreFrontVertexDistance;  // Prevent data overshoot : save previous data
+        double PreFrontVertexDistance;  // Prevent data overshoot : save previous data
         uint32_t WayPointNum;
 
     private:

@@ -23,7 +23,6 @@ const string ReferenceFile = Configuration.GetString("ReferenceFile");
 // IP
 const string S32GIp = Configuration.GetString("S32GIp");           // GPSParser, PathReceiver
 const string BroadCastIp = Configuration.GetString("BroadCastIp"); // GPSParser
-// const string ExternalIp = Configuration.GetString("ExternalIp");
 
 // Port
 const int S32GPort = Configuration.GetInt("S32GPort");       // 3004, GPSParser
@@ -146,11 +145,123 @@ void VehicleReceiver()
     std::cout << "[Communicator] ------------------- VehicleReceiver Socket Closed! " << endl;
 }
 
+void MCUSender()
+{
+    UDPClass MCU;
+    MCU.SetSocket(MCUIp, MCUPort, 0);
+    uint8_t AliveCnt = 0;
+    uint16_t ObjDistance = 100;
+    uint32_t MinPedDist = 500;
+    uint16_t MinIdx = 500;
+    // int handle, Ax;
+    cout << "[Communicator] ------------------- MCUSender Thread start! " << endl;
+    while (SocketFlag)
+    {
+        try
+        {
+            if (MCUSendSignal)
+            {
+                if (Ibeo.IbeoDistance != 0)
+                {
+                    ObjDistance = (uint16_t)Ibeo.IbeoDistance;
+                }
+                if (Ibeo.MinPedDist != 0)
+                {
+                    MinPedDist = (uint32_t)Ibeo.MinPedDist;
+                }
+                if (Ibeo.MinIdx != 0)
+                {
+                    MinIdx = Ibeo.MinIdx;
+                }
+                // handle = (int)(Control.MPCHandle * 10. + 3600.);
+                // handle = (int)(Control.Handle * 10. + 3600.);
+                // Ax = (int)Control.Acceleration;
+
+                // old version
+                MCU.Buffer[0] = 0x01;
+                MCU.Buffer[1] = 0x02;
+                MCU.Buffer[2] = 0x03;
+                MCU.Buffer[3] = 0x04;
+                MCU.Buffer[4] = AliveCnt;
+                MCU.Buffer[5] = AliveCnt >> 8;
+                MCU.Buffer[6] = 0;
+                MCU.Buffer[7] = 0;
+                MCU.Buffer[8] = 0;
+                MCU.Buffer[9] = 0;
+                MCU.Buffer[10] = 0;
+                MCU.Buffer[11] = 0;
+                MCU.Buffer[12] = 0;
+                MCU.Buffer[15] = 0; // PathFollower
+                MCU.Buffer[16] = 0;
+                MCU.Buffer[17] = 0;
+                MCU.Buffer[18] = 0;
+                MCU.Buffer[19] = 0;
+                MCU.Buffer[20] = 0;
+                MCU.Buffer[21] = 0;
+                MCU.Buffer[22] = (ObjDistance * 100);
+                MCU.Buffer[23] = (ObjDistance * 100) >> 8;
+                MCU.Buffer[24] = 0;
+                MCU.Buffer[25] = 0;
+                MCU.Buffer[26] = (MinPedDist * 10000);
+                MCU.Buffer[27] = (MinPedDist * 10000) >> 8;
+                MCU.Buffer[28] = (MinPedDist * 10000) >> 16;
+                MCU.Buffer[29] = (MinPedDist * 10000) >> 24;
+                MCU.Buffer[30] = MinIdx;
+                MCU.Buffer[31] = MinIdx >> 8;
+                MCU.Send(32);
+                // 주행주인 차선의 정지선까지 거리. 자동차전용도로 같이, 정지선이 멀면 맥스값으로 주기.  ex) 60m.항상 나오고 있어야 함.
+                // 깜빡이를 언제 넣을지. (좌회전 할 건지, 우회전 할 건지, 경로 내 차선변경 포함) bool 값. // 1이 유지되는 공안 깜빡이 넣는다.
+                // 우회전 정지.
+                // TargetSpeed. 어린이보호구역(30,30), 도심로(60,30), 자동차전용도로(60,60)에 따라 바뀌어야 함. 클러스터에 띄우는 속도랑, 실제 타겟스피드랑 다르게.
+
+                // new verison
+                //  MCU.Buffer[0] = 4;
+                //  MCU.Buffer[1] = 9;
+                //  MCU.Buffer[2] = 1;
+                //  MCU.Buffer[3] = 2;
+                //  MCU.Buffer[4] = AliveCnt;
+                //  MCU.Buffer[5] = AliveCnt>>8;
+                //  MCU.Buffer[6] = TargetSpeed;
+                //  MCU.Buffer[7] = handle;
+                //  MCU.Buffer[8] = handle>>8;
+                //  MCU.Buffer[9] = handle>>16;
+                //  MCU.Buffer[10] = handle>>24;
+
+                // for(uint8_t i=0; i<100; i++)
+                // {
+                //     MCU.Buffer[i+11] = Vehicle.Ibeo.Object[i];
+                // }
+
+                // MCU.Send(111);
+
+                // if (AliveCnt == 255) AliveCnt = 0;
+                // else AliveCnt++;
+
+                MCUSendSignal = false;
+            }
+        }
+        catch (std::out_of_range &e)
+        {
+            std::cout << "<MCUSender> Out_of_range Error" << '\n';
+        }
+        catch (std::length_error &e)
+        {
+            std::cout << "<MCUSender> Length Error" << '\n';
+        }
+        catch (std::exception &e)
+        {
+            std::cout << "<MCUSender> EXCEPTION " << '\n';
+            std::cout << e.what() << '\n';
+        }
+    }
+    MCU.CloseSocket();
+    cout << "[Communicator] ------------------- MCUSender Socket Closed! " << endl;
+}
+
 void IbeoReceiver()
 {
     // struct timeval startTime, endTime;
     // uint16_t TimeGap;
-
     CANClass IbeoRecv;
     IbeoVariable IbeoCache;
     IbeoRecv.SetSocket("can1", 0);
@@ -207,30 +318,14 @@ void IbeoReceiver()
                 IbeoCache.Object[ObjectCnt * 3 + 1] = (int)IbeoCache.Objectclassification;
                 IbeoCache.Object[ObjectCnt * 3 + 2] = ((double)IbeoCache.X / 100); // [m]
                 IbeoCache.Object[ObjectCnt * 3 + 3] = ((double)IbeoCache.Y / 100); // [m]
-                // Rotated X, Y
-                IbeoCache.RObject[ObjectCnt * 3 + 1] = (int)IbeoCache.Objectclassification;
-                // IbeoCache.RObject[ObjectCnt * 3 + 2] = (IbeoCache.X * cos(Vehicle.)); // [m]
-                // IbeoCache.RObject[ObjectCnt * 3 + 3] = ((double)IbeoCache.Y / 100); // [m]
 
-                //IbeoCache.BoxCenterX = (IbeoRecv.Frame.data[4] << 8) + IbeoRecv.Frame.data[5];
-                //IbeoCache.BoxCenterY = (IbeoRecv.Frame.data[6] << 8) + IbeoRecv.Frame.data[7];
+                // Ibeo Latitude, Longitude
+                // IbeoCache.Latitude[ObjectCnt] = Position.Latitude + ((((double)IbeoCache.Y / 100) * cos(Global.Heading) - ((double)IbeoCache.X / 100) * sin(Global.Heading)) / Lat2meter);
+                // IbeoCache.Longitude[ObjectCnt] = Position.Longitude + ((((double)IbeoCache.X / 100) * cos(Global.Heading) + ((double)IbeoCache.Y / 100) * sin(Global.Heading)) / Lon2meter);
+                // IbeoCache.BoxCenterX = (IbeoRecv.Frame.data[4] << 8) + IbeoRecv.Frame.data[5];
+                // IbeoCache.BoxCenterY = (IbeoRecv.Frame.data[6] << 8) + IbeoRecv.Frame.data[7];
                 ObjectCnt += 1;
 
-                // 1: Unknown big || 2: Unknown small || 3: 사람
-                // if (IbeoCache.Objectclassification == 1 || IbeoCache.Objectclassification == 2 || IbeoCache.Objectclassification == 3)
-                // {
-                //     IbeoCache.Object[ObjectCnt * 3 + 1] = (int)IbeoCache.Objectclassification;
-                //     IbeoCache.Object[ObjectCnt * 3 + 2] = ((double)IbeoCache.X / 100); // [m]
-                //     IbeoCache.Object[ObjectCnt * 3 + 3] = ((double)IbeoCache.Y / 100); // [m]
-                //     ObjectCnt += 1;
-                // }
-                // else
-                // {
-                //     IbeoCache.Object[ObjectCnt * 3 + 1] = 500;
-                //     IbeoCache.Object[ObjectCnt * 3 + 2] = 500;
-                //     IbeoCache.Object[ObjectCnt * 3 + 3] = 500;
-                //     ObjectCnt += 1;
-                // }
                 break;
 
             case 0x505:
@@ -241,7 +336,7 @@ void IbeoReceiver()
 
                 // printf("Class : %d || Ibeo X : %.4lf || Ibeo Y : %.4lf  || ", IbeoCache.Objectclassification, ((double)IbeoCache.X / 100), ((double)IbeoCache.Y / 100));
                 // printf("Box Flag : %d || Box Size X, Y : %d, %d || Box Orientation %d\n", IbeoCache.Boxflag, IbeoCache.BoxSizeX, IbeoCache.BoxSizeY, IbeoCache.BoxOrientation);
-                // y를 10m 안으로만
+
                 // printf("%d\n", TimeGap);
                 // gettimeofday(&startTime, NULL);
                 break;
@@ -250,8 +345,6 @@ void IbeoReceiver()
             if (IbeoFlag)
             {
                 Ibeo = IbeoCache;
-                // for(uint8_t i = 0; i<Ibeo.ObjectCnt; i++)
-                //     printf("Class : %d || Ibeo X : %.4lf || Ibeo Y : %.4lf\n", Ibeo.Objectclassification, Ibeo.Object[i*3+2], Ibeo.Object[i*3+3]);
                 IbeoFlag = 0;
             }
         }
