@@ -150,7 +150,7 @@ void MCUSender()
     UDPClass MCU;
     MCU.SetSocket(MCUIp, MCUPort, 0);
     uint8_t AliveCnt = 0;
-    uint16_t ObjDistance = 100;
+    uint16_t PathObjDist = 100;
     uint32_t MinPedDist = 500;
     uint16_t MinIdx = 500;
     // int handle, Ax;
@@ -161,9 +161,9 @@ void MCUSender()
         {
             if (MCUSendSignal)
             {
-                if (Ibeo.IbeoDistance != 0)
+                if (Ibeo.PathObjDist != 0)
                 {
-                    ObjDistance = (uint16_t)Ibeo.IbeoDistance;
+                    PathObjDist = (uint16_t)Ibeo.PathObjDist;
                 }
                 if (Ibeo.MinPedDist != 0)
                 {
@@ -198,8 +198,8 @@ void MCUSender()
                 MCU.Buffer[19] = 0;
                 MCU.Buffer[20] = 0;
                 MCU.Buffer[21] = 0;
-                MCU.Buffer[22] = (ObjDistance * 100);
-                MCU.Buffer[23] = (ObjDistance * 100) >> 8;
+                MCU.Buffer[22] = (PathObjDist * 100);
+                MCU.Buffer[23] = (PathObjDist * 100) >> 8;
                 MCU.Buffer[24] = 0;
                 MCU.Buffer[25] = 0;
                 MCU.Buffer[26] = (MinPedDist * 10000);
@@ -260,8 +260,6 @@ void MCUSender()
 
 void IbeoReceiver()
 {
-    // struct timeval startTime, endTime;
-    // uint16_t TimeGap;
     CANClass IbeoRecv;
     IbeoVariable IbeoCache;
     IbeoRecv.SetSocket("can1", 0);
@@ -274,9 +272,6 @@ void IbeoReceiver()
     {
         try
         {
-            // gettimeofday(&endTime, NULL);
-            // TimeGap = (endTime.tv_sec - startTime.tv_sec) * 1000 + ((endTime.tv_usec - startTime.tv_usec) / 1000); // [ms]
-
             IbeoRecv.ReceiveCAN();
             switch (IbeoRecv.Frame.can_id)
             {
@@ -318,10 +313,6 @@ void IbeoReceiver()
                 IbeoCache.Object[ObjectCnt * 3 + 1] = (int)IbeoCache.Objectclassification;
                 IbeoCache.Object[ObjectCnt * 3 + 2] = ((double)IbeoCache.X / 100); // [m]
                 IbeoCache.Object[ObjectCnt * 3 + 3] = ((double)IbeoCache.Y / 100); // [m]
-
-                // Ibeo Latitude, Longitude
-                // IbeoCache.Latitude[ObjectCnt] = Position.Latitude + ((((double)IbeoCache.Y / 100) * cos(Global.Heading) - ((double)IbeoCache.X / 100) * sin(Global.Heading)) / Lat2meter);
-                // IbeoCache.Longitude[ObjectCnt] = Position.Longitude + ((((double)IbeoCache.X / 100) * cos(Global.Heading) + ((double)IbeoCache.Y / 100) * sin(Global.Heading)) / Lon2meter);
                 // IbeoCache.BoxCenterX = (IbeoRecv.Frame.data[4] << 8) + IbeoRecv.Frame.data[5];
                 // IbeoCache.BoxCenterY = (IbeoRecv.Frame.data[6] << 8) + IbeoRecv.Frame.data[7];
                 ObjectCnt += 1;
@@ -336,9 +327,6 @@ void IbeoReceiver()
 
                 // printf("Class : %d || Ibeo X : %.4lf || Ibeo Y : %.4lf  || ", IbeoCache.Objectclassification, ((double)IbeoCache.X / 100), ((double)IbeoCache.Y / 100));
                 // printf("Box Flag : %d || Box Size X, Y : %d, %d || Box Orientation %d\n", IbeoCache.Boxflag, IbeoCache.BoxSizeX, IbeoCache.BoxSizeY, IbeoCache.BoxOrientation);
-
-                // printf("%d\n", TimeGap);
-                // gettimeofday(&startTime, NULL);
                 break;
             }
 

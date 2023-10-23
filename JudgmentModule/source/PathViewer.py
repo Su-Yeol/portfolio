@@ -84,7 +84,7 @@ for location in locations:
     #               icon=folium.DivIcon(html=f"<div>{location[2]}</div>")).add_to(m)
 
 m.save("/home/KATECH/JudgmentModule/data/object_map_time_ic.html")
-# %% Haversine Formula Check
+# %% 하버사인, 방위각
 import math
 
 def haversine(lat1, lon1, lat2, lon2):
@@ -106,14 +106,59 @@ def haversine(lat1, lon1, lat2, lon2):
 
     return distance
 
+
+def calculate_bearing(lat1, lon1, lat2, lon2):
+    deg2rad = math.pi / 180.0
+    rad2deg = 180.0 / math.pi
+
+    lat1 = lat1 * deg2rad
+    lon1 = lon1 * deg2rad
+    lat2 = lat2 * deg2rad
+    lon2 = lon2 * deg2rad
+
+    dLon = lon2 - lon1
+
+    y = math.sin(dLon) * math.cos(lat2)
+    x = math.cos(lat1) * math.sin(lat2) - math.sin(lat1) * math.cos(lat2) * math.cos(dLon)
+
+    bearing = math.atan2(y, x)
+    bearing2 = (bearing * rad2deg + 360) % 360  # Ensure the result is in the range [0, 360) degrees
+
+    
+    print(f"Bearing: {bearing} degrees||Bearing2: {bearing2} degrees")
+
+    return bearing2
+
+def calculate_relative_bearing(car_bearing, target_bearing):
+    # Calculate the relative bearing where left is positive and right is negative
+    relative_bearing = target_bearing
+
+    if relative_bearing > 180.0:
+        relative_bearing -= 360.0
+    elif relative_bearing < -180.0:
+        relative_bearing += 360.0
+
+    return relative_bearing
+
 # Example usage 37.3963496/126.6348176/37.3963396/126.6348925
 lat1 = 37.3963496  # Latitude of Point 1
 lon1 = 126.6348176  # Longitude of Point 1
-lat2 = 500  # Latitude of Point 2
-lon2 = 500   # Longitude of Point 2
+lat2 = 37.3963396  # Latitude of Point 2
+lon2 = 126.6348925   # Longitude of Point 2
 
 distance = haversine(lat1, lon1, lat2, lon2)
-print(f"Distance: {distance} m")
+
+car_bearing = 90.0  # Assume the car's heading is 90 degrees
+target_bearing = calculate_bearing(lat1, lon1, lat2, lon2)
+print(f"target Bearing: {target_bearing} degrees")
+
+relative_bearing = calculate_relative_bearing(car_bearing, 90)
+print(f"Relative Bearing: {relative_bearing} degrees")
+if(relative_bearing < 0):
+    print(f"Distance: {-distance} m")
+else:
+    print(f"Distance: {distance} m")
+
 
 # %%
 import matplotlib.pyplot as plt

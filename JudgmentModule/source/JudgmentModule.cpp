@@ -217,7 +217,7 @@ int main(int argc, const char *argv[])
                 }
                 if (PedRecord) // Ped
                 {
-                    fprintf(PedFile, "%s/%d/%.4lf/%.4lf\n", TimeBuffer, MainCnt, Ibeo.MinPedDist, PathManager.FrontVertexDistance);
+                    fprintf(PedFile, "%s/%d/%.4lf/%.4lf/%.4lf\n", TimeBuffer, MainCnt, Ibeo.MinPedDist, Ibeo.EastMinPedDist, PathManager.FrontVertexDistance);
                 }
                 if (IbeoRecord) // Ibeo
                 {

@@ -6,9 +6,8 @@
 using namespace std;
 
 #define FrontLength 50 // [m] 전방거리
-//#define PathDencity 0.8 // 속도에 따라서 변경, 저속: 20cm, 고속: 1m
 #define OffsetLatitude 2.5 // 위도 offset
-#define OffsetLongitude 2.5 // 경도 offset`
+#define OffsetLongitude 2.5 // 경도 offset
 
 extern bool PathErrorFlag;
 

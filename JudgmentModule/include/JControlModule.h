@@ -142,14 +142,16 @@ struct IbeoVariable
     double Latitude2[30];
 
     // 보행자 판단
+    double PathObjDist;
     double Distance[30];
     double MinPedDist;
+    double EastMinPedDist; // 10/23
+    // double ObjAzimuth[30];
     uint16_t MinPedIdx[30];
-    int PathObjectFlag;
     uint16_t MinIdx;
+    uint8_t PathObjectFlag;
 
     double FinalVertexDistance;
-    double IbeoDistance;
 };
 
 // ------------------------------ Config ------------------------------------- //
