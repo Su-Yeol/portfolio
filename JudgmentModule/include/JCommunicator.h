@@ -138,6 +138,7 @@ void PathReceiver();
 void VehicleReceiver();
 void MobileyeReceiver();
 void IbeoReceiver();
+void RadarReceiver();
 void MCUSender();
 void ViewerSender();
 #endif

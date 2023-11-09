@@ -28,6 +28,7 @@ const string BroadCastIp = Configuration.GetString("BroadCastIp"); // GPSParser
 const int S32GPort = Configuration.GetInt("S32GPort");       // 3004, GPSParser
 const int BackPort = Configuration.GetInt("BackPort");       // 3862, GPSParser
 const int ForwardPort = Configuration.GetInt("ForwardPort"); // 1785, PathReceiver
+const int RadarPort = Configuration.GetInt("RadarPort");     // 1785, PathReceiver
 
 // ControlModule - No use
 const string MCUIp = Configuration.GetString("MCUIp");
@@ -147,11 +148,12 @@ void VehicleReceiver()
 
 void MCUSender()
 {
+    // S32G MCU uint8_t(send)
     UDPClass MCU;
     MCU.SetSocket(MCUIp, MCUPort, 0);
     uint8_t AliveCnt = 0;
     uint16_t PathObjDist = 100;
-    uint32_t MinPedDist = 500;
+    uint32_t MinPedDist = 500; // double
     uint16_t MinIdx = 500;
     // int handle, Ax;
     cout << "[Communicator] ------------------- MCUSender Thread start! " << endl;
@@ -161,6 +163,20 @@ void MCUSender()
         {
             if (MCUSendSignal)
             {
+                // Radar
+                // if (Radar.PathObjDist != 0)
+                // {
+                //     PathObjDist = (uint16_t)Radar.PathObjDist;
+                // }
+                // if (Radar.MinPedDist != 0)
+                // {
+                //     MinPedDist = (uint32_t)Radar.MinPedDist;
+                // }
+                // if (Radar.MinIdx != 0)
+                // {
+                //     MinIdx = Radar.MinIdx;
+                // }
+                // LiDAR
                 if (Ibeo.PathObjDist != 0)
                 {
                     PathObjDist = (uint16_t)Ibeo.PathObjDist;
@@ -202,7 +218,7 @@ void MCUSender()
                 MCU.Buffer[23] = (PathObjDist * 100) >> 8;
                 MCU.Buffer[24] = 0;
                 MCU.Buffer[25] = 0;
-                MCU.Buffer[26] = (MinPedDist * 10000);
+                MCU.Buffer[26] = (MinPedDist * 10000); // 소수점 이하 정보 손실을 막기 위해서 * 10000 진행
                 MCU.Buffer[27] = (MinPedDist * 10000) >> 8;
                 MCU.Buffer[28] = (MinPedDist * 10000) >> 16;
                 MCU.Buffer[29] = (MinPedDist * 10000) >> 24;
@@ -258,6 +274,58 @@ void MCUSender()
     cout << "[Communicator] ------------------- MCUSender Socket Closed! " << endl;
 }
 
+// 11.06 오전
+void RadarReceiver()
+{
+    UDPClass RadarRecv;
+    // VehicleStruct RadarCache;
+    RadarStruct RadarCache;
+    RadarRecv.SetSocket(S32GIp, RadarPort, 1); // IP: 99, Port: 3690, 64byte(recv: int(4byte))
+
+    std::cout << "[Communicator] ------------------- RadarReceiver Thread start! " << endl;
+    while (SocketFlag)
+    {
+        try
+        {
+            RadarRecv.Receive(32); // byte
+            for (uint8_t i = 0; i < 16; i++)
+            {
+                // [cm] > [m]
+                RadarCache.Y[i] = 0.01 * ((int16_t)(RadarRecv.Buffer[i * 4] << 8) + (int16_t)(RadarRecv.Buffer[(i * 4) + 1]));
+                RadarCache.X[i] = 0.01 * ((int16_t)(RadarRecv.Buffer[(i * 4) + 2] << 8) + (int16_t)(RadarRecv.Buffer[(i * 4) + 3]));
+                // if (!(RadarCache.X[i] == 0.0 && RadarCache.Y[i] == 0.0))
+                // {
+                if (RadarCache.Y[i] >= 3.0)
+                {
+                    RadarCache.ObjectCnt++;
+                }
+                // }
+            }
+            // Radar = RadarCache;
+            if (RadarFlag)
+            {
+                Radar = RadarCache;
+                RadarFlag = 0;
+            }
+        }
+        catch (std::out_of_range &e)
+        {
+            std::cout << "<RadarReceiver> Out_of_range Error" << '\n';
+        }
+        catch (std::length_error &e)
+        {
+            std::cout << "<RadarReceiver> Length Error" << '\n';
+        }
+        catch (std::exception &e)
+        {
+            std::cout << "<RadarReceiver> EXCEPTION " << '\n';
+            std::cout << e.what() << '\n';
+        }
+    }
+    RadarRecv.CloseSocket();
+    std::cout << "[Communicator] ------------------- RadarReceiver Socket Closed! " << endl;
+}
+
 void IbeoReceiver()
 {
     CANClass IbeoRecv;
@@ -277,13 +345,9 @@ void IbeoReceiver()
             {
             case 0x500:
                 IbeoCache.ObjectCnt = (int)(IbeoRecv.Frame.data[1]);
-                /* bit 0
-                    0 = absolute velocities
-                    1 = relative velocities
-
-                   bit 1
-                    0 = object boxes
-                    1 = bounding boxes */
+                /* bit 0, bit 1
+                    0 = absolute velocities, object boxes
+                    1 = relative velocities, bounding boxes*/
                 IbeoCache.Boxflag = IbeoRecv.Frame.data[4];
                 ObjectCnt = 0;
 
@@ -310,23 +374,27 @@ void IbeoReceiver()
                 IbeoCache.Objectclassification = IbeoRecv.Frame.data[1];
 
                 // 0: unclassified, 1: unknown small, 2: unknown big, 3: pedestrian, 4: bike, 5: car, 6: truck
-                IbeoCache.Object[ObjectCnt * 3 + 1] = (int)IbeoCache.Objectclassification;
-                IbeoCache.Object[ObjectCnt * 3 + 2] = ((double)IbeoCache.X / 100); // [m]
-                IbeoCache.Object[ObjectCnt * 3 + 3] = ((double)IbeoCache.Y / 100); // [m]
+                IbeoCache.Object[(ObjectCnt * 3) + 1] = (int)IbeoCache.Objectclassification;
+                IbeoCache.Object[(ObjectCnt * 3) + 2] = ((double)IbeoCache.X / 100.0); // [m]
+                IbeoCache.Object[(ObjectCnt * 3) + 3] = ((double)IbeoCache.Y / 100.0); // [m]
                 // IbeoCache.BoxCenterX = (IbeoRecv.Frame.data[4] << 8) + IbeoRecv.Frame.data[5];
                 // IbeoCache.BoxCenterY = (IbeoRecv.Frame.data[6] << 8) + IbeoRecv.Frame.data[7];
-                ObjectCnt += 1;
 
                 break;
 
             case 0x505:
                 // 0x8000 : an invalid orientation
+                IbeoCache.BoxOrientation = (IbeoRecv.Frame.data[5] << 8) + IbeoRecv.Frame.data[6];
                 IbeoCache.BoxSizeX = (IbeoRecv.Frame.data[1] << 8) + IbeoRecv.Frame.data[2];
                 IbeoCache.BoxSizeY = (IbeoRecv.Frame.data[3] << 8) + IbeoRecv.Frame.data[4];
-                IbeoCache.BoxOrientation = (IbeoRecv.Frame.data[5] << 8) + IbeoRecv.Frame.data[6];
+                IbeoCache.Box[(ObjectCnt * 3) + 1] = (int16_t)IbeoCache.BoxOrientation;
+                IbeoCache.Box[(ObjectCnt * 3) + 2] = (int16_t)IbeoCache.BoxSizeX;
+                IbeoCache.Box[(ObjectCnt * 3) + 3] = (int16_t)IbeoCache.BoxSizeY;
 
+                ObjectCnt += 1;
                 // printf("Class : %d || Ibeo X : %.4lf || Ibeo Y : %.4lf  || ", IbeoCache.Objectclassification, ((double)IbeoCache.X / 100), ((double)IbeoCache.Y / 100));
                 // printf("Box Flag : %d || Box Size X, Y : %d, %d || Box Orientation %d\n", IbeoCache.Boxflag, IbeoCache.BoxSizeX, IbeoCache.BoxSizeY, IbeoCache.BoxOrientation);
+                // printf("Box Size X, Y : %d, %d || x, y %d %d\n", IbeoCache.BoxCenterX, IbeoCache.BoxCenterY, IbeoCache.X, IbeoCache.Y);
                 break;
             }
 
@@ -454,7 +522,7 @@ void PathReceiver()
             uint32_t ErrorCnt = 0, TotalCnt = 0;
             gettimeofday(&FirstTime, NULL);
 
-            Forward.Receive(BufferSize);
+            Forward.Receive(1030);
 
             gettimeofday(&SecondTime, NULL);
             TimeGap = (SecondTime.tv_sec - FirstTime.tv_sec) * 1000 + ((SecondTime.tv_usec - FirstTime.tv_usec) / 1000); // [ms]
@@ -465,14 +533,20 @@ void PathReceiver()
 
             for (uint32_t i = 0; i < BufferSize / 8; i++)
             {
-                GlobalCache.Longitude[i] = 0.0000001 * (uint32_t)((Forward.Buffer[8 * i + 3] << 24) + (Forward.Buffer[8 * i + 2] << 16) + (Forward.Buffer[8 * i + 1] << 8) + Forward.Buffer[8 * i]);
-                GlobalCache.Latitude[i] = 0.0000001 * (uint32_t)((Forward.Buffer[8 * i + 7] << 24) + (Forward.Buffer[8 * i + 6] << 16) + (Forward.Buffer[8 * i + 5] << 8) + Forward.Buffer[8 * i + 4]);
+                GlobalCache.Longitude[i] = 0.0000001 * (uint32_t)((Forward.Buffer[(8 * i) + 3] << 24) + (Forward.Buffer[(8 * i) + 2] << 16) + (Forward.Buffer[(8 * i) + 1] << 8) + Forward.Buffer[8 * i]);
+                GlobalCache.Latitude[i] = 0.0000001 * (uint32_t)((Forward.Buffer[(8 * i) + 7] << 24) + (Forward.Buffer[(8 * i) + 6] << 16) + (Forward.Buffer[(8 * i) + 5] << 8) + Forward.Buffer[(8 * i) + 4]);
 
                 if (GlobalCache.Longitude[i] == 0 || GlobalCache.Latitude[i] == 0)
                     ErrorCnt++;
 
                 TotalCnt++;
             }
+
+            // 11/09
+            GlobalCache.NowEnv = Forward.Buffer[1024];
+            GlobalCache.PreEnv = Forward.Buffer[1025];
+            GlobalCache.PreDist = 0.01 * (uint32_t)((Forward.Buffer[1029] << 24) + (Forward.Buffer[1028] << 16) + (Forward.Buffer[1027] << 8) + (Forward.Buffer[1026]));
+           
             ErrorCnt = 0;
 
             if (PathReceiveSignal)

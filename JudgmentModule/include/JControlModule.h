@@ -23,8 +23,11 @@
 #define BufferSize 8192 // 1024
 #define PathSize 8192   // 8192
 
-#define Lat2meter 110979.309
-#define Lon2meter 88907.949
+#define EarthRadius 6378137 // WGS84
+// #define Lat2meter 110979.309
+// #define Lon2meter 88907.949
+#define Lat2meter 111319.49079327358
+#define Lon2meter 88903.69830789097
 
 using namespace std;
 
@@ -61,6 +64,23 @@ struct VehicleStruct
         /* 레이더 센서로부터 수신된 정보를 저장하는 구조체 */
         double Distance;         // 차량과 다른 물체 간의 거리
         double RelativeVelocity; // 다른 물체와의 상대적인 속도
+
+        // 11/04 Radar WGS84 coordinate
+        double X[16];
+        double Y[16];
+        double Latitude[16];
+        double Longitude[16];
+
+        // 보행자 판단
+        double PathObjDist;
+        double PedDistance[16];
+        double WestMinPedDist;
+        double EastMinPedDist;
+        double MinPedDist;
+
+        uint16_t MinPedIdx[16];
+        uint16_t MinIdx;
+        uint8_t PathObjectFlag;
     } Radar;
 };
 
@@ -80,6 +100,11 @@ struct GlobalPathStruct
     double Heading; // 주행 경로의 방향(pre, next 위경도를 이용하여 차의 방향(0~360도)을 나타냄.
     // 일반적으로 각도로 표현, GPS 방위각(azimous) - error를 구해서 wheel 각도 구하는데 사용
     double LocalizationGap;
+
+    // 11/09
+    uint8_t NowEnv;
+    uint8_t PreEnv;
+    double PreDist;
 };
 
 struct LocalPathStruct
@@ -127,13 +152,16 @@ struct IbeoVariable
     int8_t Boxflag;         // 0: object boxes, 1: bounding boxes
     uint16_t BoxSizeX;
     uint16_t BoxSizeY;
-    // int16_t BoxCenterX;
-    // int16_t BoxCenterY;
+    int16_t Box[100];
+    int16_t BoxCenterX;
+    int16_t BoxCenterY;
 
     int Objectclassification; // object class
     int ObjectCnt;            // Object detection count
     double Object[100];       // Data(class, x, y, ..., class30, x30, y30)
-
+    
+    // double X[30]; // 11/08
+    // double Y[30]; // 11/08
     double Latitude[30];
     double Longitude[30];
     double preLatitude[30];
@@ -144,14 +172,40 @@ struct IbeoVariable
     // 보행자 판단
     double PathObjDist;
     double Distance[30];
+    double WestMinPedDist;
+    double EastMinPedDist;
     double MinPedDist;
-    double EastMinPedDist; // 10/23
-    // double ObjAzimuth[30];
+
     uint16_t MinPedIdx[30];
     uint16_t MinIdx;
     uint8_t PathObjectFlag;
 
     double FinalVertexDistance;
+};
+
+struct RadarStruct
+{
+    /* 레이더 센서로부터 수신된 정보를 저장하는 구조체 */
+    double Distance;         // 차량과 다른 물체 간의 거리
+    double RelativeVelocity; // 다른 물체와의 상대적인 속도
+
+    // 11/04 Radar WGS84 coordinate
+    int ObjectCnt;
+    double X[16];
+    double Y[16];
+    double Latitude[16];
+    double Longitude[16];
+
+    // 보행자 판단
+    double PathObjDist;
+    double PedDistance[16];
+    double WestMinPedDist;
+    double EastMinPedDist;
+    double MinPedDist;
+
+    uint16_t MinPedIdx[16];
+    uint16_t MinIdx;
+    uint8_t PathObjectFlag;
 };
 
 // ------------------------------ Config ------------------------------------- //
@@ -173,6 +227,7 @@ extern bool MCUSendSignal;
 // ------------------------------ Sensor ------------------------------------- //
 extern int MobileyeFlag;
 extern int IbeoFlag;
+extern int RadarFlag;
 extern char GPSRaw[100]; // GPS Raw 데이터 저장
 
 // ------------------------------ Struct ------------------------------------- //
@@ -182,5 +237,6 @@ extern LocalPathStruct Local;
 extern VehicleStruct Vehicle;
 extern MobileyeStruct Mobileye;
 extern IbeoVariable Ibeo;
+extern RadarStruct Radar; // 11/06
 
 #endif

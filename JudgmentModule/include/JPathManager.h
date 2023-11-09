@@ -17,10 +17,14 @@ class PathConverter
         void ImportFile(const char *file);
         void InitializePath();
         void GenerateLocalPath();
-
+        //Radar
         void PedestrianDistance();      // Vertex와 보행자 간의 최소거리
         double FrontVertexDistance;     // 보행자 인지 시 앞으로 남은 전방거리
         double PreFrontVertexDistance;  // Prevent data overshoot : save previous data
+        // Ibeo
+        void IbeoPedestrianDistance();
+        double IbeoFrontVertexDistance;
+        double IbeoPreFrontVertexDistance;
         uint32_t WayPointNum;
 
     private:
