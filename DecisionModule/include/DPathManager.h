@@ -1,7 +1,7 @@
-#ifndef JPathManager_H
-#define JPathManager_H
+#ifndef DPathManager_H
+#define DPathManager_H
 
-#include "JControlModule.h"
+#include "DControlModule.h"
 
 using namespace std;
 

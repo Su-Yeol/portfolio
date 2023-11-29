@@ -1,4 +1,4 @@
-#include "JPathManager.h"
+#include "DPathManager.h"
 
 GPSStruct Position; // 현재 차량 위치
 
@@ -128,7 +128,7 @@ void PathConverter::InitializePath()
     memset(&Local.X, 0, PathSize);
     memset(&Local.Y, 0, PathSize);
     memset(&VertexDistance, 0, PathSize);
-    WayPointNum = 128; // Buffersize/8
+    WayPointNum = BufferSize / 64; // BufferSize(1024)/8
     EndVertex = 0;
     StartVertex = 0;
     LastVertex = 0;
@@ -150,12 +150,12 @@ void PathConverter::InitializePath()
             break;
     }
 
-    //
+    // Vertex interval Check
     for (uint32_t i = 0; i < WayPointNum - 1; i++)
     {
         Ibeo.FinalVertexDistance += VertexDistance[i];
     }
-    //
+
     UpdatePosition(&Position);
 
     for (uint32_t i = 0; i < WayPointNum; i++)
@@ -179,14 +179,12 @@ void PathConverter::InitializePath()
     else
         PathErrorFlag = false;
 
-    // -------------------------------------------//
     if (MinimumDistanceIdx == WayPointNum)
         MinimumDistanceIdx--;
 
     LastVertex = MinimumDistanceIdx;
     StartVertex = MinimumDistanceIdx;
     EndVertex = MinimumDistanceIdx + 1;
-    // -------------------------------------------//
 
     for (uint32_t i = EndVertex; i < (WayPointNum - 1); i++)
     {
@@ -262,7 +260,7 @@ void PathConverter::GenerateLocalPath()
     FrontPathIdx = (uint32_t)(FrontDistance / PathDencity);
 
     /* Update Current Vehicle Location information */
-    Global.Heading = (Position.Azimuth * (-1) + 90) * (M_PI / 180.);
+    Global.Heading = (Position.Azimuth * (-1) + 90) * toRadian;
     Global.GapLatitude = Position.Latitude * Lat2meter;
     Global.GapLongitude = Position.Longitude * Lon2meter;
     Global.GapLatitude += OffsetLatitude * sin(Global.Heading);
@@ -308,11 +306,10 @@ void PathConverter::PedestrianDistance()
 {
     // struct timeval startTime, endTime;
     // uint16_t TimeGap;
-
     FrontVertexDistance = 0.0;
-    Radar.MinPedDist = 500; // test
-    Radar.WestMinPedDist = 500;
-    Radar.EastMinPedDist = -500;
+    Radar.MinPedDist = 500;
+    Radar.WestMinPedDist = -500.0;
+    Radar.EastMinPedDist = 500.0;
     std::fill_n(Radar.MinPedIdx, 16, 500);
     std::fill_n(Radar.PedDistance, 16, 500);
     std::fill_n(Radar.Latitude, 16, 500);
@@ -324,54 +321,31 @@ void PathConverter::PedestrianDistance()
     static uint8_t RadarFlag;
     static uint8_t PathObjCnt;
     static uint8_t PathObjFlag;
-    // 이전 값(전방거리, 경로~보행자 거리) 저장
-    static double PreFntVtxDist;
-    static double PreRadarPedDist;
-    // Haversine Formula
-    double toRadian = M_PI / 180.0;
-    double toDegree = 180.0 / M_PI;
-    double GlobalLat, GlobalLong, RadarLat, RadarLong, deltaLatitude, deltaLongitude, a, c;
-    // Azimuth
-    double x, y;
+    // Haversine Formula || Spherical Law of Cosines
+    double GlobalLat, GlobalLong, RadarLat, RadarLong, deltaLatitude, deltaLongitude, RelativeX, RelativeY, a, c, x, y;
+    // Object Azimuth
     double ObjAzimuth[Radar.ObjectCnt] = {
         500.0,
     };
-    double EastPedDist = 500.0;
-    double WestPedDist = 500.0;
-    // ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ11/06ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
-    // static double preHeading;
-    // static int HeadingCnt;
-    // static int HeadingFlag;
-    // if (Global.Heading == 0)
-    // {
-    //     HeadingCnt++;
-    //     if (HeadingCnt > 3)
-    //     {
-    //         HeadingCnt = 3 + 1;
-    //         Global.Heading = 0;
-    //     }
-    //     else
-    //     {
-    //         Global.Heading = preHeading;
-    //     }
-    // }
-    // else
-    // {
-    //     HeadingCnt = 0;
-    //     preHeading = Global.Heading;
-    // }
-    // ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
-
-    // gettimeofday(&startTime, NULL);
+    // 이전 값(전방거리, 경로~보행자 거리, Azimuth) 저장
+    static double PreFntVtxDist;
+    static double PreRadarPedDist;
+    static double preAzimuth;
+    if (Vehicle.Velocity <= 0.1)
+    {
+        GPS.Azimuth = preAzimuth;
+    }
+    else
+    {
+        preAzimuth = GPS.Azimuth;
+    }
     for (uint32_t p = 0; p < Radar.ObjectCnt; p++)
     {
-        // bool RadarChkFalg = (Radar.X[p] == 0) && (Radar.Y[p] == 0);
-        // if (RadarChkFalg == false) // 0, 0 무시
-        // {
         if (Radar.Y[p] >= 3.0) // 전방레이더: 뒷바퀴 중심
         {
-            // EastPedDist = 500.0;
-            // WestPedDist = 500.0;
+            // Radar.MinPedDist = 500;
+            // Radar.WestMinPedDist = -500.0;
+            // Radar.EastMinPedDist = 500.0;
             // Camera X(횡) Y(종), LiDAR X(종) Y(횡), Radar X(횡) Y(종)
             Radar.Latitude[p] = Position.Latitude + (((Radar.X[p] * cos(Global.Heading)) - (Radar.Y[p] * sin(Global.Heading))) / Lat2meter);
             Radar.Longitude[p] = Position.Longitude + (((Radar.Y[p] * cos(Global.Heading)) + (Radar.X[p] * sin(Global.Heading))) / Lon2meter);
@@ -382,77 +356,51 @@ void PathConverter::PedestrianDistance()
             {
                 for (uint32_t r = StartVertex; r < EndVertex - 1; r++)
                 {
-                    // Haversine Fomula
+                    // Haversine Fomula || Spherical Law of Cosines
                     GlobalLat = Global.Latitude[r] * toRadian;
                     GlobalLong = Global.Longitude[r] * toRadian;
                     deltaLatitude = GlobalLat - RadarLat;
                     deltaLongitude = GlobalLong - RadarLong;
-                    a = sin(deltaLatitude / 2) * sin(deltaLatitude / 2) + cos(RadarLat) * cos(GlobalLat) * sin(deltaLongitude / 2) * sin(deltaLongitude / 2);
-                    c = 2 * atan2(sqrt(a), sqrt(1 - a));
-                    Radar.PedDistance[p] = EarthRadius * c;
-                    // test
+                    // a = sin(deltaLatitude / 2) * sin(deltaLatitude / 2) + cos(RadarLat) * cos(GlobalLat) * sin(deltaLongitude / 2) * sin(deltaLongitude / 2);
+                    // c = 2 * atan2(sqrt(a), sqrt(1 - a));
+                    // Radar.PedDistance[p] = EarthRadius * c;
+                    Radar.PedDistance[p] = acos((sin(RadarLat) * sin(GlobalLat)) + (cos(RadarLat) * cos(GlobalLat) * cos(deltaLongitude))) * EarthRadius;
+                    // Azimuth
+                    y = sin(deltaLongitude) * cos(RadarLat);
+                    x = (cos(GlobalLat) * sin(RadarLat)) - (sin(GlobalLat) * cos(RadarLat) * cos(deltaLongitude));
+                    ObjAzimuth[p] = atan2(y, x) * toDegree; // -180~180
                     if (Radar.PedDistance[p] < Radar.MinPedDist)
                     {
                         Radar.MinPedDist = Radar.PedDistance[p];
                         PreRadarPedDist = Radar.MinPedDist;
-                        if (Radar.MinPedDist <= 1.0)
+                        // ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ Distance ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
+                        if (Radar.MinPedDist <= 1.8)
                         {
                             Radar.MinPedIdx[p] = r;
                             PreRadarPedDist = Radar.MinPedDist;
                         }
+                        // ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ 11.20 Distance + Azimuth(Bearing) ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
+                        // if (ObjAzimuth[p] < 0)
+                        // {
+                        //     Radar.WestMinPedDist = (-1) * Radar.MinPedDist;
+                        //     if (Radar.WestMinPedDist >= -1.8)
+                        //     {
+                        //         Radar.MinPedIdx[p] = r;
+                        //         PreRadarPedDist = Radar.WestMinPedDist;
+                        //     }
+                        // }
+                        // else
+                        // {
+                        //     Radar.EastMinPedDist = Radar.MinPedDist;
+                        //     if (Radar.EastMinPedDist <= 1.8)
+                        //     {
+                        //         Radar.MinPedIdx[p] = r;
+                        //         PreRadarPedDist = Radar.EastMinPedDist;
+                        //     }
+                        // }
                     }
-
-                    // // Azimuth
-                    // y = sin(deltaLongitude) * cos(RadarLat);
-                    // x = cos(GlobalLat) * sin(RadarLat) - sin(GlobalLat) * cos(RadarLat) * cos(deltaLongitude);
-                    // ObjAzimuth[p] = atan2(y, x) * toDegree;
-                    // // -180 ~ 180 동(-), 서(+)
-                    // if (ObjAzimuth[p] > 180)
-                    // {
-                    //     ObjAzimuth[p] -= 360;
-                    // }
-                    // else if (ObjAzimuth[p] < -180)
-                    // {
-                    //     ObjAzimuth[p] += 360;
-                    // }
-                    // if (ObjAzimuth[p] < 0)
-                    // {
-                    //     EastPedDist = (-1) * Radar.PedDistance[p];
-                    //     if (EastPedDist > Radar.EastMinPedDist)
-                    //     {
-                    //         Radar.EastMinPedDist = EastPedDist;
-                    //         if (Radar.EastMinPedDist >= -1.8)
-                    //         {
-                    //             Radar.MinPedIdx[p] = r;
-                    //         }
-                    //     }
-                    // }
-                    // else if (ObjAzimuth[p] > 0)
-                    // {
-                    //     WestPedDist = Radar.PedDistance[p];
-                    //     if (WestPedDist < Radar.WestMinPedDist)
-                    //     {
-                    //         Radar.WestMinPedDist = WestPedDist;
-                    //         if (Radar.WestMinPedDist <= 1.8)
-                    //         {
-                    //             Radar.MinPedIdx[p] = r;
-                    //         }
-                    //     }
-                    // }
-                    // // 경로~보행자 최소거리
-                    // if (fabs(Radar.WestMinPedDist) < fabs(Radar.EastMinPedDist))
-                    // {
-                    //     Radar.MinPedDist = Radar.WestMinPedDist;
-                    //     PreRadarPedDist = Radar.MinPedDist;
-                    // }
-                    // else if (fabs(Radar.WestMinPedDist) > fabs(Radar.EastMinPedDist))
-                    // {
-                    //     Radar.MinPedDist = Radar.EastMinPedDist;
-                    //     PreRadarPedDist = Radar.MinPedDist;
-                    // }
                 }
             }
-            // }
         }
     }
 
@@ -498,7 +446,7 @@ void PathConverter::PedestrianDistance()
             if (RadarCnt <= 2)
             {
                 Radar.MinPedDist = PreRadarPedDist;
-                PreFntVtxDist -= (Vehicle.Velocity / 20);
+                PreFntVtxDist -= (Vehicle.Velocity / 10); // 50ms
                 FrontVertexDistance = PreFntVtxDist;
             }
             else if (RadarCnt > 2)
@@ -530,8 +478,8 @@ void PathConverter::PedestrianDistance()
     {
         if (FrontVertexDistance <= 100)
         {
-            // if (Radar.MinPedDist <= 1.8 && Radar.MinPedDist >= -1.8)
-            if (Radar.MinPedDist <= 1.0)
+            // if (Radar.EastMinPedDist <= 1.8 && Radar.WestMinPedDist >= -1.8)
+            if (Radar.MinPedDist <= 1.8)
             {
                 PathObjCnt++;
                 if (PathObjCnt <= 2)
@@ -555,29 +503,21 @@ void PathConverter::PedestrianDistance()
     }
 
     // Prevent Data Overshoot(Init)
-    // if (Radar.WestMinPedDist > 10)
-    //     Radar.WestMinPedDist = 500;
-    // if (Radar.EastMinPedDist < -10)
-    //     Radar.EastMinPedDist = -500;
-    if (Radar.MinPedDist > 10)
-        Radar.MinPedDist = 500;
     if (FrontVertexDistance > 100 || FrontVertexDistance <= 0)
         FrontVertexDistance = 100;
     if (PreFntVtxDist > 200 || PreFntVtxDist == 0)
         PreFntVtxDist = 200;
 
-    // PreFrontVertexDistance = PreFntVtxDist;
     Radar.PathObjDist = FrontVertexDistance;
     Radar.PathObjectFlag = RadarFlag;
     Radar.MinIdx = MinIdx;
 
     // gettimeofday(&endTime, NULL);
     // TimeGap = (endTime.tv_sec - startTime.tv_sec) * 1000 + ((endTime.tv_usec - startTime.tv_usec) / 1000); // [ms]
-    // printf("경로상 %d||Overshoot %d(a->100), %d(100->a)||전방거리 %.4lf||경로~물체 최소거리 %.4lf||%.4lf %.4lf||Index %d||Heading: %d > %.4lf\n",
-    //        RadarFlag, RadarCnt, PathObjCnt, FrontVertexDistance, Radar.MinPedDist, Radar.EastMinPedDist, Radar.WestMinPedDist,
-    //        MinIdx, HeadingCnt, Global.Heading);
-    printf("경로상 %d||Overshoot %d(a->100)||Radar Cnt %d||전방거리 %.4lf||경로~물체 최소거리 %.4lf||Index %d||Heading: %.4lf\n",
-           RadarFlag, RadarCnt, Radar.ObjectCnt, FrontVertexDistance, Radar.MinPedDist, MinIdx, Global.Heading);
+    // printf("경로상 %d||Overshoot %d(a->100), %d(100->a)||전방거리 %.2lf||경로~물체 최소거리 %.2lf||Index %d||Azimuth %.2lf\n",
+    //        RadarFlag, RadarCnt, PathObjCnt, FrontVertexDistance, Radar.MinPedDist, MinIdx, GPS.Azimuth);
+    printf("경로상 %d||Overshoot %d(a->100), %d(100->a)||전방거리 %.2lf||Obj Azimuth %.4lf||경로~물체 최소거리 %.2lf %.2lf||Index %d||Azimuth %.2lf\n",
+           RadarFlag, RadarCnt, PathObjCnt, FrontVertexDistance, ObjAzimuth[MinIdx], Radar.WestMinPedDist, Radar.EastMinPedDist, MinIdx, GPS.Azimuth);
     // gettimeofday(&startTime, NULL);
 }
 
@@ -587,7 +527,7 @@ void PathConverter::IbeoPedestrianDistance()
     // Ibeo.WestMinPedDist = 500.0;
     // Ibeo.EastMinPedDist = -500.0;
     // std::fill_n(Ibeo.MinPedIdx, 30, 500);
-    // std::fill_n(Ibeo.Distance, 30, 500);
+    // std::fill_n(Ibeo.PedDistance, 30, 500);
     // std::fill_n(Ibeo.Latitude, 30, 500);
     // std::fill_n(Ibeo.Longitude, 30, 500);
     // int MinIdx = 3000;
@@ -602,20 +542,13 @@ void PathConverter::IbeoPedestrianDistance()
     // static double PreIbeoPedDist;
     // // Haversine Formula
     // const double EarthRadius = 6371000;
-    // double toRadian = M_PI / 180.0;
-    // double toDegree = 180.0 / M_PI;
     // double GlobalLat, GlobalLong, IbeoLat, IbeoLong, deltaLatitude, deltaLongitude, a, c;
-    // // Azimuth
-    // double x, y;
-    // double ObjAzimuth[Ibeo.ObjectCnt] = {
-    //     500.0,
-    // };
     // double EastPedDist = 500.0;
     // double WestPedDist = 500.0;
     // for (uint32_t p = 0; p < Ibeo.ObjectCnt; p++)
     // {
     //     EastPedDist = 500.0;
-    //     WestPedDist = 500.0;
+    //     WestPedDist = -500.0;
     //     // Ibeo 위도 경도 -> local(회전 방정식)
     //     Ibeo.Latitude[p] = Position.Latitude + ((Ibeo.Object[p * 3 + 3] * cos(Global.Heading) - Ibeo.Object[p * 3 + 2] * sin(Global.Heading)) / Lat2meter);
     //     Ibeo.Longitude[p] = Position.Longitude + ((Ibeo.Object[p * 3 + 2] * cos(Global.Heading) + Ibeo.Object[p * 3 + 3] * sin(Global.Heading)) / Lon2meter);
@@ -632,7 +565,7 @@ void PathConverter::IbeoPedestrianDistance()
     //             deltaLongitude = GlobalLong - IbeoLong;
     //             a = sin(deltaLatitude / 2) * sin(deltaLatitude / 2) + cos(IbeoLat) * cos(GlobalLat) * sin(deltaLongitude / 2) * sin(deltaLongitude / 2);
     //             c = 2 * atan2(sqrt(a), sqrt(1 - a));
-    //             Ibeo.Distance[p] = EarthRadius * c;
+    //             Ibeo.PedDistance[p] = EarthRadius * c;
     //             // Azimuth
     //             y = sin(deltaLongitude) * cos(IbeoLat);
     //             x = cos(GlobalLat) * sin(IbeoLat) - sin(GlobalLat) * cos(IbeoLat) * cos(deltaLongitude);
@@ -648,7 +581,7 @@ void PathConverter::IbeoPedestrianDistance()
     //             }
     //             if (ObjAzimuth[p] < 0)
     //             {
-    //                 EastPedDist = (-1) * Ibeo.Distance[p];
+    //                 EastPedDist = (-1) * Ibeo.PedDistance[p];
     //                 if (EastPedDist > Ibeo.EastMinPedDist)
     //                 {
     //                     Ibeo.EastMinPedDist = EastPedDist;
@@ -661,7 +594,7 @@ void PathConverter::IbeoPedestrianDistance()
     //             }
     //             else if (ObjAzimuth[p] > 0)
     //             {
-    //                 WestPedDist = Ibeo.Distance[p];
+    //                 WestPedDist = Ibeo.PedDistance[p];
     //                 if (WestPedDist < Ibeo.WestMinPedDist)
     //                 {
     //                     Ibeo.WestMinPedDist = WestPedDist;
@@ -689,83 +622,97 @@ void PathConverter::IbeoPedestrianDistance()
 
     IbeoFrontVertexDistance = 0.0;
     Ibeo.MinPedDist = 500.0;
+    // Ibeo.WestMinPedDist = -500.0;
+    // Ibeo.EastMinPedDist = 500.0;
     std::fill_n(Ibeo.MinPedIdx, 30, 500);
-    std::fill_n(Ibeo.Distance, 30, 500);
+    std::fill_n(Ibeo.PedDistance, 30, 500);
     std::fill_n(Ibeo.Latitude, 30, 500);
     std::fill_n(Ibeo.Longitude, 30, 500);
     int MinIdx = 5000;
     int ObjectClass = 0;
-
-    static int preMinIdx;
+    // Data overshoot check
+    static uint8_t IbeoCnt;
+    static uint8_t IbeoFlag;
+    static uint8_t PathObjCnt;
+    static uint8_t PathObjFlag;
+    // Haversine Formula || Spherical Law of Cosines
+    double GlobalLat, GlobalLong, IbeoLat, IbeoLong, deltaLatitude, deltaLongitude, RelativeX, RelativeY, a, c, x, y;
+    // // Azimuth
+    double ObjAzimuth[Ibeo.ObjectCnt] = {
+        500.0,
+    };
+    // 이전 값(전방거리, 경로~보행자 거리, Azimuth) 저장
     static double PreFntVtxDist;
     static double PreIbeoPedDist;
-    static uint16_t IbeoCnt;
-    static int IbeoFlag;
-    static uint8_t PathObjCnt;
-    static int PathObjFlag;
-    // Haversine Formula
-    double toRadian = M_PI / 180.0;
-    double toDegree = 180.0 / M_PI;
-    double GlobalLat, GlobalLong, IbeoLat, IbeoLong, deltaLatitude, deltaLongitude, RelativeX, RelativeY, a, c;
-    // ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ11/06ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
     static double preAzimuth;
+    // if (Vehicle.Velocity <= 0.1)
+    // {
+    //     GPS.Azimuth = preAzimuth;
+    // }
+    // else
+    // {
+    //     preAzimuth = GPS.Azimuth;
+    // }
+    static double PathRange; // 참고할 최단거리
+    // ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ 11.29 ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ GPS update
+    UpdatePosition(&Position);
     if (Vehicle.Velocity <= 0.1)
     {
-        GPS.Azimuth = preAzimuth;
+        Position.Azimuth = preAzimuth;
     }
     else
     {
-        preAzimuth = GPS.Azimuth;
+        preAzimuth = Position.Azimuth;
     }
-    static double PathRange; // 11/07
-    // ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
+    if (Position.Azimuth == 0)
+    {
+        Position.Azimuth = preAzimuth;
+    }
+    Global.Heading = (Position.Azimuth * (-1) + 90) * toRadian;
+    // ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
     for (uint32_t p = 0; p < Ibeo.ObjectCnt; p++)
     {
         if ((Ibeo.Box[(p * 3) + 2] < 550) && (Ibeo.Box[(p * 3) + 3] < 550)) // 11/06 추가(종, 횡)
         {
             Ibeo.Latitude[p] = Position.Latitude + ((Ibeo.Object[(p * 3) + 3] * cos(Global.Heading) - Ibeo.Object[(p * 3) + 2] * sin(Global.Heading)) / Lat2meter);
             Ibeo.Longitude[p] = Position.Longitude + ((Ibeo.Object[(p * 3) + 2] * cos(Global.Heading) + Ibeo.Object[(p * 3) + 3] * sin(Global.Heading)) / Lon2meter);
-            // Ibeo.Latitude[p] = Position.Latitude + ((Ibeo.Object[(p * 3) + 3] * cos(Position.Azimuth * toRadian) - Ibeo.Object[(p * 3) + 2] * sin(Position.Azimuth * toRadian)) / Lat2meter);
-            // Ibeo.Longitude[p] = Position.Longitude + ((Ibeo.Object[(p * 3) + 2] * cos(Position.Azimuth * toRadian) + Ibeo.Object[(p * 3) + 3] * sin(Position.Azimuth * toRadian)) / Lon2meter);
             IbeoLat = Ibeo.Latitude[p] * toRadian;
             IbeoLong = Ibeo.Longitude[p] * toRadian;
             if (Local.Length != 0)
             {
                 for (uint32_t r = StartVertex; r < EndVertex - 1; r++)
                 {
-                    // Haversine Fomula
+                    // Haversine Formula || Spherical Law of Cosines
                     GlobalLat = Global.Latitude[r] * toRadian;
                     GlobalLong = Global.Longitude[r] * toRadian;
                     deltaLatitude = GlobalLat - IbeoLat;
                     deltaLongitude = GlobalLong - IbeoLong;
                     // a = (sin(deltaLatitude / 2) * sin(deltaLatitude / 2)) + (cos(IbeoLat) * cos(GlobalLat) * sin(deltaLongitude / 2) * sin(deltaLongitude / 2));
                     // c = 2 * atan2(sqrt(a), sqrt(1 - a));
-                    // Ibeo.Distance[p] = EarthRadius * c; // [m]
-                    // ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ11/09ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
-                    // Spherical Law of Cosines
-                    Ibeo.Distance[p] = acos((sin(IbeoLat) * sin(GlobalLat)) + (cos(IbeoLat) * cos(GlobalLat) * cos(deltaLongitude))) * EarthRadius;
-                    // ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
-                    if (Ibeo.Distance[p] < Ibeo.MinPedDist)
+                    // Ibeo.PedDistance[p] = EarthRadius * c; // [m]
+                    Ibeo.PedDistance[p] = acos((sin(IbeoLat) * sin(GlobalLat)) + (cos(IbeoLat) * cos(GlobalLat) * cos(deltaLongitude))) * EarthRadius;
+                    if (Ibeo.PedDistance[p] < Ibeo.MinPedDist)
                     {
-                        Ibeo.MinPedDist = Ibeo.Distance[p];
+                        Ibeo.MinPedDist = Ibeo.PedDistance[p];
                         // ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ11/09ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
                         // printf("NowEnv: %d, PreEnv: %d, Global.PreDist: %.2lf\n", Global.NowEnv, Global.PreEnv, Global.PreDist);
-                        if (((Global.NowEnv == 1) && (Global.PreEnv == 4)) && ((Global.PreDist < 615) && (Global.PreDist > 460)))
+                        if (((Global.NowEnv == 1) && (Global.PreEnv == 4)) && ((Global.PreDist < 615) && (Global.PreDist > 440)))
                         {
-                            // 버스정류장 ~ 교통섬 전
-                            // printf("버스정류장 ㅎㅇ\n");
+                            // 버스정류장 ~ 교통섬 직전
                             PreIbeoPedDist = Ibeo.MinPedDist;
-                            if (Ibeo.MinPedDist <= 1.4)
+                            PathRange = Ibeo.MinPedDist;
+                            if (PathRange <= 1.4)
                             {
                                 Ibeo.MinPedIdx[p] = r;
-                                PreIbeoPedDist = Ibeo.MinPedDist;
+                                PreIbeoPedDist = PathRange;
                                 ObjectClass = Ibeo.Object[(p * 3) + 1];
+                                // printf("index %d||X, Y %.2lf %.2lf\n", p, Ibeo.Object[(p*3)+2], Ibeo.Object[(p*3)+3]);
                             }
                         }
                         else
                         {
-                            PathRange = fabs(Ibeo.MinPedDist - (double)(0.005 * Ibeo.Box[(p * 3) + 3]));
-                            if (PathRange <= 0.75)
+                            PathRange = fabs(Ibeo.MinPedDist - (double)(0.005 * Ibeo.Box[(p * 3) + 3])); // 가드레일: BoxSizeX > 10.0[m]
+                            if (PathRange <= 0.8)
                             {
                                 Ibeo.MinPedIdx[p] = r;
                                 PreIbeoPedDist = PathRange;
@@ -775,9 +722,8 @@ void PathConverter::IbeoPedestrianDistance()
                             }
                         }
                         // ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
-
                         // PreIbeoPedDist = Ibeo.MinPedDist;
-                        // if (Ibeo.MinPedDist <= 1.3)
+                        // if (Ibeo.MinPedDist <= 1.5)
                         // {
                         //     Ibeo.MinPedIdx[p] = r;
                         //     PreIbeoPedDist = Ibeo.MinPedDist;
@@ -808,7 +754,6 @@ void PathConverter::IbeoPedestrianDistance()
                 IbeoCnt = 0;
                 IbeoFlag = 0;
             }
-
             IbeoFrontVertexDistance = 0.0;
             for (uint32_t t = StartVertex; t < MinIdx - 1; t++)
             {
@@ -819,7 +764,7 @@ void PathConverter::IbeoPedestrianDistance()
         else
         {
             // Ibeo.MinPedDist = PreIbeoPedDist;
-            PathRange = PreIbeoPedDist; // 11/07
+            PathRange = PreIbeoPedDist;
             IbeoFrontVertexDistance = PreFntVtxDist;
         }
     }
@@ -833,7 +778,7 @@ void PathConverter::IbeoPedestrianDistance()
             if (IbeoCnt <= 2)
             {
                 // Ibeo.MinPedDist = PreIbeoPedDist;
-                PathRange = PreIbeoPedDist; // 11/07
+                PathRange = PreIbeoPedDist;
                 PreFntVtxDist -= (Vehicle.Velocity / 20);
                 IbeoFrontVertexDistance = PreFntVtxDist;
             }
@@ -867,7 +812,7 @@ void PathConverter::IbeoPedestrianDistance()
         if (IbeoFrontVertexDistance <= 100)
         {
             // if (Ibeo.MinPedDist <= 1.2 && Ibeo.MinPedDist >= -1.2) // ** 서 ~ 동
-            if (PathRange <= 0.75) // 11/07
+            if (PathRange <= 0.8) // 11/07
             // if (Ibeo.MinPedDist <= 1.3) // 11/06
             {
                 PathObjCnt++;
@@ -892,12 +837,6 @@ void PathConverter::IbeoPedestrianDistance()
     }
 
     // Prevent Data Overshoot(Init)
-    // if (Ibeo.WestMinPedDist > 10)
-    //     Ibeo.WestMinPedDist = 500;
-    // if (Ibeo.EastMinPedDist < -10)
-    //     Ibeo.EastMinPedDist = -500;
-    // if (Ibeo.MinPedDist > 10)
-    //     Ibeo.MinPedDist = 500;
     if (IbeoFrontVertexDistance > 100 || IbeoFrontVertexDistance <= 0)
         IbeoFrontVertexDistance = 100;
     if (PreFntVtxDist > 200 || PreFntVtxDist == 0)
@@ -911,9 +850,9 @@ void PathConverter::IbeoPedestrianDistance()
     // gettimeofday(&endTime, NULL);
     // TimeGap = (endTime.tv_sec - startTime.tv_sec) * 1000 + ((endTime.tv_usec - startTime.tv_usec) / 1000); // [ms]
     // printf("경로상 %d||Overshoot %d(a->100), %d(100->a)||전방거리 %.2lf||최소거리 %.2lf||Index %d||Azimuth %.2lf||VtDist %.2lf\n",
-    //        IbeoFlag, IbeoCnt, PathObjCnt, IbeoFrontVertexDistance, Ibeo.MinPedDist, MinIdx, GPS.Azimuth, Ibeo.FinalVertexDistance);
+    //        IbeoFlag, IbeoCnt, PathObjCnt, IbeoFrontVertexDistance, PathRange, MinIdx, GPS.Azimuth, Ibeo.FinalVertexDistance);
     printf("경로상 %d||Overshoot %d(a->100), %d(100->a)||전방거리 %.2lf||최소거리 %.2lf %.2lf||Index %d||Azimuth %.2lf||VtDist %.2lf\n",
-           IbeoFlag, IbeoCnt, PathObjCnt, IbeoFrontVertexDistance, Ibeo.MinPedDist, PathRange, MinIdx, GPS.Azimuth, Ibeo.FinalVertexDistance);
+           IbeoFlag, IbeoCnt, PathObjCnt, IbeoFrontVertexDistance, Ibeo.MinPedDist, PathRange, MinIdx, Position.Azimuth, Ibeo.FinalVertexDistance);
     // gettimeofday(&startTime, NULL);
 }
 

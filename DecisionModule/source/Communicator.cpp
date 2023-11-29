@@ -1,4 +1,4 @@
-#include "JCommunicator.h"
+#include "DCommunicator.h"
 
 // ------------------------------ Config --------------------------------- //
 CConfigParser Configuration("./config.ini");
@@ -6,15 +6,17 @@ CConfigParser Configuration("./config.ini");
 const int MainCycle = Configuration.GetInt("MainCycle");
 const int TargetSpeed = Configuration.GetInt("TargetSpeed"); // [kph]
 
-// GPSParser, Path, Pedestrian, Ibeo
+// GPSParser, Path, Pedestrian, Ibeo, Radar
 const bool GPSRecord = Configuration.GetBool("GPSRecord");
 const string GPSRecordPath = Configuration.GetString("GPSRecordPath");
 const bool PathRecord = Configuration.GetBool("PathRecord");
 const string PathRecordPath = Configuration.GetString("PathRecordPath");
-const bool IbeoRecord = Configuration.GetBool("IbeoRecord");
-const string IbeoDataPath = Configuration.GetString("IbeoDataPath");
 const bool PedRecord = Configuration.GetBool("PedRecord");
 const string PedDataPath = Configuration.GetString("PedDataPath");
+const bool IbeoRecord = Configuration.GetBool("IbeoRecord");
+const string IbeoDataPath = Configuration.GetString("IbeoDataPath");
+const bool RadarRecord = Configuration.GetBool("RadarRecord");
+const string RadarDataPath = Configuration.GetString("RadarDataPath");
 
 // PathReceiver
 const bool ReceivePathFlag = Configuration.GetBool("ReceivePathFlag");
@@ -28,7 +30,7 @@ const string BroadCastIp = Configuration.GetString("BroadCastIp"); // GPSParser
 const int S32GPort = Configuration.GetInt("S32GPort");       // 3004, GPSParser
 const int BackPort = Configuration.GetInt("BackPort");       // 3862, GPSParser
 const int ForwardPort = Configuration.GetInt("ForwardPort"); // 1785, PathReceiver
-const int RadarPort = Configuration.GetInt("RadarPort");     // 1785, PathReceiver
+const int RadarPort = Configuration.GetInt("RadarPort");     // 3690, RadarReceiver
 
 // ControlModule - No use
 const string MCUIp = Configuration.GetString("MCUIp");
@@ -67,13 +69,13 @@ void VehicleReceiver()
                 VehicleCache.LateralAccel = ((VehicleCANFD.FrameFd.data[11] << 8) + VehicleCANFD.FrameFd.data[10]) * 0.000127465 - 4.17677312;      // [g]
                 VehicleCache.LongitudinalAccel = ((VehicleCANFD.FrameFd.data[13] << 8) + VehicleCANFD.FrameFd.data[12]) * 0.000127465 - 4.17677312; // [g]
 
-                IbeoSend.InitFrame();
-                IbeoYawRate = (VehicleCache.YawRate + 0.714700) / 0.000174;
-                IbeoSend.Frame.can_id = 0x220;
-                IbeoSend.Frame.can_dlc = 7;
-                IbeoSend.Frame.data[5] = (int16_t)(IbeoVehicleSpeed);
-                IbeoSend.Frame.data[6] = ((int16_t)(IbeoVehicleSpeed) >> 8) & 0x3F;
-                IbeoSend.SendCAN();
+                // IbeoSend.InitFrame();
+                // IbeoYawRate = (VehicleCache.YawRate + 0.714700) / 0.000174;
+                // IbeoSend.Frame.can_id = 0x220;
+                // IbeoSend.Frame.can_dlc = 7;
+                // IbeoSend.Frame.data[5] = (int16_t)(IbeoVehicleSpeed);
+                // IbeoSend.Frame.data[6] = ((int16_t)(IbeoVehicleSpeed) >> 8) & 0x3F;
+                // IbeoSend.SendCAN();
                 break;
 
             case 0xA0:
@@ -81,26 +83,26 @@ void VehicleReceiver()
                 WheelSpeedFR = (((VehicleCANFD.FrameFd.data[11] & 0x3F) << 8) + VehicleCANFD.FrameFd.data[10]) * 0.03125; // [kph]
                 VehicleCache.Velocity = (WheelSpeedFL + WheelSpeedFR) / (2. * 3.6);                                       // [m/s]
 
-                IbeoSend.InitFrame();
-                IbeoVehicleSpeed = (VehicleCache.Velocity * 3.6) / 0.138889; // [kph]
-                IbeoSend.Frame.can_id = 0x4F1;
-                IbeoSend.Frame.can_dlc = 7;
-                IbeoSend.Frame.data[1] = (uint16_t)(IbeoVehicleSpeed);
-                IbeoSend.Frame.data[2] = (uint16_t)(IbeoVehicleSpeed) >> 8;
-                IbeoSend.SendCAN();
+                // IbeoSend.InitFrame();
+                // IbeoVehicleSpeed = (VehicleCache.Velocity * 3.6) / 0.138889; // [kph]
+                // IbeoSend.Frame.can_id = 0x4F1;
+                // IbeoSend.Frame.can_dlc = 7;
+                // IbeoSend.Frame.data[1] = (uint16_t)(IbeoVehicleSpeed);
+                // IbeoSend.Frame.data[2] = (uint16_t)(IbeoVehicleSpeed) >> 8;
+                // IbeoSend.SendCAN();
                 break;
 
             case 0x125:
                 VehicleCache.HandleAngle = ((VehicleCANFD.FrameFd.data[4] << 8) + VehicleCANFD.FrameFd.data[3]) * 0.1; // [deg]
                 VehicleCache.HandleSpd = (VehicleCANFD.FrameFd.data[5]) * 4;                                           // [deg/s]
 
-                IbeoSend.InitFrame();
-                IbeoSteerAngle = VehicleCache.HandleAngle / 0.001745;
-                IbeoSend.Frame.can_id = 0x2B0;
-                IbeoSend.Frame.can_dlc = 7;
-                IbeoSend.Frame.data[0] = (int16_t)(IbeoSteerAngle);
-                IbeoSend.Frame.data[1] = (int16_t)(IbeoSteerAngle) >> 8;
-                IbeoSend.SendCAN();
+                // IbeoSend.InitFrame();
+                // IbeoSteerAngle = VehicleCache.HandleAngle / 0.001745;
+                // IbeoSend.Frame.can_id = 0x2B0;
+                // IbeoSend.Frame.can_dlc = 7;
+                // IbeoSend.Frame.data[0] = (int16_t)(IbeoSteerAngle);
+                // IbeoSend.Frame.data[1] = (int16_t)(IbeoSteerAngle) >> 8;
+                // IbeoSend.SendCAN();
                 break;
 
             case 0x1A0: // SCC
@@ -229,7 +231,6 @@ void MCUSender()
                 // 깜빡이를 언제 넣을지. (좌회전 할 건지, 우회전 할 건지, 경로 내 차선변경 포함) bool 값. // 1이 유지되는 공안 깜빡이 넣는다.
                 // 우회전 정지.
                 // TargetSpeed. 어린이보호구역(30,30), 도심로(60,30), 자동차전용도로(60,60)에 따라 바뀌어야 함. 클러스터에 띄우는 속도랑, 실제 타겟스피드랑 다르게.
-
                 // new verison
                 //  MCU.Buffer[0] = 4;
                 //  MCU.Buffer[1] = 9;
@@ -242,14 +243,11 @@ void MCUSender()
                 //  MCU.Buffer[8] = handle>>8;
                 //  MCU.Buffer[9] = handle>>16;
                 //  MCU.Buffer[10] = handle>>24;
-
                 // for(uint8_t i=0; i<100; i++)
                 // {
                 //     MCU.Buffer[i+11] = Vehicle.Ibeo.Object[i];
                 // }
-
                 // MCU.Send(111);
-
                 // if (AliveCnt == 255) AliveCnt = 0;
                 // else AliveCnt++;
 
@@ -293,13 +291,10 @@ void RadarReceiver()
                 // [cm] > [m]
                 RadarCache.Y[i] = 0.01 * ((int16_t)(RadarRecv.Buffer[i * 4] << 8) + (int16_t)(RadarRecv.Buffer[(i * 4) + 1]));
                 RadarCache.X[i] = 0.01 * ((int16_t)(RadarRecv.Buffer[(i * 4) + 2] << 8) + (int16_t)(RadarRecv.Buffer[(i * 4) + 3]));
-                // if (!(RadarCache.X[i] == 0.0 && RadarCache.Y[i] == 0.0))
-                // {
                 if (RadarCache.Y[i] >= 3.0)
                 {
                     RadarCache.ObjectCnt++;
                 }
-                // }
             }
             // Radar = RadarCache;
             if (RadarFlag)
@@ -514,7 +509,6 @@ void PathReceiver()
     double TimeGap;
 
     std::cout << "[Communicator] ------------------- PathReceiver Thread start! " << endl;
-
     while (SocketFlag)
     {
         try
@@ -543,10 +537,11 @@ void PathReceiver()
             }
 
             // 11/09
-            GlobalCache.NowEnv = Forward.Buffer[1024];
-            GlobalCache.PreEnv = Forward.Buffer[1025];
+            GlobalCache.NowEnv = Forward.Buffer[1024]; // 현재 차선정보
+            GlobalCache.PreEnv = Forward.Buffer[1025]; // 다음 차선정보
+            // 다음 차선까지 남은 거리
             GlobalCache.PreDist = 0.01 * (uint32_t)((Forward.Buffer[1029] << 24) + (Forward.Buffer[1028] << 16) + (Forward.Buffer[1027] << 8) + (Forward.Buffer[1026]));
-           
+
             ErrorCnt = 0;
 
             if (PathReceiveSignal)
@@ -826,6 +821,81 @@ void MobileyeReceiver()
     std::cout << "[Communicator] ------------------- MobileyeReceiver Socket Closed! " << endl;
 }
 
+void ViewerSender()
+{
+    UDPClass Viewer;
+    // double x, y;
+    Viewer.SetSocket(ViewerIp, ViewerPort, 0); // IP: IONIQ5_5G
+    std::cout << "[Communicator] ------------------- ViewerSender Thread start! " << endl;
+    while (SocketFlag)
+    {
+        try
+        {
+            if (ViewerSenderFlag)
+            {
+                // Path
+                for (uint32_t i = 0; i < 128; i++)
+                {
+                    Viewer.Buffer[8 * i] = (uint32_t)(Global.Latitude[i] * 10000000);
+                    Viewer.Buffer[8 * i + 1] = ((uint32_t)(Global.Latitude[i] * 10000000)) >> 8;
+                    Viewer.Buffer[8 * i + 2] = ((uint32_t)(Global.Latitude[i] * 10000000)) >> 16;
+                    Viewer.Buffer[8 * i + 3] = ((uint32_t)(Global.Latitude[i] * 10000000)) >> 24;
+                    Viewer.Buffer[8 * i + 4] = (uint32_t)(Global.Longitude[i] * 10000000);
+                    Viewer.Buffer[8 * i + 5] = ((uint32_t)(Global.Longitude[i] * 10000000)) >> 8;
+                    Viewer.Buffer[8 * i + 6] = ((uint32_t)(Global.Longitude[i] * 10000000)) >> 16;
+                    Viewer.Buffer[8 * i + 7] = ((uint32_t)(Global.Longitude[i] * 10000000)) >> 24;
+                }
+                // Vehicle
+                Viewer.Buffer[1024] = (uint32_t)(GPS.Latitude * 10000000);
+                Viewer.Buffer[1025] = ((uint32_t)(GPS.Latitude * 10000000)) >> 8;
+                Viewer.Buffer[1026] = ((uint32_t)(GPS.Latitude * 10000000)) >> 16;
+                Viewer.Buffer[1027] = ((uint32_t)(GPS.Latitude * 10000000)) >> 24;
+                Viewer.Buffer[1028] = (uint32_t)(GPS.Longitude * 10000000);
+                Viewer.Buffer[1029] = ((uint32_t)(GPS.Longitude * 10000000)) >> 8;
+                Viewer.Buffer[1030] = ((uint32_t)(GPS.Longitude * 10000000)) >> 16;
+                Viewer.Buffer[1031] = ((uint32_t)(GPS.Longitude * 10000000)) >> 24;
+                Viewer.Buffer[1032] = (uint32_t)(GPS.Azimuth * 100);
+                Viewer.Buffer[1033] = ((uint32_t)(GPS.Azimuth * 100)) >> 8;
+                Viewer.Buffer[1034] = ((uint32_t)(GPS.Azimuth * 100)) >> 16;
+                Viewer.Buffer[1035] = ((uint32_t)(GPS.Azimuth * 100)) >> 24;
+                // Object
+                Viewer.Buffer[1036] = (uint32_t)Ibeo.ObjectCnt;
+                for (uint32_t j = 0; j < Ibeo.ObjectCnt; j++)
+                {
+                    Viewer.Buffer[1037 + (8 * j)] = (uint32_t)(Ibeo.Latitude[j] * 10000000);
+                    Viewer.Buffer[1037 + (8 * j) + 1] = ((uint32_t)(Ibeo.Latitude[j] * 10000000)) >> 8;
+                    Viewer.Buffer[1037 + (8 * j) + 2] = ((uint32_t)(Ibeo.Latitude[j] * 10000000)) >> 16;
+                    Viewer.Buffer[1037 + (8 * j) + 3] = ((uint32_t)(Ibeo.Latitude[j] * 10000000)) >> 24;
+                    Viewer.Buffer[1037 + (8 * j) + 4] = (uint32_t)(Ibeo.Longitude[j] * 10000000);
+                    Viewer.Buffer[1037 + (8 * j) + 5] = ((uint32_t)(Ibeo.Longitude[j] * 10000000)) >> 8;
+                    Viewer.Buffer[1037 + (8 * j) + 6] = ((uint32_t)(Ibeo.Longitude[j] * 10000000)) >> 16;
+                    Viewer.Buffer[1037 + (8 * j) + 7] = ((uint32_t)(Ibeo.Longitude[j] * 10000000)) >> 24;
+                    // x = (double)((Viewer.Buffer[1037 + (8 * j) + 3] << 24) + (Viewer.Buffer[1037 + (8 * j) + 2] << 16) + (Viewer.Buffer[1037 + (8 * j) + 1] << 8) + Viewer.Buffer[1037 + (8 * j)]) / 10000000;
+                    // y = (double)((Viewer.Buffer[1037 + (8 * j) + 7] << 24) + (Viewer.Buffer[1037 + (8 * j) + 6] << 16) + (Viewer.Buffer[1037 + (8 * j) + 5] << 8) + Viewer.Buffer[1037 + (8 * j) + 4]) / 10000000;
+                    // printf("%d/%d/%.7lf/%.7lf\n", 1037 + (8 * j) + 7, Viewer.Buffer[1036], x, y);
+                }
+                Viewer.Send(1276);
+                ViewerSenderFlag = false;
+            }
+        }
+        catch (std::out_of_range &e)
+        {
+            std::cout << "<ViewerSender> Out_of_range Error" << '\n';
+        }
+        catch (std::length_error &e)
+        {
+            std::cout << "<ViewerSender> Length Error" << '\n';
+        }
+        catch (std::exception &e)
+        {
+            std::cout << "<ViewerSender> EXCEPTION " << '\n';
+            std::cout << e.what() << '\n';
+        }
+    }
+    Viewer.CloseSocket();
+    std::cout << "[Communicator] ------------------- ViewerSender Socket Closed! " << endl;
+}
+
 /* Key 입력 */
 int getch(void)
 {
@@ -894,6 +964,7 @@ void Key()
 // ------------------------------- class Function ------------------------------------------- //
 void CANClass::SetSocket(const std::string &ifname, const int canfd)
 {
+    // PF_CAN: CAN Protocol Family || SOCK_RAW: Socket의 유형, 사용자가 프로토콜에 직접 접근하여 데이터를 처리 || CAN_RAW: CAN Protocol 사용하는데 RAW 소켓을 생성
     if ((sock = socket(PF_CAN, SOCK_RAW, CAN_RAW)) == -1)
         perror("<CAN> socket open error");
 
@@ -906,7 +977,7 @@ void CANClass::SetSocket(const std::string &ifname, const int canfd)
     }
 
     memset(&addr, 0, sizeof(addr));
-    addr.can_family = AF_CAN;
+    addr.can_family = AF_CAN; // AF_CAM: CAN Address Family(주소체계)
     addr.can_ifindex = ifr.ifr_ifindex;
 
     if (bind(sock, (struct sockaddr *)&addr, sizeof(addr)) < 0)
@@ -918,6 +989,7 @@ void CANClass::SetSocket(const std::string &ifname, const int canfd)
 
     if (canfd)
     {
+        // SOL_CAN_RAW: CAN Protocol에서 RAW 소켓에 대한 소켓 레벨의 옵션을 설정 || CAN_RAW_FD_FRAMES: CAN FD 프레임 속성
         if (setsockopt(sock, SOL_CAN_RAW, CAN_RAW_FD_FRAMES, &canfd, sizeof(canfd)))
         {
             perror("<CAN> Error enabling CAN FD support");

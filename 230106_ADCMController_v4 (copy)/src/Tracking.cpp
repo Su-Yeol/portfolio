@@ -1068,9 +1068,9 @@ void Viewer(void){
 			plt::title("KATECH");
 
 			// [PATH]
-			plt::plot(REF_Lon_plot, REF_Lat_plot, {{"color", "black"}, {"linestyle", "--"}, {"label", "global_path"}});
-			plt::plot(path_50m_origin_x, path_50m_origin_y, {{"color", "green"}, {"linestyle", "-"}, {"linewidth", "3"}, {"label", "local_path"}});
-			plt::plot(path_log_Longitude, path_log_Latitude, {{"color", "red"}, {"linestyle", "-"}, {"label", "trajectory"}});
+			plt::plot(REF_Lon_plot, REF_Lat_plot, {{"color", "black"}, {"linestyle", "--"}, {"label", "global_path"}}); // Global
+			plt::plot(path_50m_origin_x, path_50m_origin_y, {{"color", "green"}, {"linestyle", "-"}, {"linewidth", "3"}, {"label", "local_path"}}); // Local
+			plt::plot(path_log_Longitude, path_log_Latitude, {{"color", "red"}, {"linestyle", "-"}, {"label", "trajectory"}}); // Position
 
 			// [Obstacle]
 			obj_pos_x.clear();

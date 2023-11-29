@@ -4,8 +4,8 @@
 
 /* #ifndef ~ #endif
     구조체 중복 정의로 인해 발생하는 오류 방지 */
-#ifndef JCOMMUNICATOR_H
-#define JCOMMUNICATOR_H
+#ifndef DCOMMUNICATOR_H
+#define DCOMMUNICATOR_H
 
 // key
 /* termios.h
@@ -21,8 +21,8 @@
 #include <fcntl.h>
 #include <stdlib.h>
 
-#include "JControlModule.h"
-#include "JConfigParser.h"
+#include "DControlModule.h"
+#include "DConfigParser.h"
 
 extern bool MainFlag;
 extern bool SocketFlag;
@@ -30,7 +30,6 @@ extern bool SocketFlag;
 extern bool MCUSendSignal;
 extern bool SRCSendSignal;
 extern bool PathReceiveSignal;
-extern bool ViewerSendSignal;
 
 /* 클래스 생성
     class 클래스 이름{

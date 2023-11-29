@@ -1,5 +1,5 @@
-#ifndef JCONTROLMODULE_H
-#define JCONTROLMODULE_H
+#ifndef DCONTROLMODULE_H
+#define DCONTROLMODULE_H
 
 #include <iostream> // = stdio.h, C++ 표준 입출력 스트림을 다루는 라이브러리
 #include <string.h>
@@ -7,8 +7,7 @@
 #include <netinet/in.h> // 네트워크 프로그래밍에서 인터넷 주소 관련 구조체와 상수들을 제공
 #include <arpa/inet.h>  //인터넷 주소 변환 함수를 제공하는 헤더 파일. IP 주소와 포트 번호를 변환하는 등의 작업을 수행
 #include <unistd.h>
-#include <net/if.h> // 네트워크 인터페이스 관련 기능을 다루는 헤더 파일
-
+#include <net/if.h>        // 네트워크 인터페이스 관련 기능을 다루는 헤더 파일
 #include <sys/ioctl.h>     // 입출력 장치를 제어하는 ioctl() 함수와 관련된 기능을 제공
 #include <sys/time.h>      // 시간과 시간 관련 작업을 다루는 헤더 파일. 시간 측정 등에 사용
 #include <sys/types.h>     // 시스템 데이터 형식과 관련된 정의들을 포함
@@ -16,7 +15,6 @@
 #include <linux/can.h>     // Linux 환경에서 CAN(Controller Area Network) 통신을 위한 구조체와 상수들을 정의하는 헤더 파일
 #include <linux/can/raw.h> // Linux CAN 프로토콜에서 사용되는 raw 소켓과 관련된 구조체와 상수들을 정의
 #include <time.h>
-
 #include <math.h>
 #include <cmath>
 
@@ -159,7 +157,7 @@ struct IbeoVariable
     int Objectclassification; // object class
     int ObjectCnt;            // Object detection count
     double Object[100];       // Data(class, x, y, ..., class30, x30, y30)
-    
+
     // double X[30]; // 11/08
     // double Y[30]; // 11/08
     double Latitude[30];
@@ -171,7 +169,7 @@ struct IbeoVariable
 
     // 보행자 판단
     double PathObjDist;
-    double Distance[30];
+    double PedDistance[30];
     double WestMinPedDist;
     double EastMinPedDist;
     double MinPedDist;
@@ -220,16 +218,19 @@ extern const bool PedRecord;
 extern const string PedDataPath;
 extern const bool IbeoRecord;
 extern const string IbeoDataPath;
+extern const bool RadarRecord;
+extern const string RadarDataPath;
 extern const string ReferenceFile; // 참조 파일 경로를 나타내는 문자열 상수
 extern const int MainCycle;        // 프로그램의 동작 속도를 조절
 extern bool MCUSendSignal;
-
 // ------------------------------ Sensor ------------------------------------- //
 extern int MobileyeFlag;
 extern int IbeoFlag;
 extern int RadarFlag;
+extern bool ViewerSenderFlag;
 extern char GPSRaw[100]; // GPS Raw 데이터 저장
-
+extern double toRadian;
+extern double toDegree;
 // ------------------------------ Struct ------------------------------------- //
 extern GPSStruct GPS;
 extern GlobalPathStruct Global;
@@ -237,6 +238,6 @@ extern LocalPathStruct Local;
 extern VehicleStruct Vehicle;
 extern MobileyeStruct Mobileye;
 extern IbeoVariable Ibeo;
-extern RadarStruct Radar; // 11/06
+extern RadarStruct Radar;
 
 #endif

@@ -91,20 +91,52 @@ m.save("/home/KATECH/JudgmentModule/data/object_map_time_ic.html")
 # %% 하버사인, 방위각
 import math
 
-with open("/home/KATECH/JudgmentModule/Log/Path/KCITY/KCITY_Path_1106_23.10.22-14_10_06.txt", 'r') as file:
-    lines = file.readlines()[0:100]
+MainCntChk = 0
+MainCnts = []
+IbeoCntChk = 0
+IbeoChks = []
+IbeoCnts = []
+PathLats = []
+PathLongs = []
+IbeoLats = []
+IbeoLongs = []
 
-latitudes = []
-longitudes = []
+MinDist1 = 500
+MinDist2 = 500
+MaxDist = 0
+
+with open("/home/KATECH/JudgmentModule/Log/Path/KCITY/KCITY_Path_1106_23.10.22-14_04_12.txt", 'r') as file:
+    lines = file.readlines()
 
 for line in lines:
     parts = line.strip().split('/')
     if len(parts) == 3:
         lat = float(parts[1])
         lon = float(parts[2])
-        latitudes.append(lat)
-        longitudes.append(lon)
-        
+        PathLats.append(lat)
+        PathLongs.append(lon)
+
+with open("/home/KATECH/JudgmentModule/Log/Ibeo/KCITY/KCITY_Ibeo_1106_23.10.22-14_04_12.txt", 'r') as file2:
+    lines2 = file2.readlines()
+
+for line2 in lines2:
+    parts2 = line2.strip().split('/')
+    if len(parts2) == 11:
+        MainCnt = int(parts2[1])
+        IbeoChk = int(parts2[2])
+        IbeoChks.append(IbeoChk)
+
+        if MainCnt > MainCntChk:
+            MainCntChk = MainCnt
+            IbeoMaxCnt = max(IbeoChks)
+            IbeoCnts.append((IbeoMaxCnt+1))
+            IbeoChks = []
+
+        ibeolat = float(parts2[-2])
+        ibeolon = float(parts2[-1])
+        IbeoLats.append(ibeolat)
+        IbeoLongs.append(ibeolon)
+
 def haversine(lat1, lon1, lat2, lon2):
     # Radius of the Earth in kilometers
     earth_radius = 6378135#6371000  6378135
@@ -123,7 +155,6 @@ def haversine(lat1, lon1, lat2, lon2):
     distance = earth_radius * c
 
     return distance
-
 
 def calculate_bearing(lat1, lon1, lat2, lon2):
     deg2rad = math.pi / 180.0
@@ -158,47 +189,46 @@ def calculate_relative_bearing(car_bearing, target_bearing):
 
     return relative_bearing
 
-# Example usage 37.2388036/126.7734110/37.2387602/126.7734960 || 위도(y: lat) 110979.309 경도(x: lon) 88907.949
-x = (8.54 * math.cos(0.2587)) + (-2.72 * math.sin(0.2587))
-y = (-2.72 * math.cos(0.2587)) - (8.54 * math.sin(0.2587))
-print(f"x y: {x, y} m")
+# D = (math.pi*6378137)/180.0 # WGS84
+# C = math.cos(37*math.pi/180.0)*D
+# lat1 = 37.2388051  # Latitude of Point 1
+# lon1 = 126.7734112  # Longitude of Point 1
 
-D = (math.pi*6378137)/180.0 # WGS84
-C = math.cos(37*math.pi/180.0)*D
-# 1/37.2388051/126.7734112
-# 1/37.2388042/126.7734132
-# Ibeo.Distance[p] = acos((sin(IbeoLat)*sin(GlobalLat)) + (cos(IbeoLat)*cos(GlobalLat)*cos(deltaLongitude))) * EarthRadius;
-lat1 = 37.2388051  # Latitude of Point 1
-lon1 = 126.7734112  # Longitude of Point 1
+# lat2 = 37.2388036 + y/D
+# lon2 = 126.7734110 + x/C
 
-lat2 = 37.2388036 + y/D
-lon2 = 126.7734110 + x/C
+# lat3 = 37.2388036 + y/D
+# lon3 = 126.7734110  + x/(C * math.cos(37.2388036))
 
-lat3 = 37.2388036 + y/D
-lon3 = 126.7734110  + x/(C * math.cos(37.2388036))
+# lat4 = 37.2388042
+# lon4 = 126.7734132* math.cos(37.2388036*(math.pi/180.0))
+# dist2 = haversine(lat1, lon1, lat2, lon2)
+# print(f"Distance1: {dist} m")
+# print(f"Distance1: {dist2} m")
 
-lat4 = 37.2388042
-lon4 = 126.7734132* math.cos(37.2388036*(math.pi/180.0))
 
-dist = math.acos((math.sin(lat1 * (math.pi/180.0)) * math.sin(lat2 * (math.pi/180.0))) + (math.cos(lat1 * (math.pi/180.0)) * math.cos(lat2 * (math.pi/180.0)) * 
-                                                                                          math.cos((lon2-lon1)*(math.pi/180.0)))) * 6378137
-dist2 = haversine(lat1, lon1, lat2, lon2)
-print(f"Distance1: {dist} m")
-print(f"Distance1: {dist2} m")
-# for i in range(2):
-#     distance = haversine(latitudes[i], longitudes[i], lat2, lon2)
-#     distance2 = haversine(latitudes[i], longitudes[i], lat3, lon3)
-#     print(f"Distance1: {distance} m")
-#     print(f"Distance2: {distance2} m\n")
-    # if distance <= 0.748:
-    #     print(f"index: {i}")
-    #     print(f"Distance1: {distance} m")
-    #     print(f"Distance2: {distance2} m\n")
-    # if distance2 <= 0.5:
-    #     print(f"index: {i}")
-    #     print(f"Distance1: {distance} m")
-    #     print(f"Distance2: {distance2} m\n")
+for i in range(MainCntChk):
+    # for k in range(i*30, (i+1)*30):
+    for k in range(i*IbeoCnts[i], (i+1)*IbeoCnts[i]):
+        for j in range(i*128, (i+1)*128):
+            distance = haversine(PathLats[j], PathLongs[j], IbeoLats[k], IbeoLongs[k])
+            dist = math.acos((math.sin(PathLats[j] * (math.pi/180.0)) * math.sin(IbeoLats[k] * (math.pi/180.0))) + 
+                             (math.cos(PathLats[j] * (math.pi/180.0)) * math.cos(IbeoLats[k] * (math.pi/180.0)) * math.cos((IbeoLongs[k]-PathLongs[j])*(math.pi/180.0)))) * 6378137
+            
+            if distance < MinDist1:
+                MinDist1 = distance
 
+            if dist < MinDist2:
+                MinDist2 = dist
+
+    print(f"Haversine Distance    : {MinDist1} m")
+    print(f"Spherical Cosines Dist: {MinDist2} m")
+    
+    if MinDist1 != MinDist2:
+        if ((MinDist2-MinDist1)) > MaxDist:
+            MaxDist = (MinDist2-MinDist1)
+
+print(f"거리 차이: {MaxDist:.7f}m\n")
 # car_bearing = 90.0  # Assume the car's heading is 90 degrees
 # target_bearing = calculate_bearing(lat1, lon1, lat2, lon2)
 # print(f"target Bearing: {target_bearing} degrees")

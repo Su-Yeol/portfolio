@@ -37,7 +37,7 @@ void ControlLogic::SCC()
         }
         else
         {
-            Control.Acceleration = ((-1 * (((-1 * Vehicle.Radar.RelativeVelocity) + (Lambda * (Delta/20))) / TimeToCollision))+10.23)*100; 
+            Control.Acceleration = ((-1 * (((-1 * Vehicle.Radar.RelativeVelocity) + (Lambda * (Delta/20))) / TimeToCollision)) + 10.23) * 100; 
 
             if((Control.Acceleration > 1023) && (Vehicle.Velocity >= TargetVelocity)) 
                 Control.Acceleration = 1023 - ((Vehicle.Velocity - TargetVelocity) * 1.5);
@@ -62,11 +62,11 @@ void ControlLogic::SCC()
     {
         if (Vehicle.ClusterVelocity < TargetVelocity)
         {
-            Control.Acceleration = 1033 + (TargetVelocity - Vehicle.ClusterVelocity)*3; //0.1~0.9m/s^2
+            Control.Acceleration = 1033 + (TargetVelocity - Vehicle.ClusterVelocity) * 3; //0.1~0.9m/s^2
         }
         else if (Vehicle.ClusterVelocity > TargetVelocity)
         {
-            Control.Acceleration = 1003 - (Vehicle.ClusterVelocity - TargetVelocity)*4.25; //-0.2~-3.43m/s^2
+            Control.Acceleration = 1003 - (Vehicle.ClusterVelocity - TargetVelocity) * 4.25; //-0.2~-3.43m/s^2
         }
         else 
             Control.Acceleration = 1023; // 0 m/s^2
@@ -75,7 +75,7 @@ void ControlLogic::SCC()
     if(Control.Acceleration < 680) Control.Acceleration = 680;
 }
 
-
+// 횡 방향 제어
 void ControlLogic::PurePursuit()
 {
     double CurrentDistance;
