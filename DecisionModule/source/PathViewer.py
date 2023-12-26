@@ -1,5 +1,4 @@
 
-
 # %% Path Zoom Plot
 import matplotlib.pyplot as plt
 import plotly.offline as plyo
@@ -376,4 +375,46 @@ dist = math.sqrt(math.pow((latdgr*D)+(latmin*(D/60))+(latsec*((D/60)/60)) , 2) +
 print(f"{latdgr*D, D, latmin*(D/60), (D/60), latsec*((D/60)/60), (D/60)/60}")
 print(f"{(londgr*C), C, (lonmin*(C/60)), (C/60), lonsec*((C/60)/60), (C/60)/60}")
 print(f"dist : {dist}")
+# %%
+import math
+def haversine(lat1, lon1, lat2, lon2):
+    # Radius of the Earth in kilometers
+    earth_radius = 6378135#6371000  6378135
+
+    # Convert latitude and longitude from degrees to radians
+    lat1 = math.radians(lat1)
+    lon1 = math.radians(lon1)
+    lat2 = math.radians(lat2)
+    lon2 = math.radians(lon2)
+
+    # Haversine formula
+    dlat = lat2 - lat1
+    dlon = lon2 - lon1
+    a = math.sin(dlat/2)**2 + math.cos(lat1) * math.cos(lat2) * math.sin(dlon/2)**2
+    c = 2 * math.atan2(math.sqrt(a), math.sqrt(1-a))
+    distance = earth_radius * c
+
+    return distance
+
+Lat = 37.3939982
+Lon = 126.6344839
+Blat = 37.2388042
+Blon = 126.7734132
+
+x = 10
+y = 5
+
+Heading = 240
+PathHeading = 120
+D = 110979.309#(math.pi*EarthRadius)/180.0
+C = 88907.949#math.cos(((Alat+Blat)/2)*math.pi/180.0) * D
+
+newLat = Lat + ((y*math.cos(math.radians(Heading)) - x*math.sin(math.radians(Heading)))/D)
+newLon = Lon + ((x*math.cos(math.radians(Heading)) + y*math.sin(math.radians(Heading)))/C)
+newLat2 = Lat + ((y*math.cos(math.radians(PathHeading)) - x*math.sin(math.radians(PathHeading)))/D)
+newLon2 = Lon + ((x*math.cos(math.radians(PathHeading)) + y*math.sin(math.radians(PathHeading)))/C)
+
+dist = haversine(Blat, Blon, newLat, newLon)
+dist2 = haversine(Blat, Blon, newLat2, newLon2)
+print(f"dist : {dist, dist2}")
 # %%

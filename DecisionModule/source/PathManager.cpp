@@ -150,11 +150,11 @@ void PathConverter::InitializePath()
             break;
     }
 
-    // Vertex interval Check
-    for (uint32_t i = 0; i < WayPointNum - 1; i++)
-    {
-        Ibeo.FinalVertexDistance += VertexDistance[i];
-    }
+    // // Vertex interval Check
+    // for (uint32_t i = 0; i < WayPointNum - 1; i++)
+    // {
+    //     Ibeo.FinalVertexDistance += VertexDistance[i];
+    // }
 
     UpdatePosition(&Position);
 
@@ -368,7 +368,7 @@ void PathConverter::PedestrianDistance()
                     // Azimuth
                     y = sin(deltaLongitude) * cos(RadarLat);
                     x = (cos(GlobalLat) * sin(RadarLat)) - (sin(GlobalLat) * cos(RadarLat) * cos(deltaLongitude));
-                    ObjAzimuth[p] = atan2(y, x) * toDegree; // -180~180
+                    ObjAzimuth[p] = atan2(y, x) * (-1) * toDegree; // -180~180
                     if (Radar.PedDistance[p] < Radar.MinPedDist)
                     {
                         Radar.MinPedDist = Radar.PedDistance[p];
@@ -446,7 +446,7 @@ void PathConverter::PedestrianDistance()
             if (RadarCnt <= 2)
             {
                 Radar.MinPedDist = PreRadarPedDist;
-                PreFntVtxDist -= (Vehicle.Velocity / 10); // 50ms
+                PreFntVtxDist -= (Vehicle.Velocity / 20); // 50ms
                 FrontVertexDistance = PreFntVtxDist;
             }
             else if (RadarCnt > 2)
@@ -622,6 +622,7 @@ void PathConverter::IbeoPedestrianDistance()
 
     IbeoFrontVertexDistance = 0.0;
     Ibeo.MinPedDist = 500.0;
+    Ibeo.PathObjIdx = 500;
     // Ibeo.WestMinPedDist = -500.0;
     // Ibeo.EastMinPedDist = 500.0;
     std::fill_n(Ibeo.MinPedIdx, 30, 500);
@@ -645,37 +646,24 @@ void PathConverter::IbeoPedestrianDistance()
     static double PreFntVtxDist;
     static double PreIbeoPedDist;
     static double preAzimuth;
-    // if (Vehicle.Velocity <= 0.1)
-    // {
-    //     GPS.Azimuth = preAzimuth;
-    // }
-    // else
-    // {
-    //     preAzimuth = GPS.Azimuth;
-    // }
-    static double PathRange; // 참고할 최단거리
-    // ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ 11.29 ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ GPS update
-    UpdatePosition(&Position);
     if (Vehicle.Velocity <= 0.1)
     {
-        Position.Azimuth = preAzimuth;
+        GPS.Azimuth = preAzimuth;
     }
     else
     {
-        preAzimuth = Position.Azimuth;
+        preAzimuth = GPS.Azimuth;
     }
-    if (Position.Azimuth == 0)
-    {
-        Position.Azimuth = preAzimuth;
-    }
-    Global.Heading = (Position.Azimuth * (-1) + 90) * toRadian;
-    // ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
+    static double PathRange; // 참고할 최단거리
+    PathHeadingAngle();      // 11.30
     for (uint32_t p = 0; p < Ibeo.ObjectCnt; p++)
     {
         if ((Ibeo.Box[(p * 3) + 2] < 550) && (Ibeo.Box[(p * 3) + 3] < 550)) // 11/06 추가(종, 횡)
         {
             Ibeo.Latitude[p] = Position.Latitude + ((Ibeo.Object[(p * 3) + 3] * cos(Global.Heading) - Ibeo.Object[(p * 3) + 2] * sin(Global.Heading)) / Lat2meter);
             Ibeo.Longitude[p] = Position.Longitude + ((Ibeo.Object[(p * 3) + 2] * cos(Global.Heading) + Ibeo.Object[(p * 3) + 3] * sin(Global.Heading)) / Lon2meter);
+            // Ibeo.Latitude[p] = Position.Latitude + ((Ibeo.Object[(p * 3) + 3] * cos(Global.PathAngle) - Ibeo.Object[(p * 3) + 2] * sin(Global.PathAngle)) / Lat2meter);
+            // Ibeo.Longitude[p] = Position.Longitude + ((Ibeo.Object[(p * 3) + 2] * cos(Global.PathAngle) + Ibeo.Object[(p * 3) + 3] * sin(Global.PathAngle)) / Lon2meter);
             IbeoLat = Ibeo.Latitude[p] * toRadian;
             IbeoLong = Ibeo.Longitude[p] * toRadian;
             if (Local.Length != 0)
@@ -691,37 +679,93 @@ void PathConverter::IbeoPedestrianDistance()
                     // c = 2 * atan2(sqrt(a), sqrt(1 - a));
                     // Ibeo.PedDistance[p] = EarthRadius * c; // [m]
                     Ibeo.PedDistance[p] = acos((sin(IbeoLat) * sin(GlobalLat)) + (cos(IbeoLat) * cos(GlobalLat) * cos(deltaLongitude))) * EarthRadius;
+
                     if (Ibeo.PedDistance[p] < Ibeo.MinPedDist)
                     {
                         Ibeo.MinPedDist = Ibeo.PedDistance[p];
-                        // ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ11/09ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
                         // printf("NowEnv: %d, PreEnv: %d, Global.PreDist: %.2lf\n", Global.NowEnv, Global.PreEnv, Global.PreDist);
                         if (((Global.NowEnv == 1) && (Global.PreEnv == 4)) && ((Global.PreDist < 615) && (Global.PreDist > 440)))
                         {
-                            // 버스정류장 ~ 교통섬 직전
                             PreIbeoPedDist = Ibeo.MinPedDist;
                             PathRange = Ibeo.MinPedDist;
                             if (PathRange <= 1.4)
                             {
                                 Ibeo.MinPedIdx[p] = r;
+                                Ibeo.PathObjIdx = p;
                                 PreIbeoPedDist = PathRange;
                                 ObjectClass = Ibeo.Object[(p * 3) + 1];
                                 // printf("index %d||X, Y %.2lf %.2lf\n", p, Ibeo.Object[(p*3)+2], Ibeo.Object[(p*3)+3]);
                             }
                         }
+                        // 하이패스 입구~출구
+                        else if (((Global.NowEnv == 2) && (Global.PreEnv == 5)) && ((Global.PreDist < 80) && (Global.PreDist > 0)))
+                        {
+                            PreIbeoPedDist = Ibeo.MinPedDist;
+                            PathRange = Ibeo.MinPedDist;
+                            if (PathRange <= 0.5)
+                            {
+                                Ibeo.MinPedIdx[p] = r;
+                                Ibeo.PathObjIdx = p;
+                                PreIbeoPedDist = PathRange;
+                                ObjectClass = Ibeo.Object[(p * 3) + 1];
+                                // printf("index %d||X, Y %.2lf %.2lf\n", p, Ibeo.Object[(p*3)+2], Ibeo.Object[(p*3)+3]);
+                            }
+                        }
+                        // 하이패스 출구~음영구간 입구
+                        else if (((Global.NowEnv == 5) && (Global.PreEnv == 5)) && ((Global.PreDist < 440) && (Global.PreDist > 285)))
+                        {
+                            PreIbeoPedDist = Ibeo.MinPedDist;
+                            PathRange = Ibeo.MinPedDist;
+                            if (PathRange <= 0.5)
+                            {
+                                Ibeo.MinPedIdx[p] = r;
+                                Ibeo.PathObjIdx = p;
+                                PreIbeoPedDist = PathRange;
+                                ObjectClass = Ibeo.Object[(p * 3) + 1];
+                                // printf("index %d||X, Y %.2lf %.2lf\n", p, Ibeo.Object[(p*3)+2], Ibeo.Object[(p*3)+3]);
+                            }
+                        }
+                        // 음영구간 입구~출구 직전
+                        else if (((Global.NowEnv == 5) && (Global.PreEnv == 5)) && ((Global.PreDist < 286) && (Global.PreDist > 170)))
+                        {
+                            PreIbeoPedDist = Ibeo.MinPedDist;
+                            PathRange = Ibeo.MinPedDist;
+                            if (PathRange <= 1.5)
+                            {
+                                Ibeo.MinPedIdx[p] = r;
+                                Ibeo.PathObjIdx = p;
+                                PreIbeoPedDist = PathRange;
+                                ObjectClass = Ibeo.Object[(p * 3) + 1];
+                                // printf("index %d||X, Y %.2lf %.2lf\n", p, Ibeo.Object[(p*3)+2], Ibeo.Object[(p*3)+3]);
+                            }
+                        }
+                        // 경사로
+                        // else if (((Global.NowEnv == 6) && (Global.PreEnv == 6)) && ((Global.PreDist < 85) && (Global.PreDist > 0)))
+                        // {
+                        //     PreIbeoPedDist = Ibeo.MinPedDist;
+                        //     PathRange = Ibeo.MinPedDist;
+                        //     if (PathRange <= 1.2)
+                        //     {
+                        //         Ibeo.MinPedIdx[p] = r;
+                        //         Ibeo.PathObjIdx = p;
+                        //         PreIbeoPedDist = PathRange;
+                        //         ObjectClass = Ibeo.Object[(p * 3) + 1];
+                        //         // printf("index %d||X, Y %.2lf %.2lf\n", p, Ibeo.Object[(p*3)+2], Ibeo.Object[(p*3)+3]);
+                        //     }
+                        // }
                         else
                         {
                             PathRange = fabs(Ibeo.MinPedDist - (double)(0.005 * Ibeo.Box[(p * 3) + 3])); // 가드레일: BoxSizeX > 10.0[m]
                             if (PathRange <= 0.8)
                             {
                                 Ibeo.MinPedIdx[p] = r;
+                                Ibeo.PathObjIdx = p;
                                 PreIbeoPedDist = PathRange;
                                 ObjectClass = Ibeo.Object[(p * 3) + 1];
                                 // printf("index %d||Class %d||X, Y %.2lf %.2lf||Box X, Y %d %d\n", p, Ibeo.Objectclassification,
                                 //     Ibeo.Object[(p*3)+2], Ibeo.Object[(p*3)+3], Ibeo.Box[(p*3)+2], Ibeo.Box[(p*3)+3]);
                             }
                         }
-                        // ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
                         // PreIbeoPedDist = Ibeo.MinPedDist;
                         // if (Ibeo.MinPedDist <= 1.5)
                         // {
@@ -841,6 +885,8 @@ void PathConverter::IbeoPedestrianDistance()
         IbeoFrontVertexDistance = 100;
     if (PreFntVtxDist > 200 || PreFntVtxDist == 0)
         PreFntVtxDist = 200;
+    if (Ibeo.FaultCheckFlag == 1)    //12.04
+        IbeoFrontVertexDistance = 200;
 
     // IbeoPreFrontVertexDistance = PreFntVtxDist;
     Ibeo.PathObjDist = IbeoFrontVertexDistance;
@@ -851,9 +897,52 @@ void PathConverter::IbeoPedestrianDistance()
     // TimeGap = (endTime.tv_sec - startTime.tv_sec) * 1000 + ((endTime.tv_usec - startTime.tv_usec) / 1000); // [ms]
     // printf("경로상 %d||Overshoot %d(a->100), %d(100->a)||전방거리 %.2lf||최소거리 %.2lf||Index %d||Azimuth %.2lf||VtDist %.2lf\n",
     //        IbeoFlag, IbeoCnt, PathObjCnt, IbeoFrontVertexDistance, PathRange, MinIdx, GPS.Azimuth, Ibeo.FinalVertexDistance);
-    printf("경로상 %d||Overshoot %d(a->100), %d(100->a)||전방거리 %.2lf||최소거리 %.2lf %.2lf||Index %d||Azimuth %.2lf||VtDist %.2lf\n",
-           IbeoFlag, IbeoCnt, PathObjCnt, IbeoFrontVertexDistance, Ibeo.MinPedDist, PathRange, MinIdx, Position.Azimuth, Ibeo.FinalVertexDistance);
+    printf("경로상 %d||Overshoot %d(a->100), %d(100->a)||전방거리 %.2lf||최소거리 %.2lf %.2lf||Index %d||Azimuth %.2lf %.2lf\n",
+           IbeoFlag, IbeoCnt, PathObjCnt, IbeoFrontVertexDistance, Ibeo.MinPedDist, PathRange, MinIdx, Global.Heading, Global.PathAngle);
     // gettimeofday(&startTime, NULL);
+}
+// 11.30
+void PathConverter::PathHeadingAngle()
+{
+    double Error;
+    double PathDirection;
+    double distance = 0;
+    double GPSHeading;
+    static double PrePathDirection = 0.0;
+    uint32_t NearestIdx = 0;
+    uint32_t NextIdx = 0;
+    for (uint32_t i = 0; i < Local.Length; i++)
+    {
+        distance = sqrt(pow((Global.ValidLatitude[i] - Global.ValidLatitude[0]), 2) + pow((Global.ValidLongitude[i] - Global.ValidLongitude[0]), 2));
+        if (distance < 3.0) // 뒷바퀴
+        {
+            NearestIdx = i;
+        }
+        else if (distance < 5.0) // 앞바퀴
+        {
+            NextIdx = i;
+        }
+    }
+    if (((NearestIdx != 0) && (NextIdx != 0)) && (NearestIdx < Local.Length))
+    {
+        PathDirection = atan2((Global.ValidLatitude[NextIdx] - Global.ValidLatitude[NearestIdx]), (Global.ValidLongitude[NextIdx] - Global.ValidLongitude[NearestIdx]));
+        PathDirection = ((PathDirection * (-1)) + 90) * toDegree;
+        if (PathDirection == 0.0)
+            PathDirection = PrePathDirection;
+        else
+            PrePathDirection = PathDirection;
+        // if ((PathDirection > -180) && (PathDirection < 0))
+        //     PathDirection = 360 + PathDirection;
+        // GPSHeading = Global.Heading * toDegree;
+        // Error = std::abs(std::abs(GPSHeading) - std::abs(PathDirection));
+        Global.PathAngle = PathDirection * toRadian;
+        // printf("차이: %lf||차량: %lf||경로: %lf||", Error, GPSHeading, PathDirection);
+        // Error = (Global.Heading * toDegree) - PathDirection;
+    }
+    else
+    {
+        printf("[PathManager/GetRHA]-------- Indexing Error. NearIdx:%d  NextIdx:%d EndVertex:%d\n", NearestIdx, NextIdx, EndVertex);
+    }
 }
 
 // --------------------------------------------------------------------------------------------------- //

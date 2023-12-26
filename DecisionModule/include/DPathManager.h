@@ -25,6 +25,8 @@ class PathConverter
         void IbeoPedestrianDistance();
         double IbeoFrontVertexDistance;
         double IbeoPreFrontVertexDistance;
+        // Path direction
+        void PathHeadingAngle();
         uint32_t WayPointNum;
 
     private:

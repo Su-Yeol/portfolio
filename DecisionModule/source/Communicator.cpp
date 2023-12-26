@@ -272,7 +272,6 @@ void MCUSender()
     cout << "[Communicator] ------------------- MCUSender Socket Closed! " << endl;
 }
 
-// 11.06 오전
 void RadarReceiver()
 {
     UDPClass RadarRecv;
@@ -327,10 +326,12 @@ void IbeoReceiver()
     IbeoVariable IbeoCache;
     IbeoRecv.SetSocket("can1", 0);
     uint8_t ObjectCnt = 0;
+    // 12.04 LiDAR Fault
+    static uint8_t NowCheckCnt = 0;
+    static uint8_t PreCheckCnt = 0;
+    static uint8_t FaultCnt = 0;
 
     std::cout << "[Communicator] ------------------- IbeoReceiver Thread start! " << endl;
-
-    // gettimeofday(&startTime, NULL);
     while (SocketFlag)
     {
         try
@@ -345,7 +346,14 @@ void IbeoReceiver()
                     1 = relative velocities, bounding boxes*/
                 IbeoCache.Boxflag = IbeoRecv.Frame.data[4];
                 ObjectCnt = 0;
-
+                // 12.04
+                PreCheckCnt = NowCheckCnt;
+                NowCheckCnt++;
+                if (NowCheckCnt > 255)
+                {
+                    NowCheckCnt = 0;
+                }
+                FaultCnt = 0;
                 // printf("\nObject Count : %d\n", IbeoCache.ObjectCnt);
                 break;
 
@@ -358,7 +366,6 @@ void IbeoReceiver()
                 // 기준 좌표게에서 물체속도(0.1m/s) - 0x800: an invalid veloctiy
                 IbeoCache.Vx = (IbeoRecv.Frame.data[5] << 4) + ((IbeoRecv.Frame.data[6] & 0xF0) >> 4);
                 IbeoCache.Vy = ((IbeoRecv.Frame.data[6] & 0x0F) << 8) + IbeoRecv.Frame.data[7];
-
                 if (IbeoCache.Vx > 2048)
                     IbeoCache.Vx -= 4096;
                 if (IbeoCache.Vy > 2048)
@@ -367,14 +374,12 @@ void IbeoReceiver()
 
             case 0x504:
                 IbeoCache.Objectclassification = IbeoRecv.Frame.data[1];
-
                 // 0: unclassified, 1: unknown small, 2: unknown big, 3: pedestrian, 4: bike, 5: car, 6: truck
                 IbeoCache.Object[(ObjectCnt * 3) + 1] = (int)IbeoCache.Objectclassification;
                 IbeoCache.Object[(ObjectCnt * 3) + 2] = ((double)IbeoCache.X / 100.0); // [m]
                 IbeoCache.Object[(ObjectCnt * 3) + 3] = ((double)IbeoCache.Y / 100.0); // [m]
                 // IbeoCache.BoxCenterX = (IbeoRecv.Frame.data[4] << 8) + IbeoRecv.Frame.data[5];
                 // IbeoCache.BoxCenterY = (IbeoRecv.Frame.data[6] << 8) + IbeoRecv.Frame.data[7];
-
                 break;
 
             case 0x505:
@@ -387,16 +392,25 @@ void IbeoReceiver()
                 IbeoCache.Box[(ObjectCnt * 3) + 3] = (int16_t)IbeoCache.BoxSizeY;
 
                 ObjectCnt += 1;
-                // printf("Class : %d || Ibeo X : %.4lf || Ibeo Y : %.4lf  || ", IbeoCache.Objectclassification, ((double)IbeoCache.X / 100), ((double)IbeoCache.Y / 100));
-                // printf("Box Flag : %d || Box Size X, Y : %d, %d || Box Orientation %d\n", IbeoCache.Boxflag, IbeoCache.BoxSizeX, IbeoCache.BoxSizeY, IbeoCache.BoxOrientation);
-                // printf("Box Size X, Y : %d, %d || x, y %d %d\n", IbeoCache.BoxCenterX, IbeoCache.BoxCenterY, IbeoCache.X, IbeoCache.Y);
+                // printf("Class: %d||Ibeo X: %.4lf||Ibeo Y: %.4lf||", IbeoCache.Objectclassification, ((double)IbeoCache.X / 100), ((double)IbeoCache.Y / 100));
+                // printf("Vx, %d Vy %d\n");
+                // printf("Box Flag: %d||Box Size X, Y: %d, %d||Box Orientation %d\n", IbeoCache.Boxflag, IbeoCache.BoxSizeX, IbeoCache.BoxSizeY, IbeoCache.BoxOrientation);
+                // printf("Box Size X, Y: %d, %d||x, y %d %d\n", IbeoCache.BoxCenterX, IbeoCache.BoxCenterY, IbeoCache.X, IbeoCache.Y);
                 break;
             }
-
             if (IbeoFlag)
             {
                 Ibeo = IbeoCache;
                 IbeoFlag = 0;
+                if (PreCheckCnt == NowCheckCnt) // HMI Fault
+                {
+                    FaultCnt++;
+                    if (FaultCnt > 3)
+                    {
+                        Ibeo.FaultCheckFlag = 1;
+                        FaultCnt = 3 + 1;
+                    }
+                }
             }
         }
         catch (std::out_of_range &e)
@@ -536,7 +550,6 @@ void PathReceiver()
                 TotalCnt++;
             }
 
-            // 11/09
             GlobalCache.NowEnv = Forward.Buffer[1024]; // 현재 차선정보
             GlobalCache.PreEnv = Forward.Buffer[1025]; // 다음 차선정보
             // 다음 차선까지 남은 거리
@@ -574,7 +587,6 @@ void MobileyeReceiver()
     /* Mobileye */
     CANClass PedestrianCANFD;
     MobileyeStruct MobileyeCache;
-
     // Y(종) - [cm]
     double MobileyeYFactor = 5.4054054;
     double MobileyeYOffset = -154;
@@ -590,21 +602,19 @@ void MobileyeReceiver()
         try
         {
             PedestrianCANFD.ReceiveCANFD();
-
             switch (PedestrianCANFD.FrameFd.can_id) // 사람(차량, 자전거 등) 확인
             {
             case 0x180:
-                if (PedestrianCANFD.FrameFd.data[7] == 0x50)
+                if (PedestrianCANFD.FrameFd.data[7] == 0x50) // 사람:0x50, 차량:0x22
                 {
                     MobileyeCache.Y[0] = (PedestrianCANFD.FrameFd.data[8] + ((PedestrianCANFD.FrameFd.data[9] & 0x0F) << 8)) * MobileyeYFactor + MobileyeYOffset;
                     MobileyeCache.X[0] = ((PedestrianCANFD.FrameFd.data[9] & 0xF0) >> 4) + (PedestrianCANFD.FrameFd.data[10] << 4);
+
                     if (MobileyeCache.X[0] > 2048) // 음수 확인
                         MobileyeCache.X[0] = MobileyeCache.X[0] - 4096;
 
                     MobileyeCache.X[0] = MobileyeCache.X[0] * MobileyeXFactor + MobileyeXOffset;
-
-                    // [m]
-                    MobileyeCache.X[0] = MobileyeCache.X[0] / 100;
+                    MobileyeCache.X[0] = MobileyeCache.X[0] / 100; //[m]
                     MobileyeCache.Y[0] = MobileyeCache.Y[0] / 100; // 경로와 object 좌표값 고정
                 }
 
@@ -622,7 +632,6 @@ void MobileyeReceiver()
                         MobileyeCache.X[1] = MobileyeCache.X[1] - 4096;
 
                     MobileyeCache.X[1] = MobileyeCache.X[1] * MobileyeXFactor + MobileyeXOffset;
-
                     MobileyeCache.X[1] = MobileyeCache.X[1] / 100;
                     MobileyeCache.Y[1] = MobileyeCache.Y[1] / 100;
                 }
@@ -643,7 +652,6 @@ void MobileyeReceiver()
                         MobileyeCache.X[2] = MobileyeCache.X[2] - 4096;
 
                     MobileyeCache.X[2] = MobileyeCache.X[2] * MobileyeXFactor + MobileyeXOffset;
-
                     MobileyeCache.X[2] = MobileyeCache.X[2] / 100;
                     MobileyeCache.Y[2] = MobileyeCache.Y[2] / 100;
                 }
@@ -662,7 +670,6 @@ void MobileyeReceiver()
                         MobileyeCache.X[3] = MobileyeCache.X[3] - 4096;
 
                     MobileyeCache.X[3] = MobileyeCache.X[3] * MobileyeXFactor + MobileyeXOffset;
-
                     MobileyeCache.X[3] = MobileyeCache.X[3] / 100;
                     MobileyeCache.Y[3] = MobileyeCache.Y[3] / 100;
                 }
@@ -683,7 +690,6 @@ void MobileyeReceiver()
                         MobileyeCache.X[4] = MobileyeCache.X[4] - 4096;
 
                     MobileyeCache.X[4] = MobileyeCache.X[4] * MobileyeXFactor + MobileyeXOffset;
-
                     MobileyeCache.X[4] = MobileyeCache.X[4] / 100;
                     MobileyeCache.Y[4] = MobileyeCache.Y[4] / 100;
                 }
@@ -702,7 +708,6 @@ void MobileyeReceiver()
                         MobileyeCache.X[5] = MobileyeCache.X[5] - 4096;
 
                     MobileyeCache.X[5] = MobileyeCache.X[5] * MobileyeXFactor + MobileyeXOffset;
-
                     MobileyeCache.X[5] = MobileyeCache.X[5] / 100;
                     MobileyeCache.Y[5] = MobileyeCache.Y[5] / 100;
                 }
@@ -723,7 +728,6 @@ void MobileyeReceiver()
                         MobileyeCache.X[6] = MobileyeCache.X[6] - 4096;
 
                     MobileyeCache.X[6] = MobileyeCache.X[6] * MobileyeXFactor + MobileyeXOffset;
-
                     MobileyeCache.X[6] = MobileyeCache.X[6] / 100;
                     MobileyeCache.Y[6] = MobileyeCache.Y[6] / 100;
                 }
@@ -742,7 +746,6 @@ void MobileyeReceiver()
                         MobileyeCache.X[7] = MobileyeCache.X[7] - 4096;
 
                     MobileyeCache.X[7] = MobileyeCache.X[7] * MobileyeXFactor + MobileyeXOffset;
-
                     MobileyeCache.X[7] = MobileyeCache.X[7] / 100;
                     MobileyeCache.Y[7] = MobileyeCache.Y[7] / 100;
                 }
@@ -763,7 +766,6 @@ void MobileyeReceiver()
                         MobileyeCache.X[8] = MobileyeCache.X[8] - 4096;
 
                     MobileyeCache.X[8] = MobileyeCache.X[8] * MobileyeXFactor + MobileyeXOffset;
-
                     MobileyeCache.X[8] = MobileyeCache.X[8] / 100;
                     MobileyeCache.Y[8] = MobileyeCache.Y[8] / 100;
                 }
@@ -782,7 +784,6 @@ void MobileyeReceiver()
                         MobileyeCache.X[9] = MobileyeCache.X[9] - 4096;
 
                     MobileyeCache.X[9] = MobileyeCache.X[9] * MobileyeXFactor + MobileyeXOffset;
-
                     MobileyeCache.X[9] = MobileyeCache.X[9] / 100;
                     MobileyeCache.Y[9] = MobileyeCache.Y[9] / 100;
                 }
@@ -845,7 +846,12 @@ void ViewerSender()
                     Viewer.Buffer[8 * i + 6] = ((uint32_t)(Global.Longitude[i] * 10000000)) >> 16;
                     Viewer.Buffer[8 * i + 7] = ((uint32_t)(Global.Longitude[i] * 10000000)) >> 24;
                 }
-                // Vehicle
+                // 11.30
+                //  Viewer.Buffer[1024] = (uint32_t)((Global.PathAngle * toDegree) * 100);
+                //  Viewer.Buffer[1025] = ((uint32_t)((Global.PathAngle * toDegree) * 100)) >> 8;
+                //  Viewer.Buffer[1026] = ((uint32_t)((Global.PathAngle * toDegree) * 100)) >> 16;
+                //  Viewer.Buffer[1027] = ((uint32_t)((Global.PathAngle * toDegree) * 100)) >> 24;
+                //  Vehicle
                 Viewer.Buffer[1024] = (uint32_t)(GPS.Latitude * 10000000);
                 Viewer.Buffer[1025] = ((uint32_t)(GPS.Latitude * 10000000)) >> 8;
                 Viewer.Buffer[1026] = ((uint32_t)(GPS.Latitude * 10000000)) >> 16;
@@ -859,22 +865,28 @@ void ViewerSender()
                 Viewer.Buffer[1034] = ((uint32_t)(GPS.Azimuth * 100)) >> 16;
                 Viewer.Buffer[1035] = ((uint32_t)(GPS.Azimuth * 100)) >> 24;
                 // Object
-                Viewer.Buffer[1036] = (uint32_t)Ibeo.ObjectCnt;
+                Viewer.Buffer[1036] = (uint32_t)(Ibeo.PathObjDist * 100);
+                Viewer.Buffer[1037] = ((uint32_t)(Ibeo.PathObjDist * 100)) >> 8;
+                Viewer.Buffer[1038] = ((uint32_t)(Ibeo.PathObjDist * 100)) >> 16;
+                Viewer.Buffer[1039] = ((uint32_t)(Ibeo.PathObjDist * 100)) >> 24;
+                Viewer.Buffer[1040] = (uint16_t)(Ibeo.PathObjIdx);
+                Viewer.Buffer[1041] = ((uint16_t)(Ibeo.PathObjIdx)) >> 8;
+                Viewer.Buffer[1042] = (uint8_t)(Ibeo.ObjectCnt);
                 for (uint32_t j = 0; j < Ibeo.ObjectCnt; j++)
                 {
-                    Viewer.Buffer[1037 + (8 * j)] = (uint32_t)(Ibeo.Latitude[j] * 10000000);
-                    Viewer.Buffer[1037 + (8 * j) + 1] = ((uint32_t)(Ibeo.Latitude[j] * 10000000)) >> 8;
-                    Viewer.Buffer[1037 + (8 * j) + 2] = ((uint32_t)(Ibeo.Latitude[j] * 10000000)) >> 16;
-                    Viewer.Buffer[1037 + (8 * j) + 3] = ((uint32_t)(Ibeo.Latitude[j] * 10000000)) >> 24;
-                    Viewer.Buffer[1037 + (8 * j) + 4] = (uint32_t)(Ibeo.Longitude[j] * 10000000);
-                    Viewer.Buffer[1037 + (8 * j) + 5] = ((uint32_t)(Ibeo.Longitude[j] * 10000000)) >> 8;
-                    Viewer.Buffer[1037 + (8 * j) + 6] = ((uint32_t)(Ibeo.Longitude[j] * 10000000)) >> 16;
-                    Viewer.Buffer[1037 + (8 * j) + 7] = ((uint32_t)(Ibeo.Longitude[j] * 10000000)) >> 24;
+                    Viewer.Buffer[1043 + (8 * j)] = (uint32_t)(Ibeo.Latitude[j] * 10000000);
+                    Viewer.Buffer[1043 + (8 * j) + 1] = ((uint32_t)(Ibeo.Latitude[j] * 10000000)) >> 8;
+                    Viewer.Buffer[1043 + (8 * j) + 2] = ((uint32_t)(Ibeo.Latitude[j] * 10000000)) >> 16;
+                    Viewer.Buffer[1043 + (8 * j) + 3] = ((uint32_t)(Ibeo.Latitude[j] * 10000000)) >> 24;
+                    Viewer.Buffer[1043 + (8 * j) + 4] = (uint32_t)(Ibeo.Longitude[j] * 10000000);
+                    Viewer.Buffer[1043 + (8 * j) + 5] = ((uint32_t)(Ibeo.Longitude[j] * 10000000)) >> 8;
+                    Viewer.Buffer[1043 + (8 * j) + 6] = ((uint32_t)(Ibeo.Longitude[j] * 10000000)) >> 16;
+                    Viewer.Buffer[1043 + (8 * j) + 7] = ((uint32_t)(Ibeo.Longitude[j] * 10000000)) >> 24;
                     // x = (double)((Viewer.Buffer[1037 + (8 * j) + 3] << 24) + (Viewer.Buffer[1037 + (8 * j) + 2] << 16) + (Viewer.Buffer[1037 + (8 * j) + 1] << 8) + Viewer.Buffer[1037 + (8 * j)]) / 10000000;
                     // y = (double)((Viewer.Buffer[1037 + (8 * j) + 7] << 24) + (Viewer.Buffer[1037 + (8 * j) + 6] << 16) + (Viewer.Buffer[1037 + (8 * j) + 5] << 8) + Viewer.Buffer[1037 + (8 * j) + 4]) / 10000000;
                     // printf("%d/%d/%.7lf/%.7lf\n", 1037 + (8 * j) + 7, Viewer.Buffer[1036], x, y);
                 }
-                Viewer.Send(1276);
+                Viewer.Send(1283); // 1276, 1283, 1287
                 ViewerSenderFlag = false;
             }
         }

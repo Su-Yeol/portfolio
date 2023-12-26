@@ -63,7 +63,6 @@ struct VehicleStruct
         double Distance;         // 차량과 다른 물체 간의 거리
         double RelativeVelocity; // 다른 물체와의 상대적인 속도
 
-        // 11/04 Radar WGS84 coordinate
         double X[16];
         double Y[16];
         double Latitude[16];
@@ -99,10 +98,10 @@ struct GlobalPathStruct
     // 일반적으로 각도로 표현, GPS 방위각(azimous) - error를 구해서 wheel 각도 구하는데 사용
     double LocalizationGap;
 
-    // 11/09
     uint8_t NowEnv;
     uint8_t PreEnv;
     double PreDist;
+    double PathAngle;
 };
 
 struct LocalPathStruct
@@ -157,27 +156,21 @@ struct IbeoVariable
     int Objectclassification; // object class
     int ObjectCnt;            // Object detection count
     double Object[100];       // Data(class, x, y, ..., class30, x30, y30)
-
-    // double X[30]; // 11/08
-    // double Y[30]; // 11/08
     double Latitude[30];
     double Longitude[30];
-    double preLatitude[30];
-    double preLongitude[30];
-    double Longitude2[30];
-    double Latitude2[30];
-
     // 보행자 판단
-    double PathObjDist;
-    double PedDistance[30];
+    double PathObjDist;     // 경로상 장애물 전방거리
+    double PedDistance[30]; // 경로~장애물 거리
     double WestMinPedDist;
     double EastMinPedDist;
-    double MinPedDist;
-
-    uint16_t MinPedIdx[30];
-    uint16_t MinIdx;
+    double MinPedDist;      // 경로~장애물 최소거리
+    uint16_t PathObjIdx;    // 경로상 장애물 index
+    uint16_t MinPedIdx[30]; // 보행자와의 최소거리 vertex
+    uint16_t MinIdx;        // 최소 index
     uint8_t PathObjectFlag;
-
+    // Fault
+    uint8_t FaultCheckFlag;
+    // Vertex 간격
     double FinalVertexDistance;
 };
 
@@ -187,7 +180,6 @@ struct RadarStruct
     double Distance;         // 차량과 다른 물체 간의 거리
     double RelativeVelocity; // 다른 물체와의 상대적인 속도
 
-    // 11/04 Radar WGS84 coordinate
     int ObjectCnt;
     double X[16];
     double Y[16];
