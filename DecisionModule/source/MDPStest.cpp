@@ -191,7 +191,7 @@ void MDPStoCCAN()
 {
     CANClass SPASFrame;
     static uint8_t Chkcnt;   // 20ms Count
-    static uint8_t MDPS7Cnt; // test
+    static uint8_t MDPS7Cnt;
     std::cout << "[MDPStoCCAN] ------------------ Can Gateway START! ......" << endl;
     while (true)
     {
@@ -292,7 +292,6 @@ void MDPStoCCAN()
                         else
                         {
                             SPASFrame.FrameFd.data[11] = 0x18; // MDPS 7 → 6 → 3
-                            // test -----------------------
                             MDPS7Cnt++;
                             if (MDPS7Cnt == 1)
                             {
@@ -333,7 +332,6 @@ void MDPStoCCAN()
                         else // MDPS 7
                         {
                             SPASFrame.FrameFd.data[11] = 0x18;
-                            // test -----------------------
                             MDPS7Cnt++;
                             if (MDPS7Cnt == 1)
                             {
@@ -342,7 +340,7 @@ void MDPStoCCAN()
                             }
                         }
                     }
-                    PAmode = (SPASFrame.FrameFd.data[11] >> 2); // test
+                    PAmode = (SPASFrame.FrameFd.data[11] >> 2);
                     for (i_165 = 2; i_165 < 24; i_165++)
                     {
                         Msg165_index = (uint8_t)((Msg165_CRC >> 8) ^ SPASFrame.FrameFd.data[i_165]) & 0x00FF;
