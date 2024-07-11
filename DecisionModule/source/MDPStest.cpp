@@ -71,9 +71,9 @@ uint16_t crc16table[256] = {
 };
 // SCC OnOff
 uint8_t SCCbtn;
-int SCC_ObjDstVal = 0x7FE;
-int SCC_ObjRelSpdVal = 0xFFE;
-int SCC_ObjLatPosVal = 0xC8;
+// int SCC_ObjDstVal = 0x7FE;
+// int SCC_ObjRelSpdVal = 0xFFE;
+// int SCC_ObjLatPosVal = 0xC8;
 int SCC_SysFlrSta = 0;
 int SCC_MainOnOffSta = 0;
 int SCC_OpSta = 0;
@@ -83,14 +83,14 @@ int SCC_DrvAlrtDis = 0;
 int SCC_ObjDstLvlVal = 0;
 int SCC_HeadwayDstSetVal = 0;
 int SCC_NSCCAutoSetSpdSta = 0;
-int SCC_TrgtSpdSetVal = 0; // Ax: 1023(Refer Val) = 가감속X 0x1E
+int SCC_TrgtSpdSetVal = 0; // CLU speed
 int SCC_NSCCOpsta = 0;
 int SCC_NSCCOnOffsta = 2;
 int SCC_ObjSta = 0;
 int SCC_SnstvtyModRetVal = 0;
 int SCC_NSCCAutoSetSpdUpdtsta = 0;
 int SCC_NSCCInfoPUDis = 0;
-int SCC_AccelReqVal = 1023;
+int SCC_AccelReqVal = 1023; // Ax: 1023(Refer Val) = 가감속X
 int SCC_AccelReqRawVal = 1023;
 int SCC_JrkUpplimVal = 0;
 int SCC_JrkLwrLimVal = 0;
@@ -120,7 +120,7 @@ void CCANtoMDPS()
     double WheelSpeedFR = 0;
     double WheelSpeedRL = 0;
     double WheelSpeedRR = 0;
-    std::cout << "[CCANtoMDPS] ------------------ Can Gateway START! ......" << endl;
+    std::cout << "[CCANtoMDPS] ------------------ C-CAN to MDPS Gateway START! ......" << endl;
     while (true)
     {
         try
@@ -131,7 +131,7 @@ void CCANtoMDPS()
                 if (C_CANFrame.FrameFd.can_id == CtoMDPS[i])
                 {
                     /* MDPS 3 -> 5: WheelSpeed와 관련 있음.
-                                    특정값 이상(5kph X) 올라가면 MDPS 3에서 고정 */
+                                    특정값 이상(5kph 이상 X) 올라가면 MDPS 3에서 고정 */
                     if (C_CANFrame.FrameFd.can_id == 0xA0)
                     {
                         int i_A0 = 0;
@@ -184,15 +184,15 @@ void CCANtoMDPS()
             std::cout << e.what() << '\n';
         }
     }
-    std::cout << "[CCANtoMDPS] ------------------ Can Gateway END! ......" << endl;
+    std::cout << "[CCANtoMDPS] ------------------ C-CAN to MDPS Gateway END! ......" << endl;
 }
 
 void MDPStoCCAN()
 {
     CANClass SPASFrame;
-    static uint8_t Chkcnt;   // 20ms Count
+    static uint8_t Chkcnt; // 20ms Count
     static uint8_t MDPS7Cnt;
-    std::cout << "[MDPStoCCAN] ------------------ Can Gateway START! ......" << endl;
+    std::cout << "[MDPStoCCAN] ------------------ MDPS to C-CAN Gateway START! ......" << endl;
     while (true)
     {
         try
@@ -254,8 +254,8 @@ void MDPStoCCAN()
                         SCC_MainOnOffSta = 0;
                         if (MDPSmode == 0)
                         {
-                            SPASFrame.FrameFd.data[11] = 0x04; // PA_sta 1
-                            PA_StrAnglReq = CurrentAnglVal * 10;
+                            SPASFrame.FrameFd.data[11] = 0x04;   // PA_sta 1
+                            PA_StrAnglReq = CurrentAnglVal * 10; // factor 0.1 → * 10
                             SPASFrame.FrameFd.data[12] = ((PA_StrAnglReq) & 0xFF);
                             SPASFrame.FrameFd.data[13] = ((PA_StrAnglReq >> 8) & 0xFF);
                         }
@@ -287,11 +287,12 @@ void MDPStoCCAN()
                         }
                         else if (MDPSmode == 6)
                         {
-                            SPASFrame.FrameFd.data[11] = 0x08; // PA_sta 2
+                            // MDPS 6(제어가능 범위 초과): 10ms - 480dgr/s(4.8deg) 9.6deg 이상 차이나면 빠짐
+                            SPASFrame.FrameFd.data[11] = 0x08; // PA_sta 2 → MDPS 3
                         }
-                        else
+                        else // MDPS 7
                         {
-                            SPASFrame.FrameFd.data[11] = 0x18; // MDPS 7 → 6 → 3
+                            SPASFrame.FrameFd.data[11] = 0x18; // MDPS 7 → 6 → 3: MDPS 유지
                             MDPS7Cnt++;
                             if (MDPS7Cnt == 1)
                             {
@@ -313,23 +314,22 @@ void MDPStoCCAN()
                         {
                             SPASFrame.FrameFd.data[11] = 0x14; // PA_sta 5
                             PA_StrAnglReq = CurrentAnglVal * 10;
-                            PrePA_StrAnglReq = PA_StrAnglReq; // 지면에 따라 StrAngl값(L, R)을 유지하려는 성향이 존재
+                            PrePA_StrAnglReq = PA_StrAnglReq; // 지면에 따라 StrAngl 값(L, R)이 변화하는 성향이 존재
                             SPASFrame.FrameFd.data[12] = ((PA_StrAnglReq) & 0xFF);
                             SPASFrame.FrameFd.data[13] = ((PA_StrAnglReq >> 8) & 0xFF);
                         }
                         else if (MDPSmode == 5)
                         {
                             SPASFrame.FrameFd.data[11] = 0x14; // PA_sta 5
-                            PA_StrAnglReq = PrePA_StrAnglReq;  // 300ms → UDP
+                            PA_StrAnglReq = PrePA_StrAnglReq;  // 300ms 유지 → UDP data recv
                             SPASFrame.FrameFd.data[12] = ((PA_StrAnglReq) & 0xFF);
                             SPASFrame.FrameFd.data[13] = ((PA_StrAnglReq >> 8) & 0xFF);
                         }
                         else if (MDPSmode == 6)
                         {
-                            // MDPS 6(제어가능 범위 초과): 10ms - 480dgr/s(4.8deg) 9.6도 이상 차이나면 빠짐
-                            SPASFrame.FrameFd.data[11] = 0x08; // PA_sta 2
+                            SPASFrame.FrameFd.data[11] = 0x08;
                         }
-                        else // MDPS 7
+                        else
                         {
                             SPASFrame.FrameFd.data[11] = 0x18;
                             MDPS7Cnt++;
@@ -371,13 +371,13 @@ void MDPStoCCAN()
             std::cout << e.what() << '\n';
         }
     }
-    std::cout << "[MDPStoCCAN] ------------------ Can Gateway END! ......" << endl;
+    std::cout << "[MDPStoCCAN] ------------------ MDPS to C-CAN Gateway END! ......" << endl;
 }
 
 void ECANtoDRV()
 {
-    static uint8_t SwCnt; // 0x1CF Count
-    std::cout << "[ECANtoDRV] ------------------ Can Gateway START! ......" << endl;
+    static uint8_t SwCnt; // SCC btn "1" Count
+    std::cout << "[ECANtoDRV] ------------------ E-Can to DRV Gateway START! ......" << endl;
     while (true)
     {
         try
@@ -391,12 +391,13 @@ void ECANtoDRV()
                     DRVFrame.SendCANFD();
                 }
             }
-            if (E_CANFrame.FrameFd.can_id == 0x35) // PRND: P 0, D 5 , N 6, R 7
+            if (E_CANFrame.FrameFd.can_id == 0x35) // PRND: P 0, D 5, N 6, R 7
             {
                 PRNDmode = E_CANFrame.FrameFd.data[24] & 0x07;
             }
             if (E_CANFrame.FrameFd.can_id == 0x60) // Brake
             {
+                /* 각 bit 형 변환 필수 */
                 ESC_CylPrsrVal = (((uint16_t)(E_CANFrame.FrameFd.data[17] & 0x0F) << 8) + (uint16_t)(E_CANFrame.FrameFd.data[16] & 0xFF)) * 0.1;
                 if (ESC_CylPrsrVal > 3) // Brake SCC off
                 {
@@ -443,13 +444,13 @@ void ECANtoDRV()
             std::cout << e.what() << '\n';
         }
     }
-    std::cout << "[ECANtoDRV] ------------------ Can Gateway END! ......" << endl;
+    std::cout << "[ECANtoDRV] ------------------ E-Can to DRV Gateway END! ......" << endl;
 }
 
 void DRVtoECAN()
 {
     CANClass CMDFrame; // 0x1A0
-    std::cout << "[DRVtoECAN] ------------------ Can Gateway START! ......" << endl;
+    std::cout << "[DRVtoECAN] ------------------ DRV to E-CAN Gateway START! ......" << endl;
     while (true)
     {
         try
@@ -554,7 +555,7 @@ void DRVtoECAN()
             std::cout << e.what() << '\n';
         }
     }
-    std::cout << "[DRVtoECAN] ------------------ Can Gateway END! ......" << endl;
+    std::cout << "[DRVtoECAN] ------------------ DRV to E-CAN Gateway END! ......" << endl;
 }
 
 void UDPRecv()
@@ -562,7 +563,7 @@ void UDPRecv()
     UDPClass S32G;
     static uint8_t S32GAlvCnt;
     S32G.SetSocket(S32GIp, S32GPort, 1); // 50ms
-    std::cout << "[UDPRecv] ------------------ Can Gateway START! ......" << endl;
+    std::cout << "[UDPRecv] ------------------ UDP Receive START! ......" << endl;
     while (true)
     {
         try
@@ -719,7 +720,7 @@ void UDPRecv()
         }
     }
     S32G.CloseSocket();
-    std::cout << "[UDPRecv] ------------------ Can Gateway END! ......" << endl;
+    std::cout << "[UDPRecv] ------------------ UDP Receive END! ......" << endl;
 }
 
 int main(int argc, const char *argv[])
@@ -737,7 +738,7 @@ int main(int argc, const char *argv[])
     MDPStoCThread = thread(MDPStoCCAN);
     DRVtoEThread = thread(DRVtoECAN);
     EtoDRVThread = thread(ECANtoDRV);
-
+    /* printf 100ms */
     using namespace std::chrono;
     steady_clock::time_point startTime = steady_clock::now();
     while (true)
