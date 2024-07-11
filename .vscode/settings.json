@@ -53,7 +53,20 @@
         "streambuf": "cpp",
         "thread": "cpp",
         "typeinfo": "cpp",
-        "cinttypes": "cpp"
+        "cinttypes": "cpp",
+        "termios.h": "c",
+        "string.h": "c",
+        "in.h": "c",
+        "rmupcap.h": "c",
+        "msdapi.h": "c",
+        "socket.h": "c",
+        "stdio.h": "c",
+        "libcli.h": "c",
+        "apicli.h": "c",
+        "bus_conf.h": "c",
+        "wrapper.h": "c",
+        "list": "cpp",
+        "cfenv": "cpp"
     },
-    "cmake.sourceDirectory": "/home/KATECH/JudgmentModule/matplotlib-cpp"
+    "cmake.sourceDirectory": "/home/KATECH/TTwb/240527_open-avb_RF/lib/avtp_pipeline/intf_logger"
 }

@@ -1,0 +1,144 @@
+# make.defs - common variable definitions
+#
+# modification history
+# --------------------
+# 05-26-2016,sundk	created from MSD_PERIDOT
+#
+SHELL=/bin/sh -e
+
+#CC_ARCH_SPEC=  -march=i386 -mcpu=i686
+
+SW_ROOT = $(MSD_USER_BASE)
+SRC_BASE_PATH = $(SW_ROOT)/src
+QD_INCLUDE_PATH = $(SW_ROOT)/include
+
+LIB_DIR = $(SW_ROOT)/library
+OBJDIR = $(MSD_PROJ_NAME)_obj
+TEMP_DIR = $(SW_ROOT)/obj
+
+ifeq ($(CC),)
+CC      =cc
+LD      =ld
+endif
+
+MAKE    =make
+CD      =pwd
+RM      =rm -f
+ECHO    =echo
+
+DEPENDENCIES= makedeps
+
+#CFLAGS = $(CFLAGS1) $(CFLAGS2) $(INCLUDE_PATH) $(CDEBUG_DEFINES)
+CFLAGS = -DLINUX $(CFLAGS1) $(CFLAGS2) $(INCLUDE_PATH) $(CDEBUG_DEFINES) $(TOPAZ) $(PERIDOT) $(AGATE) $(PEARL) $(AMETHYST) $(OAK) $(SPRUCE) $(BONSAIZ1) $(FIR) $(BONSAI)
+
+CFLAGS1 = $(CC_ARCH_SPEC) $(DEBUG_TYPE)
+CFLAGS2 = $(CC_OPTIM) $(CC_COMPILER) $(CC_WARNINGS_ALL)
+
+CC_OPTIM = $(CC_OPTIM_TARGET)
+CC_OPTIM_DRIVER	= -O
+CC_OPTIM_TARGET	= -O2
+CC_COMPILER = -ansi
+CC_WARNINGS_ALL	= -Wall
+
+LDFLAGS = -r -X -N
+ARFLAGS = crus
+
+ifeq ($(MSD_APP),YES)
+CFLAGS += -DDBG_APP
+endif
+
+ifeq ($(RELEASE),NO)
+CDEBUG_DEFINES=-DMSD_DEBUG=1 -DMSD_DEBUG_QD
+CC_COMPILER = -ansi 
+LDFLAGS = -r -X -N
+else
+CDEBUG_DEFINES=
+endif
+
+ifeq ($(TOPAZ_BUILD),YES)
+TOPAZ=-DTOPAZ_BUILD_IN
+PACKAGE_OBJECT_TOPAZ = $(TEMP_DIR)/dev/topaz/$(MSD_PROJ_NAME)_Topaz.o
+else
+TOPAZ=
+PACKAGE_OBJECT_TOPAZ=
+endif
+
+ifeq ($(PERIDOT_BUILD),YES)
+PERIDOT=-DPERIDOT_BUILD_IN
+PACKAGE_OBJECT_PERIDOT = $(TEMP_DIR)/dev/peridot/$(MSD_PROJ_NAME)_Peridot.o
+else
+PERIDOT=
+PACKAGE_OBJECT_PERIDOT=
+endif
+
+ifeq ($(AGATE_BUILD),YES)
+AGATE=-DAGATE_BUILD_IN
+PACKAGE_OBJECT_AGATE = $(TEMP_DIR)/dev/agate/$(MSD_PROJ_NAME)_Agate.o
+else
+AGATE=
+PACKAGE_OBJECT_AGATE=
+endif
+
+ifeq ($(PEARL_BUILD),YES)
+PEARL=-DPEARL_BUILD_IN
+PACKAGE_OBJECT_PEARL = $(TEMP_DIR)/dev/pearl/$(MSD_PROJ_NAME)_Pearl.o
+else
+PEARL=
+PACKAGE_OBJECT_PEARL=
+endif
+
+ifeq ($(AMETHYST_BUILD),YES)
+AMETHYST=-DAMETHYST_BUILD_IN
+PACKAGE_OBJECT_AMETHYST = $(TEMP_DIR)/dev/amethyst/$(MSD_PROJ_NAME)_Amethyst.o
+else
+AMETHYST=
+PACKAGE_OBJECT_AMETHYST=
+endif
+
+ifeq ($(OAK_BUILD),YES)
+OAK=-DOAK_BUILD_IN
+PACKAGE_OBJECT_OAK = $(TEMP_DIR)/dev/oak/$(MSD_PROJ_NAME)_Oak.o
+else
+OAK=
+PACKAGE_OBJECT_OAK=
+endif
+
+ifeq ($(SPRUCE_BUILD),YES)
+SPRUCE=-DSPRUCE_BUILD_IN
+PACKAGE_OBJECT_SPRUCE = $(TEMP_DIR)/dev/spruce/$(MSD_PROJ_NAME)_Spruce.o
+else
+SPRUCE=
+PACKAGE_OBJECT_SPRUCE=
+endif
+
+ifeq ($(BONSAIZ1_BUILD),YES)
+BONSAIZ1=-DBONSAIZ1_BUILD_IN
+PACKAGE_OBJECT_BONSAIZ1 = $(TEMP_DIR)/dev/bonsaiz1/$(MSD_PROJ_NAME)_BonsaiZ1.o
+else
+BONSAIZ1=
+PACKAGE_OBJECT_BONSAIZ1=
+endif
+
+ifeq ($(FIR_BUILD),YES)
+FIR=-DFIR_BUILD_IN
+PACKAGE_OBJECT_FIR = $(TEMP_DIR)/dev/fir/$(MSD_PROJ_NAME)_Fir.o
+else
+AMETHYST=
+PACKAGE_OBJECT_FIR=
+endif
+
+ifeq ($(BONSAI_BUILD),YES)
+BONSAI=-DBONSAI_BUILD_IN
+PACKAGE_OBJECT_BONSAI = $(TEMP_DIR)/dev/bonsai/$(MSD_PROJ_NAME)_Bonsai.o
+else
+BONSAI=
+PACKAGE_OBJECT_BONSAI=
+endif
+
+INCLUDE_PATH = -I. \
+               -I$(QD_INCLUDE_PATH)/driver \
+               -I$(QD_INCLUDE_PATH)/api \
+               -I$(QD_INCLUDE_PATH)/platform \
+               -I$(QD_INCLUDE_PATH)/utils \
+               -I$(QD_INCLUDE_PATH) \
+			   -I$(SW_ROOT)/dev

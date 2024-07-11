@@ -1,0 +1,17 @@
+# Change MSD_ROOT to your path.
+declare -x MSD_ROOT=$(pwd)
+declare -x MSD_USER_BASE=$MSD_ROOT
+declare -x MSD_PROJ_NAME=msdDrv
+declare -x MSD_TOOL_DIR=$MSD_USER_BASE/tools
+declare -x RELEASE=NO
+declare -x OS_RUN=LINUX
+declare -x TOPAZ_BUILD=NO
+declare -x PERIDOT_BUILD=NO
+declare -x AGATE_BUILD=NO
+declare -x PEARL_BUILD=NO
+declare -x AMETHYST_BUILD=NO
+declare -x OAK_BUILD=NO
+declare -x SPRUCE_BUILD=NO
+declare -x BONSAIZ1_BUILD=NO
+declare -x FIR_BUILD=YES
+declare -x BONSAI_BUILD=NO

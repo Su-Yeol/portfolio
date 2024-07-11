@@ -3,8 +3,8 @@
 # # pc(VIEWER OFF)
 # g++ ./source/*.cpp -lpthread -I./include -o ./output/Pedestrian_MinimumDistance
 # target(VIEWER OFF)
-aarch64-linux-gnu-g++ -g ./source/*.cpp -lpthread -I./include -o ./output/Pedestrian_MinimumDistance
+aarch64-linux-gnu-g++ -g ./source_kcity/*.cpp -lpthread -I./include -o ./output/run_kcity
 
-scp ./output/Pedestrian_MinimumDistance root@192.168.100.99:/home/root/sykim/Pedestrian/output
+scp ./output/run_kcity root@192.168.100.99:/home/root/sykim/Pedestrian/output
 scp ./config.ini root@192.168.100.99:/home/root/sykim/Pedestrian/output
 

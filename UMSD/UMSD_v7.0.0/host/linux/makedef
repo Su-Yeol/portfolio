@@ -1,0 +1,228 @@
+MSD_PATH=$(MSD_USER_BASE)
+VPATH = $(MSD_PATH)/host/src $(MSD_PATH)/host/lib/cJSON
+UNITTEST_BUILD=NO
+
+MSD_INCLUDE = -I$(MSD_PATH)/include \
+               -I$(MSD_PATH)/include/driver \
+               -I$(MSD_PATH)/include/api \
+               -I$(MSD_PATH)/include/platform \
+               -I$(MSD_PATH)/include/utils \
+               -I$(MSD_PATH)/include/dev \
+               -I$(MSD_PATH)/host/linux/libMRegAccess \
+			   -I$(MSD_PATH)/host/lib/libcli \
+			   -I$(MSD_PATH)/host/lib/cJSON \
+			   -I$(MSD_PATH)/host/include
+
+ifeq ($(UNITTEST_BUILD), YES)
+VPATH += $(MSD_PATH)/sample $(MSD_PATH)/unittest
+UNITTEST=-DUNITTEST
+MSD_INCLUDE += -I$(MSD_PATH)/sample \
+               -I$(MSD_PATH)/unittest
+
+ifeq ($(TOPAZ_BUILD),YES)
+TOPAZ=-DTOPAZ_BUILD_IN
+VPATH += $(MSD_PATH)/unittest/topaz
+else
+TOPAZ=
+endif
+
+ifeq ($(PERIDOT_BUILD),YES)
+PERIDOT=-DPERIDOT_BUILD_IN
+VPATH += $(MSD_PATH)/unittest/peridot
+else
+PERIDOT=
+endif
+
+ifeq ($(AGATE_BUILD),YES)
+AGATE=-DAGATE_BUILD_IN
+VPATH += $(MSD_PATH)/unittest/agate
+else
+AGATE=
+endif
+
+ifeq ($(PEARL_BUILD),YES)
+PEARL=-DPEARL_BUILD_IN
+VPATH += $(MSD_PATH)/unittest/pearl
+else
+PEARL=
+endif
+
+ifeq ($(AMETHYST_BUILD),YES)
+AMETHYST=-DAMETHYST_BUILD_IN
+VPATH += $(MSD_PATH)/unittest/amethyst
+else
+AMETHYST=
+endif
+
+ifeq ($(OAK_BUILD),YES)
+OAK=-DOAK_BUILD_IN
+VPATH += $(MSD_PATH)/unittest/oak
+else
+OAK=
+endif
+
+ifeq ($(SPRUCE_BUILD),YES)
+SPRUCE=-DSPRUCE_BUILD_IN
+VPATH += $(MSD_PATH)/unittest/spruce
+else
+SPRUCE=
+endif
+
+ifeq ($(BONSAIZ1_BUILD),YES)
+BONSAIZ1=-DBONSAIZ1_BUILD_IN
+VPATH += $(MSD_PATH)/unittest/bonsaiz1
+else
+BONSAIZ1=
+endif
+
+ifeq ($(FIR_BUILD),YES)
+FIR=-DFIR_BUILD_IN
+VPATH += $(MSD_PATH)/unittest/fir
+else
+FIR=
+endif
+
+ifeq ($(BONSAI_BUILD),YES)
+BONSAI=-DBONSAI_BUILD_IN
+VPATH += $(MSD_PATH)/unittest/bonsai
+else
+BONSAI=
+endif
+
+else
+UNITTEST=
+endif
+
+
+ifeq ($(UNITTEST_BUILD), YES)
+SAMPLE_OBJS = sample_msdBrgStu.o sample_msdPortRmon.o sample_msdAdvVct.o sample_msdBrgVtu.o \
+				sample_msdSysConfig.o sample_msdBrgFdb.o sample_msdPIRL.o sample_msdTCAM.o \
+				sample_msdIMP.o sample_msdQueueCtrl.o sample_msdTrunk.o sample_msdPtp.o \
+				sample_msdQav.o sample_msdQos.o sample_msdRMU.o sample_msdEcid.o sample_msdTCAMRC.o \
+				sample_msdArp.o sample_msdTCAMRCComp.o sample_msdQbv.o sample_msdQci.o sample_msdQcr.o sample_msdFRER.o sample_msdMACSec.o
+
+UNITTEST_OBJS = UnitTest_Util.o  
+
+ifeq ($(TOPAZ_BUILD),YES)
+UNITTEST_OBJS += Topaz_UnitTest_msdBrgFdb.o Topaz_UnitTest_msdPTP.o\
+				Topaz_UnitTest_msdPIRL.o Topaz_UnitTest_msdBrgStu.o \
+				Topaz_UnitTest_msdPortRmon.o Topaz_UnitTest_msdBrgVtu.o \
+				Topaz_UnitTest_msdTCAM.o Topaz_UnitTest_msdSysCtrl.o \
+				Topaz_UnitTest_msdQosMap.o Topaz_UnitTest_msdQueueCtrl.o \
+				Topaz_UnitTest_msdPortCtrl.o Topaz_UnitTest_msdTrunk.o \
+				Topaz_UnitTest_msdPhyCtrl.o Topaz_UnitTest_msdQav.o Topaz_UnitTest_msdLed.o Topaz_UnitTest_msdRmu.o 
+endif
+
+ifeq ($(PERIDOT_BUILD),YES)
+UNITTEST_OBJS += Peridot_UnitTest_msdBrgFdb.o Peridot_UnitTest_msdPIRL.o \
+				Peridot_UnitTest_msdBrgStu.o Peridot_UnitTest_msdPortRmon.o \
+				Peridot_UnitTest_msdBrgVtu.o Peridot_UnitTest_msdTCAM.o \
+				Peridot_UnitTest_msdSysCtrl.o Peridot_UnitTest_msdQosMap.o \
+				Peridot_UnitTest_msdQueueCtrl.o Peridot_UnitTest_msdPortCtrl.o \
+				Peridot_UnitTest_msdTrunk.o Peridot_UnitTest_msdPhyCtrl.o \
+				Peridot_UnitTest_msdQav.o Peridot_UnitTest_msdPTP.o Peridot_UnitTest_msdLed.o Peridot_UnitTest_msdRmu.o
+endif
+
+ifeq ($(AGATE_BUILD),YES)
+UNITTEST_OBJS += Agate_UnitTest_msdBrgFdb.o Agate_UnitTest_msdPTP.o\
+				Agate_UnitTest_msdPIRL.o Agate_UnitTest_msdBrgStu.o \
+				Agate_UnitTest_msdPortRmon.o Agate_UnitTest_msdBrgVtu.o \
+				Agate_UnitTest_msdTCAM.o Agate_UnitTest_msdSysCtrl.o \
+				Agate_UnitTest_msdQosMap.o Agate_UnitTest_msdRmu.o \
+				Agate_UnitTest_msdPortCtrl.o Agate_UnitTest_msdTrunk.o \
+				Agate_UnitTest_msdPhyCtrl.o Agate_UnitTest_msdQav.o Agate_UnitTest_msdLed.o
+endif
+
+ifeq ($(PEARL_BUILD),YES)
+UNITTEST_OBJS += Pearl_UnitTest_msdBrgFdb.o Pearl_UnitTest_msdPTP.o\
+				Pearl_UnitTest_msdPIRL.o Pearl_UnitTest_msdBrgStu.o \
+				Pearl_UnitTest_msdPortRmon.o Pearl_UnitTest_msdBrgVtu.o \
+				Pearl_UnitTest_msdTCAM.o Pearl_UnitTest_msdSysCtrl.o \
+				Pearl_UnitTest_msdQosMap.o Pearl_UnitTest_msdPortCtrl.o Pearl_UnitTest_msdTrunk.o \
+				Pearl_UnitTest_msdPhyCtrl.o Pearl_UnitTest_msdQav.o Pearl_UnitTest_msdLed.o Pearl_UnitTest_msdRmu.o
+endif
+
+ifeq ($(AMETHYST_BUILD),YES)
+UNITTEST_OBJS += Amethyst_UnitTest_msdBrgFdb.o Amethyst_UnitTest_msdPTP.o\
+				Amethyst_UnitTest_msdPIRL.o Amethyst_UnitTest_msdBrgStu.o \
+				Amethyst_UnitTest_msdPortRmon.o Amethyst_UnitTest_msdBrgVtu.o \
+				Amethyst_UnitTest_msdTCAM.o Amethyst_UnitTest_msdSysCtrl.o \
+				Amethyst_UnitTest_msdQosMap.o Amethyst_UnitTest_msdPortCtrl.o Amethyst_UnitTest_msdTrunk.o \
+				Amethyst_UnitTest_msdPhyCtrl.o Amethyst_UnitTest_msdQav.o Amethyst_UnitTest_msdLed.o Amethyst_UnitTest_msdRmu.o \
+				Amethyst_UnitTest_msdARP.o Amethyst_UnitTest_msdPolicy.o Amethyst_UnitTest_msdTCAMRC.o Amethyst_UnitTest_msdTCAMRCComp.o \
+				Amethyst_UnitTest_msdEcid.o Amethyst_UnitTest_msdQueueCtrl.o
+endif
+
+ifeq ($(OAK_BUILD),YES)
+UNITTEST_OBJS += Oak_UnitTest_msdBrgFdb.o Oak_UnitTest_msdPTP.o\
+				Oak_UnitTest_msdPIRL.o Oak_UnitTest_msdBrgStu.o \
+				Oak_UnitTest_msdPortRmon.o Oak_UnitTest_msdBrgVtu.o \
+				Oak_UnitTest_msdTCAM.o Oak_UnitTest_msdSysCtrl.o \
+				Oak_UnitTest_msdQosMap.o Oak_UnitTest_msdPortCtrl.o Oak_UnitTest_msdTrunk.o \
+				Oak_UnitTest_msdPhyCtrl.o Oak_UnitTest_msdQav.o Oak_UnitTest_msdLed.o Oak_UnitTest_msdRmu.o \
+				Oak_UnitTest_msdARP.o Oak_UnitTest_msdPolicy.o Oak_UnitTest_msdTCAMRC.o Oak_UnitTest_msdTCAMRCComp.o \
+				Oak_UnitTest_msdEcid.o Oak_UnitTest_msdQueueCtrl.o
+endif
+
+ifeq ($(SPRUCE_BUILD),YES)
+UNITTEST_OBJS += Spruce_UnitTest_msdBrgFdb.o Spruce_UnitTest_msdPTP.o\
+				Spruce_UnitTest_msdPIRL.o Spruce_UnitTest_msdBrgStu.o \
+				Spruce_UnitTest_msdPortRmon.o Spruce_UnitTest_msdBrgVtu.o \
+				Spruce_UnitTest_msdTCAM.o Spruce_UnitTest_msdSysCtrl.o \
+				Spruce_UnitTest_msdQosMap.o Spruce_UnitTest_msdPortCtrl.o Spruce_UnitTest_msdTrunk.o \
+				Spruce_UnitTest_msdPhyCtrl.o Spruce_UnitTest_msdQav.o Spruce_UnitTest_msdLed.o Spruce_UnitTest_msdRmu.o \
+				Spruce_UnitTest_msdARP.o Spruce_UnitTest_msdPolicy.o Spruce_UnitTest_msdTCAMRC.o Spruce_UnitTest_msdTCAMRCComp.o \
+				Spruce_UnitTest_msdEcid.o Spruce_UnitTest_msdQueueCtrl.o
+endif
+
+ifeq ($(BONSAIZ1_BUILD),YES)
+UNITTEST_OBJS += BonsaiZ1_UnitTest_msdBrgFdb.o BonsaiZ1_UnitTest_msdPTP.o\
+				BonsaiZ1_UnitTest_msdPIRL.o BonsaiZ1_UnitTest_msdBrgStu.o \
+				BonsaiZ1_UnitTest_msdPortRmon.o BonsaiZ1_UnitTest_msdBrgVtu.o \
+				BonsaiZ1_UnitTest_msdTCAM.o BonsaiZ1_UnitTest_msdSysCtrl.o \
+				BonsaiZ1_UnitTest_msdQosMap.o BonsaiZ1_UnitTest_msdPortCtrl.o BonsaiZ1_UnitTest_msdTrunk.o \
+				BonsaiZ1_UnitTest_msdPhyCtrl.o BonsaiZ1_UnitTest_msdQav.o BonsaiZ1_UnitTest_msdLed.o BonsaiZ1_UnitTest_msdRmu.o \
+				BonsaiZ1_UnitTest_msdARP.o BonsaiZ1_UnitTest_msdPolicy.o BonsaiZ1_UnitTest_msdTCAMRC.o BonsaiZ1_UnitTest_msdTCAMRCComp.o \
+				BonsaiZ1_UnitTest_msdEcid.o BonsaiZ1_UnitTest_msdQueueCtrl.o
+endif
+
+ifeq ($(FIR_BUILD),YES)
+UNITTEST_OBJS += Fir_UnitTest_msdBrgFdb.o Fir_UnitTest_msdPTP.o\
+				Fir_UnitTest_msdPIRL.o Fir_UnitTest_msdBrgStu.o \
+				Fir_UnitTest_msdPortRmon.o Fir_UnitTest_msdBrgVtu.o \
+				Fir_UnitTest_msdTCAM.o Fir_UnitTest_msdSysCtrl.o \
+				Fir_UnitTest_msdQosMap.o Fir_UnitTest_msdPortCtrl.o Fir_UnitTest_msdTrunk.o \
+				Fir_UnitTest_msdPhyCtrl.o Fir_UnitTest_msdQav.o Fir_UnitTest_msdLed.o Fir_UnitTest_msdRmu.o \
+				Fir_UnitTest_msdARP.o Fir_UnitTest_msdPolicy.o Fir_UnitTest_msdTCAMRC.o Fir_UnitTest_msdTCAMRCComp.o \
+				Fir_UnitTest_msdEcid.o Fir_UnitTest_msdQueueCtrl.o Fir_UnitTest_msdQci.o Fir_UnitTest_msdQcr.o Fir_UnitTest_msdFRER.o \
+				Fir_UnitTest_msdMACSec.o
+endif
+
+ifeq ($(BONSAI_BUILD),YES)
+UNITTEST_OBJS += Bonsai_UnitTest_msdBrgFdb.o Bonsai_UnitTest_msdPTP.o\
+				Bonsai_UnitTest_msdPIRL.o Bonsai_UnitTest_msdBrgStu.o \
+				Bonsai_UnitTest_msdPortRmon.o Bonsai_UnitTest_msdBrgVtu.o \
+				Bonsai_UnitTest_msdTCAM.o Bonsai_UnitTest_msdSysCtrl.o \
+				Bonsai_UnitTest_msdQosMap.o Bonsai_UnitTest_msdPortCtrl.o Bonsai_UnitTest_msdTrunk.o \
+				Bonsai_UnitTest_msdPhyCtrl.o Bonsai_UnitTest_msdQav.o Bonsai_UnitTest_msdLed.o Bonsai_UnitTest_msdRmu.o \
+				Bonsai_UnitTest_msdARP.o Bonsai_UnitTest_msdPolicy.o Bonsai_UnitTest_msdTCAMRC.o Bonsai_UnitTest_msdTCAMRCComp.o \
+				Bonsai_UnitTest_msdEcid.o Bonsai_UnitTest_msdQueueCtrl.o Bonsai_UnitTest_msdQci.o
+endif
+
+else
+SAMPLE_OBJS=
+UNITTEST_OBJS=
+endif
+
+SWTEST_OBJS = customize.o init.o main.o apiCLI.o rmuPcap.o cliCommand.o bus_conf.o cJSON.o version.o
+ifeq ($(UNITTEST_BUILD), YES)
+SWTEST_OBJS += unittest.o sample.o
+endif
+
+
+ifeq ($(RELEASE), YES)
+DEBUG_DEFINES=
+else
+DEBUG_DEFINES=-DMSD_DEBUG_QD
+endif
+

@@ -17,15 +17,21 @@
 #include <time.h>
 #include <math.h>
 #include <cmath>
+#include <termios.h>
+#include <fcntl.h>
+#include <stdlib.h>
 
-#define BufferSize 8192 // 1024
-#define PathSize 8192   // 8192
-
+#define MainCycle 50
+#define BufferSize 8192     // 1024
+#define PathSize 8192       // 8192
+#define FrontLength 50      // [m] 전방거리
+#define OffsetLatitude 2.5  // 위도 offset
+#define OffsetLongitude 2.5 // 경도 offset
 #define EarthRadius 6378137 // WGS84
-// #define Lat2meter 110979.309
-// #define Lon2meter 88907.949
 #define Lat2meter 111319.49079327358
 #define Lon2meter 88903.69830789097
+#define toRadian M_PI / 180.0
+#define toDegree 180.0 / M_PI
 
 using namespace std;
 
@@ -97,7 +103,7 @@ struct GlobalPathStruct
     double Heading; // 주행 경로의 방향(pre, next 위경도를 이용하여 차의 방향(0~360도)을 나타냄.
     // 일반적으로 각도로 표현, GPS 방위각(azimous) - error를 구해서 wheel 각도 구하는데 사용
     double LocalizationGap;
-
+    // 경로 point check
     uint8_t NowEnv;
     uint8_t PreEnv;
     double PreDist;
@@ -118,9 +124,8 @@ struct ControlStruct
     double Curvature;            // 차량의 곡률(주어진 지점에서의 도로의 곡률), 차량의 움직임을 계획
     double LateralDeviation;     // 차량의 측방 편차(주어진 경로에서 얼마나 벗어났는가), 제어 및 주행 상태 평가에 사용
     double RelativeHeadingAngle; // 다른 지점이나 차량과의 상대적인 방향을 나타냄.
-
-    double Handle;       // 조향 휠의 회전각도
-    double Acceleration; // 가속도
+    double Handle;               // 조향 휠의 회전각도
+    double Acceleration;         // 가속도
 };
 
 struct MobileyeStruct // A-CAN
@@ -213,16 +218,17 @@ extern const string IbeoDataPath;
 extern const bool RadarRecord;
 extern const string RadarDataPath;
 extern const string ReferenceFile; // 참조 파일 경로를 나타내는 문자열 상수
-extern const int MainCycle;        // 프로그램의 동작 속도를 조절
+// ------------------------------ Falg ------------------------------------- //
+extern bool MainFlag;
+extern bool SocketFlag;
 extern bool MCUSendSignal;
-// ------------------------------ Sensor ------------------------------------- //
+extern bool PathReceiveSignal;
+extern bool PathErrorFlag;
 extern int MobileyeFlag;
 extern int IbeoFlag;
 extern int RadarFlag;
 extern bool ViewerSenderFlag;
 extern char GPSRaw[100]; // GPS Raw 데이터 저장
-extern double toRadian;
-extern double toDegree;
 // ------------------------------ Struct ------------------------------------- //
 extern GPSStruct GPS;
 extern GlobalPathStruct Global;
