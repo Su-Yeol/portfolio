@@ -63,8 +63,8 @@ void gptplogUnregister(void)
 // logcat support
 gptplogcat_t gptplogcat = GPTP_LOGCAT_OFF;
 
-#ifndef LOG_GPTP
-#error LOG_GPTP is NOT defined
+// #ifndef LOG_GPTP
+// #error LOG_GPTP is NOT defined
 void gptpLog(GPTP_LOG_LEVEL level, const char *tag, const char *path, int line, const char *fmt, ...)
 {
 	char msg[1024];
@@ -134,23 +134,23 @@ void gptpLog(GPTP_LOG_LEVEL level, const char *tag, const char *path, int line, 
 #endif
 
 }
-#else
-void gptpLog(GPTP_LOG_LEVEL level, const char *tag, const char *path, int line, const char *fmt, ...)
-{
-	char sz[512];
+// #else
+// void gptpLog(GPTP_LOG_LEVEL level, const char *tag, const char *path, int line, const char *fmt, ...)
+// {
+// 	char sz[512];
 
-	{
-		va_list arglist;
-		va_start(arglist, fmt);
-		vsnprintf(sz, 512, fmt, arglist);
-#if 1 // jay.choi.logging.$
-		printf("gPTP$ DEBUG$ %s", sz); 
-#else
-		printf("MRPD %03d.%06d %s",
-		       (int)(tv.tv_sec % 1000), (int)tv.tv_usec, sz);
-#endif
-		printf("\n");
-		va_end(arglist);
-	}
-}
-#endif
+// 	{
+// 		va_list arglist;
+// 		va_start(arglist, fmt);
+// 		vsnprintf(sz, 512, fmt, arglist);
+// #if 1 // jay.choi.logging.$
+// 		printf("gPTP$ DEBUG$ %s", sz); 
+// #else
+// 		printf("MRPD %03d.%06d %s",
+// 		       (int)(tv.tv_sec % 1000), (int)tv.tv_usec, sz);
+// #endif
+// 		printf("\n");
+// 		va_end(arglist);
+// 	}
+// }
+// #endif

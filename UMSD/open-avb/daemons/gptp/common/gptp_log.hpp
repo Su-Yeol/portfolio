@@ -40,17 +40,17 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include "dlt.h"
 #endif
 
-#define GPTP_LOG_CRITICAL_ON		0
-#define GPTP_LOG_ERROR_ON			0
-#define GPTP_LOG_EXCEPTION_ON		0
-#define GPTP_LOG_WARNING_ON			0
-#define GPTP_LOG_INFO_ON			0
-#define GPTP_LOG_STATUS_ON			0
+#define GPTP_LOG_CRITICAL_ON		1
+#define GPTP_LOG_ERROR_ON			1
+#define GPTP_LOG_EXCEPTION_ON		1
+#define GPTP_LOG_WARNING_ON			1
+#define GPTP_LOG_INFO_ON			1
+#define GPTP_LOG_STATUS_ON			1
 #define LOG_GPTP // jay.choi.logging.gptp
 #ifdef LOG_GPTP
-#define GPTP_LOG_DEBUG_ON			0
+#define GPTP_LOG_DEBUG_ON			1
 #else
-#define GPTP_LOG_DEBUG_ON			0
+// #define GPTP_LOG_DEBUG_ON			0
 #endif
 //#define GPTP_LOG_VERBOSE_ON		1
 

@@ -7,15 +7,15 @@
   modification, are permitted provided that the following conditions are met:
 
    1. Redistributions of source code must retain the above copyright notice,
-      this list of conditions and the following disclaimer.
+	  this list of conditions and the following disclaimer.
 
    2. Redistributions in binary form must reproduce the above copyright
-      notice, this list of conditions and the following disclaimer in the
-      documentation and/or other materials provided with the distribution.
+	  notice, this list of conditions and the following disclaimer in the
+	  documentation and/or other materials provided with the distribution.
 
    3. Neither the name of the Intel Corporation nor the names of its
-      contributors may be used to endorse or promote products derived from
-      this software without specific prior written permission.
+	  contributors may be used to endorse or promote products derived from
+	  this software without specific prior written permission.
 
   THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
   AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
@@ -52,17 +52,15 @@
 
 // #define NO_PDELAY_FROM_MASTER // jay.choi.c50.testing
 
-
 LinkLayerAddress EtherPort::other_multicast(OTHER_MULTICAST);
 LinkLayerAddress EtherPort::pdelay_multicast(PDELAY_MULTICAST);
-LinkLayerAddress EtherPort::test_status_multicast
-( TEST_STATUS_MULTICAST );
+LinkLayerAddress EtherPort::test_status_multicast(TEST_STATUS_MULTICAST);
 
 OSThreadExitCode watchNetLinkWrapper(void *arg)
 {
 	EtherPort *port;
 
-	port = (EtherPort *) arg;
+	port = (EtherPort *)arg;
 	if (port->watchNetLink() == NULL)
 		return osthread_ok;
 	else
@@ -73,7 +71,7 @@ OSThreadExitCode openPortWrapper(void *arg)
 {
 	EtherPort *port;
 
-	port = (EtherPort *) arg;
+	port = (EtherPort *)arg;
 	if (port->openPort(port) == NULL)
 		return osthread_ok;
 	else
@@ -85,14 +83,13 @@ EtherPort::~EtherPort()
 	delete port_ready_condition;
 }
 
-EtherPort::EtherPort( PortInit_t *portInit ) :
-	CommonPort( portInit )
+EtherPort::EtherPort(PortInit_t *portInit) : CommonPort(portInit)
 {
 	automotive_profile = portInit->automotive_profile;
 	linkUp = portInit->linkUp;
 	linkUpCount = 0;
 	linkDownCount = 0;
-	setTestMode( portInit->testMode );
+	setTestMode(portInit->testMode);
 
 	pdelay_sequence_id = 0;
 
@@ -108,34 +105,38 @@ EtherPort::EtherPort( PortInit_t *portInit ) :
 	operLogSyncInterval = portInit->operLogSyncInterval;
 	isGM = portInit->isGM;
 
-	if (automotive_profile) {
-		setAsCapable( true );
+	if (automotive_profile)
+	{
+		setAsCapable(true);
 
 		if (getInitSyncInterval() == LOG2_INTERVAL_INVALID)
-			setInitSyncInterval( -5 );     // 31.25 ms
+			setInitSyncInterval(-5); // 31.25 ms
 		if (initialLogPdelayReqInterval == LOG2_INTERVAL_INVALID)
-			initialLogPdelayReqInterval = 0;  // 1 second
+			initialLogPdelayReqInterval = 0; // 1 second
 		if (operLogPdelayReqInterval == LOG2_INTERVAL_INVALID)
-			operLogPdelayReqInterval = 0;      // 1 second
+			operLogPdelayReqInterval = 0; // 1 second
 		if (operLogSyncInterval == LOG2_INTERVAL_INVALID)
-			operLogSyncInterval = 0;           // 1 second
+			operLogSyncInterval = 0; // 1 second
 	}
-	else {
-		if (portInit->asCapable) {
-			setAsCapable( true);
+	else
+	{
+		if (portInit->asCapable)
+		{
+			setAsCapable(true);
 		}
-		else {
-			setAsCapable( false );
+		else
+		{
+			setAsCapable(false);
 		}
 
-		if ( getInitSyncInterval() == LOG2_INTERVAL_INVALID )
-			setInitSyncInterval( -3 );       // 125 ms
+		if (getInitSyncInterval() == LOG2_INTERVAL_INVALID)
+			setInitSyncInterval(-3); // 125 ms
 		if (initialLogPdelayReqInterval == LOG2_INTERVAL_INVALID)
-			initialLogPdelayReqInterval = 0;   // 1 second
+			initialLogPdelayReqInterval = 0; // 1 second
 		if (operLogPdelayReqInterval == LOG2_INTERVAL_INVALID)
-			operLogPdelayReqInterval = 0;      // 1 second
+			operLogPdelayReqInterval = 0; // 1 second
 		if (operLogSyncInterval == LOG2_INTERVAL_INVALID)
-			operLogSyncInterval = 0;           // 1 second
+			operLogSyncInterval = 0; // 1 second
 	}
 
 	/*TODO: Add intervals below to a config interface*/
@@ -149,25 +150,30 @@ EtherPort::EtherPort( PortInit_t *portInit ) :
 	setPdelayCount(0);
 	setSyncCount(0);
 
-	if (automotive_profile) {
-		if (isGM) {
+	if (automotive_profile)
+	{
+		if (isGM)
+		{
 			avbSyncState = 1;
 		}
-		else {
+		else
+		{
 			avbSyncState = 2;
 		}
 		if (getTestMode())
 		{
-			linkUpCount = 1;  // TODO : really should check the current linkup status http://stackoverflow.com/questions/15723061/how-to-check-if-interface-is-up
+			linkUpCount = 1; // TODO : really should check the current linkup status http://stackoverflow.com/questions/15723061/how-to-check-if-interface-is-up
 			linkDownCount = 0;
 		}
-	} else {
-		avbSyncState = 0;   /* Invalid value for avbSyncState */
+	}
+	else
+	{
+		avbSyncState = 0; /* Invalid value for avbSyncState */
 	}
 	setStationState(STATION_STATE_RESERVED);
 }
 
-bool EtherPort::_init_port( void )
+bool EtherPort::_init_port(void)
 {
 	pdelay_rx_lock = lock_factory->createLock(oslock_recursive);
 	port_tx_lock = lock_factory->createLock(oslock_recursive);
@@ -182,11 +188,11 @@ bool EtherPort::_init_port( void )
 void EtherPort::startPDelay()
 {
 #ifdef NO_PDELAY_FROM_MASTER
-	GPTP_LOG_WARNING("EtherPort::startPDelay()"); 
-	if(automotive_profile)
+	GPTP_LOG_WARNING("EtherPort::startPDelay()");
+	if (automotive_profile)
 	{
 		GPTP_LOG_WARNING("automotive_profile : YES");
-		if(getPortState() == PTP_MASTER)
+		if (getPortState() == PTP_MASTER)
 		{
 			GPTP_LOG_WARNING("No pDelay Req from Master!");
 			return;
@@ -202,17 +208,21 @@ void EtherPort::startPDelay()
 	}
 #endif
 
-	if(!pdelayHalted()) {
-		if (automotive_profile) {
-			if (log_min_mean_pdelay_req_interval != PTPMessageSignalling::sigMsgInterval_NoSend) {
+	if (!pdelayHalted())
+	{
+		if (automotive_profile)
+		{
+			if (log_min_mean_pdelay_req_interval != PTPMessageSignalling::sigMsgInterval_NoSend)
+			{
 				long long unsigned int waitTime;
-				waitTime = ((long long) (pow((double)2, log_min_mean_pdelay_req_interval) * 1000000000.0));
+				waitTime = ((long long)(pow((double)2, log_min_mean_pdelay_req_interval) * 1000000000.0));
 				waitTime = waitTime > EVENT_TIMER_GRANULARITY ? waitTime : EVENT_TIMER_GRANULARITY;
 				pdelay_started = true;
 				startPDelayIntervalTimer(waitTime);
 			}
 		}
-		else {
+		else
+		{
 			pdelay_started = true;
 			startPDelayIntervalTimer(32000000);
 		}
@@ -223,33 +233,41 @@ void EtherPort::stopPDelay()
 {
 	haltPdelay(true);
 	pdelay_started = false;
-	clock->deleteEventTimerLocked( this, PDELAY_INTERVAL_TIMEOUT_EXPIRES);
+	clock->deleteEventTimerLocked(this, PDELAY_INTERVAL_TIMEOUT_EXPIRES);
 }
 
 void EtherPort::startSyncRateIntervalTimer()
 {
-	if (automotive_profile) {
+	if (automotive_profile)
+	{
 		sync_rate_interval_timer_started = true;
-		if (isGM) {
+		if (isGM)
+		{
 			// GM will wait up to 8  seconds for signaling rate
 			// TODO: This isn't according to spec but set because it is believed that some slave devices aren't signalling
 			//  to reduce the rate
-			clock->addEventTimerLocked( this, SYNC_RATE_INTERVAL_TIMEOUT_EXPIRED, 8000000000 );
+			clock->addEventTimerLocked(this, SYNC_RATE_INTERVAL_TIMEOUT_EXPIRED, 8000000000);
+			
+			// 240930 sy.kim
+			GPTP_LOG_DEBUG("GM, 8sec event start");
 		}
-		else {
+		else
+		{
 			// Slave will time out after 4 seconds
-			clock->addEventTimerLocked( this, SYNC_RATE_INTERVAL_TIMEOUT_EXPIRED, 4000000000 );
+			clock->addEventTimerLocked(this, SYNC_RATE_INTERVAL_TIMEOUT_EXPIRED, 4000000000);
+			
+			// 240930 sy.kim
+			GPTP_LOG_DEBUG("Slave, 4sec event start");
 		}
 	}
 }
 
-void EtherPort::processMessage
-( char *buf, int length, LinkLayerAddress *remote, uint32_t link_speed )
+void EtherPort::processMessage(char *buf, int length, LinkLayerAddress *remote, uint32_t link_speed)
 {
 	GPTP_LOG_VERBOSE("Processing network buffer");
 
 	PTPMessageCommon *msg =
-		buildPTPMessage( buf, (int)length, remote, this );
+		buildPTPMessage(buf, (int)length, remote, this);
 
 	if (msg == NULL)
 	{
@@ -258,16 +276,16 @@ void EtherPort::processMessage
 	}
 	GPTP_LOG_VERBOSE("Processing message");
 
-	if( msg->isEvent() )
+	if (msg->isEvent())
 	{
 		Timestamp rx_timestamp = msg->getTimestamp();
-		Timestamp phy_compensation = getRxPhyDelay( link_speed );
+		Timestamp phy_compensation = getRxPhyDelay(link_speed);
 		// sy.kim
-		// GPTP_LOG_DEBUG( "RX PHY compensation: %s sec",
-		// 	 phy_compensation.toString().c_str() );
+		GPTP_LOG_DEBUG("RX PHY compensation: %s sec",
+					   phy_compensation.toString().c_str());
 		phy_compensation._version = rx_timestamp._version;
 		rx_timestamp = rx_timestamp - phy_compensation;
-		msg->setTimestamp( rx_timestamp );
+		msg->setTimestamp(rx_timestamp);
 	}
 
 	msg->processMessage(this);
@@ -275,23 +293,24 @@ void EtherPort::processMessage
 		delete msg;
 }
 
-void *EtherPort::openPort( EtherPort *port )
+void *EtherPort::openPort(EtherPort *port)
 {
 	port_ready_condition->signal();
 
-	while (1) {
+	while (1)
+	{
 		uint8_t buf[128];
 		LinkLayerAddress remote;
 		net_result rrecv;
 		size_t length = sizeof(buf);
 		uint32_t link_speed;
 
-		if ( ( rrecv = recv( &remote, buf, length, link_speed ))
-		     == net_succeed )
+		if ((rrecv = recv(&remote, buf, length, link_speed)) == net_succeed)
 		{
-			processMessage
-				((char *)buf, (int)length, &remote, link_speed );
-		} else if (rrecv == net_fatal) {
+			processMessage((char *)buf, (int)length, &remote, link_speed);
+		}
+		else if (rrecv == net_fatal)
+		{
 			GPTP_LOG_ERROR("read from network interface failed");
 			this->processEvent(FAULT_DETECTED);
 			break;
@@ -301,36 +320,39 @@ void *EtherPort::openPort( EtherPort *port )
 	return NULL;
 }
 
-net_result EtherPort::port_send
-( uint16_t etherType, uint8_t *buf, int size, MulticastType mcast_type,
-  PortIdentity *destIdentity, bool timestamp )
+net_result EtherPort::port_send(uint16_t etherType, uint8_t *buf, int size, MulticastType mcast_type,
+								PortIdentity *destIdentity, bool timestamp)
 {
 	LinkLayerAddress dest;
 
-	if (mcast_type != MCAST_NONE) {
-		if (mcast_type == MCAST_PDELAY) {
+	if (mcast_type != MCAST_NONE)
+	{
+		if (mcast_type == MCAST_PDELAY)
+		{
 			dest = pdelay_multicast;
 		}
-		else if (mcast_type == MCAST_TEST_STATUS) {
+		else if (mcast_type == MCAST_TEST_STATUS)
+		{
 			dest = test_status_multicast;
 		}
-		else {
+		else
+		{
 			dest = other_multicast;
 		}
-	} else {
+	}
+	else
+	{
 		mapSocketAddr(destIdentity, &dest);
 	}
 
-	return send(&dest, etherType, (uint8_t *) buf, size, timestamp);
+	return send(&dest, etherType, (uint8_t *)buf, size, timestamp);
 }
 
-void EtherPort::sendEventPort
-( uint16_t etherType, uint8_t *buf, int size, MulticastType mcast_type,
-  PortIdentity *destIdentity, uint32_t *link_speed )
+void EtherPort::sendEventPort(uint16_t etherType, uint8_t *buf, int size, MulticastType mcast_type,
+							  PortIdentity *destIdentity, uint32_t *link_speed)
 {
-	net_result rtx = port_send
-		( etherType, buf, size, mcast_type, destIdentity, true );
-	if( rtx != net_succeed )
+	net_result rtx = port_send(etherType, buf, size, mcast_type, destIdentity, true);
+	if (rtx != net_succeed)
 	{
 		GPTP_LOG_ERROR("sendEventPort(): failure");
 		return;
@@ -341,48 +363,51 @@ void EtherPort::sendEventPort
 	return;
 }
 
-void EtherPort::sendGeneralPort
-( uint16_t etherType, uint8_t *buf, int size, MulticastType mcast_type,
-  PortIdentity * destIdentity )
+void EtherPort::sendGeneralPort(uint16_t etherType, uint8_t *buf, int size, MulticastType mcast_type,
+								PortIdentity *destIdentity)
 {
 	net_result rtx = port_send(etherType, buf, size, mcast_type, destIdentity, false);
-	if (rtx != net_succeed) {
+	if (rtx != net_succeed)
+	{
 		GPTP_LOG_ERROR("sendGeneralPort(): failure");
 	}
 
 	return;
 }
 
-bool EtherPort::_processEvent( Event e )
+bool EtherPort::_processEvent(Event e)
 {
 	bool ret = false;
 
-	switch (e) {
+	switch (e)
+	{
 	case POWERUP:
 	case INITIALIZE:
-		if (!automotive_profile) {
-			//if ( getPortState() != PTP_SLAVE &&
-			  //  getPortState() != PTP_MASTER )
+		if (!automotive_profile)
+		{
+			// if ( getPortState() != PTP_SLAVE &&
+			//   getPortState() != PTP_MASTER )
 			if (getPortState() != PTP_MASTER)
 			{
 				GPTP_LOG_STATUS("Starting PDelay");
 				startPDelay();
 			}
 		}
-		else {
+		else
+		{
 			startPDelay();
 		}
 
 		port_ready_condition->wait_prelock();
 
-		if( !linkWatch(watchNetLinkWrapper, (void *)this) )
+		if (!linkWatch(watchNetLinkWrapper, (void *)this))
 		{
 			GPTP_LOG_ERROR("Error creating port link thread");
 			ret = false;
 			break;
 		}
 
-		if( !linkOpen(openPortWrapper, (void *)this) )
+		if (!linkOpen(openPortWrapper, (void *)this))
 		{
 			GPTP_LOG_ERROR("Error creating port thread");
 			ret = false;
@@ -391,33 +416,42 @@ bool EtherPort::_processEvent( Event e )
 
 		port_ready_condition->wait();
 
-		if (automotive_profile) {
+		if (automotive_profile)
+		{
 			setStationState(STATION_STATE_ETHERNET_READY);
 			if (getTestMode())
 			{
 				APMessageTestStatus *testStatusMsg = new APMessageTestStatus(this);
-				if (testStatusMsg) {
+				if (testStatusMsg)
+				{
 					testStatusMsg->sendPort(this);
 					delete testStatusMsg;
 				}
 			}
-			if (!isGM) {
+			if (!isGM)
+			{
 				// Send an initial signalling message
 				PTPMessageSignalling *sigMsg = new PTPMessageSignalling(this);
-				if (sigMsg) {
-					// sigMsg->setintervals(log_min_mean_pdelay_req_interval, getSyncInterval(), PTPMessageSignalling::sigMsgInterval_NoSend);
+				if (sigMsg)
+				{
 					// sy.kim
-					sigMsg->setintervals(PTPMessageSignalling::sigMsgInterval_NoSend, getSyncInterval(), PTPMessageSignalling::sigMsgInterval_NoSend);
+					PortIdentity dest_id;
+					getPortIdentity(dest_id);
+					sigMsg->setPortIdentity(&dest_id);
+
+					sigMsg->setintervals(log_min_mean_pdelay_req_interval, getSyncInterval(), PTPMessageSignalling::sigMsgInterval_NoSend);
 					sigMsg->sendPort(this, NULL);
 					delete sigMsg;
 				}
 
-				startSyncReceiptTimer((unsigned long long)
-					 (getsyncReceiptTimeoutMultiplier()*
-					  ((double) pow((double)2, getSyncInterval()) *
-					   1000000000.0)));
+				startSyncReceiptTimer((unsigned long long)(getsyncReceiptTimeoutMultiplier() *
+														   ((double)pow((double)2, getSyncInterval()) *
+															1000000000.0)));
 			}
 		}
+
+		// sy.kim
+		GPTP_LOG_DEBUG("Init Sync interval %d, Init Pdelay interval %d", getSyncInterval(), log_min_mean_pdelay_req_interval);
 
 		ret = true;
 		break;
@@ -425,7 +459,7 @@ bool EtherPort::_processEvent( Event e )
 		// If the automotive profile is enabled, handle the event by
 		// doing nothing and returning true, preventing the default
 		// action from executing
-		if( automotive_profile )
+		if (automotive_profile)
 			ret = true;
 		else
 			ret = false;
@@ -434,53 +468,63 @@ bool EtherPort::_processEvent( Event e )
 	case LINKUP:
 		haltPdelay(false);
 		startPDelay();
-		if (automotive_profile) {
+		if (automotive_profile)
+		{
 			GPTP_LOG_EXCEPTION("LINKUP");
 		}
-		else {
+		else
+		{
 			GPTP_LOG_STATUS("LINKUP");
 		}
 
-		if( clock->getPriority1() == 255 || getPortState() == PTP_SLAVE ) {
-			becomeSlave( true );
-		} else if( getPortState() == PTP_MASTER ) {
-			becomeMaster( true );
-		} else {
+		if (clock->getPriority1() == 255 || getPortState() == PTP_SLAVE)
+		{
+			becomeSlave(true);
+		}
+		else if (getPortState() == PTP_MASTER)
+		{
+			becomeMaster(true);
+		}
+		else
+		{
 			clock->addEventTimerLocked(this, ANNOUNCE_RECEIPT_TIMEOUT_EXPIRES,
-				ANNOUNCE_RECEIPT_TIMEOUT_MULTIPLIER * pow(2.0, getAnnounceInterval()) * 1000000000.0);
+									   ANNOUNCE_RECEIPT_TIMEOUT_MULTIPLIER * pow(2.0, getAnnounceInterval()) * 1000000000.0);
 		}
 
-		if (automotive_profile) {
-			setAsCapable( true );
+		if (automotive_profile)
+		{
+			setAsCapable(true);
 
 			setStationState(STATION_STATE_ETHERNET_READY);
 			if (getTestMode())
 			{
 				APMessageTestStatus *testStatusMsg = new APMessageTestStatus(this);
-				if (testStatusMsg) {
+				if (testStatusMsg)
+				{
 					testStatusMsg->sendPort(this);
 					delete testStatusMsg;
 				}
 			}
 
 			resetInitSyncInterval();
-			setAnnounceInterval( 0 );
+			setAnnounceInterval(0);
 			log_min_mean_pdelay_req_interval = initialLogPdelayReqInterval;
 
-			if (!isGM) {
+			if (!isGM)
+			{
 				// Send an initial signaling message
 				PTPMessageSignalling *sigMsg = new PTPMessageSignalling(this);
-				if (sigMsg) {
+				if (sigMsg)
+				{
 					sigMsg->setintervals(PTPMessageSignalling::sigMsgInterval_NoSend, getSyncInterval(), PTPMessageSignalling::sigMsgInterval_NoSend);
 					sigMsg->sendPort(this, NULL);
 					delete sigMsg;
 				}
 
 				// After sending the signaling message at SyncReceiptTime
-				startSyncReceiptTimer((unsigned long long)
-					(getsyncReceiptTimeoutMultiplier()*
-					  ((double) pow((double)2, getSyncInterval()) *
-					   1000000000.0)));
+				startSyncReceiptTimer((unsigned long long)(getsyncReceiptTimeoutMultiplier() *
+														   ((double)pow((double)2, getSyncInterval()) *
+															1000000000.0)));
 			}
 
 			// Reset Sync count and pdelay count
@@ -489,10 +533,12 @@ bool EtherPort::_processEvent( Event e )
 
 			// Start AVB SYNC at 2. It will decrement after each sync. When it reaches 0 the Test Status message
 			// can be sent
-			if (isGM) {
+			if (isGM)
+			{
 				avbSyncState = 1;
 			}
-			else {
+			else
+			{
 				avbSyncState = 2;
 			}
 
@@ -507,10 +553,12 @@ bool EtherPort::_processEvent( Event e )
 		break;
 	case LINKDOWN:
 		stopPDelay();
-		if (automotive_profile) {
+		if (automotive_profile)
+		{
 			GPTP_LOG_EXCEPTION("LINK DOWN");
 		}
-		else {
+		else
+		{
 			setAsCapable(false);
 			GPTP_LOG_STATUS("LINK DOWN");
 		}
@@ -523,20 +571,20 @@ bool EtherPort::_processEvent( Event e )
 		break;
 	case ANNOUNCE_RECEIPT_TIMEOUT_EXPIRES:
 	case SYNC_RECEIPT_TIMEOUT_EXPIRES:
-		if( !automotive_profile )
+		if (!automotive_profile)
 		{
 			ret = false;
 			break;
 		}
 
 		// Automotive Profile specific action
-		if (e == SYNC_RECEIPT_TIMEOUT_EXPIRES) {
+		if (e == SYNC_RECEIPT_TIMEOUT_EXPIRES)
+		{
 			GPTP_LOG_EXCEPTION("SYNC receipt timeout");
 
-			startSyncReceiptTimer((unsigned long long)
-						(getsyncReceiptTimeoutMultiplier()*
-					       ((double) pow((double)2, getSyncInterval()) *
-						1000000000.0)));
+			startSyncReceiptTimer((unsigned long long)(getsyncReceiptTimeoutMultiplier() *
+													   ((double)pow((double)2, getSyncInterval()) *
+														1000000000.0)));
 		}
 		ret = true;
 		break;
@@ -545,11 +593,11 @@ bool EtherPort::_processEvent( Event e )
 		// GPTP_LOG_DEBUG("PDELAY_INTERVAL_TIMEOUT_EXPIRES occured"); // to send req msg
 
 #ifdef NO_PDELAY_FROM_MASTER
-		GPTP_LOG_WARNING("case PDELAY_INTERVAL_TIMEOUT_EXPIRES:"); 
-		if(automotive_profile)
+		GPTP_LOG_WARNING("case PDELAY_INTERVAL_TIMEOUT_EXPIRES:");
+		if (automotive_profile)
 		{
 			GPTP_LOG_WARNING("automotive_profile : YES");
-			if(getPortState() == PTP_MASTER)
+			if (getPortState() == PTP_MASTER)
 			{
 				GPTP_LOG_WARNING("No pDelay Req from Master!");
 				break;
@@ -563,24 +611,25 @@ bool EtherPort::_processEvent( Event e )
 		{
 			GPTP_LOG_WARNING("automotive_profile : NO");
 		}
-#endif 
+#endif
 
 		{
 			Timestamp req_timestamp;
 
 			PTPMessagePathDelayReq *pdelay_req =
-			    new PTPMessagePathDelayReq(this);
+				new PTPMessagePathDelayReq(this);
 			PortIdentity dest_id;
 			getPortIdentity(dest_id);
 			pdelay_req->setPortIdentity(&dest_id);
 
 			{
 				Timestamp pending =
-				    PDELAY_PENDING_TIMESTAMP;
+					PDELAY_PENDING_TIMESTAMP;
 				pdelay_req->setTimestamp(pending);
 			}
 
-			if (last_pdelay_req != NULL) {
+			if (last_pdelay_req != NULL)
+			{
 				delete last_pdelay_req;
 			}
 			setLastPDelayReq(pdelay_req);
@@ -594,181 +643,200 @@ bool EtherPort::_processEvent( Event e )
 				long long timeout;
 				long long interval;
 				timeout = PDELAY_RESP_RECEIPT_TIMEOUT_MULTIPLIER *
-					((long long)
-					 (pow((double)2,getPDelayInterval())*1000000000.0));
+						  ((long long)(pow((double)2, getPDelayInterval()) * 1000000000.0));
 
-				timeout = timeout > EVENT_TIMER_GRANULARITY ?
-					timeout : EVENT_TIMER_GRANULARITY;
-				clock->addEventTimerLocked
-					(this, PDELAY_RESP_RECEIPT_TIMEOUT_EXPIRES, timeout );
+				timeout = timeout > EVENT_TIMER_GRANULARITY ? timeout : EVENT_TIMER_GRANULARITY;
+				clock->addEventTimerLocked(this, PDELAY_RESP_RECEIPT_TIMEOUT_EXPIRES, timeout);
 				// GPTP_LOG_DEBUG("Schedule PDELAY_RESP_RECEIPT_TIMEOUT_EXPIRES, "
 				// 	"PDelay interval %d, timeout %lld",
 				// 	getPDelayInterval(), timeout);
 				// sy.kim
-				GPTP_LOG_DEBUG("PDelay interval %d, timeout %lld",
-					getPDelayInterval(), timeout);
+				GPTP_LOG_DEBUG("PDelay interval %d, timeout %lld", getPDelayInterval(), timeout);
 
-				interval =
-					((long long)
-					 (pow((double)2,getPDelayInterval())*1000000000.0));
-				interval = interval > EVENT_TIMER_GRANULARITY ?
-					interval : EVENT_TIMER_GRANULARITY;
+				interval = ((long long)(pow((double)2, getPDelayInterval()) * 1000000000.0));
+				interval = interval > EVENT_TIMER_GRANULARITY ? interval : EVENT_TIMER_GRANULARITY;
 				startPDelayIntervalTimer(interval);
 			}
 		}
 		break;
 	case SYNC_INTERVAL_TIMEOUT_EXPIRES:
+	{
+		/* Set offset from master to zero, update device vs
+		   system time offset */
+
+		// Send a sync message and then a followup to broadcast
+		PTPMessageSync *sync = new PTPMessageSync(this);
+		PortIdentity dest_id;
+		bool tx_succeed;
+		getPortIdentity(dest_id);
+		sync->setPortIdentity(&dest_id);
+		getTxLock();
+		tx_succeed = sync->sendPort(this, NULL);
+		// sy.kim
+		GPTP_LOG_DEBUG("*** Sent SYNC message");
+		GPTP_LOG_DEBUG("*** Sent Follow Up message");
+
+		if (automotive_profile &&
+			getPortState() == PTP_MASTER)
 		{
-			/* Set offset from master to zero, update device vs
-			   system time offset */
-
-			// Send a sync message and then a followup to broadcast
-			PTPMessageSync *sync = new PTPMessageSync(this);
-			PortIdentity dest_id;
-			bool tx_succeed;
-			getPortIdentity(dest_id);
-			sync->setPortIdentity(&dest_id);
-			getTxLock();
-			tx_succeed = sync->sendPort(this, NULL);
-			// sy.kim
-			GPTP_LOG_DEBUG("*** Sent SYNC message");
-			GPTP_LOG_DEBUG("*** Sent Follow Up message");
-
-			if ( automotive_profile &&
-			     getPortState() == PTP_MASTER )
+			if (avbSyncState > 0)
 			{
-				if (avbSyncState > 0) {
-					avbSyncState--;
-					if (avbSyncState == 0) {
-						// Send Avnu Automotive Profile status message
-						setStationState(STATION_STATE_AVB_SYNC);
-						if (getTestMode()) {
-							APMessageTestStatus *testStatusMsg = new APMessageTestStatus(this);
-							if (testStatusMsg) {
-								testStatusMsg->sendPort(this);
-								delete testStatusMsg;
-							}
+				avbSyncState--;
+				if (avbSyncState == 0)
+				{
+					// Send Avnu Automotive Profile status message
+					setStationState(STATION_STATE_AVB_SYNC);
+					if (getTestMode())
+					{
+						APMessageTestStatus *testStatusMsg = new APMessageTestStatus(this);
+						if (testStatusMsg)
+						{
+							testStatusMsg->sendPort(this);
+							delete testStatusMsg;
 						}
 					}
 				}
 			}
-			putTxLock();
-
-			if ( tx_succeed )
-			{
-				Timestamp sync_timestamp = sync->getTimestamp();
-
-				GPTP_LOG_VERBOSE("Successful Sync timestamp");
-				GPTP_LOG_VERBOSE("Seconds: %u",
-						 sync_timestamp.seconds_ls);
-				GPTP_LOG_VERBOSE("Nanoseconds: %u",
-						 sync_timestamp.nanoseconds);
-
-				PTPMessageFollowUp *follow_up = new PTPMessageFollowUp(this);
-				PortIdentity dest_id;
-				getPortIdentity(dest_id);
-
-				follow_up->setClockSourceTime(getClock()->getFUPInfo());
-				follow_up->setPortIdentity(&dest_id);
-				follow_up->setSequenceId(sync->getSequenceId());
-				follow_up->setPreciseOriginTimestamp
-					(sync_timestamp);
-				follow_up->sendPort(this, NULL);
-				delete follow_up;
-			} else {
-				GPTP_LOG_ERROR
-					("*** Unsuccessful Sync timestamp");
-			}
-			delete sync;
 		}
-		break;
+		putTxLock();
+
+		if (tx_succeed)
+		{
+			Timestamp sync_timestamp = sync->getTimestamp();
+
+			GPTP_LOG_VERBOSE("Successful Sync timestamp");
+			GPTP_LOG_VERBOSE("Seconds: %u",
+							 sync_timestamp.seconds_ls);
+			GPTP_LOG_VERBOSE("Nanoseconds: %u",
+							 sync_timestamp.nanoseconds);
+
+			PTPMessageFollowUp *follow_up = new PTPMessageFollowUp(this);
+			PortIdentity dest_id;
+			getPortIdentity(dest_id);
+
+			follow_up->setClockSourceTime(getClock()->getFUPInfo());
+			follow_up->setPortIdentity(&dest_id);
+			follow_up->setSequenceId(sync->getSequenceId());
+			follow_up->setPreciseOriginTimestamp(sync_timestamp);
+			follow_up->sendPort(this, NULL);
+			delete follow_up;
+		}
+		else
+		{
+			GPTP_LOG_ERROR("*** Unsuccessful Sync timestamp");
+		}
+		delete sync;
+	}
+	break;
 	case FAULT_DETECTED:
 		GPTP_LOG_ERROR("Received FAULT_DETECTED event");
-		if (!automotive_profile) {
+		if (!automotive_profile)
+		{
 			setAsCapable(false);
 		}
 		break;
 	case PDELAY_DEFERRED_PROCESSING:
 		GPTP_LOG_DEBUG("PDELAY_DEFERRED_PROCESSING occured");
 		pdelay_rx_lock->lock();
-		if (last_pdelay_resp_fwup == NULL) {
+		if (last_pdelay_resp_fwup == NULL)
+		{
 			GPTP_LOG_ERROR("PDelay Response Followup is NULL!");
 			abort();
 		}
 		last_pdelay_resp_fwup->processMessage(this);
-		if (last_pdelay_resp_fwup->garbage()) {
+		if (last_pdelay_resp_fwup->garbage())
+		{
 			delete last_pdelay_resp_fwup;
 			this->setLastPDelayRespFollowUp(NULL);
 		}
 		pdelay_rx_lock->unlock();
 		break;
 	case PDELAY_RESP_RECEIPT_TIMEOUT_EXPIRES:
-		if (!automotive_profile) {
+		if (!automotive_profile)
+		{
 			GPTP_LOG_EXCEPTION("PDelay Response Receipt Timeout");
 			setAsCapable(false);
 		}
-		setPdelayCount( 0 );
+		setPdelayCount(0);
 		break;
 
 	case PDELAY_RESP_PEER_MISBEHAVING_TIMEOUT_EXPIRES:
 		GPTP_LOG_EXCEPTION("PDelay Resp Peer Misbehaving timeout expired! Restarting PDelay");
 
 		haltPdelay(false);
-		if( getPortState() != PTP_SLAVE &&
-		    getPortState() != PTP_MASTER )
+		if (getPortState() != PTP_SLAVE &&
+			getPortState() != PTP_MASTER)
 		{
-			GPTP_LOG_STATUS("Starting PDelay" );
+			GPTP_LOG_STATUS("Starting PDelay");
 			startPDelay();
 		}
 		break;
 	case SYNC_RATE_INTERVAL_TIMEOUT_EXPIRED:
+	{
+		// GPTP_LOG_INFO("SYNC_RATE_INTERVAL_TIMEOUT_EXPIRED occured");
+		// sy.kim
+		GPTP_LOG_INFO("Change Init to Oper Interval");
+
+		sync_rate_interval_timer_started = false;
+
+		bool sendSignalMessage = false;
+		if (getSyncInterval() != operLogSyncInterval)
 		{
-			// GPTP_LOG_INFO("SYNC_RATE_INTERVAL_TIMEOUT_EXPIRED occured");
-			// sy.kim
-			GPTP_LOG_DEBUG("Change Init to Oper Interval");
-
-			sync_rate_interval_timer_started = false;
-
-			bool sendSignalMessage = false;
-			if ( getSyncInterval() != operLogSyncInterval )
-			{
-				setSyncInterval( operLogSyncInterval );
-				sendSignalMessage = true;
-			}
-
-			if (log_min_mean_pdelay_req_interval != operLogPdelayReqInterval) {
-				log_min_mean_pdelay_req_interval = operLogPdelayReqInterval;
-				sendSignalMessage = true;
-			}
-
-			if (sendSignalMessage) {
-				if (!isGM) {
-				// Send operational signalling message
-					PTPMessageSignalling *sigMsg = new PTPMessageSignalling(this);
-					if (sigMsg) {
-						if (automotive_profile)
-							// sigMsg->setintervals(PTPMessageSignalling::sigMsgInterval_NoChange, getSyncInterval(), PTPMessageSignalling::sigMsgInterval_NoChange);
-							// sy.kim
-							sigMsg->setintervals(PTPMessageSignalling::sigMsgInterval_NoSend, getSyncInterval(), PTPMessageSignalling::sigMsgInterval_NoSend);
-						else
-							sigMsg->setintervals(log_min_mean_pdelay_req_interval, getSyncInterval(), PTPMessageSignalling::sigMsgInterval_NoChange);
-						sigMsg->sendPort(this, NULL);
-						delete sigMsg;
-					}
-
-					startSyncReceiptTimer((unsigned long long)
-						(getsyncReceiptTimeoutMultiplier()*
-						  ((double) pow((double)2, getSyncInterval()) *
-						   1000000000.0)));
-				}
-			}
+			setSyncInterval(operLogSyncInterval);
+			sendSignalMessage = true;
 		}
 
-		break;
+		if (log_min_mean_pdelay_req_interval != operLogPdelayReqInterval)
+		{
+			log_min_mean_pdelay_req_interval = operLogPdelayReqInterval;
+			sendSignalMessage = true;
+		}
+
+		if (sendSignalMessage)
+		{
+			if (!isGM)
+			{
+				// Send operational signalling message
+				PTPMessageSignalling *sigMsg = new PTPMessageSignalling(this);
+				// sy.kim
+				PortIdentity dest_id;
+				getPortIdentity(dest_id);
+				sigMsg->setPortIdentity(&dest_id);
+
+				if (sigMsg)
+				{	
+					if (automotive_profile)
+					{
+						sigMsg->setintervals(PTPMessageSignalling::sigMsgInterval_NoChange, getSyncInterval(), PTPMessageSignalling::sigMsgInterval_NoChange);
+						
+						// 240930 sy.kim
+						GPTP_LOG_DEBUG("GM %s, Sig %s, Prof %s, Oper Sync interval %d, Oper Pdelay interval %d", 
+										isGM, sigMsg, automotive_profile, getSyncInterval(), PTPMessageSignalling::sigMsgInterval_NoChange);
+					}
+					else
+					{
+						sigMsg->setintervals(log_min_mean_pdelay_req_interval, getSyncInterval(), PTPMessageSignalling::sigMsgInterval_NoChange);
+
+						// 240930 sy.kim
+						GPTP_LOG_DEBUG("GM %s, Sig %s, Prof %s, Oper Sync interval %d, Oper Pdelay interval %d", 
+										isGM, sigMsg, automotive_profile, getSyncInterval(), log_min_mean_pdelay_req_interval);
+					}
+					sigMsg->sendPort(this, NULL);
+					delete sigMsg;
+				}
+
+				startSyncReceiptTimer((unsigned long long)(getsyncReceiptTimeoutMultiplier() *
+														   ((double)pow((double)2, getSyncInterval()) *
+															1000000000.0)));
+			}
+		}
+	}
+
+	break;
 	default:
-		GPTP_LOG_ERROR
-		  ( "Unhandled event type in "
-		    "EtherPort::processEvent(), %d", e );
+		GPTP_LOG_ERROR("Unhandled event type in "
+					   "EtherPort::processEvent(), %d",
+					   e);
 		ret = false;
 		break;
 	}
@@ -776,124 +844,117 @@ bool EtherPort::_processEvent( Event e )
 	return ret;
 }
 
-void EtherPort::recoverPort( void )
+void EtherPort::recoverPort(void)
 {
 	return;
 }
 
-void EtherPort::becomeMaster( bool annc ) {
-	setPortState( PTP_MASTER );
+void EtherPort::becomeMaster(bool annc)
+{
+	setPortState(PTP_MASTER);
 	// Stop announce receipt timeout timer
-	clock->deleteEventTimerLocked( this, ANNOUNCE_RECEIPT_TIMEOUT_EXPIRES );
+	clock->deleteEventTimerLocked(this, ANNOUNCE_RECEIPT_TIMEOUT_EXPIRES);
 
 	// Stop sync receipt timeout timer
 	clock->setSyncStatus(true, PTP_MASTER);
 	stopSyncReceiptTimer();
 
-	if( annc ) {
-		if (!automotive_profile) {
+	if (annc)
+	{
+		if (!automotive_profile)
+		{
 			startAnnounce();
 		}
 	}
 	startSyncIntervalTimer(16000000);
-	GPTP_LOG_STATUS("Switching to Master" );
+	GPTP_LOG_STATUS("Switching to Master");
 
 	clock->updateFUPInfo();
 
 	return;
 }
 
-void EtherPort::becomeSlave( bool restart_syntonization ) {
-	clock->deleteEventTimerLocked( this, ANNOUNCE_INTERVAL_TIMEOUT_EXPIRES );
-	clock->deleteEventTimerLocked( this, SYNC_INTERVAL_TIMEOUT_EXPIRES );
+void EtherPort::becomeSlave(bool restart_syntonization)
+{
+	clock->deleteEventTimerLocked(this, ANNOUNCE_INTERVAL_TIMEOUT_EXPIRES);
+	clock->deleteEventTimerLocked(this, SYNC_INTERVAL_TIMEOUT_EXPIRES);
 
-	setPortState( PTP_SLAVE );
-	
+	setPortState(PTP_SLAVE);
+
 	clock->setSyncStatus(false, PTP_SLAVE);
-	if (!automotive_profile) {
-		clock->addEventTimerLocked
-		  (this, ANNOUNCE_RECEIPT_TIMEOUT_EXPIRES,
-			(getannounceReceiptTimeoutMultiplier() *
-			(unsigned long long)
-			(pow((double)2,getAnnounceInterval())*1000000000.0)));
+	if (!automotive_profile)
+	{
+		clock->addEventTimerLocked(this, ANNOUNCE_RECEIPT_TIMEOUT_EXPIRES,
+								   (getannounceReceiptTimeoutMultiplier() *
+									(unsigned long long)(pow((double)2, getAnnounceInterval()) * 1000000000.0)));
 	}
 
-	GPTP_LOG_STATUS("Switching to Slave" );
-	if( restart_syntonization ) clock->newSyntonizationSetPoint();
+	GPTP_LOG_STATUS("Switching to Slave");
+	if (restart_syntonization)
+		clock->newSyntonizationSetPoint();
 
 	getClock()->updateFUPInfo();
 
 	return;
 }
 
-void EtherPort::mapSocketAddr
-( PortIdentity *destIdentity, LinkLayerAddress *remote )
+void EtherPort::mapSocketAddr(PortIdentity *destIdentity, LinkLayerAddress *remote)
 {
 	*remote = identity_map[*destIdentity];
 	return;
 }
 
-void EtherPort::addSockAddrMap
-( PortIdentity *destIdentity, LinkLayerAddress *remote )
+void EtherPort::addSockAddrMap(PortIdentity *destIdentity, LinkLayerAddress *remote)
 {
 	identity_map[*destIdentity] = *remote;
 	return;
 }
 
-int EtherPort::getTxTimestamp
-( PTPMessageCommon *msg, Timestamp &timestamp, unsigned &counter_value,
-  bool last )
+int EtherPort::getTxTimestamp(PTPMessageCommon *msg, Timestamp &timestamp, unsigned &counter_value,
+							  bool last)
 {
 	PortIdentity identity;
 	msg->getPortIdentity(&identity);
-	return getTxTimestamp
-		(&identity, msg->getMessageId(), timestamp, counter_value, last);
+	return getTxTimestamp(&identity, msg->getMessageId(), timestamp, counter_value, last);
 }
 
-int EtherPort::getRxTimestamp
-( PTPMessageCommon * msg, Timestamp & timestamp, unsigned &counter_value,
-  bool last )
+int EtherPort::getRxTimestamp(PTPMessageCommon *msg, Timestamp &timestamp, unsigned &counter_value,
+							  bool last)
 {
 	PortIdentity identity;
 	msg->getPortIdentity(&identity);
-	return getRxTimestamp
-		(&identity, msg->getMessageId(), timestamp, counter_value, last);
+	return getRxTimestamp(&identity, msg->getMessageId(), timestamp, counter_value, last);
 }
 
-int EtherPort::getTxTimestamp
-(PortIdentity *sourcePortIdentity, PTPMessageId messageId,
- Timestamp &timestamp, unsigned &counter_value, bool last )
+int EtherPort::getTxTimestamp(PortIdentity *sourcePortIdentity, PTPMessageId messageId,
+							  Timestamp &timestamp, unsigned &counter_value, bool last)
 {
 	EtherTimestamper *timestamper =
 		dynamic_cast<EtherTimestamper *>(_hw_timestamper);
 	if (timestamper)
 	{
-		return timestamper->HWTimestamper_txtimestamp
-			( sourcePortIdentity, messageId, timestamp,
-			  counter_value, last );
+		return timestamper->HWTimestamper_txtimestamp(sourcePortIdentity, messageId, timestamp,
+													  counter_value, last);
 	}
 	timestamp = clock->getSystemTime();
 	return 0;
 }
 
-int EtherPort::getRxTimestamp
-( PortIdentity * sourcePortIdentity, PTPMessageId messageId,
-  Timestamp &timestamp, unsigned &counter_value, bool last )
+int EtherPort::getRxTimestamp(PortIdentity *sourcePortIdentity, PTPMessageId messageId,
+							  Timestamp &timestamp, unsigned &counter_value, bool last)
 {
 	EtherTimestamper *timestamper =
 		dynamic_cast<EtherTimestamper *>(_hw_timestamper);
 	if (timestamper)
 	{
-		return timestamper->HWTimestamper_rxtimestamp
-		    (sourcePortIdentity, messageId, timestamp, counter_value,
-		     last);
+		return timestamper->HWTimestamper_rxtimestamp(sourcePortIdentity, messageId, timestamp, counter_value,
+													  last);
 	}
 	timestamp = clock->getSystemTime();
 	return 0;
 }
 
-void EtherPort::startPDelayIntervalTimer
-( long long unsigned int waitTime )
+void EtherPort::startPDelayIntervalTimer(long long unsigned int waitTime)
 {
 	pDelayIntervalTimerLock->lock();
 	clock->deleteEventTimerLocked(this, PDELAY_INTERVAL_TIMEOUT_EXPIRES);
@@ -901,18 +962,26 @@ void EtherPort::startPDelayIntervalTimer
 	pDelayIntervalTimerLock->unlock();
 }
 
-void EtherPort::syncDone() {
-	GPTP_LOG_VERBOSE("Sync complete");
+void EtherPort::syncDone()
+{
+	// 240930 sy.kim
+	// GPTP_LOG_VERBOSE("Sync complete");
+	GPTP_LOG_DEBUG("Sync complete");
 
-	if (automotive_profile && getPortState() == PTP_SLAVE) {
-		if (avbSyncState > 0) {
+	if (automotive_profile && getPortState() == PTP_SLAVE)
+	{
+		if (avbSyncState > 0)
+		{
 			avbSyncState--;
-			if (avbSyncState == 0) {
+			if (avbSyncState == 0)
+			{
 				setStationState(STATION_STATE_AVB_SYNC);
-				if (getTestMode()) {
+				if (getTestMode())
+				{
 					APMessageTestStatus *testStatusMsg =
 						new APMessageTestStatus(this);
-					if (testStatusMsg) {
+					if (testStatusMsg)
+					{
 						testStatusMsg->sendPort(this);
 						delete testStatusMsg;
 					}
@@ -921,16 +990,19 @@ void EtherPort::syncDone() {
 		}
 	}
 
-	if (automotive_profile) {
-		if (!sync_rate_interval_timer_started) {
-			if ( getSyncInterval() != operLogSyncInterval )
+	if (automotive_profile)
+	{
+		if (!sync_rate_interval_timer_started)
+		{
+			if (getSyncInterval() != operLogSyncInterval)
 			{
 				startSyncRateIntervalTimer();
 			}
 		}
 	}
 
-	if( !pdelay_started ) {
+	if (!pdelay_started)
+	{
 		startPDelay();
 	}
 }

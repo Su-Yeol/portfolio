@@ -1,0 +1,201 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="12.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{55F3D141-FF1F-49B1-A3B6-E692A7826395}</ProjectGuid>
+    <RootNamespace>TopazApp</RootNamespace>
+    <Keyword>Win32Proj</Keyword>
+    <ProjectName>UMSD_MCLI</ProjectName>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <PlatformToolset>v142</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <PlatformToolset>v142</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup>
+    <_ProjectFileVersion>12.0.30501.0</_ProjectFileVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <OutDir>$(SolutionDir)$(Configuration)\</OutDir>
+    <IntDir>$(Configuration)\</IntDir>
+    <LinkIncremental>false</LinkIncremental>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <OutDir>$(SolutionDir)$(Configuration)\</OutDir>
+    <IntDir>$(Configuration)\</IntDir>
+    <LinkIncremental>false</LinkIncremental>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <Optimization>Disabled</Optimization>
+      <AdditionalIncludeDirectories>..\..\..\sample\IMPSampleFiles;..\Wrapper;..\..\..\host\visual studio\lib\WpdPack\Include;..\..\..\include;..\..\..\include\driver;..\..\..\include\api;..\..\..\include\platform;..\..\..\include\utils;..\..\..\dev;..\..\..\host\include;..\..\..\unittest;..\..\..\sample;..\..\..\host\lib\libcli;..\..\..\host\lib\cJSON;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;USE_SEMAPHORE;_CRT_SECURE_NO_WARNINGS;TOPAZ_BUILD_IN;PERIDOT_BUILD_IN;AGATE_BUILD_IN;PEARL_BUILD_IN;AMETHYST_BUILD_IN;OAK_BUILD_IN;SPRUCE_BUILD_IN;BONSAIZ1_BUILD_IN;FIR_BUILD_IN;BONSAI_BUILD_IN;MSD_DEBUG_QD;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <MinimalRebuild>true</MinimalRebuild>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <PrecompiledHeader />
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
+    </ClCompile>
+    <Link>
+      <AdditionalOptions>/ignore:4075 %(AdditionalOptions)</AdditionalOptions>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <SubSystem>Console</SubSystem>
+      <TargetMachine>MachineX86</TargetMachine>
+      <AdditionalLibraryDirectories>..\..\..\host\visual studio\lib\WpdPack\Lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;wpcap.lib;ws2_32.lib;iphlpapi.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <UACExecutionLevel>RequireAdministrator</UACExecutionLevel>
+    </Link>
+    <PostBuildEvent>
+      <Command>copy "$(ProjectDir)\\..\\..\\..\\sample\\IMPSampleFiles\\ConsoleIOAsm.ihx" "$(ProjectDir)"
+copy "$(ProjectDir)\\..\\..\\..\\sample\\IMPSampleFiles\\ConsoleIOAsm.ihx" "$(SolutionDir)\\Debug"
+copy "$(ProjectDir)\\..\\..\\..\\sample\\IMPSampleFiles\\RegReadWrite.ihx" "$(ProjectDir)"
+copy "$(ProjectDir)\\..\\..\\..\\sample\\IMPSampleFiles\\RegReadWrite.ihx" "$(SolutionDir)\\Debug"
+copy "$(ProjectDir)\\..\\..\\..\\host\\linux\\umsd.cfg" "$(ProjectDir)"
+copy "$(ProjectDir)\\..\\..\\..\\host\\linux\\umsd.cfg" "$(SolutionDir)\\Debug"
+</Command>
+    </PostBuildEvent>
+    <PreBuildEvent>
+      <Command>xcopy "$(ProjectDir)\\..\\..\\..\\host\\linux\\resource\\agate" "$(ProjectDir)\\resource\\agate" /i /Y
+xcopy "$(ProjectDir)\\..\\..\\..\\host\\linux\\resource\\pearl" "$(ProjectDir)\\resource\\pearl" /i /Y
+xcopy "$(ProjectDir)\\..\\..\\..\\host\\linux\\resource\\topaz" "$(ProjectDir)\\resource\\topaz" /i /Y
+xcopy "$(ProjectDir)\\..\\..\\..\\host\\linux\\resource\\peridot" "$(ProjectDir)\\resource\\peridot" /i /Y
+xcopy "$(ProjectDir)\\..\\..\\..\\host\\linux\\resource\\amethyst" "$(ProjectDir)\\resource\\amethyst" /i /Y
+xcopy "$(ProjectDir)\\..\\..\\..\\host\\linux\\resource\\oak" "$(ProjectDir)\\resource\\oak" /i /Y
+xcopy "$(ProjectDir)\\..\\..\\..\\host\\linux\\resource\\spruce" "$(ProjectDir)\\resource\\spruce" /i /Y
+xcopy "$(ProjectDir)\\..\\..\\..\\host\\linux\\resource\\bonsaiz1" "$(ProjectDir)\\resource\\bonsaiz1" /i /Y
+xcopy "$(ProjectDir)\\..\\..\\..\\host\\linux\\resource\\fir" "$(ProjectDir)\\resource\\fir" /i /Y
+xcopy "$(ProjectDir)\\..\\..\\..\\host\\linux\\resource\\bonsai" "$(ProjectDir)\\resource\\bonsai" /i /Y
+xcopy "$(ProjectDir)\\..\\..\\..\\host\\linux\\resource\\agate" "$(SolutionDir)\\Debug\\resource\\agate" /i /Y
+xcopy "$(ProjectDir)\\..\\..\\..\\host\\linux\\resource\\pearl" "$(SolutionDir)\\Debug\\resource\\pearl" /i /Y
+xcopy "$(ProjectDir)\\..\\..\\..\\host\\linux\\resource\\topaz" "$(SolutionDir)\\Debug\\resource\\topaz" /i /Y
+xcopy "$(ProjectDir)\\..\\..\\..\\host\\linux\\resource\\peridot" "$(SolutionDir)\\Debug\\resource\\peridot" /i /Y
+xcopy "$(ProjectDir)\\..\\..\\..\\host\\linux\\resource\\amethyst" "$(SolutionDir)\\Debug\\resource\\amethyst" /i /Y
+xcopy "$(ProjectDir)\\..\\..\\..\\host\\linux\\resource\\oak" "$(SolutionDir)\\Debug\\resource\\oak" /i /Y
+xcopy "$(ProjectDir)\\..\\..\\..\\host\\linux\\resource\\spruce" "$(SolutionDir)\\Debug\\resource\\spruce" /i /Y
+xcopy "$(ProjectDir)\\..\\..\\..\\host\\linux\\resource\\bonsaiz1" "$(SolutionDir)\\Debug\\resource\\bonsaiz1" /i /Y
+xcopy "$(ProjectDir)\\..\\..\\..\\host\\linux\\resource\\fir" "$(SolutionDir)\\Debug\\resource\\fir" /i /Y
+xcopy "$(ProjectDir)\\..\\..\\..\\host\\linux\\resource\\bonsai" "$(SolutionDir)\\Debug\\resource\\bonsai" /i /Y
+xcopy "$(ProjectDir)\\..\\..\\..\\host\\linux\\resource\\umsdAPI" "$(ProjectDir)\\resource\\umsdAPI" /i /Y
+xcopy "$(ProjectDir)\\..\\..\\..\\host\\linux\\resource\\umsdAPI" "$(SolutionDir)\\Debug\\resource\\umsdAPI" /i /Y</Command>
+    </PreBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>..\..\..\sample\IMPSampleFiles;..\Wrapper;..\..\..\host\visual studio\lib\WpdPack\Include;..\..\..\include;..\..\..\include\driver;..\..\..\include\api;..\..\..\include\platform;..\..\..\include\utils;..\..\..\dev;..\..\..\host\include;..\..\..\unittest;..\..\..\sample;..\..\..\host\lib\libcli;..\..\..\host\lib\cJSON;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;USE_SEMAPHORE;_CRT_SECURE_NO_WARNINGS;TOPAZ_BUILD_IN;PERIDOT_BUILD_IN;AGATE_BUILD_IN;PEARL_BUILD_IN;AMETHYST_BUILD_IN;OAK_BUILD_IN;SPRUCE_BUILD_IN;BONSAIZ1_BUILD_IN;FIR_BUILD_IN;BONSAI_BUILD_IN;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <PrecompiledHeader />
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <Optimization>Disabled</Optimization>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <SubSystem>Console</SubSystem>
+      <OptimizeReferences>true</OptimizeReferences>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <TargetMachine>MachineX86</TargetMachine>
+      <AdditionalLibraryDirectories>..\..\..\host\visual studio\lib\WpdPack\Lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>wpcap.lib;ws2_32.lib;iphlpapi.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <UACExecutionLevel>RequireAdministrator</UACExecutionLevel>
+    </Link>
+    <PostBuildEvent>
+      <Command>copy "$(ProjectDir)\\..\\..\\..\\sample\\IMPSampleFiles\\ConsoleIOAsm.ihx" "$(ProjectDir)"
+copy "$(ProjectDir)\\..\\..\\..\\sample\\IMPSampleFiles\\ConsoleIOAsm.ihx" "$(SolutionDir)\\Release"
+copy "$(ProjectDir)\\..\\..\\..\\sample\\IMPSampleFiles\\RegReadWrite.ihx" "$(ProjectDir)"
+copy "$(ProjectDir)\\..\\..\\..\\sample\\IMPSampleFiles\\RegReadWrite.ihx" "$(SolutionDir)\\Release"
+copy "$(ProjectDir)\\..\\..\\..\\host\\linux\\umsd.cfg" "$(ProjectDir)"
+copy "$(ProjectDir)\\..\\..\\..\\host\\linux\\umsd.cfg" "$(SolutionDir)\\Release"
+
+</Command>
+    </PostBuildEvent>
+    <PreBuildEvent>
+      <Command>xcopy "$(ProjectDir)\\..\\..\\..\\host\\linux\\resource\\agate" "$(ProjectDir)\\resource\\agate" /i /Y
+xcopy "$(ProjectDir)\\..\\..\\..\\host\\linux\\resource\\pearl" "$(ProjectDir)\\resource\\pearl" /i /Y
+xcopy "$(ProjectDir)\\..\\..\\..\\host\\linux\\resource\\topaz" "$(ProjectDir)\\resource\\topaz" /i /Y
+xcopy "$(ProjectDir)\\..\\..\\..\\host\\linux\\resource\\peridot" "$(ProjectDir)\\resource\\peridot" /i /Y
+xcopy "$(ProjectDir)\\..\\..\\..\\host\\linux\\resource\\amethyst" "$(ProjectDir)\\resource\\amethyst" /i /Y
+xcopy "$(ProjectDir)\\..\\..\\..\\host\\linux\\resource\\oak" "$(ProjectDir)\\resource\\oak" /i /Y
+xcopy "$(ProjectDir)\\..\\..\\..\\host\\linux\\resource\\spruce" "$(ProjectDir)\\resource\\spruce" /i /Y
+xcopy "$(ProjectDir)\\..\\..\\..\\host\\linux\\resource\\bonsaiz1" "$(ProjectDir)\\resource\\bonsaiz1" /i /Y
+xcopy "$(ProjectDir)\\..\\..\\..\\host\\linux\\resource\\fir" "$(ProjectDir)\\resource\\fir" /i /Y
+xcopy "$(ProjectDir)\\..\\..\\..\\host\\linux\\resource\\bonsai" "$(ProjectDir)\\resource\\bonsai" /i /Y
+xcopy "$(ProjectDir)\\..\\..\\..\\host\\linux\\resource\\agate" "$(SolutionDir)\\Release\\resource\\agate" /i /Y
+xcopy "$(ProjectDir)\\..\\..\\..\\host\\linux\\resource\\pearl" "$(SolutionDir)\\Release\\resource\\pearl" /i /Y
+xcopy "$(ProjectDir)\\..\\..\\..\\host\\linux\\resource\\topaz" "$(SolutionDir)\\Release\\resource\\topaz" /i /Y
+xcopy "$(ProjectDir)\\..\\..\\..\\host\\linux\\resource\\peridot" "$(SolutionDir)\\Release\\resource\\peridot" /i /Y
+xcopy "$(ProjectDir)\\..\\..\\..\\host\\linux\\resource\\amethyst" "$(SolutionDir)\\Release\\resource\\amethyst" /i /Y
+xcopy "$(ProjectDir)\\..\\..\\..\\host\\linux\\resource\\oak" "$(SolutionDir)\\Release\\resource\\oak" /i /Y
+xcopy "$(ProjectDir)\\..\\..\\..\\host\\linux\\resource\\spruce" "$(SolutionDir)\\Release\\resource\\spruce" /i /Y
+xcopy "$(ProjectDir)\\..\\..\\..\\host\\linux\\resource\\bonsaiz1" "$(SolutionDir)\\Release\\resource\\bonsaiz1" /i /Y
+xcopy "$(ProjectDir)\\..\\..\\..\\host\\linux\\resource\\fir" "$(SolutionDir)\\Release\\resource\\fir" /i /Y
+xcopy "$(ProjectDir)\\..\\..\\..\\host\\linux\\resource\\bonsai" "$(SolutionDir)\\Release\\resource\\bonsai" /i /Y
+xcopy "$(ProjectDir)\\..\\..\\..\\host\\linux\\resource\\umsdAPI" "$(ProjectDir)\\resource\\umsdAPI" /i /Y
+xcopy "$(ProjectDir)\\..\\..\\..\\host\\linux\\resource\\umsdAPI" "$(SolutionDir)\\Release\\resource\\umsdAPI" /i /Y</Command>
+    </PreBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\UMSD\UMSD.vcxproj">
+      <Project>{af516586-25de-4bbf-ba27-79e3b7d972c7}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\Wrapper\Wrapper.vcxproj">
+      <Project>{159e06ca-875d-43ba-8a29-7479c1d4d1e4}</Project>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\lib\cJSON\cJSON.c" />
+    <ClCompile Include="..\..\lib\libcli\libcli.c" />
+    <ClCompile Include="..\..\src\apiCLI.c" />
+    <ClCompile Include="..\..\src\bus_conf.c" />
+    <ClCompile Include="..\..\src\cliCommand.c" />
+    <ClCompile Include="..\..\src\customize.c" />
+    <ClCompile Include="..\..\src\init.c" />
+    <ClCompile Include="..\..\src\main.c" />
+    <ClCompile Include="..\..\src\rmuPcap.c" />
+    <ClCompile Include="..\..\src\version.c" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\include\apiCLI.h" />
+    <ClInclude Include="..\..\include\bus_conf.h" />
+    <ClInclude Include="..\..\include\rmuPcap.h" />
+    <ClInclude Include="..\..\include\version.h" />
+    <ClInclude Include="..\..\lib\cJSON\cJSON.h" />
+    <ClInclude Include="..\..\lib\libcli\libcli.h" />
+    <ClInclude Include="resource.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="UMSD_MCLI.rc" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

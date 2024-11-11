@@ -642,7 +642,8 @@ bool CommonPort::processEvent( Event e )
 		break;
 
 	case SYNC_INTERVAL_TIMEOUT_EXPIRES:
-		GPTP_LOG_DEBUG("SYNC_INTERVAL_TIMEOUT_EXPIRES occured");
+		// sy.kim
+		// GPTP_LOG_DEBUG("SYNC_INTERVAL_TIMEOUT_EXPIRES occured");
 		// If asCapable is true attempt some media specific action
 		ret = true;
 		if( asCapable )
