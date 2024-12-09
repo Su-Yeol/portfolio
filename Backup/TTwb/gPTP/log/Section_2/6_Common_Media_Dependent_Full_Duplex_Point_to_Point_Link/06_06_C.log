@@ -1,0 +1,1087 @@
+gPTP$ DEBUG$ daemon_cl VERSION : May 27 2024 18:41:19
+gPTP$ DEBUG$ Group vnw not found, will try root (0) instead
+gPTP$ DEBUG$ priority1 = 248
+gPTP$ DEBUG$ announceReceiptTimeout: 3
+gPTP$ DEBUG$ syncReceiptTimeout: 3
+gPTP$ DEBUG$ LINKSPEED_100MB - PHY delay
+			TX: 1044 | RX: 2133
+gPTP$ DEBUG$ LINKSPEED_1G - PHY delay
+			TX: 184 | RX: 382
+gPTP$ DEBUG$ neighborPropDelayThresh: 800
+gPTP$ DEBUG$ syncReceiptThreshold: 8
+gPTP$ DEBUG$ initialLogSyncInterval: -3
+gPTP$ DEBUG$ initialLogPdelayReqInterval: 0
+gPTP$ DEBUG$ Configuring port state to Slave
+
+gPTP$ DEBUG$ automotive profile True isGM False
+
+gPTP$ DEBUG$ priority1 248 and priority2 248 clockClass 248 srt 3 art 3
+
+gPTP$ DEBUG$ qtimer_to_mono_offset -- min:5918868000 max:5918868200 new avg: 5918868030 
+gPTP$ DEBUG$ AsCapable: Enabled
+gPTP$ DEBUG$ Using clock device: /dev/ptp0
+gPTP$ DEBUG$ gPTP starting
+gPTP$ DEBUG$ Received POWERUP/INITIALIZE event
+gPTP$ DEBUG$ Switching to Slave
+gPTP$ DEBUG$ EtherPort::startPDelay()
+gPTP$ DEBUG$ automotive_profile : YES
+gPTP$ DEBUG$ getPortState() == 9
+gPTP$ DEBUG$ AVnu AP Status : STATION_STATE_ETHERNET_READY
+gPTP$ DEBUG$ Interface pfe0 is up
+gPTP$ DEBUG$ Link Speed: 1000000 kb/sec
+gPTP$ DEBUG$ SYNC receipt timeout
+gPTP$ DEBUG$ SYNC receipt timeout
+gPTP$ DEBUG$ PDELAY_INTERVAL_TIMEOUT_EXPIRES occured
+gPTP$ DEBUG$ case PDELAY_INTERVAL_TIMEOUT_EXPIRES:
+gPTP$ DEBUG$ automotive_profile : YES
+gPTP$ DEBUG$ getPortState() == 9
+gPTP$ DEBUG$ TX PHY compensation: 0 0.000000184 sec
+gPTP$ DEBUG$ *** Sent PDelay Request message
+gPTP$ DEBUG$ Schedule PDELAY_RESP_RECEIPT_TIMEOUT_EXPIRES, PDelay interval 0, timeout 3000000000
+gPTP$ DEBUG$ SYNC receipt timeout
+gPTP$ DEBUG$ *** Received PDelay Response message, Timestamp 107 (sec) 5819259 (ns), seqID 0
+gPTP$ DEBUG$ RX PHY compensation: 0 0.000000382 sec
+gPTP$ DEBUG$ *** Received PDelay Response FollowUp message
+gPTP$ DEBUG$ Link delay: 285182 ns
+gPTP$ DEBUG$ SYNC receipt timeout
+gPTP$ DEBUG$ SYNC receipt timeout
+gPTP$ DEBUG$ PDELAY_INTERVAL_TIMEOUT_EXPIRES occured
+gPTP$ DEBUG$ case PDELAY_INTERVAL_TIMEOUT_EXPIRES:
+gPTP$ DEBUG$ automotive_profile : YES
+gPTP$ DEBUG$ getPortState() == 9
+gPTP$ DEBUG$ TX PHY compensation: 0 0.000000184 sec
+gPTP$ DEBUG$ *** Sent PDelay Request message
+gPTP$ DEBUG$ Schedule PDELAY_RESP_RECEIPT_TIMEOUT_EXPIRES, PDelay interval 0, timeout 3000000000
+gPTP$ DEBUG$ *** Received PDelay Response message, Timestamp 107 (sec) 900197589 (ns), seqID 1
+gPTP$ DEBUG$ RX PHY compensation: 0 0.000000382 sec
+gPTP$ DEBUG$ *** Received PDelay Response FollowUp message
+gPTP$ DEBUG$ Link delay: 371714 ns
+gPTP$ DEBUG$ SYNC receipt timeout
+gPTP$ DEBUG$ SYNC receipt timeout
+gPTP$ DEBUG$ SYNC receipt timeout
+gPTP$ DEBUG$ PDELAY_INTERVAL_TIMEOUT_EXPIRES occured
+gPTP$ DEBUG$ case PDELAY_INTERVAL_TIMEOUT_EXPIRES:
+gPTP$ DEBUG$ automotive_profile : YES
+gPTP$ DEBUG$ getPortState() == 9
+gPTP$ DEBUG$ TX PHY compensation: 0 0.000000184 sec
+gPTP$ DEBUG$ *** Sent PDelay Request message
+gPTP$ DEBUG$ Schedule PDELAY_RESP_RECEIPT_TIMEOUT_EXPIRES, PDelay interval 0, timeout 3000000000
+gPTP$ DEBUG$ *** Received PDelay Response message, Timestamp 108 (sec) 905753729 (ns), seqID 2
+gPTP$ DEBUG$ RX PHY compensation: 0 0.000000382 sec
+gPTP$ DEBUG$ *** Received PDelay Response FollowUp message
+gPTP$ DEBUG$ Link delay: 363364 ns
+gPTP$ DEBUG$ SYNC receipt timeout
+gPTP$ DEBUG$ SYNC receipt timeout
+gPTP$ DEBUG$ PDELAY_INTERVAL_TIMEOUT_EXPIRES occured
+gPTP$ DEBUG$ case PDELAY_INTERVAL_TIMEOUT_EXPIRES:
+gPTP$ DEBUG$ automotive_profile : YES
+gPTP$ DEBUG$ getPortState() == 9
+gPTP$ DEBUG$ TX PHY compensation: 0 0.000000184 sec
+gPTP$ DEBUG$ *** Sent PDelay Request message
+gPTP$ DEBUG$ Schedule PDELAY_RESP_RECEIPT_TIMEOUT_EXPIRES, PDelay interval 0, timeout 3000000000
+gPTP$ DEBUG$ *** Received PDelay Response message, Timestamp 109 (sec) 911376879 (ns), seqID 3
+gPTP$ DEBUG$ RX PHY compensation: 0 0.000000382 sec
+gPTP$ DEBUG$ *** Received PDelay Response FollowUp message
+gPTP$ DEBUG$ Link delay: 349388 ns
+gPTP$ DEBUG$ SYNC receipt timeout
+gPTP$ DEBUG$ SYNC receipt timeout
+gPTP$ DEBUG$ SYNC receipt timeout
+gPTP$ DEBUG$ PDELAY_INTERVAL_TIMEOUT_EXPIRES occured
+gPTP$ DEBUG$ case PDELAY_INTERVAL_TIMEOUT_EXPIRES:
+gPTP$ DEBUG$ automotive_profile : YES
+gPTP$ DEBUG$ getPortState() == 9
+gPTP$ DEBUG$ TX PHY compensation: 0 0.000000184 sec
+gPTP$ DEBUG$ *** Sent PDelay Request message
+gPTP$ DEBUG$ Schedule PDELAY_RESP_RECEIPT_TIMEOUT_EXPIRES, PDelay interval 0, timeout 3000000000
+gPTP$ DEBUG$ *** Received PDelay Response message, Timestamp 110 (sec) 917177459 (ns), seqID 4
+gPTP$ DEBUG$ RX PHY compensation: 0 0.000000382 sec
+gPTP$ DEBUG$ *** Received PDelay Response FollowUp message
+gPTP$ DEBUG$ Link delay: 366751 ns
+gPTP$ DEBUG$ SYNC receipt timeout
+gPTP$ DEBUG$ SYNC receipt timeout
+gPTP$ DEBUG$ SYNC receipt timeout
+gPTP$ DEBUG$ PDELAY_INTERVAL_TIMEOUT_EXPIRES occured
+gPTP$ DEBUG$ case PDELAY_INTERVAL_TIMEOUT_EXPIRES:
+gPTP$ DEBUG$ automotive_profile : YES
+gPTP$ DEBUG$ getPortState() == 9
+gPTP$ DEBUG$ TX PHY compensation: 0 0.000000184 sec
+gPTP$ DEBUG$ *** Sent PDelay Request message
+gPTP$ DEBUG$ Schedule PDELAY_RESP_RECEIPT_TIMEOUT_EXPIRES, PDelay interval 0, timeout 3000000000
+gPTP$ DEBUG$ *** Received PDelay Response message, Timestamp 111 (sec) 923741469 (ns), seqID 5
+gPTP$ DEBUG$ RX PHY compensation: 0 0.000000382 sec
+gPTP$ DEBUG$ *** Received PDelay Response FollowUp message
+gPTP$ DEBUG$ Link delay: 319138 ns
+gPTP$ DEBUG$ SYNC receipt timeout
+gPTP$ DEBUG$ SYNC receipt timeout
+gPTP$ DEBUG$ PDELAY_INTERVAL_TIMEOUT_EXPIRES occured
+gPTP$ DEBUG$ case PDELAY_INTERVAL_TIMEOUT_EXPIRES:
+gPTP$ DEBUG$ automotive_profile : YES
+gPTP$ DEBUG$ getPortState() == 9
+gPTP$ DEBUG$ TX PHY compensation: 0 0.000000184 sec
+gPTP$ DEBUG$ *** Sent PDelay Request message
+gPTP$ DEBUG$ Schedule PDELAY_RESP_RECEIPT_TIMEOUT_EXPIRES, PDelay interval 0, timeout 3000000000
+gPTP$ DEBUG$ *** Received PDelay Response message, Timestamp 112 (sec) 929884449 (ns), seqID 6
+gPTP$ DEBUG$ RX PHY compensation: 0 0.000000382 sec
+gPTP$ DEBUG$ *** Received PDelay Response FollowUp message
+gPTP$ DEBUG$ Link delay: 371122 ns
+gPTP$ DEBUG$ SYNC receipt timeout
+gPTP$ DEBUG$ SYNC receipt timeout
+gPTP$ DEBUG$ SYNC receipt timeout
+gPTP$ DEBUG$ PDELAY_INTERVAL_TIMEOUT_EXPIRES occured
+gPTP$ DEBUG$ case PDELAY_INTERVAL_TIMEOUT_EXPIRES:
+gPTP$ DEBUG$ automotive_profile : YES
+gPTP$ DEBUG$ getPortState() == 9
+gPTP$ DEBUG$ TX PHY compensation: 0 0.000000184 sec
+gPTP$ DEBUG$ *** Sent PDelay Request message
+gPTP$ DEBUG$ Schedule PDELAY_RESP_RECEIPT_TIMEOUT_EXPIRES, PDelay interval 0, timeout 3000000000
+gPTP$ DEBUG$ *** Received PDelay Response message, Timestamp 113 (sec) 935732409 (ns), seqID 7
+gPTP$ DEBUG$ RX PHY compensation: 0 0.000000382 sec
+gPTP$ DEBUG$ *** Received PDelay Response FollowUp message
+gPTP$ DEBUG$ Link delay: 416378 ns
+gPTP$ DEBUG$ SYNC receipt timeout
+gPTP$ DEBUG$ SYNC receipt timeout
+gPTP$ DEBUG$ SYNC receipt timeout
+gPTP$ DEBUG$ PDELAY_INTERVAL_TIMEOUT_EXPIRES occured
+gPTP$ DEBUG$ case PDELAY_INTERVAL_TIMEOUT_EXPIRES:
+gPTP$ DEBUG$ automotive_profile : YES
+gPTP$ DEBUG$ getPortState() == 9
+gPTP$ DEBUG$ TX PHY compensation: 0 0.000000184 sec
+gPTP$ DEBUG$ *** Sent PDelay Request message
+gPTP$ DEBUG$ Schedule PDELAY_RESP_RECEIPT_TIMEOUT_EXPIRES, PDelay interval 0, timeout 3000000000
+gPTP$ DEBUG$ *** Received PDelay Response message, Timestamp 114 (sec) 941050219 (ns), seqID 8
+gPTP$ DEBUG$ RX PHY compensation: 0 0.000000382 sec
+gPTP$ DEBUG$ *** Received PDelay Response FollowUp message
+gPTP$ DEBUG$ Link delay: 344912 ns
+gPTP$ DEBUG$ SYNC receipt timeout
+gPTP$ DEBUG$ SYNC receipt timeout
+gPTP$ DEBUG$ PDELAY_INTERVAL_TIMEOUT_EXPIRES occured
+gPTP$ DEBUG$ case PDELAY_INTERVAL_TIMEOUT_EXPIRES:
+gPTP$ DEBUG$ automotive_profile : YES
+gPTP$ DEBUG$ getPortState() == 9
+gPTP$ DEBUG$ TX PHY compensation: 0 0.000000184 sec
+gPTP$ DEBUG$ *** Sent PDelay Request message
+gPTP$ DEBUG$ Schedule PDELAY_RESP_RECEIPT_TIMEOUT_EXPIRES, PDelay interval 0, timeout 3000000000
+gPTP$ DEBUG$ *** Received PDelay Response message, Timestamp 115 (sec) 947205279 (ns), seqID 9
+gPTP$ DEBUG$ RX PHY compensation: 0 0.000000382 sec
+gPTP$ DEBUG$ *** Received PDelay Response FollowUp message
+gPTP$ DEBUG$ Link delay: 279732 ns
+gPTP$ DEBUG$ SYNC receipt timeout
+gPTP$ DEBUG$ SYNC receipt timeout
+gPTP$ DEBUG$ SYNC receipt timeout
+gPTP$ DEBUG$ PDELAY_INTERVAL_TIMEOUT_EXPIRES occured
+gPTP$ DEBUG$ case PDELAY_INTERVAL_TIMEOUT_EXPIRES:
+gPTP$ DEBUG$ automotive_profile : YES
+gPTP$ DEBUG$ getPortState() == 9
+gPTP$ DEBUG$ TX PHY compensation: 0 0.000000184 sec
+gPTP$ DEBUG$ *** Sent PDelay Request message
+gPTP$ DEBUG$ Schedule PDELAY_RESP_RECEIPT_TIMEOUT_EXPIRES, PDelay interval 0, timeout 3000000000
+gPTP$ DEBUG$ *** Received PDelay Response message, Timestamp 116 (sec) 955999099 (ns), seqID 10
+gPTP$ DEBUG$ RX PHY compensation: 0 0.000000382 sec
+gPTP$ DEBUG$ *** Received PDelay Response FollowUp message
+gPTP$ DEBUG$ Link delay: 340444 ns
+gPTP$ DEBUG$ SYNC receipt timeout
+gPTP$ DEBUG$ *** Received Sync message
+gPTP$ DEBUG$ RX PHY compensation: 0 0.000000382 sec
+gPTP$ DEBUG$ *** Received Follow Up message
+gPTP$ DEBUG$ Processing a follow-up message
+gPTP$ DEBUG$ Calculated master to local clock rate difference
+gPTP$ DEBUG$ Calculated local to system clock rate difference
+gPTP$ DEBUG$ phase_error = 0.000000, ppm = 0.000000
+gPTP$ DEBUG$ *** Received Sync message
+gPTP$ DEBUG$ RX PHY compensation: 0 0.000000382 sec
+gPTP$ DEBUG$ *** Received Follow Up message
+gPTP$ DEBUG$ Processing a follow-up message
+gPTP$ DEBUG$ Calculated master to local clock rate difference
+gPTP$ DEBUG$ Calculated local to system clock rate difference
+gPTP$ DEBUG$ Local to system clock ratio (73443904712.218737) exceeding threshold
+gPTP$ DEBUG$ Local to mono clock ratio (73443904712.218737) exceeding threshold
+gPTP$ DEBUG$ phase_error = -66996.000000, ppm = -160.790405
+gPTP$ DEBUG$ AVnu AP Status : STATION_STATE_AVB_SYNC
+gPTP$ DEBUG$ *** Received Sync message
+gPTP$ DEBUG$ RX PHY compensation: 0 0.000000382 sec
+gPTP$ DEBUG$ *** Received Follow Up message
+gPTP$ DEBUG$ Processing a follow-up message
+gPTP$ DEBUG$ Calculated master to local clock rate difference
+gPTP$ DEBUG$ Calculated local to system clock rate difference
+gPTP$ DEBUG$ phase_error = -131164.000000, ppm = -986.304688
+gPTP$ DEBUG$ *** Received Sync message
+gPTP$ DEBUG$ RX PHY compensation: 0 0.000000382 sec
+gPTP$ DEBUG$ *** Received Follow Up message
+gPTP$ DEBUG$ Processing a follow-up message
+gPTP$ DEBUG$ Calculated master to local clock rate difference
+gPTP$ DEBUG$ Calculated local to system clock rate difference
+gPTP$ DEBUG$ phase_error = -39030.000000, ppm = 390.480164
+gPTP$ DEBUG$ *** Received Sync message
+gPTP$ DEBUG$ RX PHY compensation: 0 0.000000382 sec
+gPTP$ DEBUG$ *** Received Follow Up message
+gPTP$ DEBUG$ Processing a follow-up message
+gPTP$ DEBUG$ Calculated master to local clock rate difference
+gPTP$ DEBUG$ Calculated local to system clock rate difference
+gPTP$ DEBUG$ phase_error = -24482.000000, ppm = 307.097473
+gPTP$ DEBUG$ *** Received Sync message
+gPTP$ DEBUG$ RX PHY compensation: 0 0.000000382 sec
+gPTP$ DEBUG$ *** Received Follow Up message
+gPTP$ DEBUG$ Processing a follow-up message
+gPTP$ DEBUG$ Calculated master to local clock rate difference
+gPTP$ DEBUG$ Calculated local to system clock rate difference
+gPTP$ DEBUG$ phase_error = -45467.000000, ppm = -26.221741
+gPTP$ DEBUG$ PDELAY_INTERVAL_TIMEOUT_EXPIRES occured
+gPTP$ DEBUG$ case PDELAY_INTERVAL_TIMEOUT_EXPIRES:
+gPTP$ DEBUG$ automotive_profile : YES
+gPTP$ DEBUG$ getPortState() == 9
+gPTP$ DEBUG$ TX PHY compensation: 0 0.000000184 sec
+gPTP$ DEBUG$ *** Sent PDelay Request message
+gPTP$ DEBUG$ Schedule PDELAY_RESP_RECEIPT_TIMEOUT_EXPIRES, PDelay interval 0, timeout 3000000000
+gPTP$ DEBUG$ *** Received Sync message
+gPTP$ DEBUG$ RX PHY compensation: 0 0.000000382 sec
+gPTP$ DEBUG$ *** Received Follow Up message
+gPTP$ DEBUG$ Processing a follow-up message
+gPTP$ DEBUG$ Calculated master to local clock rate difference
+gPTP$ DEBUG$ Calculated local to system clock rate difference
+gPTP$ DEBUG$ phase_error = -3063.000000, ppm = 303.363525
+gPTP$ DEBUG$ *** Received Sync message
+gPTP$ DEBUG$ RX PHY compensation: 0 0.000000382 sec
+gPTP$ DEBUG$ *** Received Follow Up message
+gPTP$ DEBUG$ Processing a follow-up message
+gPTP$ DEBUG$ Calculated master to local clock rate difference
+gPTP$ DEBUG$ Calculated local to system clock rate difference
+gPTP$ DEBUG$ phase_error = -161106.000000, ppm = -1393.235229
+gPTP$ DEBUG$ *** Received Sync message
+gPTP$ DEBUG$ RX PHY compensation: 0 0.000000382 sec
+gPTP$ DEBUG$ *** Received Follow Up message
+gPTP$ DEBUG$ Processing a follow-up message
+gPTP$ DEBUG$ Calculated master to local clock rate difference
+gPTP$ DEBUG$ Calculated local to system clock rate difference
+gPTP$ DEBUG$ phase_error = -122103.000000, ppm = -232.335220
+gPTP$ DEBUG$ *** Received Sync message
+gPTP$ DEBUG$ RX PHY compensation: 0 0.000000382 sec
+gPTP$ DEBUG$ *** Received Follow Up message
+gPTP$ DEBUG$ Processing a follow-up message
+gPTP$ DEBUG$ Calculated master to local clock rate difference
+gPTP$ DEBUG$ Calculated local to system clock rate difference
+gPTP$ DEBUG$ phase_error = -14524.000000, ppm = 589.842957
+gPTP$ DEBUG$ *** Received Sync message
+gPTP$ DEBUG$ RX PHY compensation: 0 0.000000382 sec
+gPTP$ DEBUG$ *** Received Follow Up message
+gPTP$ DEBUG$ Processing a follow-up message
+gPTP$ DEBUG$ Calculated master to local clock rate difference
+gPTP$ DEBUG$ Calculated local to system clock rate difference
+gPTP$ DEBUG$ phase_error = -6669.000000, ppm = 296.556732
+gPTP$ DEBUG$ *** Received Sync message
+gPTP$ DEBUG$ RX PHY compensation: 0 0.000000382 sec
+gPTP$ DEBUG$ *** Received Follow Up message
+gPTP$ DEBUG$ Processing a follow-up message
+gPTP$ DEBUG$ Calculated master to local clock rate difference
+gPTP$ DEBUG$ Calculated local to system clock rate difference
+gPTP$ DEBUG$ phase_error = -173597.000000, ppm = -1494.192261
+gPTP$ DEBUG$ *** Received Sync message
+gPTP$ DEBUG$ RX PHY compensation: 0 0.000000382 sec
+gPTP$ DEBUG$ *** Received Follow Up message
+gPTP$ DEBUG$ Processing a follow-up message
+gPTP$ DEBUG$ Calculated master to local clock rate difference
+gPTP$ DEBUG$ Calculated local to system clock rate difference
+gPTP$ DEBUG$ phase_error = -78065.000000, ppm = 323.859985
+gPTP$ DEBUG$ *** Received Sync message
+gPTP$ DEBUG$ RX PHY compensation: 0 0.000000382 sec
+gPTP$ DEBUG$ *** Received Follow Up message
+gPTP$ DEBUG$ Processing a follow-up message
+gPTP$ DEBUG$ Calculated master to local clock rate difference
+gPTP$ DEBUG$ Calculated local to system clock rate difference
+gPTP$ DEBUG$ phase_error = -79683.000000, ppm = 45.878342
+gPTP$ DEBUG$ PDELAY_INTERVAL_TIMEOUT_EXPIRES occured
+gPTP$ DEBUG$ case PDELAY_INTERVAL_TIMEOUT_EXPIRES:
+gPTP$ DEBUG$ automotive_profile : YES
+gPTP$ DEBUG$ getPortState() == 9
+gPTP$ DEBUG$ TX PHY compensation: 0 0.000000184 sec
+gPTP$ DEBUG$ *** Sent PDelay Request message
+gPTP$ DEBUG$ Schedule PDELAY_RESP_RECEIPT_TIMEOUT_EXPIRES, PDelay interval 0, timeout 3000000000
+gPTP$ DEBUG$ *** Received Sync message
+gPTP$ DEBUG$ RX PHY compensation: 0 0.000000382 sec
+gPTP$ DEBUG$ *** Received Follow Up message
+gPTP$ DEBUG$ Processing a follow-up message
+gPTP$ DEBUG$ Calculated master to local clock rate difference
+gPTP$ DEBUG$ Calculated local to system clock rate difference
+gPTP$ DEBUG$ phase_error = -160908.000000, ppm = -986.577820
+gPTP$ DEBUG$ *** Received Sync message
+gPTP$ DEBUG$ RX PHY compensation: 0 0.000000382 sec
+gPTP$ DEBUG$ *** Received Follow Up message
+gPTP$ DEBUG$ Processing a follow-up message
+gPTP$ DEBUG$ Calculated master to local clock rate difference
+gPTP$ DEBUG$ Calculated local to system clock rate difference
+gPTP$ DEBUG$ phase_error = -48001.000000, ppm = 534.906982
+gPTP$ DEBUG$ *** Received Sync message
+gPTP$ DEBUG$ RX PHY compensation: 0 0.000000382 sec
+gPTP$ DEBUG$ *** Received Follow Up message
+gPTP$ DEBUG$ Processing a follow-up message
+gPTP$ DEBUG$ Calculated master to local clock rate difference
+gPTP$ DEBUG$ Calculated local to system clock rate difference
+gPTP$ DEBUG$ phase_error = -84705.000000, ppm = -245.420380
+gPTP$ DEBUG$ *** Received Sync message
+gPTP$ DEBUG$ RX PHY compensation: 0 0.000000382 sec
+gPTP$ DEBUG$ *** Received Follow Up message
+gPTP$ DEBUG$ Processing a follow-up message
+gPTP$ DEBUG$ Calculated master to local clock rate difference
+gPTP$ DEBUG$ Calculated local to system clock rate difference
+gPTP$ DEBUG$ phase_error = -62662.000000, ppm = -220.236206
+gPTP$ DEBUG$ *** Received Sync message
+gPTP$ DEBUG$ RX PHY compensation: 0 0.000000382 sec
+gPTP$ DEBUG$ *** Received Follow Up message
+gPTP$ DEBUG$ Processing a follow-up message
+gPTP$ DEBUG$ Calculated master to local clock rate difference
+gPTP$ DEBUG$ Calculated local to system clock rate difference
+gPTP$ DEBUG$ phase_error = -48663.000000, ppm = -225.538788
+gPTP$ DEBUG$ *** Received Sync message
+gPTP$ DEBUG$ RX PHY compensation: 0 0.000000382 sec
+gPTP$ DEBUG$ *** Received Follow Up message
+gPTP$ DEBUG$ Processing a follow-up message
+gPTP$ DEBUG$ Calculated master to local clock rate difference
+gPTP$ DEBUG$ Calculated local to system clock rate difference
+gPTP$ DEBUG$ phase_error = -2411.000000, ppm = 137.079193
+gPTP$ DEBUG$ *** Received Sync message
+gPTP$ DEBUG$ RX PHY compensation: 0 0.000000382 sec
+gPTP$ DEBUG$ *** Received Follow Up message
+gPTP$ DEBUG$ Processing a follow-up message
+gPTP$ DEBUG$ Calculated master to local clock rate difference
+gPTP$ DEBUG$ Calculated local to system clock rate difference
+gPTP$ DEBUG$ phase_error = 65019.000000, ppm = 830.514526
+gPTP$ DEBUG$ *** Received Sync message
+gPTP$ DEBUG$ RX PHY compensation: 0 0.000000382 sec
+gPTP$ DEBUG$ *** Received Follow Up message
+gPTP$ DEBUG$ Processing a follow-up message
+gPTP$ DEBUG$ Calculated master to local clock rate difference
+gPTP$ DEBUG$ Calculated local to system clock rate difference
+gPTP$ DEBUG$ phase_error = 1494.000000, ppm = -251.936798
+gPTP$ DEBUG$ PDELAY_INTERVAL_TIMEOUT_EXPIRES occured
+gPTP$ DEBUG$ case PDELAY_INTERVAL_TIMEOUT_EXPIRES:
+gPTP$ DEBUG$ automotive_profile : YES
+gPTP$ DEBUG$ getPortState() == 9
+gPTP$ DEBUG$ TX PHY compensation: 0 0.000000184 sec
+gPTP$ DEBUG$ *** Sent PDelay Request message
+gPTP$ DEBUG$ Schedule PDELAY_RESP_RECEIPT_TIMEOUT_EXPIRES, PDelay interval 0, timeout 3000000000
+gPTP$ DEBUG$ *** Received Sync message
+gPTP$ DEBUG$ RX PHY compensation: 0 0.000000382 sec
+gPTP$ DEBUG$ *** Received Follow Up message
+gPTP$ DEBUG$ Processing a follow-up message
+gPTP$ DEBUG$ Calculated master to local clock rate difference
+gPTP$ DEBUG$ Calculated local to system clock rate difference
+gPTP$ DEBUG$ phase_error = 8649.000000, ppm = -172.254150
+gPTP$ DEBUG$ *** Received Sync message
+gPTP$ DEBUG$ RX PHY compensation: 0 0.000000382 sec
+gPTP$ DEBUG$ *** Received Follow Up message
+gPTP$ DEBUG$ Processing a follow-up message
+gPTP$ DEBUG$ Calculated master to local clock rate difference
+gPTP$ DEBUG$ Calculated local to system clock rate difference
+gPTP$ DEBUG$ phase_error = -3343.000000, ppm = -275.708649
+gPTP$ DEBUG$ *** Received Sync message
+gPTP$ DEBUG$ RX PHY compensation: 0 0.000000382 sec
+gPTP$ DEBUG$ *** Received Follow Up message
+gPTP$ DEBUG$ Processing a follow-up message
+gPTP$ DEBUG$ Calculated master to local clock rate difference
+gPTP$ DEBUG$ Calculated local to system clock rate difference
+gPTP$ DEBUG$ phase_error = 127868.000000, ppm = 1102.891846
+gPTP$ DEBUG$ *** Received Sync message
+gPTP$ DEBUG$ RX PHY compensation: 0 0.000000382 sec
+gPTP$ DEBUG$ *** Received Follow Up message
+gPTP$ DEBUG$ Processing a follow-up message
+gPTP$ DEBUG$ Calculated master to local clock rate difference
+gPTP$ DEBUG$ Calculated local to system clock rate difference
+gPTP$ DEBUG$ phase_error = -5002.000000, ppm = -819.166382
+gPTP$ DEBUG$ *** Received Sync message
+gPTP$ DEBUG$ RX PHY compensation: 0 0.000000382 sec
+gPTP$ DEBUG$ *** Received Follow Up message
+gPTP$ DEBUG$ Processing a follow-up message
+gPTP$ DEBUG$ Calculated master to local clock rate difference
+gPTP$ DEBUG$ Calculated local to system clock rate difference
+gPTP$ DEBUG$ phase_error = 136460.000000, ppm = 1204.987305
+gPTP$ DEBUG$ *** Received Sync message
+gPTP$ DEBUG$ RX PHY compensation: 0 0.000000382 sec
+gPTP$ DEBUG$ *** Received Follow Up message
+gPTP$ DEBUG$ Processing a follow-up message
+gPTP$ DEBUG$ Calculated master to local clock rate difference
+gPTP$ DEBUG$ Calculated local to system clock rate difference
+gPTP$ DEBUG$ phase_error = 26053.000000, ppm = -566.075073
+gPTP$ DEBUG$ *** Received Sync message
+gPTP$ DEBUG$ RX PHY compensation: 0 0.000000382 sec
+gPTP$ DEBUG$ *** Received Follow Up message
+gPTP$ DEBUG$ Processing a follow-up message
+gPTP$ DEBUG$ Calculated master to local clock rate difference
+gPTP$ DEBUG$ Calculated local to system clock rate difference
+gPTP$ DEBUG$ phase_error = 63022.000000, ppm = 195.527039
+gPTP$ DEBUG$ *** Received Sync message
+gPTP$ DEBUG$ RX PHY compensation: 0 0.000000382 sec
+gPTP$ DEBUG$ *** Received Follow Up message
+gPTP$ DEBUG$ Processing a follow-up message
+gPTP$ DEBUG$ Calculated master to local clock rate difference
+gPTP$ DEBUG$ Calculated local to system clock rate difference
+gPTP$ DEBUG$ phase_error = 128609.000000, ppm = 1024.168457
+gPTP$ DEBUG$ PDELAY_INTERVAL_TIMEOUT_EXPIRES occured
+gPTP$ DEBUG$ case PDELAY_INTERVAL_TIMEOUT_EXPIRES:
+gPTP$ DEBUG$ automotive_profile : YES
+gPTP$ DEBUG$ getPortState() == 9
+gPTP$ DEBUG$ TX PHY compensation: 0 0.000000184 sec
+gPTP$ DEBUG$ *** Sent PDelay Request message
+gPTP$ DEBUG$ Schedule PDELAY_RESP_RECEIPT_TIMEOUT_EXPIRES, PDelay interval 0, timeout 3000000000
+gPTP$ DEBUG$ *** Received message with unsupported transportSpecific type=0
+gPTP$ DEBUG$ Discarding invalid message
+gPTP$ DEBUG$ *** Received message with unsupported transportSpecific type=0
+gPTP$ DEBUG$ Discarding invalid message
+gPTP$ DEBUG$ *** Received message with unsupported transportSpecific type=0
+gPTP$ DEBUG$ Discarding invalid message
+gPTP$ DEBUG$ *** Received message with unsupported transportSpecific type=0
+gPTP$ DEBUG$ Discarding invalid message
+gPTP$ DEBUG$ SYNC receipt timeout
+gPTP$ DEBUG$ SYNC_RATE_INTERVAL_TIMEOUT_EXPIRED occured
+gPTP$ DEBUG$ *** Received message with unsupported transportSpecific type=0
+gPTP$ DEBUG$ Discarding invalid message
+gPTP$ DEBUG$ *** Received message with unsupported transportSpecific type=0
+gPTP$ DEBUG$ Discarding invalid message
+gPTP$ DEBUG$ *** Received message with unsupported transportSpecific type=0
+gPTP$ DEBUG$ Discarding invalid message
+gPTP$ DEBUG$ *** Received message with unsupported transportSpecific type=0
+gPTP$ DEBUG$ Discarding invalid message
+gPTP$ DEBUG$ *** Received message with unsupported transportSpecific type=0
+gPTP$ DEBUG$ Discarding invalid message
+gPTP$ DEBUG$ *** Received message with unsupported transportSpecific type=0
+gPTP$ DEBUG$ Discarding invalid message
+gPTP$ DEBUG$ *** Received message with unsupported transportSpecific type=0
+gPTP$ DEBUG$ Discarding invalid message
+gPTP$ DEBUG$ *** Received message with unsupported transportSpecific type=0
+gPTP$ DEBUG$ Discarding invalid message
+gPTP$ DEBUG$ *** Received message with unsupported transportSpecific type=0
+gPTP$ DEBUG$ Discarding invalid message
+gPTP$ DEBUG$ *** Received message with unsupported transportSpecific type=0
+gPTP$ DEBUG$ Discarding invalid message
+gPTP$ DEBUG$ PDELAY_INTERVAL_TIMEOUT_EXPIRES occured
+gPTP$ DEBUG$ case PDELAY_INTERVAL_TIMEOUT_EXPIRES:
+gPTP$ DEBUG$ automotive_profile : YES
+gPTP$ DEBUG$ getPortState() == 9
+gPTP$ DEBUG$ TX PHY compensation: 0 0.000000184 sec
+gPTP$ DEBUG$ *** Sent PDelay Request message
+gPTP$ DEBUG$ Schedule PDELAY_RESP_RECEIPT_TIMEOUT_EXPIRES, PDelay interval 1, timeout 6000000000
+gPTP$ DEBUG$ *** Received message with unsupported transportSpecific type=0
+gPTP$ DEBUG$ Discarding invalid message
+gPTP$ DEBUG$ *** Received message with unsupported transportSpecific type=0
+gPTP$ DEBUG$ Discarding invalid message
+gPTP$ DEBUG$ SYNC receipt timeout
+gPTP$ DEBUG$ *** Received message with unsupported transportSpecific type=0
+gPTP$ DEBUG$ Discarding invalid message
+gPTP$ DEBUG$ *** Received message with unsupported transportSpecific type=0
+gPTP$ DEBUG$ Discarding invalid message
+gPTP$ DEBUG$ *** Received message with unsupported transportSpecific type=0
+gPTP$ DEBUG$ Discarding invalid message
+gPTP$ DEBUG$ *** Received message with unsupported transportSpecific type=0
+gPTP$ DEBUG$ Discarding invalid message
+gPTP$ DEBUG$ *** Received message with unsupported transportSpecific type=0
+gPTP$ DEBUG$ Discarding invalid message
+gPTP$ DEBUG$ *** Received message with unsupported transportSpecific type=0
+gPTP$ DEBUG$ Discarding invalid message
+gPTP$ DEBUG$ *** Received message with unsupported transportSpecific type=0
+gPTP$ DEBUG$ Discarding invalid message
+gPTP$ DEBUG$ *** Received message with unsupported transportSpecific type=0
+gPTP$ DEBUG$ Discarding invalid message
+gPTP$ DEBUG$ *** Received message with unsupported transportSpecific type=0
+gPTP$ DEBUG$ Discarding invalid message
+gPTP$ DEBUG$ *** Received message with unsupported transportSpecific type=0
+gPTP$ DEBUG$ Discarding invalid message
+gPTP$ DEBUG$ *** Received message with unsupported transportSpecific type=0
+gPTP$ DEBUG$ Discarding invalid message
+gPTP$ DEBUG$ *** Received message with unsupported transportSpecific type=0
+gPTP$ DEBUG$ Discarding invalid message
+gPTP$ DEBUG$ SYNC receipt timeout
+gPTP$ DEBUG$ *** Received message with unsupported transportSpecific type=0
+gPTP$ DEBUG$ Discarding invalid message
+gPTP$ DEBUG$ *** Received message with unsupported transportSpecific type=0
+gPTP$ DEBUG$ Discarding invalid message
+gPTP$ DEBUG$ *** Received message with unsupported transportSpecific type=0
+gPTP$ DEBUG$ Discarding invalid message
+gPTP$ DEBUG$ *** Received message with unsupported transportSpecific type=0
+gPTP$ DEBUG$ Discarding invalid message
+gPTP$ DEBUG$ *** Received message with unsupported transportSpecific type=0
+gPTP$ DEBUG$ Discarding invalid message
+gPTP$ DEBUG$ *** Received message with unsupported transportSpecific type=0
+gPTP$ DEBUG$ Discarding invalid message
+gPTP$ DEBUG$ *** Received message with unsupported transportSpecific type=0
+gPTP$ DEBUG$ Discarding invalid message
+gPTP$ DEBUG$ *** Received message with unsupported transportSpecific type=0
+gPTP$ DEBUG$ Discarding invalid message
+gPTP$ DEBUG$ *** Received message with unsupported transportSpecific type=0
+gPTP$ DEBUG$ Discarding invalid message
+gPTP$ DEBUG$ *** Received message with unsupported transportSpecific type=0
+gPTP$ DEBUG$ Discarding invalid message
+gPTP$ DEBUG$ *** Received message with unsupported transportSpecific type=0
+gPTP$ DEBUG$ Discarding invalid message
+gPTP$ DEBUG$ *** Received message with unsupported transportSpecific type=0
+gPTP$ DEBUG$ Discarding invalid message
+gPTP$ DEBUG$ SYNC receipt timeout
+gPTP$ DEBUG$ *** Received message with unsupported transportSpecific type=0
+gPTP$ DEBUG$ Discarding invalid message
+gPTP$ DEBUG$ *** Received message with unsupported transportSpecific type=0
+gPTP$ DEBUG$ Discarding invalid message
+gPTP$ DEBUG$ *** Received message with unsupported transportSpecific type=0
+gPTP$ DEBUG$ Discarding invalid message
+gPTP$ DEBUG$ *** Received message with unsupported transportSpecific type=0
+gPTP$ DEBUG$ Discarding invalid message
+gPTP$ DEBUG$ *** Received message with unsupported transportSpecific type=0
+gPTP$ DEBUG$ Discarding invalid message
+gPTP$ DEBUG$ *** Received message with unsupported transportSpecific type=0
+gPTP$ DEBUG$ Discarding invalid message
+gPTP$ DEBUG$ PDELAY_INTERVAL_TIMEOUT_EXPIRES occured
+gPTP$ DEBUG$ case PDELAY_INTERVAL_TIMEOUT_EXPIRES:
+gPTP$ DEBUG$ automotive_profile : YES
+gPTP$ DEBUG$ getPortState() == 9
+gPTP$ DEBUG$ TX PHY compensation: 0 0.000000184 sec
+gPTP$ DEBUG$ *** Sent PDelay Request message
+gPTP$ DEBUG$ Schedule PDELAY_RESP_RECEIPT_TIMEOUT_EXPIRES, PDelay interval 1, timeout 6000000000
+gPTP$ DEBUG$ *** Received message with unsupported transportSpecific type=0
+gPTP$ DEBUG$ Discarding invalid message
+gPTP$ DEBUG$ *** Received message with unsupported transportSpecific type=0
+gPTP$ DEBUG$ Discarding invalid message
+gPTP$ DEBUG$ *** Received message with unsupported transportSpecific type=0
+gPTP$ DEBUG$ Discarding invalid message
+gPTP$ DEBUG$ *** Received message with unsupported transportSpecific type=0
+gPTP$ DEBUG$ Discarding invalid message
+gPTP$ DEBUG$ *** Received message with unsupported transportSpecific type=0
+gPTP$ DEBUG$ Discarding invalid message
+gPTP$ DEBUG$ *** Received message with unsupported transportSpecific type=0
+gPTP$ DEBUG$ Discarding invalid message
+gPTP$ DEBUG$ SYNC receipt timeout
+gPTP$ DEBUG$ *** Received message with unsupported transportSpecific type=0
+gPTP$ DEBUG$ Discarding invalid message
+gPTP$ DEBUG$ *** Received message with unsupported transportSpecific type=0
+gPTP$ DEBUG$ Discarding invalid message
+gPTP$ DEBUG$ *** Received message with unsupported transportSpecific type=0
+gPTP$ DEBUG$ Discarding invalid message
+gPTP$ DEBUG$ *** Received message with unsupported transportSpecific type=0
+gPTP$ DEBUG$ Discarding invalid message
+gPTP$ DEBUG$ *** Received message with unsupported transportSpecific type=0
+gPTP$ DEBUG$ Discarding invalid message
+gPTP$ DEBUG$ *** Received message with unsupported transportSpecific type=0
+gPTP$ DEBUG$ Discarding invalid message
+gPTP$ DEBUG$ *** Received message with unsupported transportSpecific type=0
+gPTP$ DEBUG$ Discarding invalid message
+gPTP$ DEBUG$ *** Received message with unsupported transportSpecific type=0
+gPTP$ DEBUG$ Discarding invalid message
+gPTP$ DEBUG$ *** Received message with unsupported transportSpecific type=0
+gPTP$ DEBUG$ Discarding invalid message
+gPTP$ DEBUG$ *** Received message with unsupported transportSpecific type=0
+gPTP$ DEBUG$ Discarding invalid message
+gPTP$ DEBUG$ SYNC receipt timeout
+gPTP$ DEBUG$ SYNC receipt timeout
+gPTP$ DEBUG$ PDELAY_INTERVAL_TIMEOUT_EXPIRES occured
+gPTP$ DEBUG$ case PDELAY_INTERVAL_TIMEOUT_EXPIRES:
+gPTP$ DEBUG$ automotive_profile : YES
+gPTP$ DEBUG$ getPortState() == 9
+gPTP$ DEBUG$ TX PHY compensation: 0 0.000000184 sec
+gPTP$ DEBUG$ *** Sent PDelay Request message
+gPTP$ DEBUG$ Schedule PDELAY_RESP_RECEIPT_TIMEOUT_EXPIRES, PDelay interval 1, timeout 6000000000
+gPTP$ DEBUG$ SYNC receipt timeout
+gPTP$ DEBUG$ SYNC receipt timeout
+gPTP$ DEBUG$ PDELAY_INTERVAL_TIMEOUT_EXPIRES occured
+gPTP$ DEBUG$ case PDELAY_INTERVAL_TIMEOUT_EXPIRES:
+gPTP$ DEBUG$ automotive_profile : YES
+gPTP$ DEBUG$ getPortState() == 9
+gPTP$ DEBUG$ TX PHY compensation: 0 0.000000184 sec
+gPTP$ DEBUG$ *** Sent PDelay Request message
+gPTP$ DEBUG$ Schedule PDELAY_RESP_RECEIPT_TIMEOUT_EXPIRES, PDelay interval 1, timeout 6000000000
+gPTP$ DEBUG$ SYNC receipt timeout
+gPTP$ DEBUG$ SYNC receipt timeout
+gPTP$ DEBUG$ SYNC receipt timeout
+gPTP$ DEBUG$ PDELAY_INTERVAL_TIMEOUT_EXPIRES occured
+gPTP$ DEBUG$ case PDELAY_INTERVAL_TIMEOUT_EXPIRES:
+gPTP$ DEBUG$ automotive_profile : YES
+gPTP$ DEBUG$ getPortState() == 9
+gPTP$ DEBUG$ TX PHY compensation: 0 0.000000184 sec
+gPTP$ DEBUG$ *** Sent PDelay Request message
+gPTP$ DEBUG$ Schedule PDELAY_RESP_RECEIPT_TIMEOUT_EXPIRES, PDelay interval 1, timeout 6000000000
+gPTP$ DEBUG$ SYNC receipt timeout
+gPTP$ DEBUG$ SYNC receipt timeout
+gPTP$ DEBUG$ SYNC receipt timeout
+gPTP$ DEBUG$ PDELAY_INTERVAL_TIMEOUT_EXPIRES occured
+gPTP$ DEBUG$ case PDELAY_INTERVAL_TIMEOUT_EXPIRES:
+gPTP$ DEBUG$ automotive_profile : YES
+gPTP$ DEBUG$ getPortState() == 9
+gPTP$ DEBUG$ TX PHY compensation: 0 0.000000184 sec
+gPTP$ DEBUG$ *** Sent PDelay Request message
+gPTP$ DEBUG$ Schedule PDELAY_RESP_RECEIPT_TIMEOUT_EXPIRES, PDelay interval 1, timeout 6000000000
+gPTP$ DEBUG$ SYNC receipt timeout
+gPTP$ DEBUG$ SYNC receipt timeout
+gPTP$ DEBUG$ PDELAY_INTERVAL_TIMEOUT_EXPIRES occured
+gPTP$ DEBUG$ case PDELAY_INTERVAL_TIMEOUT_EXPIRES:
+gPTP$ DEBUG$ automotive_profile : YES
+gPTP$ DEBUG$ getPortState() == 9
+gPTP$ DEBUG$ TX PHY compensation: 0 0.000000184 sec
+gPTP$ DEBUG$ *** Sent PDelay Request message
+gPTP$ DEBUG$ Schedule PDELAY_RESP_RECEIPT_TIMEOUT_EXPIRES, PDelay interval 1, timeout 6000000000
+gPTP$ DEBUG$ SYNC receipt timeout
+gPTP$ DEBUG$ *** Received PDelay Response message, Timestamp 30 (sec) 131086167 (ns), seqID 17
+gPTP$ DEBUG$ RX PHY compensation: 0 0.000000382 sec
+gPTP$ DEBUG$ *** Received PDelay Response FollowUp message
+gPTP$ DEBUG$ >>> Received PDelay FUP has different seqID than the PDelay request (17/21)
+gPTP$ DEBUG$ *** Received PDelay Response message, Timestamp 30 (sec) 142040037 (ns), seqID 18
+gPTP$ DEBUG$ RX PHY compensation: 0 0.000000382 sec
+gPTP$ DEBUG$ *** Received PDelay Response FollowUp message
+gPTP$ DEBUG$ >>> Received PDelay followup but no REQUEST exists
+gPTP$ DEBUG$ *** Received PDelay Response message, Timestamp 30 (sec) 153622557 (ns), seqID 19
+gPTP$ DEBUG$ RX PHY compensation: 0 0.000000382 sec
+gPTP$ DEBUG$ *** Received PDelay Response FollowUp message
+gPTP$ DEBUG$ >>> Received PDelay followup but no REQUEST exists
+gPTP$ DEBUG$ *** Received PDelay Response message, Timestamp 30 (sec) 165212377 (ns), seqID 20
+gPTP$ DEBUG$ RX PHY compensation: 0 0.000000382 sec
+gPTP$ DEBUG$ *** Received PDelay Response FollowUp message
+gPTP$ DEBUG$ >>> Received PDelay followup but no REQUEST exists
+gPTP$ DEBUG$ *** Received PDelay Response message, Timestamp 30 (sec) 180765657 (ns), seqID 21
+gPTP$ DEBUG$ RX PHY compensation: 0 0.000000382 sec
+gPTP$ DEBUG$ *** Received PDelay Response FollowUp message
+gPTP$ DEBUG$ >>> Received PDelay followup but no REQUEST exists
+gPTP$ DEBUG$ SYNC receipt timeout
+gPTP$ DEBUG$ SYNC receipt timeout
+gPTP$ DEBUG$ PDELAY_INTERVAL_TIMEOUT_EXPIRES occured
+gPTP$ DEBUG$ case PDELAY_INTERVAL_TIMEOUT_EXPIRES:
+gPTP$ DEBUG$ automotive_profile : YES
+gPTP$ DEBUG$ getPortState() == 9
+gPTP$ DEBUG$ TX PHY compensation: 0 0.000000184 sec
+gPTP$ DEBUG$ *** Sent PDelay Request message
+gPTP$ DEBUG$ Schedule PDELAY_RESP_RECEIPT_TIMEOUT_EXPIRES, PDelay interval 1, timeout 6000000000
+gPTP$ DEBUG$ *** Received PDelay Response message, Timestamp 32 (sec) 55708657 (ns), seqID 22
+gPTP$ DEBUG$ RX PHY compensation: 0 0.000000382 sec
+gPTP$ DEBUG$ *** Received PDelay Response FollowUp message
+gPTP$ DEBUG$ Link delay: 329037 ns
+gPTP$ DEBUG$ SYNC receipt timeout
+gPTP$ DEBUG$ SYNC receipt timeout
+gPTP$ DEBUG$ SYNC receipt timeout
+gPTP$ DEBUG$ PDELAY_INTERVAL_TIMEOUT_EXPIRES occured
+gPTP$ DEBUG$ case PDELAY_INTERVAL_TIMEOUT_EXPIRES:
+gPTP$ DEBUG$ automotive_profile : YES
+gPTP$ DEBUG$ getPortState() == 9
+gPTP$ DEBUG$ TX PHY compensation: 0 0.000000184 sec
+gPTP$ DEBUG$ *** Sent PDelay Request message
+gPTP$ DEBUG$ Schedule PDELAY_RESP_RECEIPT_TIMEOUT_EXPIRES, PDelay interval 1, timeout 6000000000
+gPTP$ DEBUG$ *** Received PDelay Response message, Timestamp 34 (sec) 60210257 (ns), seqID 23
+gPTP$ DEBUG$ RX PHY compensation: 0 0.000000382 sec
+gPTP$ DEBUG$ *** Received PDelay Response FollowUp message
+gPTP$ DEBUG$ Link delay: 342369 ns
+gPTP$ DEBUG$ SYNC receipt timeout
+gPTP$ DEBUG$ SYNC receipt timeout
+gPTP$ DEBUG$ PDELAY_INTERVAL_TIMEOUT_EXPIRES occured
+gPTP$ DEBUG$ case PDELAY_INTERVAL_TIMEOUT_EXPIRES:
+gPTP$ DEBUG$ automotive_profile : YES
+gPTP$ DEBUG$ getPortState() == 9
+gPTP$ DEBUG$ TX PHY compensation: 0 0.000000184 sec
+gPTP$ DEBUG$ *** Sent PDelay Request message
+gPTP$ DEBUG$ Schedule PDELAY_RESP_RECEIPT_TIMEOUT_EXPIRES, PDelay interval 1, timeout 6000000000
+gPTP$ DEBUG$ *** Received PDelay Response message, Timestamp 36 (sec) 62037857 (ns), seqID 24
+gPTP$ DEBUG$ RX PHY compensation: 0 0.000000382 sec
+gPTP$ DEBUG$ *** Received PDelay Response FollowUp message
+gPTP$ DEBUG$ Link delay: 334162 ns
+gPTP$ DEBUG$ SYNC receipt timeout
+gPTP$ DEBUG$ SYNC receipt timeout
+gPTP$ DEBUG$ SYNC receipt timeout
+gPTP$ DEBUG$ PDELAY_INTERVAL_TIMEOUT_EXPIRES occured
+gPTP$ DEBUG$ case PDELAY_INTERVAL_TIMEOUT_EXPIRES:
+gPTP$ DEBUG$ automotive_profile : YES
+gPTP$ DEBUG$ getPortState() == 9
+gPTP$ DEBUG$ TX PHY compensation: 0 0.000000184 sec
+gPTP$ DEBUG$ *** Sent PDelay Request message
+gPTP$ DEBUG$ Schedule PDELAY_RESP_RECEIPT_TIMEOUT_EXPIRES, PDelay interval 1, timeout 6000000000
+gPTP$ DEBUG$ *** Received PDelay Response message, Timestamp 38 (sec) 66977147 (ns), seqID 25
+gPTP$ DEBUG$ RX PHY compensation: 0 0.000000382 sec
+gPTP$ DEBUG$ *** Received PDelay Response FollowUp message
+gPTP$ DEBUG$ Link delay: 374886 ns
+gPTP$ DEBUG$ SYNC receipt timeout
+gPTP$ DEBUG$ SYNC receipt timeout
+gPTP$ DEBUG$ SYNC receipt timeout
+gPTP$ DEBUG$ PDELAY_INTERVAL_TIMEOUT_EXPIRES occured
+gPTP$ DEBUG$ case PDELAY_INTERVAL_TIMEOUT_EXPIRES:
+gPTP$ DEBUG$ automotive_profile : YES
+gPTP$ DEBUG$ getPortState() == 9
+gPTP$ DEBUG$ TX PHY compensation: 0 0.000000184 sec
+gPTP$ DEBUG$ *** Sent PDelay Request message
+gPTP$ DEBUG$ Schedule PDELAY_RESP_RECEIPT_TIMEOUT_EXPIRES, PDelay interval 1, timeout 6000000000
+gPTP$ DEBUG$ *** Received PDelay Response message, Timestamp 40 (sec) 69813577 (ns), seqID 26
+gPTP$ DEBUG$ RX PHY compensation: 0 0.000000382 sec
+gPTP$ DEBUG$ *** Received PDelay Response FollowUp message
+gPTP$ DEBUG$ Link delay: 369029 ns
+gPTP$ DEBUG$ *** Received Sync message
+gPTP$ DEBUG$ RX PHY compensation: 0 0.000000382 sec
+gPTP$ DEBUG$ *** Received Follow Up message
+gPTP$ DEBUG$ Processing a follow-up message
+gPTP$ DEBUG$ Calculated master to local clock rate difference
+gPTP$ DEBUG$ Calculated local to system clock rate difference
+gPTP$ DEBUG$ phase_error = -5071285.000000, ppm = -6058.311523
+gPTP$ DEBUG$ *** Received Sync message
+gPTP$ DEBUG$ RX PHY compensation: 0 0.000000382 sec
+gPTP$ DEBUG$ *** Received Follow Up message
+gPTP$ DEBUG$ Processing a follow-up message
+gPTP$ DEBUG$ Calculated master to local clock rate difference
+gPTP$ DEBUG$ Calculated local to system clock rate difference
+gPTP$ DEBUG$ phase_error = -5022323.000000, ppm = -5886.591309
+gPTP$ DEBUG$ *** Received Sync message
+gPTP$ DEBUG$ RX PHY compensation: 0 0.000000382 sec
+gPTP$ DEBUG$ *** Received Follow Up message
+gPTP$ DEBUG$ Processing a follow-up message
+gPTP$ DEBUG$ Calculated master to local clock rate difference
+gPTP$ DEBUG$ Calculated local to system clock rate difference
+gPTP$ DEBUG$ phase_error = -4893090.000000, ppm = -5091.657227
+gPTP$ DEBUG$ *** Received Sync message
+gPTP$ DEBUG$ RX PHY compensation: 0 0.000000382 sec
+gPTP$ DEBUG$ *** Received Follow Up message
+gPTP$ DEBUG$ Processing a follow-up message
+gPTP$ DEBUG$ Calculated master to local clock rate difference
+gPTP$ DEBUG$ Calculated local to system clock rate difference
+gPTP$ DEBUG$ phase_error = -4943875.000000, ppm = -6586.969727
+gPTP$ DEBUG$ *** Received Sync message
+gPTP$ DEBUG$ RX PHY compensation: 0 0.000000382 sec
+gPTP$ DEBUG$ *** Received Follow Up message
+gPTP$ DEBUG$ Processing a follow-up message
+gPTP$ DEBUG$ Calculated master to local clock rate difference
+gPTP$ DEBUG$ Calculated local to system clock rate difference
+gPTP$ DEBUG$ phase_error = -4856239.000000, ppm = -5378.843262
+gPTP$ DEBUG$ *** Received Sync message
+gPTP$ DEBUG$ RX PHY compensation: 0 0.000000382 sec
+gPTP$ DEBUG$ *** Received Follow Up message
+gPTP$ DEBUG$ Processing a follow-up message
+gPTP$ DEBUG$ Calculated master to local clock rate difference
+gPTP$ DEBUG$ Calculated local to system clock rate difference
+gPTP$ DEBUG$ phase_error = -4794133.000000, ppm = -5508.133789
+gPTP$ DEBUG$ *** Received Sync message
+gPTP$ DEBUG$ RX PHY compensation: 0 0.000000382 sec
+gPTP$ DEBUG$ *** Received Follow Up message
+gPTP$ DEBUG$ Processing a follow-up message
+gPTP$ DEBUG$ Calculated master to local clock rate difference
+gPTP$ DEBUG$ Calculated local to system clock rate difference
+gPTP$ DEBUG$ phase_error = -4817397.000000, ppm = -6216.018555
+gPTP$ DEBUG$ *** Received Sync message
+gPTP$ DEBUG$ RX PHY compensation: 0 0.000000382 sec
+gPTP$ DEBUG$ *** Received Follow Up message
+gPTP$ DEBUG$ Processing a follow-up message
+gPTP$ DEBUG$ Calculated master to local clock rate difference
+gPTP$ DEBUG$ Calculated local to system clock rate difference
+gPTP$ DEBUG$ phase_error = -4789196.000000, ppm = -5772.429199
+gPTP$ DEBUG$ *** Received Sync message
+gPTP$ DEBUG$ RX PHY compensation: 0 0.000000382 sec
+gPTP$ DEBUG$ *** Received Follow Up message
+gPTP$ DEBUG$ Processing a follow-up message
+gPTP$ DEBUG$ Calculated master to local clock rate difference
+gPTP$ DEBUG$ Calculated local to system clock rate difference
+gPTP$ DEBUG$ phase_error = -4693316.000000, ppm = -5117.859863
+gPTP$ DEBUG$ *** Received Sync message
+gPTP$ DEBUG$ RX PHY compensation: 0 0.000000382 sec
+gPTP$ DEBUG$ *** Received Follow Up message
+gPTP$ DEBUG$ Processing a follow-up message
+gPTP$ DEBUG$ Calculated master to local clock rate difference
+gPTP$ DEBUG$ Calculated local to system clock rate difference
+gPTP$ DEBUG$ phase_error = -4806748.000000, ppm = -6920.877441
+gPTP$ DEBUG$ *** Received Sync message
+gPTP$ DEBUG$ RX PHY compensation: 0 0.000000382 sec
+gPTP$ DEBUG$ *** Received Follow Up message
+gPTP$ DEBUG$ Processing a follow-up message
+gPTP$ DEBUG$ Calculated master to local clock rate difference
+gPTP$ DEBUG$ Calculated local to system clock rate difference
+gPTP$ DEBUG$ phase_error = -4700753.000000, ppm = -5046.112305
+gPTP$ DEBUG$ *** Received Sync message
+gPTP$ DEBUG$ RX PHY compensation: 0 0.000000382 sec
+gPTP$ DEBUG$ *** Received Follow Up message
+gPTP$ DEBUG$ Processing a follow-up message
+gPTP$ DEBUG$ Calculated master to local clock rate difference
+gPTP$ DEBUG$ Calculated local to system clock rate difference
+gPTP$ DEBUG$ phase_error = -4594010.000000, ppm = -4920.387695
+gPTP$ DEBUG$ *** Received Sync message
+gPTP$ DEBUG$ RX PHY compensation: 0 0.000000382 sec
+gPTP$ DEBUG$ *** Received Follow Up message
+gPTP$ DEBUG$ Processing a follow-up message
+gPTP$ DEBUG$ Calculated master to local clock rate difference
+gPTP$ DEBUG$ Calculated local to system clock rate difference
+gPTP$ DEBUG$ phase_error = -4558049.000000, ppm = -5433.103027
+gPTP$ DEBUG$ *** Received Sync message
+gPTP$ DEBUG$ RX PHY compensation: 0 0.000000382 sec
+gPTP$ DEBUG$ *** Received Follow Up message
+gPTP$ DEBUG$ Processing a follow-up message
+gPTP$ DEBUG$ Calculated master to local clock rate difference
+gPTP$ DEBUG$ Calculated local to system clock rate difference
+gPTP$ DEBUG$ phase_error = -4616739.000000, ppm = -6257.409180
+gPTP$ DEBUG$ *** Received Sync message
+gPTP$ DEBUG$ RX PHY compensation: 0 0.000000382 sec
+gPTP$ DEBUG$ *** Received Follow Up message
+gPTP$ DEBUG$ Processing a follow-up message
+gPTP$ DEBUG$ Calculated master to local clock rate difference
+gPTP$ DEBUG$ Calculated local to system clock rate difference
+gPTP$ DEBUG$ phase_error = -4507932.000000, ppm = -4791.977051
+gPTP$ DEBUG$ PDELAY_INTERVAL_TIMEOUT_EXPIRES occured
+gPTP$ DEBUG$ case PDELAY_INTERVAL_TIMEOUT_EXPIRES:
+gPTP$ DEBUG$ automotive_profile : YES
+gPTP$ DEBUG$ getPortState() == 9
+gPTP$ DEBUG$ TX PHY compensation: 0 0.000000184 sec
+gPTP$ DEBUG$ *** Sent PDelay Request message
+gPTP$ DEBUG$ Schedule PDELAY_RESP_RECEIPT_TIMEOUT_EXPIRES, PDelay interval 1, timeout 6000000000
+gPTP$ DEBUG$ *** Received Sync message
+gPTP$ DEBUG$ RX PHY compensation: 0 0.000000382 sec
+gPTP$ DEBUG$ *** Received Follow Up message
+gPTP$ DEBUG$ Processing a follow-up message
+gPTP$ DEBUG$ Calculated master to local clock rate difference
+gPTP$ DEBUG$ Calculated local to system clock rate difference
+gPTP$ DEBUG$ phase_error = -4429702.000000, ppm = -4942.362305
+gPTP$ DEBUG$ *** Received Sync message
+gPTP$ DEBUG$ RX PHY compensation: 0 0.000000382 sec
+gPTP$ DEBUG$ *** Received Follow Up message
+gPTP$ DEBUG$ Processing a follow-up message
+gPTP$ DEBUG$ Calculated master to local clock rate difference
+gPTP$ DEBUG$ Calculated local to system clock rate difference
+gPTP$ DEBUG$ phase_error = -4533731.000000, ppm = -6518.689941
+gPTP$ DEBUG$ *** Received Sync message
+gPTP$ DEBUG$ RX PHY compensation: 0 0.000000382 sec
+gPTP$ DEBUG$ *** Received Follow Up message
+gPTP$ DEBUG$ Processing a follow-up message
+gPTP$ DEBUG$ Calculated master to local clock rate difference
+gPTP$ DEBUG$ Calculated local to system clock rate difference
+gPTP$ DEBUG$ phase_error = -4492405.000000, ppm = -5311.620605
+gPTP$ DEBUG$ *** Received Sync message
+gPTP$ DEBUG$ RX PHY compensation: 0 0.000000382 sec
+gPTP$ DEBUG$ *** Received Follow Up message
+gPTP$ DEBUG$ Processing a follow-up message
+gPTP$ DEBUG$ Calculated master to local clock rate difference
+gPTP$ DEBUG$ Calculated local to system clock rate difference
+gPTP$ DEBUG$ phase_error = -4476192.000000, ppm = -5492.243652
+gPTP$ DEBUG$ *** Received Sync message
+gPTP$ DEBUG$ RX PHY compensation: 0 0.000000382 sec
+gPTP$ DEBUG$ *** Received Follow Up message
+gPTP$ DEBUG$ Processing a follow-up message
+gPTP$ DEBUG$ Calculated master to local clock rate difference
+gPTP$ DEBUG$ Calculated local to system clock rate difference
+gPTP$ DEBUG$ phase_error = -4309190.000000, ppm = -4089.683105
+gPTP$ DEBUG$ *** Received Sync message
+gPTP$ DEBUG$ RX PHY compensation: 0 0.000000382 sec
+gPTP$ DEBUG$ *** Received Follow Up message
+gPTP$ DEBUG$ Processing a follow-up message
+gPTP$ DEBUG$ Calculated master to local clock rate difference
+gPTP$ DEBUG$ Calculated local to system clock rate difference
+gPTP$ DEBUG$ phase_error = -4404751.000000, ppm = -6296.459473
+gPTP$ DEBUG$ *** Received Sync message
+gPTP$ DEBUG$ RX PHY compensation: 0 0.000000382 sec
+gPTP$ DEBUG$ *** Received Follow Up message
+gPTP$ DEBUG$ Processing a follow-up message
+gPTP$ DEBUG$ Calculated master to local clock rate difference
+gPTP$ DEBUG$ Calculated local to system clock rate difference
+gPTP$ DEBUG$ phase_error = -4309863.000000, ppm = -4665.614258
+gPTP$ DEBUG$ *** Received Sync message
+gPTP$ DEBUG$ RX PHY compensation: 0 0.000000382 sec
+gPTP$ DEBUG$ *** Received Follow Up message
+gPTP$ DEBUG$ Processing a follow-up message
+gPTP$ DEBUG$ Calculated master to local clock rate difference
+gPTP$ DEBUG$ Calculated local to system clock rate difference
+gPTP$ DEBUG$ phase_error = -4129683.000000, ppm = -3771.183594
+gPTP$ DEBUG$ *** Received Sync message
+gPTP$ DEBUG$ RX PHY compensation: 0 0.000000382 sec
+gPTP$ DEBUG$ *** Received Follow Up message
+gPTP$ DEBUG$ Processing a follow-up message
+gPTP$ DEBUG$ Calculated master to local clock rate difference
+gPTP$ DEBUG$ Calculated local to system clock rate difference
+gPTP$ DEBUG$ phase_error = -4250714.000000, ppm = -6314.113281
+gPTP$ DEBUG$ *** Received Sync message
+gPTP$ DEBUG$ RX PHY compensation: 0 0.000000382 sec
+gPTP$ DEBUG$ *** Received Follow Up message
+gPTP$ DEBUG$ Processing a follow-up message
+gPTP$ DEBUG$ Calculated master to local clock rate difference
+gPTP$ DEBUG$ Calculated local to system clock rate difference
+gPTP$ DEBUG$ phase_error = -4176612.000000, ppm = -4671.283203
+gPTP$ DEBUG$ *** Received Sync message
+gPTP$ DEBUG$ RX PHY compensation: 0 0.000000382 sec
+gPTP$ DEBUG$ *** Received Follow Up message
+gPTP$ DEBUG$ Processing a follow-up message
+gPTP$ DEBUG$ Calculated master to local clock rate difference
+gPTP$ DEBUG$ Calculated local to system clock rate difference
+gPTP$ DEBUG$ phase_error = -4207726.000000, ppm = -5547.152344
+gPTP$ DEBUG$ *** Received Sync message
+gPTP$ DEBUG$ RX PHY compensation: 0 0.000000382 sec
+gPTP$ DEBUG$ *** Received Follow Up message
+gPTP$ DEBUG$ Processing a follow-up message
+gPTP$ DEBUG$ Calculated master to local clock rate difference
+gPTP$ DEBUG$ Calculated local to system clock rate difference
+gPTP$ DEBUG$ phase_error = -2069616.000000, ppm = 14323.598633
+gPTP$ DEBUG$ *** Received Sync message
+gPTP$ DEBUG$ RX PHY compensation: 0 0.000000382 sec
+gPTP$ DEBUG$ *** Received Follow Up message
+gPTP$ DEBUG$ Processing a follow-up message
+gPTP$ DEBUG$ Calculated master to local clock rate difference
+gPTP$ DEBUG$ Calculated local to system clock rate difference
+gPTP$ DEBUG$ phase_error = -4105844.000000, ppm = -20636.601562
+gPTP$ DEBUG$ *** Received Sync message
+gPTP$ DEBUG$ RX PHY compensation: 0 0.000000382 sec
+gPTP$ DEBUG$ *** Received Follow Up message
+gPTP$ DEBUG$ Processing a follow-up message
+gPTP$ DEBUG$ Calculated master to local clock rate difference
+gPTP$ DEBUG$ Calculated local to system clock rate difference
+gPTP$ DEBUG$ phase_error = -4181124.000000, ppm = -5866.674316
+gPTP$ DEBUG$ *** Received Sync message
+gPTP$ DEBUG$ RX PHY compensation: 0 0.000000382 sec
+gPTP$ DEBUG$ *** Received Follow Up message
+gPTP$ DEBUG$ Processing a follow-up message
+gPTP$ DEBUG$ Calculated master to local clock rate difference
+gPTP$ DEBUG$ Calculated local to system clock rate difference
+gPTP$ DEBUG$ phase_error = -4022539.000000, ppm = -3811.641113
+gPTP$ DEBUG$ *** Received Sync message
+gPTP$ DEBUG$ RX PHY compensation: 0 0.000000382 sec
+gPTP$ DEBUG$ *** Received Follow Up message
+gPTP$ DEBUG$ Processing a follow-up message
+gPTP$ DEBUG$ Calculated master to local clock rate difference
+gPTP$ DEBUG$ Calculated local to system clock rate difference
+gPTP$ DEBUG$ phase_error = -4074655.000000, ppm = -5554.600098
+gPTP$ DEBUG$ PDELAY_INTERVAL_TIMEOUT_EXPIRES occured
+gPTP$ DEBUG$ case PDELAY_INTERVAL_TIMEOUT_EXPIRES:
+gPTP$ DEBUG$ automotive_profile : YES
+gPTP$ DEBUG$ getPortState() == 9
+gPTP$ DEBUG$ TX PHY compensation: 0 0.000000184 sec
+gPTP$ DEBUG$ *** Sent PDelay Request message
+gPTP$ DEBUG$ Schedule PDELAY_RESP_RECEIPT_TIMEOUT_EXPIRES, PDelay interval 1, timeout 6000000000
+gPTP$ DEBUG$ *** Received message with unsupported transportSpecific type=2
+gPTP$ DEBUG$ Discarding invalid message
+gPTP$ DEBUG$ *** Received message with unsupported transportSpecific type=2
+gPTP$ DEBUG$ Discarding invalid message
+gPTP$ DEBUG$ *** Received message with unsupported transportSpecific type=2
+gPTP$ DEBUG$ Discarding invalid message
+gPTP$ DEBUG$ *** Received message with unsupported transportSpecific type=2
+gPTP$ DEBUG$ Discarding invalid message
+gPTP$ DEBUG$ *** Received message with unsupported transportSpecific type=2
+gPTP$ DEBUG$ Discarding invalid message
+gPTP$ DEBUG$ *** Received message with unsupported transportSpecific type=2
+gPTP$ DEBUG$ Discarding invalid message
+gPTP$ DEBUG$ *** Received message with unsupported transportSpecific type=2
+gPTP$ DEBUG$ Discarding invalid message
+gPTP$ DEBUG$ *** Received message with unsupported transportSpecific type=2
+gPTP$ DEBUG$ Discarding invalid message
+gPTP$ DEBUG$ *** Received message with unsupported transportSpecific type=2
+gPTP$ DEBUG$ Discarding invalid message
+gPTP$ DEBUG$ *** Received message with unsupported transportSpecific type=2
+gPTP$ DEBUG$ Discarding invalid message
+gPTP$ DEBUG$ SYNC receipt timeout
+gPTP$ DEBUG$ *** Received message with unsupported transportSpecific type=2
+gPTP$ DEBUG$ Discarding invalid message
+gPTP$ DEBUG$ *** Received message with unsupported transportSpecific type=2
+gPTP$ DEBUG$ Discarding invalid message
+gPTP$ DEBUG$ *** Received message with unsupported transportSpecific type=2
+gPTP$ DEBUG$ Discarding invalid message
+gPTP$ DEBUG$ *** Received message with unsupported transportSpecific type=2
+gPTP$ DEBUG$ Discarding invalid message
+gPTP$ DEBUG$ *** Received message with unsupported transportSpecific type=2
+gPTP$ DEBUG$ Discarding invalid message
+gPTP$ DEBUG$ *** Received message with unsupported transportSpecific type=2
+gPTP$ DEBUG$ Discarding invalid message
+gPTP$ DEBUG$ *** Received message with unsupported transportSpecific type=2
+gPTP$ DEBUG$ Discarding invalid message
+gPTP$ DEBUG$ *** Received message with unsupported transportSpecific type=2
+gPTP$ DEBUG$ Discarding invalid message
+gPTP$ DEBUG$ *** Received message with unsupported transportSpecific type=2
+gPTP$ DEBUG$ Discarding invalid message
+gPTP$ DEBUG$ *** Received message with unsupported transportSpecific type=2
+gPTP$ DEBUG$ Discarding invalid message
+gPTP$ DEBUG$ *** Received message with unsupported transportSpecific type=2
+gPTP$ DEBUG$ Discarding invalid message
+gPTP$ DEBUG$ *** Received message with unsupported transportSpecific type=2
+gPTP$ DEBUG$ Discarding invalid message
+gPTP$ DEBUG$ SYNC receipt timeout
+gPTP$ DEBUG$ *** Received message with unsupported transportSpecific type=2
+gPTP$ DEBUG$ Discarding invalid message
+gPTP$ DEBUG$ *** Received message with unsupported transportSpecific type=2
+gPTP$ DEBUG$ Discarding invalid message
+gPTP$ DEBUG$ *** Received message with unsupported transportSpecific type=2
+gPTP$ DEBUG$ Discarding invalid message
+gPTP$ DEBUG$ *** Received message with unsupported transportSpecific type=2
+gPTP$ DEBUG$ Discarding invalid message
+gPTP$ DEBUG$ *** Received message with unsupported transportSpecific type=2
+gPTP$ DEBUG$ Discarding invalid message
+gPTP$ DEBUG$ *** Received message with unsupported transportSpecific type=2
+gPTP$ DEBUG$ Discarding invalid message
+gPTP$ DEBUG$ *** Received message with unsupported transportSpecific type=2
+gPTP$ DEBUG$ Discarding invalid message
+gPTP$ DEBUG$ *** Received message with unsupported transportSpecific type=2
+gPTP$ DEBUG$ Discarding invalid message
+gPTP$ DEBUG$ PDELAY_INTERVAL_TIMEOUT_EXPIRES occured
+gPTP$ DEBUG$ case PDELAY_INTERVAL_TIMEOUT_EXPIRES:
+gPTP$ DEBUG$ automotive_profile : YES
+gPTP$ DEBUG$ getPortState() == 9
+gPTP$ DEBUG$ TX PHY compensation: 0 0.000000184 sec
+gPTP$ DEBUG$ *** Sent PDelay Request message
+gPTP$ DEBUG$ Schedule PDELAY_RESP_RECEIPT_TIMEOUT_EXPIRES, PDelay interval 1, timeout 6000000000
+gPTP$ DEBUG$ *** Received message with unsupported transportSpecific type=2
+gPTP$ DEBUG$ Discarding invalid message
+gPTP$ DEBUG$ *** Received message with unsupported transportSpecific type=2
+gPTP$ DEBUG$ Discarding invalid message
+gPTP$ DEBUG$ SYNC receipt timeout
+gPTP$ DEBUG$ *** Received message with unsupported transportSpecific type=2
+gPTP$ DEBUG$ Discarding invalid message
+gPTP$ DEBUG$ *** Received message with unsupported transportSpecific type=2
+gPTP$ DEBUG$ Discarding invalid message
+gPTP$ DEBUG$ *** Received message with unsupported transportSpecific type=2
+gPTP$ DEBUG$ Discarding invalid message
+gPTP$ DEBUG$ *** Received message with unsupported transportSpecific type=2
+gPTP$ DEBUG$ Discarding invalid message
+gPTP$ DEBUG$ *** Received message with unsupported transportSpecific type=2
+gPTP$ DEBUG$ Discarding invalid message
+gPTP$ DEBUG$ *** Received message with unsupported transportSpecific type=2
+gPTP$ DEBUG$ Discarding invalid message
+gPTP$ DEBUG$ *** Received message with unsupported transportSpecific type=2
+gPTP$ DEBUG$ Discarding invalid message
+gPTP$ DEBUG$ *** Received message with unsupported transportSpecific type=2
+gPTP$ DEBUG$ Discarding invalid message
+gPTP$ DEBUG$ *** Received message with unsupported transportSpecific type=2
+gPTP$ DEBUG$ Discarding invalid message
+gPTP$ DEBUG$ *** Received message with unsupported transportSpecific type=2
+gPTP$ DEBUG$ Discarding invalid message
+gPTP$ DEBUG$ *** Received message with unsupported transportSpecific type=2
+gPTP$ DEBUG$ Discarding invalid message
+gPTP$ DEBUG$ *** Received message with unsupported transportSpecific type=2
+gPTP$ DEBUG$ Discarding invalid message
+gPTP$ DEBUG$ SYNC receipt timeout
+gPTP$ DEBUG$ *** Received message with unsupported transportSpecific type=2
+gPTP$ DEBUG$ Discarding invalid message
+gPTP$ DEBUG$ *** Received message with unsupported transportSpecific type=2
+gPTP$ DEBUG$ Discarding invalid message
+gPTP$ DEBUG$ *** Received message with unsupported transportSpecific type=2
+gPTP$ DEBUG$ Discarding invalid message
+gPTP$ DEBUG$ *** Received message with unsupported transportSpecific type=2
+gPTP$ DEBUG$ Discarding invalid message
+gPTP$ DEBUG$ *** Received message with unsupported transportSpecific type=2
+gPTP$ DEBUG$ Discarding invalid message
+gPTP$ DEBUG$ *** Received message with unsupported transportSpecific type=2
+gPTP$ DEBUG$ Discarding invalid message
+gPTP$ DEBUG$ *** Received message with unsupported transportSpecific type=2
+gPTP$ DEBUG$ Discarding invalid message
+gPTP$ DEBUG$ *** Received message with unsupported transportSpecific type=2
+gPTP$ DEBUG$ Discarding invalid message
+gPTP$ DEBUG$ *** Received message with unsupported transportSpecific type=2
+gPTP$ DEBUG$ Discarding invalid message
+gPTP$ DEBUG$ *** Received message with unsupported transportSpecific type=2
+gPTP$ DEBUG$ Discarding invalid message
+gPTP$ DEBUG$ *** Received message with unsupported transportSpecific type=2
+gPTP$ DEBUG$ Discarding invalid message
+gPTP$ DEBUG$ *** Received message with unsupported transportSpecific type=2
+gPTP$ DEBUG$ Discarding invalid message
+gPTP$ DEBUG$ SYNC receipt timeout
+gPTP$ DEBUG$ *** Received message with unsupported transportSpecific type=2
+gPTP$ DEBUG$ Discarding invalid message
+gPTP$ DEBUG$ *** Received message with unsupported transportSpecific type=2
+gPTP$ DEBUG$ Discarding invalid message
+gPTP$ DEBUG$ *** Received message with unsupported transportSpecific type=2
+gPTP$ DEBUG$ Discarding invalid message
+gPTP$ DEBUG$ *** Received message with unsupported transportSpecific type=2
+gPTP$ DEBUG$ Discarding invalid message
+gPTP$ DEBUG$ *** Received message with unsupported transportSpecific type=2
+gPTP$ DEBUG$ Discarding invalid message
+gPTP$ DEBUG$ *** Received message with unsupported transportSpecific type=2
+gPTP$ DEBUG$ Discarding invalid message
+gPTP$ DEBUG$ PDELAY_INTERVAL_TIMEOUT_EXPIRES occured
+gPTP$ DEBUG$ case PDELAY_INTERVAL_TIMEOUT_EXPIRES:
+gPTP$ DEBUG$ automotive_profile : YES
+gPTP$ DEBUG$ getPortState() == 9
+gPTP$ DEBUG$ TX PHY compensation: 0 0.000000184 sec
+gPTP$ DEBUG$ *** Sent PDelay Request message
+gPTP$ DEBUG$ Schedule PDELAY_RESP_RECEIPT_TIMEOUT_EXPIRES, PDelay interval 1, timeout 6000000000
+gPTP$ DEBUG$ SYNC receipt timeout
+gPTP$ DEBUG$ SYNC receipt timeout
+gPTP$ DEBUG$ SYNC receipt timeout
+gPTP$ DEBUG$ PDELAY_INTERVAL_TIMEOUT_EXPIRES occured
+gPTP$ DEBUG$ case PDELAY_INTERVAL_TIMEOUT_EXPIRES:
+gPTP$ DEBUG$ automotive_profile : YES
+gPTP$ DEBUG$ getPortState() == 9
+gPTP$ DEBUG$ TX PHY compensation: 0 0.000000184 sec
+gPTP$ DEBUG$ *** Sent PDelay Request message
+gPTP$ DEBUG$ 

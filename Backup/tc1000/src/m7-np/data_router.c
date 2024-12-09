@@ -52,7 +52,9 @@
 #include "route_cfg.h"
 #include "ip_control.h"
 #include "lpa_std.h"
-// #include "ipc.h" // 241106 sy.kim
+// 241202 sy.kim
+#include "katech_database.h" 
+#include "katech_can_app.h"
 
 /**************************************************************************************************
  *                                            DEFINITIONS
@@ -63,7 +65,7 @@
 // 241106 sy.kim
 #define TCC_IPC_CMD_AP_TEST                 (0xffu)		//cmd1
 #define TCC_IPC_CMD_AP_SEND					(0x0fffu)   //cmd2
-#define IPC_A65_TEST 1
+#define IPC_A65_TEST						(1)
 
 /**************************************************************************************************
  *                                          global VARIABLES
@@ -160,6 +162,10 @@ const tsncTbl_t tsnc_cfg[TSNC_NUM] = {
 };
 #endif
 
+// 241107 sy.kim
+static uint8 mcu_to_ap_flag = 0;
+static uint16 AP_rxcanId = 0;
+static uint8 add = 0U;
 
 /**************************************************************************************************
  *                                        FUNCTION PROTOTYPES
@@ -177,6 +183,53 @@ static int32a lengthValidCheck(LPA_FRAME_TYPE type, uint8 data_len);
 
 // 241106 sy.kim
 static void NP_IpcCbFunc_A65_Test(uint16 uhwCmd, uint8 *pucData, uint16 uhwLength);
+/************************************** 241202 sy.kim IONIQ5 RX ************************************/
+/* CAN0(C-CAN) RX 
+	0x4A, 0x65, 0xa0, 0x125, 0x130, 0x175, 0x1AA, 0x255, 0x1e5
+*/
+void RxCAN0_YRS_01_10ms(uint8_t *YRS_RxData);
+void RxCAN0_IEB_01_10ms(uint8_t *BrkPedal_RxData);
+void RxCAN0_WHL_01_10ms(uint8_t *WHL_RxData);
+void RxCAN0_SAS_01_10ms(uint8_t *SAS_RxData);
+void RxCAN0_Unknown_0x130(uint8_t *Unknown_RxData);
+void RxCAN0_ESC_03_20ms(uint8_t *ESC03_RxData);
+void RxCAN0_CLU_01_20ms(uint8_t *CLU_RxData);
+void RxCAN0_CLU_02_100ms(uint8_t *CLU2_RxData);
+void RxCAN0_RR_C_RDR_01_50ms(uint8_t *RR_C_RDR_01_50ms);
+
+/* CAN1(E-CAN) RX
+	0x35, 0xa0, 0x175, 0x1AA, 0x1B5, 0x1BA, 0x1cf, 0x3c1
+*/
+void RxCAN1_Unknown_0x35(uint8_t *Unknown_0x35);
+void RxCAN1_WHL_01_10ms(uint8_t *WHL_01_10ms);
+void RxCAN1_ESC_03_20ms(uint8_t *ESC_03_20ms);
+void RxCAN1_CLU_01_20ms(uint8_t *CLU_01_20ms);
+void RxCAN1_CLU_01_20ms2(uint8_t *LaneInfoRxData);
+void RxCAN1_RR_C_RDR_02_50ms(uint8_t *RR_C_RDR_02_50ms);
+void RxCAN1_SWRC_03_20ms(uint8_t *SWRC_03_20ms);
+void RxCAN1_MFSW_01_200ms(uint8_t *MFSW_01_200ms);
+
+/* CAN2(MDPS) RX
+	0xEA, 0x377, 0x378, 0x379
+*/
+void RxCAN2_MDPS_01_10ms(uint8_t *MDPS_RxData);
+void RxCAN2_Unknown_0x377(uint8_t *CMD_RxData);
+void RxCAN2_Unknown_0x378(uint8_t *CMD_RxData);
+void RxCAN2_Unknown_0x379(uint8_t *CMD_RxData);
+
+/* CAN3(DRV) RX
+	0x1EA, 0x1A0, 
+*/
+void RxCAN3_ADAS_CMD_20_20ms(uint8_t *data)
+void RxCAN3_ADAS_CMD_32_50ms(uint8_t *ADAS_CMD_20_20ms_Temp);
+void RxCAN3_ADAS_CMD_10_20ms(uint8_t *ADAS_CMD_10_20ms);
+void RxCAN0_ADAS_PRK_20_20ms(uint8_t *ADAS_PRK_20_20ms);
+/************************************** 241202 sy.kim IONIQ5 TX ************************************/
+
+
+
+
+
 
 #if (IPC_EN == 1u)
 #if (SIC_BSP_SUPPORT_IPC_DATA_SEND == 1u)
@@ -201,6 +254,534 @@ static void ipc_receive_show_status_M7(uint16 uhwCmd, uint8 *pucData, uint16 uhw
 /* Tx, Rx Task functions */
 // static void LPA_Rx_Task(void *pArg);
 // static void LPA_Tx_Task(void *pArg);
+
+/**************************************************************************************************
+ *                                        IONIQ5 RX FUNCTIONS
+ **************************************************************************************************/
+uint8_t katech_can_app_mode;
+int8_t katech_adas_mode=0;
+
+/*
+ * rx CAN0(C-CAN)
+ */
+// can0 - 0x4A
+void RxCAN0_YRS_01_10ms(uint8_t *YRS_RxData)
+{
+	DB_IONIQ_RxCAN0_YRS_01_10ms *this_DB_CAN0_YRS_01_10ms;
+
+	this_DB_CAN0_YRS_01_10ms = katech_database_write_addr_get(KATECH_NAME_DB_IONIQ_RxCAN0_YRS_01_10ms);
+
+	this_DB_CAN0_YRS_01_10ms->LatAccel = ((YRS_RxData[10]+(YRS_RxData[11]<<8))*0.000127465)-4.17677312;
+	this_DB_CAN0_YRS_01_10ms->LongAccel = ((YRS_RxData[12]+(YRS_RxData[13]<<8))*0.000127465)-4.17677312;
+	this_DB_CAN0_YRS_01_10ms->YawRate = ((YRS_RxData[8]+(YRS_RxData[9]<<8))*0.005)-163.84;
+
+	katech_database_update(KATECH_NAME_DB_IONIQ_RxCAN0_YRS_01_10ms);
+}
+
+// can0 - 0x65
+void RxCAN0_IEB_01_10ms(uint8_t *BrkPedal_RxData)
+{
+	DB_IONIQ_RxCAN0_IEB_01_10ms *_DB_AN0_IEB_01_10ms;
+
+	_DB_AN0_IEB_01_10ms = katech_database_write_addr_get(KATECH_NAME_DB_IONIQ_RxCAN0_IEB_01_10ms);
+
+
+	_DB_AN0_IEB_01_10ms->BrakeAct = BrkPedal_RxData[13]; // Brake SW Pressure State
+	_DB_AN0_IEB_01_10ms->BrakePedalValue = BrkPedal_RxData[14]*0.390625;
+
+	katech_database_update(KATECH_NAME_DB_IONIQ_RxCAN0_IEB_01_10ms);
+}
+
+// can0 - 0xa0
+uint8_t WHL_01_10ms_data[KATECH_APP_BUFF_SIZE][24];
+uint8_t WHL_01_10ms_cnt=0;
+
+void RxCAN0_WHL_01_10ms(uint8_t *WHL_RxData)
+{
+	uint8_t pos;
+
+	DB_IONIQ_RxCAN0_WHL_01_10ms *_DB_CAN0_WHL_01_10ms;
+	_DB_CAN0_WHL_01_10ms = katech_database_write_addr_get(KATECH_NAME_DB_IONIQ_RxCAN0_WHL_01_10ms);
+
+	_DB_CAN0_WHL_01_10ms->WheelSpdFL = (WHL_RxData[8]+((WHL_RxData[9]&0x3F)<<8))*0.03125;
+	_DB_CAN0_WHL_01_10ms->WheelSpdFR = (WHL_RxData[10]+((WHL_RxData[11]&0x3F)<<8))*0.03125;
+	_DB_CAN0_WHL_01_10ms->WheelSpdRL = (WHL_RxData[12]+((WHL_RxData[13]&0x3F)<<8))*0.03125;
+	_DB_CAN0_WHL_01_10ms->WheelSpdRR = (WHL_RxData[14]+((WHL_RxData[15]&0x3F)<<8))*0.03125;
+	_DB_CAN0_WHL_01_10ms->AvgWheelSpeed = ((_DB_CAN0_WHL_01_10ms->WheelSpdFL + _DB_CAN0_WHL_01_10ms->WheelSpdFR + _DB_CAN0_WHL_01_10ms->WheelSpdRL + _DB_CAN0_WHL_01_10ms->WheelSpdRR) / 4) / 3.6;
+	_DB_CAN0_WHL_01_10ms->WheelPulseFL = (WHL_RxData[3])*0.5;
+	_DB_CAN0_WHL_01_10ms->WheelPulseFR = (WHL_RxData[4])*0.5;
+	_DB_CAN0_WHL_01_10ms->WheelPulseRL = (WHL_RxData[5])*0.5;
+	_DB_CAN0_WHL_01_10ms->WheelPulseRR = (WHL_RxData[6])*0.5;
+
+
+	pos = (WHL_01_10ms_cnt+1)%KATECH_APP_BUFF_SIZE;
+	memcpy(WHL_01_10ms_data[pos],WHL_RxData,24);
+
+	katech_database_update(KATECH_NAME_DB_IONIQ_RxCAN0_WHL_01_10ms);
+
+	WHL_01_10ms_cnt=pos;
+}
+
+// can0 - 0x125
+void RxCAN0_SAS_01_10ms(uint8_t *SAS_RxData)
+{
+	DB_IONIQ_RxCAN0_SAS_01_10ms *dbaddr;
+	dbaddr = katech_database_write_addr_get(KATECH_NAME_DB_IONIQ_RxCAN0_SAS_01_10ms);
+
+	dbaddr->StrAngle = ((SAS_RxData[3]+(SAS_RxData[4]<<8)))*0.1;
+	if (dbaddr->StrAngle > 3276.7)
+		dbaddr->StrAngle = dbaddr->StrAngle - 6553.5;
+
+	dbaddr->StrSpeed = SAS_RxData[5]*4.0;
+	if(dbaddr->StrSpeed > 1020) //jyhannn
+		dbaddr->StrSpeed = 1020;
+	katech_database_update(KATECH_NAME_DB_IONIQ_RxCAN0_SAS_01_10ms);
+}
+
+// can0 - 0x130
+void RxCAN0_Unknown_0x130(uint8_t *Unknown_RxData)
+{
+	DB_IONIQ_RxCAN0_Unknown_0x130 *dbaddr;
+	dbaddr = katech_database_write_addr_get(KATECH_NAME_DB_IONIQ_RxCAN0_Unknown_0x130);
+
+	dbaddr->GearPosition = Unknown_RxData[8];  //P:1  R:2  N:3  D:4
+
+	if (dbaddr->GearPosition == 1)
+		dbaddr->ADCMGearPosition = 1;
+	else if (dbaddr->GearPosition == 2)
+		dbaddr->ADCMGearPosition = 4;
+	else if (dbaddr->GearPosition == 3)
+		dbaddr->ADCMGearPosition = 2;
+	else if (dbaddr->GearPosition == 4)
+		dbaddr->ADCMGearPosition = 3;
+
+	katech_database_update(KATECH_NAME_DB_IONIQ_RxCAN0_Unknown_0x130);
+}
+
+// can0 - 0x175
+void RxCAN0_ESC_03_20ms(uint8_t *ESC03_RxData)
+{
+	DB_IONIQ_RxCAN0_ESC_03_20ms *dbaddr;
+	dbaddr = katech_database_write_addr_get(KATECH_NAME_DB_IONIQ_RxCAN0_ESC_03_20ms);
+
+	dbaddr->ParkingBrk = (ESC03_RxData[10]&0xC0)>>6;  //Engaged : 1 DisEngaged : 0
+
+	katech_database_update(KATECH_NAME_DB_IONIQ_RxCAN0_ESC_03_20ms);
+}
+
+// can0 - 0x1AA
+void RxCAN0_CLU_01_20ms(uint8_t *CLU_RxData)
+{
+	DB_IONIQ_RxCAN0_CLU_01_20ms *dbaddr;
+	dbaddr = katech_database_write_addr_get(KATECH_NAME_DB_IONIQ_RxCAN0_CLU_01_20ms);
+
+	dbaddr->DisplaySpd = CLU_RxData[8]+((CLU_RxData[9]&0x01)<<8);
+
+	katech_database_update(KATECH_NAME_DB_IONIQ_RxCAN0_CLU_01_20ms);
+}
+
+// can0 - 0x255
+void RxCAN0_CLU_02_100ms(uint8_t *CLU2_RxData)
+{
+	DB_IONIQ_RxCAN0_CLU_02_100ms *dbaddr;
+	dbaddr = katech_database_write_addr_get(KATECH_NAME_DB_IONIQ_RxCAN0_CLU_02_100ms);
+
+	dbaddr->FuelLevel = ((CLU2_RxData[13]&0xF0)>>4)+((CLU2_RxData[14]&0x07)<<4);
+	dbaddr->AvgFuelConsum = (((CLU2_RxData[5]&0xC0)>>6)+(CLU2_RxData[6]<<2))*0.1;
+	dbaddr->Odometer = (CLU2_RxData[9]+(CLU2_RxData[10]<<8)+(CLU2_RxData[11]<<16))*0.1;
+	dbaddr->DTE = CLU2_RxData[4]+((CLU2_RxData[5]&0x03)<<8);
+
+	katech_database_update(KATECH_NAME_DB_IONIQ_RxCAN0_CLU_02_100ms);
+}
+
+// can0 - 0x1e5
+void RxCAN0_RR_C_RDR_01_50ms(uint8_t *RR_C_RDR_01_50ms)
+{
+	DB_IONIQ_RxCAN0_RR_C_RDR_01_50ms *dbaddr;
+	dbaddr = katech_database_write_addr_get(KATECH_NAME_DB_IONIQ_RxCAN0_RR_C_RDR_01_50ms);
+
+	dbaddr->RadarFusion = (RR_C_RDR_01_50ms[13]&0x18)>>3;
+
+	katech_database_update(KATECH_NAME_DB_IONIQ_RxCAN0_RR_C_RDR_01_50ms);
+}
+
+
+
+/*
+ * rx CAN1(E-CAN)
+ */
+// can1 - 0x35
+void RxCAN1_Unknown_0x35(uint8_t *Unknown_0x35)
+{
+	DB_IONIQ_RxCAN1_Unknown_0x35 *dbaddr;
+	dbaddr = katech_database_write_addr_get(KATECH_NAME_DB_IONIQ_RxCAN1_Unknown_0x35);
+
+	dbaddr->AccelAct = (Unknown_0x35[5] & 0xFF);
+
+	katech_database_update(KATECH_NAME_DB_IONIQ_RxCAN1_Unknown_0x35);
+}
+
+// can1 - 0xa0
+void RxCAN1_WHL_01_10ms(uint8_t *WHL_01_10ms)
+{
+	DB_IONIQ_RxCAN1_WHL_01_10ms *dbaddr;
+	dbaddr = katech_database_write_addr_get(KATECH_NAME_DB_IONIQ_RxCAN1_WHL_01_10ms);
+
+	dbaddr->WHL_SpdFLVal = (WHL_01_10ms[8] +((WHL_01_10ms[9] &0x3F)<<8))*0.03125;
+	dbaddr->WHL_SpdFRVal = (WHL_01_10ms[10]+((WHL_01_10ms[11]&0x3F)<<8))*0.03125;
+	dbaddr->WHL_SpdRLVal = (WHL_01_10ms[12]+((WHL_01_10ms[13]&0x3F)<<8))*0.03125;
+	dbaddr->WHL_SpdRRVal = (WHL_01_10ms[14]+((WHL_01_10ms[15]&0x3F)<<8))*0.03125;
+	dbaddr->Avg_WhlSpd = ((((dbaddr->WHL_SpdFLVal + dbaddr->WHL_SpdFRVal + dbaddr->WHL_SpdRLVal + dbaddr->WHL_SpdRRVal) / 4) * 5) / 18); // km/h to m/s
+
+	katech_database_update(KATECH_NAME_DB_IONIQ_RxCAN1_WHL_01_10ms);
+}
+
+// can1 - 0x175
+void RxCAN1_ESC_03_20ms(uint8_t *ESC_03_20ms)
+{
+	DB_IONIQ_RxCAN1_ESC_03_20ms *dbaddr;
+	dbaddr = katech_database_write_addr_get(KATECH_NAME_DB_IONIQ_RxCAN1_ESC_03_20ms);
+
+	dbaddr->PrkBrakeAct = (ESC_03_20ms[10] & 0xC0) >> 6;
+	katech_database_update(KATECH_NAME_DB_IONIQ_RxCAN1_ESC_03_20ms);
+}
+
+// can1 - 0x1AA
+void RxCAN1_CLU_01_20ms(uint8_t *CLU_01_20ms)
+{
+
+	DB_IONIQ_RxCAN1_CLU_01_20ms *dbaddr;
+	dbaddr = katech_database_write_addr_get(KATECH_NAME_DB_IONIQ_RxCAN1_CLU_01_20ms);
+
+	dbaddr->CurrentSpeed = CLU_01_20ms[6] + ((CLU_01_20ms[7] & 0x03) << 8); // signal name in E-CAN dbc file is "CLU_DisSpdVal"
+	if((dbaddr->CurrentSpeed % 2) == 1)
+		dbaddr->CurrentSpeed = (dbaddr->CurrentSpeed/2) + 1;
+	else
+		dbaddr->CurrentSpeed = dbaddr->CurrentSpeed/2;
+
+	katech_database_update(KATECH_NAME_DB_IONIQ_RxCAN1_CLU_01_20ms);
+}
+
+// can1 - 0x1B5
+void RxCAN1_CLU_01_20ms2(uint8_t *LaneInfoRxData)
+{
+	DB_IONIQ_RxCAN1_CLU_01_20ms2 *dbaddr;
+	dbaddr = katech_database_write_addr_get(KATECH_NAME_DB_IONIQ_RxCAN1_CLU_01_20ms2);
+
+	dbaddr->LaneQualityL = (LaneInfoRxData[3]&0x07);
+	dbaddr->ThisLanePositionL = (((LaneInfoRxData[3]&0xE0)>>5) + (LaneInfoRxData[4]<<3) + ((LaneInfoRxData[5]&0x07)<<11));
+	if (dbaddr->ThisLanePositionL > 8192)
+		dbaddr->ThisLanePositionL = dbaddr->ThisLanePositionL-16384;
+	dbaddr->LanePositionL = dbaddr->ThisLanePositionL * 0.0039625;
+
+	dbaddr->ThisHeadingAngleL = ((LaneInfoRxData[5]&0xF8)>>3)+((LaneInfoRxData[6]&0x1F)<<5);
+	if (dbaddr->ThisHeadingAngleL > 512)
+		dbaddr->ThisHeadingAngleL = dbaddr->ThisHeadingAngleL - 1024;
+	dbaddr->HeadingAngleL =  dbaddr->ThisHeadingAngleL * 0.000976563;
+
+	dbaddr->ThisCurvatureL = LaneInfoRxData[8]+(LaneInfoRxData[9]<<8);
+	if (dbaddr->ThisCurvatureL > 32767)
+		dbaddr->ThisCurvatureL = dbaddr->ThisCurvatureL - 65535;
+	dbaddr->CurvatureL = dbaddr->ThisCurvatureL * 0.0000005;  //실제DBC Factor 0.000001 보다 1/2
+	dbaddr->ThisCurvatureRateL = LaneInfoRxData[10]+(LaneInfoRxData[11]<<8);
+	if (dbaddr->ThisCurvatureRateL > 32767)
+		dbaddr->ThisCurvatureRateL = dbaddr->ThisCurvatureRateL - 65535;
+	dbaddr->CurvatureRateL = dbaddr->ThisCurvatureRateL * 0.0000000020; //실제DBC Factor 0.000000004 보다 1/2
+
+	dbaddr->LaneQualityR = (LaneInfoRxData[12]&0x07);
+	dbaddr->ThisLanePositionR = ((LaneInfoRxData[12]&0xE0)>>5)+(LaneInfoRxData[13]<<3)+((LaneInfoRxData[14]&0x07)<<11);
+	if (dbaddr->ThisLanePositionR > 8192)
+		dbaddr->ThisLanePositionR = dbaddr->ThisLanePositionR-16384;
+	dbaddr->LanePositionR = dbaddr->ThisLanePositionR * 0.0039625;
+	dbaddr->ThisHeadingAngleR = ((LaneInfoRxData[14]&0xF8)>>3)+((LaneInfoRxData[15]&0x1F)<<5);
+	if (dbaddr->ThisHeadingAngleR > 512)
+		dbaddr->ThisHeadingAngleR = dbaddr->ThisHeadingAngleR - 1024;
+	dbaddr->HeadingAngleR =  dbaddr->ThisHeadingAngleR * 0.000976563;
+	dbaddr->ThisCurvatureR = LaneInfoRxData[16]+(LaneInfoRxData[17]<<8);
+	if (dbaddr->ThisCurvatureR > 32767)
+		dbaddr->ThisCurvatureR = dbaddr->ThisCurvatureR - 65535;
+	dbaddr->CurvatureR = dbaddr->ThisCurvatureR * 0.0000005;
+	dbaddr->ThisCurvatureRateR = (LaneInfoRxData[18]+(LaneInfoRxData[19]<<8));
+	if (dbaddr->ThisCurvatureRateR > 32767)
+		dbaddr->ThisCurvatureRateR = dbaddr->ThisCurvatureRateR - 65535;
+	dbaddr->CurvatureRateR = dbaddr->ThisCurvatureRateR * 0.0000000020;
+
+	if ((dbaddr->LanePositionL > -2.0) && (dbaddr->LanePositionL != 0.0) && (dbaddr->LanePositionR < 2.0) && (dbaddr->LanePositionR != 0.0))
+	{
+		dbaddr->LaneWidthEstimation = dbaddr->LanePositionR - dbaddr->LanePositionL;
+	}
+	else if ((dbaddr->LanePositionL < -2.0) || (dbaddr->LanePositionL == 0.0))
+	{
+		dbaddr->LanePositionL = dbaddr->LanePositionR - dbaddr->LaneWidthEstimation;
+	}
+	else if ((dbaddr->LanePositionR > 2.0) || (dbaddr->LanePositionR == 0.0))
+	{
+		dbaddr->LanePositionR = dbaddr->LaneWidthEstimation + dbaddr->LanePositionL;
+	}
+
+	dbaddr->CAMStatus  = 1;
+
+	katech_database_update(KATECH_NAME_DB_IONIQ_RxCAN1_CLU_01_20ms2);
+}
+
+// can1 - 0x1BA
+void RxCAN1_RR_C_RDR_02_50ms(uint8_t *RR_C_RDR_02_50ms)
+{
+	DB_IONIQ_RxCAN1_RR_C_RDR_02_50ms *dbaddr;
+	dbaddr = katech_database_write_addr_get(KATECH_NAME_DB_IONIQ_RxCAN1_RR_C_RDR_02_50ms);
+
+	dbaddr->LKALHLnWaringState = (RR_C_RDR_02_50ms[3]&0xC0)>>6;   //1 means Object, 2 means LaneChange in Object
+	dbaddr->LKARHLnWaringState = RR_C_RDR_02_50ms[4]&0x03;        //1 means Object, 2 means LaneChange in Object
+
+	katech_database_update(KATECH_NAME_DB_IONIQ_RxCAN1_RR_C_RDR_02_50ms);
+}
+
+// can1 - 0x1cf
+void RxCAN1_SWRC_03_20ms(uint8_t *SWRC_03_20ms)
+{
+	DB_IONIQ_RxCAN1_SWRC_03_20ms *dbaddr;
+	dbaddr = katech_database_write_addr_get(KATECH_NAME_DB_IONIQ_RxCAN1_SWRC_03_20ms);
+
+	dbaddr->SWRC_CrsMainSwSta = (SWRC_03_20ms[2] & 0x18) >> 3;
+	dbaddr->SWRC_PlusMinusSwSta = SWRC_03_20ms[2] & 0x07; // signal name in E-CAN dbc file is "SWRC_CrsSwSta"
+	dbaddr->PlusSW = dbaddr->SWRC_PlusMinusSwSta & 0x01;
+	dbaddr->MinusSW = (dbaddr->SWRC_PlusMinusSwSta & 0x02) >> 1;
+	dbaddr->PauseResumeSW = (dbaddr->SWRC_PlusMinusSwSta & 0x04) >> 2;
+
+	if((dbaddr->SWRC_CrsMainSwSta == 1) && (dbaddr->SCC_OpSta != 1) && (dbaddr->SCC_StayTune == 0)) // to start ACC
+	{
+		dbaddr->SCC_OpSta = 1;
+		dbaddr->SCC_MainOnOffSta = 1;
+		dbaddr->SCC_StayTune = 1;
+
+		if(dbaddr->CurrentSpeed <= 50)
+			dbaddr->SCC_TrgtSpdSetVal = 50; // reset ACC setting speed
+		else
+			dbaddr->SCC_TrgtSpdSetVal = dbaddr->CurrentSpeed;
+
+		dbaddr->SCC_AccelReqVal = 1023; 	// reset previous value to default
+		dbaddr->SCC_AccelReqRawVal = 1023;  // reset previous value to default
+		katech_adas_mode=1;
+	}
+	else if ((dbaddr->SWRC_CrsMainSwSta == 1) && (dbaddr->SCC_OpSta == 1) && (dbaddr->SCC_StayTune == 0) || (katech_adas_mode<0)) // to finish ACC
+	{
+		dbaddr->SCC_OpSta = 0;
+		dbaddr->SCC_MainOnOffSta = 0;
+		dbaddr->SCC_StayTune = 1;
+		//SCC_TrgtSpdSetVal = 0;
+		dbaddr->SCC_AccelReqVal = 1023; 	// reset previous value to default
+		dbaddr->SCC_AccelReqRawVal = 1023;  // reset previous value to default
+		katech_adas_mode=0;
+	}
+
+	if (dbaddr->SWRC_CrsMainSwSta == 0)
+	{
+		dbaddr->SCC_StayTune = 0;
+	}
+
+	katech_database_update(KATECH_NAME_DB_IONIQ_RxCAN1_SWRC_03_20ms);
+}
+
+// can1 - 0x3c1
+void RxCAN1_MFSW_01_200ms(uint8_t *MFSW_01_200ms)
+{
+	DB_IONIQ_RxCAN1_MFSW_01_200ms *dbaddr;
+	dbaddr = katech_database_write_addr_get(KATECH_NAME_DB_IONIQ_RxCAN1_MFSW_01_200ms);
+
+	dbaddr->TurnSigLeft = (MFSW_01_200ms[3]&0xC0)>>6;
+	dbaddr->TurnSigRight = MFSW_01_200ms[4]&0x03;
+
+	if (dbaddr->TurnSigLeft == 1)
+	{
+		dbaddr->LeftTurnFlag = 1;
+		dbaddr->RightTurnFlag = 0;
+	}
+	else if (dbaddr->TurnSigRight == 1)
+	{
+		dbaddr->LeftTurnFlag = 0;
+		dbaddr->RightTurnFlag = 1;
+	}
+	else
+	{
+		dbaddr->LeftTurnFlag = 0;
+		dbaddr->RightTurnFlag = 0;
+	}
+
+	katech_database_update(KATECH_NAME_DB_IONIQ_RxCAN1_MFSW_01_200ms);
+}
+
+
+/*
+ * rx CAN2(MDPS)
+ */
+// can2 - 0xEA
+uint8_t g_SPASStatus=3;
+void RxCAN2_MDPS_01_10ms(uint8_t *MDPS_RxData)
+{
+	DB_IONIQ_RxCAN2_MDPS_01_10ms *dbaddr;
+	dbaddr = katech_database_write_addr_get(KATECH_NAME_DB_IONIQ_RxCAN2_MDPS_01_10ms);
+
+	dbaddr->MDPS_PaModeSta = MDPS_RxData[5]&0x0F;
+
+	katech_database_update(KATECH_NAME_DB_IONIQ_RxCAN2_MDPS_01_10ms);
+}
+
+// can2 - 0x377
+void RxCAN2_Unknown_0x377(uint8_t *CMD_RxData)
+{
+	uint8_t CMD = 0;
+	uint8_t pos = 0;
+	DB_IONIQ_RxCAN2_Unknown_0x377 *dbaddr;
+	dbaddr = katech_database_write_addr_get(KATECH_NAME_DB_IONIQ_RxCAN2_Unknown_0x377);
+
+	CMD = CMD_RxData[4];
+	if(CMD == 0x01) dbaddr->SPASStatus = 3;
+	g_SPASStatus =3;
+}
+
+// can2 - 0x378
+void RxCAN2_Unknown_0x378(uint8_t *CMD_RxData)
+{
+	uint8_t CMD = 0;
+	uint8_t pos = 0;
+	DB_IONIQ_RxCAN2_Unknown_0x377 *dbaddr;
+	dbaddr = katech_database_write_addr_get(KATECH_NAME_DB_IONIQ_RxCAN2_Unknown_0x377);
+
+	CMD = CMD_RxData[5];
+	if(CMD == 0x01) dbaddr->SPASStatus = 4;
+	katech_database_update(KATECH_NAME_DB_IONIQ_RxCAN2_Unknown_0x377);
+}
+
+// can2 - 0x379
+void RxCAN2_Unknown_0x379(uint8_t *CMD_RxData)
+{
+	uint8_t CMD = 0;
+	uint8_t pos = 0;
+	DB_IONIQ_RxCAN2_Unknown_0x377 *dbaddr;
+	dbaddr = katech_database_write_addr_get(KATECH_NAME_DB_IONIQ_RxCAN2_Unknown_0x377);
+
+	CMD = CMD_RxData[6];
+	if(CMD == 0x01) dbaddr->SPASStatus = 1;
+	if(CMD == 0x02) dbaddr->SPASStatus = 2;
+	if(CMD == 0x05) dbaddr->SPASStatus = 5;
+	katech_database_update(KATECH_NAME_DB_IONIQ_RxCAN2_Unknown_0x377);
+}
+
+
+/*
+ * rx CAN3(DRV)
+ */
+// can3 - 0x1EA
+uint8_t ADAS_CMD_32_50ms[4][32];
+uint8_t ADAS_CMD_32_50ms_cnt=0;
+//ADAS_CMD_20_20ms
+void RxCAN3_ADAS_CMD_20_20ms(uint8_t *data)
+{
+	//uint8_t ADAS_CMD_32_50ms[32];
+	uint8_t i;
+	uint8_t this_cnt;
+	this_cnt = ADAS_CMD_32_50ms_cnt%4;
+	//if(ADAS_CMD_32_50ms_cnt>=4) this_cnt=0;
+
+	memcpy(ADAS_CMD_32_50ms[this_cnt],data,32);
+
+	ADAS_CMD_32_50ms_cnt=this_cnt;
+}
+
+// can3 - 0x1A0
+uint8_t TempArray1A0[4][32];
+uint8_t TempArray1A0_ori[4][32];
+uint8_t TempArray1A0_cnt =0;
+void RxCAN3_ADAS_CMD_32_50ms(uint8_t *ADAS_CMD_20_20ms_Temp)
+{
+	//uint8_t TempArray1A0[32]; //ADAS_CMD_20_20ms_Temp[32]; //<-temparray1a0[32] -> M7
+	//uint8_t SCC_ObjSta, SCC_VehStpReq, RADARStatus=0;
+	char Temp1A0_PushData;
+	//uint16_t FrontSCC_ObjDstVal = 0x7FE;
+	//float RadarSCC_ObjRelSpdVal = 0;
+	uint8_t pos2 = 0;
+	DB_IONIQ_RxCAN3_ADAS_CMD_32_50ms *dbaddr;
+	dbaddr = katech_database_write_addr_get(KATECH_NAME_DB_IONIQ_RxCAN3_ADAS_CMD_32_50ms);
+
+	pos2 = TempArray1A0_cnt+1;
+	if(pos2>=4) pos2 =0;
+
+	memcpy(TempArray1A0_ori[pos2],ADAS_CMD_20_20ms_Temp,32);
+
+	TempArray1A0[pos2][3] = ADAS_CMD_20_20ms_Temp[3];
+	TempArray1A0[pos2][4] = ADAS_CMD_20_20ms_Temp[4];
+	TempArray1A0[pos2][5] = ADAS_CMD_20_20ms_Temp[5];
+	TempArray1A0[pos2][6] = ADAS_CMD_20_20ms_Temp[6];
+	TempArray1A0[pos2][7] = ADAS_CMD_20_20ms_Temp[7];
+	//byte8 controls SCC_OpSta & SCC_MainOnOffSta
+	TempArray1A0[pos2][9] = ADAS_CMD_20_20ms_Temp[9];
+	TempArray1A0[pos2][10] = ADAS_CMD_20_20ms_Temp[10];
+	TempArray1A0[pos2][11] = ADAS_CMD_20_20ms_Temp[11];
+	//byte12 controls SCC_TrgtSpdSetVal
+	//TempArray1A0[13] = ADAS_CMD_20_20ms_Temp[13];
+	dbaddr->SCC_ObjSta = (ADAS_CMD_20_20ms_Temp[13] & 0x70) >> 4;
+	TempArray1A0[pos2][13] = 0x08; // + TempArray1A0[13];
+	TempArray1A0[pos2][14] = ADAS_CMD_20_20ms_Temp[14];
+	TempArray1A0[pos2][15] = ADAS_CMD_20_20ms_Temp[15];
+	// SCC_AccelReqVal & SCC_AccelReqRawVal can read from byte16,17,18
+	for(Temp1A0_PushData = 21; Temp1A0_PushData < 32; Temp1A0_PushData++)
+	{
+		if(Temp1A0_PushData == 23) // byte23 controls SCC_VehStpReq
+			continue;
+		TempArray1A0[pos2][Temp1A0_PushData] = ADAS_CMD_20_20ms_Temp[Temp1A0_PushData];
+		// SCC_JrkUpp & SCC_JrkLwr can read from byte19,20
+	}
+	dbaddr->FrontSCC_ObjDstVal = ADAS_CMD_20_20ms_Temp[3] + ((ADAS_CMD_20_20ms_Temp[4] & 0x07) << 8);
+	//dbaddr->FrontSCC_ObjDstVal = dbaddr->FrontSCC_ObjDstVal*0.1;
+	//dbaddr->FrontSCC_ObjDstVal=777;
+	//SCC_ObjDstVal = SCC_ObjDstVal * 0.1;
+	dbaddr->RadarSCC_ObjRelSpdVal = ((ADAS_CMD_20_20ms_Temp[4] & 0xF8) >> 3) + ((ADAS_CMD_20_20ms_Temp[5] & 0x7F) << 5);
+	dbaddr->RadarSCC_ObjRelSpdVal = (dbaddr->RadarSCC_ObjRelSpdVal - 1700) * 0.1;
+
+	dbaddr->SCC_VehStpReq = (ADAS_CMD_20_20ms_Temp[23] & 0x03);
+	dbaddr->RADARStatus = 1;
+	katech_database_update(KATECH_NAME_DB_IONIQ_RxCAN3_ADAS_CMD_32_50ms);
+	TempArray1A0_cnt=pos2;
+}
+
+
+uint8_t ADAS_CMD_10_20ms_data[4][16];
+uint8_t ADAS_CMD_10_20ms_cnt =0;
+void RxCAN3_ADAS_CMD_10_20ms(uint8_t *ADAS_CMD_10_20ms)
+{
+	uint16_t CameraFCA_TimetoCllsn = 0;
+	uint8_t pos;
+
+	pos = (ADAS_CMD_10_20ms_cnt+1)%4;
+
+	memcpy(ADAS_CMD_10_20ms_data[pos],ADAS_CMD_10_20ms,16);
+	ADAS_CMD_10_20ms_cnt=pos;
+	//CAN_MB_READ_DATA(CAN3_BUF[25], ADAS_CMD_20_20ms_Temp, 16);
+	//CAN_MB_WRITE_DATA(CAN1_BUF[25], ADAS_CMD_10_20ms, 16);    //Test for AEB on S32G
+	CameraFCA_TimetoCllsn = (((ADAS_CMD_10_20ms[10]&0x01)<<7) + (ADAS_CMD_10_20ms[9]&0xFE)>>1)*10;   //ms
+}
+
+
+uint8_t ADAS_PRK_20_20ms_data[4][24];
+uint8_t ADAS_PRK_20_20ms_cnt =0;
+void RxCAN0_ADAS_PRK_20_20ms(uint8_t *ADAS_PRK_20_20ms)
+{
+	uint8_t pos;
+
+	pos = (ADAS_PRK_20_20ms_cnt+1)%4;
+
+	memcpy(ADAS_PRK_20_20ms_data[pos],ADAS_PRK_20_20ms,24);
+	ADAS_PRK_20_20ms_cnt=pos;
+	//CAN_MB_READ_DATA(CAN3_BUF[25], ADAS_CMD_20_20ms_Temp, 16);
+	//CAN_MB_WRITE_DATA(CAN1_BUF[25], ADAS_CMD_10_20ms, 16);    //Test for AEB on S32G
+	//CameraFCA_TimetoCllsn = (((ADAS_CMD_10_20ms[10]&0x01)<<7) + (ADAS_CMD_10_20ms[9]&0xFE)>>1)*10;   //ms
+}
+
+
+/**************************************************************************************************
+ *                                        IONIQ5 TX FUNCTIONS
+ **************************************************************************************************/
+
 
 /**************************************************************************************************
  *                                             FUNCTIONS
@@ -290,6 +871,7 @@ static void LPA_IPC_rxIrq_wakeUp(void)
 }
 #endif
 
+
 static void parse_mm_response(const uint8 *buffer)
 {
 	LPA_REG_DATA reg;
@@ -355,13 +937,14 @@ static void parse_proc_frame(const uint8 *buffer, uint16 data_length)
 	rx_rtr = ((buffer[14] & 0x40U) == 0x40U) ? 1U : 0U;
 	rx_ide = ((buffer[14] & 0x80U) == 0x80U) ? 1U : 0U;
 
-	if (rx_frame_type == DATA_FRAME)
+	if (rx_frame_type == DATA_FRAME) // CAN to AP
 	{
 		data_frame.port = rx_sourcePort;
 		data_frame.proto = rx_protocol_type;
 		data_frame.ts_us_high = rx_timeStamp_us_H;
 		data_frame.ts_us_low = rx_timeStamp_us_L;
 		data_frame.ts_ns = rx_timeStamp_ns;
+
 		for (i = 15U; i < data_length; i++)
 		{
 			data_frame.Data[i - 15U] = buffer[i];
@@ -387,6 +970,13 @@ static void parse_proc_frame(const uint8 *buffer, uint16 data_length)
 				}
 				data_frame.ID = rx_can_id;
 				route_id = data_frame.ID;
+
+				// 241111 sy.kim
+				AP_rxcanId = rx_can_id;
+				if(route_id == 160 || AP_rxcanId == 1)
+				{
+					mcu_to_ap_flag = 1;
+				}
 			}
 			else
 			{
@@ -412,7 +1002,8 @@ static void parse_proc_frame(const uint8 *buffer, uint16 data_length)
 				{
 				case TSNC:
 #if (SIC_BSP_SUPPORT_TEST_APP_TPA == 1u)
-					cnvt_data.id = rx_extCan_id;
+					// cnvt_data.id = rx_extCan_id;
+					cnvt_data.id = route_id; // 241114 sy.kim
 					if (fCANtoEthCB != NULL)
 					{
 						fCANtoEthCB(&cnvt_data);
@@ -476,17 +1067,19 @@ static void parse_proc_frame(const uint8 *buffer, uint16 data_length)
 			fLpaDataCB(&data_frame);
 		}
 	}
-	else
+	else // CAN to CAN
 	{
 		ts_frame.port = rx_sourcePort;
 		ts_frame.ts_us_high = rx_timeStamp_us_H;
 		ts_frame.ts_us_low = rx_timeStamp_us_L;
 		ts_frame.ts_ns = rx_timeStamp_ns;
-
+		
 		if (fLpaTsCB != NULL)
 		{
 			fLpaTsCB(&ts_frame);
 		}
+
+		mcu_to_ap_flag = 0; // 241111 sy.kim
 	}
 }
 /*misra_c_2012_rule_8_8_violation:	missing static storage modifier for "parse_status_frame" which has internal linkage*/
@@ -1018,7 +1611,7 @@ uint8 frm_findRouteTbl(uint8 input_port, uint32 input_id, uint8 index)
 	uint8 ret = 0u;
 
 	for (uint32 i = 0u; i < index; i++)
-	{
+	{	
 		/*misra_c_2012_rule_10_4_violation:	Essential type of the left hand operand "input_port" (unsigned) is not the same as that of the right operand "5"(signed).*/
 		if ((route_tbl[i].src == (input_port - 5u)) && (route_tbl[i].id == input_id))
 		{
@@ -1110,7 +1703,7 @@ uint8 frm_lpa_rx_getTaskState(void)
 
 /* Tx, Rx Task Create */
 /* Rx Task */
-static void LPA_Rx_Task(void *pArg)
+static void LPA_Rx_Task(void *pArg) // When M7-NP receive CAN data
 {
 	(void)pArg;
 	uint32 ulInterruptStatus;
@@ -1133,6 +1726,39 @@ static void LPA_Rx_Task(void *pArg)
 	rx_task_state = 1U;
 	mcu_printf("\n Master Framework v%d.%d.%d\n",
 			   verInfo.majorVer, verInfo.minorVer, verInfo.patchVer);
+
+#if 1 
+/* 241112 sy.kim MCU to AP time test*/
+	uint32 temp;
+	volatile uint32 TC32MCNT_Val[250];
+	volatile uint32 TC32Prescale_Val[250];	
+	uint32 TC32EN_Addr = 0x4B400080;
+	
+	temp = SAL_ReadReg(TC32EN_Addr);
+	temp = 0;
+	temp &= (uint32)(0UL);			// System Timer 0 32-Bit Timer Init
+	temp &= (uint32)~(1 << 24);		// Counter Disable
+	temp &= (uint32)~(1 << 29);		// LDM1 = 0
+	temp |= (uint32)(1 << 28);		// LDM0 = 1
+	temp |= (uint32)(1 << 26);		// Oneshot Mode
+	temp |= (uint32)(1 << 25);		// Counter Start from zero (not LOADVAL)
+	//temp |= (uint32)(0x3A980);		// Prescaler Load Value = 240000
+	temp |= (uint32)(0x17);		// Prescaler Load Value = 24
+
+	SAL_WriteReg(temp, TC32EN_Addr);
+
+	////////////////////////////////////////////
+	//// TC32LDV
+	SAL_WriteReg(0xffffffff, 0x4B400084);		// LOADVAL
+
+	////////////////////////////////////////////
+	//// TC32CMP0
+	SAL_WriteReg(0xffffffff, 0x4B400088);		// comparison value
+	if (add > 250)
+	{
+		add = 0;
+	}
+#endif
 
 	while (TRUE)
 	{
@@ -1260,10 +1886,21 @@ static void LPA_Rx_Task(void *pArg)
 								// SAL_GetTickCount(&tick_lpa_rx);
 								proc_dataLen = lpa_u16sub(resp.size, 4U);
 								parse_proc_frame(rxResponseBuffer, proc_dataLen);
-								// 241106 sy.kim
+// 241106 sy.kim
+// CAN data가 receive 될 때, M7-NP에서 AP로 Data 송신
 #if (IPC_A65_TEST == 1)
-								mcu_printf("M7-NP to AP IPC Send Packet\n");
+							if(mcu_to_ap_flag == 1) // 241111 sy.kim
+							{
+								(*((volatile uint32 *)(0x4B400080))) |= (uint32)(1 << 24);		// Counter Enable
+
 								(void)IPC_SendPacket(IPC_CH_CA65_NS_USER, (uint16)TCC_IPC_CMD_AP_TEST, TCC_IPC_CMD_AP_SEND, rxResponseBuffer, proc_dataLen);
+
+								(*((volatile uint32 *)(0x4B400080))) &= (uint32)~(1 << 24); 	// Counter Disable
+								TC32MCNT_Val[add] = SAL_ReadReg(0x4B400094);		// System timer 0, 32Bit Timer Main count
+								TC32Prescale_Val[add] = SAL_ReadReg(0x4B400090);	// System timer 0, 32Bit Timer Prescale count
+								mcu_printf("MCU to AP Execution Time: %d.%03d us\n",TC32MCNT_Val[add],((TC32Prescale_Val[add]*41666667)/1000000)); //QAC
+							}
+							add++;
 #endif
 							}
 							else
@@ -1308,7 +1945,7 @@ void LPA_Rx_CreateAppTasks(void)
 }
 
 /* Tx Task */
-static void LPA_Tx_Task(void *pArg)
+static void LPA_Tx_Task(void *pArg) // When AP send M7-NP
 {
 	(void)pArg;
 	LPA_TX_MESSAGE msg;
@@ -1469,8 +2106,7 @@ static void LPA_Tx_Task(void *pArg)
 static void NP_IpcCbFunc_A65_Test(uint16 uhwCmd, uint8 *pucData, uint16 uhwLength)
 {
 	// 241106 sy.kim
-	mcu_printf("\nM7-NP Receive Data from AP\n");
-	// uint16 i = 0;
+	mcu_printf("M7-NP Receive Data from AP\n");
 	LPA_TX_MESSAGE msg;
 	uint8 protocol;
 	if (pucData != NULL_PTR)
@@ -1496,17 +2132,30 @@ static void NP_IpcCbFunc_A65_Test(uint16 uhwCmd, uint8 *pucData, uint16 uhwLengt
 		}
 		msg.proto = protocol;
 		msg.port = (uint8)uhwCmd;
-		(void)SAL_QueuePut(gLpaTxQueueHandle, (void *)&msg, sizeof(LPA_TX_MESSAGE), 0,
-						   SAL_OPT_BLOCKING);
 
 		// 241106 sy.kim
 		mcu_printf("**************************************\n");
-		mcu_printf("CAN RX data Protocol %d, Port %d, Msg len %d\n", msg.proto, msg.port, msg.size);
+		mcu_printf("CAN data Port %d -> ", msg.port);
+
+		// 241111 sy.kim
+		/*
+			Change route from M7-NP to CAN path
+		*/
+		if(msg.port == 1 && AP_rxcanId == 160)
+		{
+			msg.port = 3;
+			msg.idt = lpa_u16add((uint16)msg.port, CAN_PORT_MASK);
+		}
+		
+		mcu_printf("Port %d, RouteID 0x%X, CAN ID 0x%X, Msg len %d\n", msg.port, msg.idt, AP_rxcanId, msg.size);
+		mcu_printf("Data ");
 		for (int i=0; i<msg.size; i++)
 		{
-			mcu_printf("%d ", msg.MsgData[i]);
+			mcu_printf("0x%X ", msg.MsgData[i]);
 		}
 		mcu_printf("\n**************************************\n");
+
+		(void)SAL_QueuePut(gLpaTxQueueHandle, (void *)&msg, sizeof(LPA_TX_MESSAGE), 0, SAL_OPT_BLOCKING); // CAN으로 전송
 	}
 	else
 	{

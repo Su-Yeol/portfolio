@@ -1,0 +1,667 @@
+gPTP$ DEBUG$ daemon_cl VERSION : May 27 2024 18:41:19
+gPTP$ DEBUG$ Group vnw not found, will try root (0) instead
+gPTP$ DEBUG$ priority1 = 248
+gPTP$ DEBUG$ announceReceiptTimeout: 3
+gPTP$ DEBUG$ syncReceiptTimeout: 3
+gPTP$ DEBUG$ LINKSPEED_100MB - PHY delay
+			TX: 1044 | RX: 2133
+gPTP$ DEBUG$ LINKSPEED_1G - PHY delay
+			TX: 184 | RX: 382
+gPTP$ DEBUG$ neighborPropDelayThresh: 800
+gPTP$ DEBUG$ syncReceiptThreshold: 8
+gPTP$ DEBUG$ initialLogSyncInterval: -3
+gPTP$ DEBUG$ initialLogPdelayReqInterval: 0
+gPTP$ DEBUG$ Configuring port state to Slave
+
+gPTP$ DEBUG$ automotive profile True isGM False
+
+gPTP$ DEBUG$ priority1 248 and priority2 248 clockClass 248 srt 3 art 3
+
+gPTP$ DEBUG$ qtimer_to_mono_offset -- min:5918868000 max:5918868200 new avg: 5918868060 
+gPTP$ DEBUG$ AsCapable: Enabled
+gPTP$ DEBUG$ Using clock device: /dev/ptp0
+gPTP$ DEBUG$ gPTP starting
+gPTP$ DEBUG$ Received POWERUP/INITIALIZE event
+gPTP$ DEBUG$ Switching to Slave
+gPTP$ DEBUG$ EtherPort::startPDelay()
+gPTP$ DEBUG$ automotive_profile : YES
+gPTP$ DEBUG$ getPortState() == 9
+gPTP$ DEBUG$ Interface pfe0 is up
+gPTP$ DEBUG$ AVnu AP Status : STATION_STATE_ETHERNET_READY
+gPTP$ DEBUG$ Link Speed: 1000000 kb/sec
+gPTP$ DEBUG$ SYNC receipt timeout
+gPTP$ DEBUG$ SYNC receipt timeout
+gPTP$ DEBUG$ PDELAY_INTERVAL_TIMEOUT_EXPIRES occured
+gPTP$ DEBUG$ case PDELAY_INTERVAL_TIMEOUT_EXPIRES:
+gPTP$ DEBUG$ automotive_profile : YES
+gPTP$ DEBUG$ getPortState() == 9
+gPTP$ DEBUG$ TX PHY compensation: 0 0.000000184 sec
+gPTP$ DEBUG$ *** Sent PDelay Request message
+gPTP$ DEBUG$ Schedule PDELAY_RESP_RECEIPT_TIMEOUT_EXPIRES, PDelay interval 0, timeout 3000000000
+gPTP$ DEBUG$ SYNC receipt timeout
+gPTP$ DEBUG$ SYNC receipt timeout
+gPTP$ DEBUG$ SYNC receipt timeout
+gPTP$ DEBUG$ PDELAY_INTERVAL_TIMEOUT_EXPIRES occured
+gPTP$ DEBUG$ case PDELAY_INTERVAL_TIMEOUT_EXPIRES:
+gPTP$ DEBUG$ automotive_profile : YES
+gPTP$ DEBUG$ getPortState() == 9
+gPTP$ DEBUG$ TX PHY compensation: 0 0.000000184 sec
+gPTP$ DEBUG$ *** Sent PDelay Request message
+gPTP$ DEBUG$ Schedule PDELAY_RESP_RECEIPT_TIMEOUT_EXPIRES, PDelay interval 0, timeout 3000000000
+gPTP$ DEBUG$ SYNC receipt timeout
+gPTP$ DEBUG$ SYNC receipt timeout
+gPTP$ DEBUG$ SYNC receipt timeout
+gPTP$ DEBUG$ PDELAY_INTERVAL_TIMEOUT_EXPIRES occured
+gPTP$ DEBUG$ case PDELAY_INTERVAL_TIMEOUT_EXPIRES:
+gPTP$ DEBUG$ automotive_profile : YES
+gPTP$ DEBUG$ getPortState() == 9
+gPTP$ DEBUG$ TX PHY compensation: 0 0.000000184 sec
+gPTP$ DEBUG$ *** Sent PDelay Request message
+gPTP$ DEBUG$ Schedule PDELAY_RESP_RECEIPT_TIMEOUT_EXPIRES, PDelay interval 0, timeout 3000000000
+gPTP$ DEBUG$ SYNC receipt timeout
+gPTP$ DEBUG$ SYNC receipt timeout
+gPTP$ DEBUG$ PDELAY_INTERVAL_TIMEOUT_EXPIRES occured
+gPTP$ DEBUG$ case PDELAY_INTERVAL_TIMEOUT_EXPIRES:
+gPTP$ DEBUG$ automotive_profile : YES
+gPTP$ DEBUG$ getPortState() == 9
+gPTP$ DEBUG$ TX PHY compensation: 0 0.000000184 sec
+gPTP$ DEBUG$ *** Sent PDelay Request message
+gPTP$ DEBUG$ Schedule PDELAY_RESP_RECEIPT_TIMEOUT_EXPIRES, PDelay interval 0, timeout 3000000000
+gPTP$ DEBUG$ *** Received PDelay Response message, Timestamp 6579 (sec) 876248570 (ns), seqID 3
+gPTP$ DEBUG$ RX PHY compensation: 0 0.000000382 sec
+gPTP$ DEBUG$ *** Received PDelay Response FollowUp message
+gPTP$ DEBUG$ Link delay: 1511691 ns
+gPTP$ DEBUG$ SYNC receipt timeout
+gPTP$ DEBUG$ *** Received PDelay Request message
+gPTP$ DEBUG$ RX PHY compensation: 0 0.000000382 sec
+gPTP$ DEBUG$ Process PDelay Request SeqId: 0	
+gPTP$ DEBUG$ TX PHY compensation: 0 0.000000184 sec
+gPTP$ DEBUG$ *** Sent PDelay Response message
+gPTP$ DEBUG$ *** Sent PDelay Response FollowUp message
+gPTP$ DEBUG$ SYNC receipt timeout
+gPTP$ DEBUG$ SYNC receipt timeout
+gPTP$ DEBUG$ PDELAY_INTERVAL_TIMEOUT_EXPIRES occured
+gPTP$ DEBUG$ case PDELAY_INTERVAL_TIMEOUT_EXPIRES:
+gPTP$ DEBUG$ automotive_profile : YES
+gPTP$ DEBUG$ getPortState() == 9
+gPTP$ DEBUG$ TX PHY compensation: 0 0.000000184 sec
+gPTP$ DEBUG$ *** Sent PDelay Request message
+gPTP$ DEBUG$ Schedule PDELAY_RESP_RECEIPT_TIMEOUT_EXPIRES, PDelay interval 0, timeout 3000000000
+gPTP$ DEBUG$ *** Received PDelay Response message, Timestamp 6580 (sec) 888522440 (ns), seqID 4
+gPTP$ DEBUG$ RX PHY compensation: 0 0.000000382 sec
+gPTP$ DEBUG$ *** Received message with unsupported transportSpecific type=0
+gPTP$ DEBUG$ Discarding invalid message
+gPTP$ DEBUG$ *** Received PDelay Response FollowUp message
+gPTP$ DEBUG$ Link delay: 1499444 ns
+gPTP$ DEBUG$ *** Received message with unsupported transportSpecific type=0
+gPTP$ DEBUG$ Discarding invalid message
+gPTP$ DEBUG$ SYNC receipt timeout
+gPTP$ DEBUG$ *** Received PDelay Request message
+gPTP$ DEBUG$ RX PHY compensation: 0 0.000000382 sec
+gPTP$ DEBUG$ Process PDelay Request SeqId: 11	
+gPTP$ DEBUG$ TX PHY compensation: 0 0.000000184 sec
+gPTP$ DEBUG$ *** Sent PDelay Response message
+gPTP$ DEBUG$ *** Sent PDelay Response FollowUp message
+gPTP$ DEBUG$ SYNC receipt timeout
+gPTP$ DEBUG$ SYNC receipt timeout
+gPTP$ DEBUG$ PDELAY_INTERVAL_TIMEOUT_EXPIRES occured
+gPTP$ DEBUG$ case PDELAY_INTERVAL_TIMEOUT_EXPIRES:
+gPTP$ DEBUG$ automotive_profile : YES
+gPTP$ DEBUG$ getPortState() == 9
+gPTP$ DEBUG$ TX PHY compensation: 0 0.000000184 sec
+gPTP$ DEBUG$ *** Sent PDelay Request message
+gPTP$ DEBUG$ Schedule PDELAY_RESP_RECEIPT_TIMEOUT_EXPIRES, PDelay interval 0, timeout 3000000000
+gPTP$ DEBUG$ *** Received PDelay Response message, Timestamp 6581 (sec) 905651100 (ns), seqID 5
+gPTP$ DEBUG$ RX PHY compensation: 0 0.000000382 sec
+gPTP$ DEBUG$ *** Received message with unsupported transportSpecific type=0
+gPTP$ DEBUG$ Discarding invalid message
+gPTP$ DEBUG$ *** Received PDelay Response FollowUp message
+gPTP$ DEBUG$ Link delay: 1575012 ns
+gPTP$ DEBUG$ *** Received message with unsupported transportSpecific type=0
+gPTP$ DEBUG$ Discarding invalid message
+gPTP$ DEBUG$ SYNC receipt timeout
+gPTP$ DEBUG$ *** Received PDelay Request message
+gPTP$ DEBUG$ RX PHY compensation: 0 0.000000382 sec
+gPTP$ DEBUG$ Process PDelay Request SeqId: 12	
+gPTP$ DEBUG$ TX PHY compensation: 0 0.000000184 sec
+gPTP$ DEBUG$ *** Sent PDelay Response message
+gPTP$ DEBUG$ *** Sent PDelay Response FollowUp message
+gPTP$ DEBUG$ SYNC receipt timeout
+gPTP$ DEBUG$ PDELAY_INTERVAL_TIMEOUT_EXPIRES occured
+gPTP$ DEBUG$ case PDELAY_INTERVAL_TIMEOUT_EXPIRES:
+gPTP$ DEBUG$ automotive_profile : YES
+gPTP$ DEBUG$ getPortState() == 9
+gPTP$ DEBUG$ TX PHY compensation: 0 0.000000184 sec
+gPTP$ DEBUG$ *** Sent PDelay Request message
+gPTP$ DEBUG$ Schedule PDELAY_RESP_RECEIPT_TIMEOUT_EXPIRES, PDelay interval 0, timeout 3000000000
+gPTP$ DEBUG$ *** Received message with unsupported transportSpecific type=0
+gPTP$ DEBUG$ Discarding invalid message
+gPTP$ DEBUG$ *** Received PDelay Response message, Timestamp 6582 (sec) 925014500 (ns), seqID 6
+gPTP$ DEBUG$ RX PHY compensation: 0 0.000000382 sec
+gPTP$ DEBUG$ *** Received message with unsupported transportSpecific type=0
+gPTP$ DEBUG$ Discarding invalid message
+gPTP$ DEBUG$ *** Received PDelay Response FollowUp message
+gPTP$ DEBUG$ Link delay: 1648711 ns
+gPTP$ DEBUG$ SYNC receipt timeout
+gPTP$ DEBUG$ *** Received PDelay Request message
+gPTP$ DEBUG$ RX PHY compensation: 0 0.000000382 sec
+gPTP$ DEBUG$ Process PDelay Request SeqId: 13	
+gPTP$ DEBUG$ TX PHY compensation: 0 0.000000184 sec
+gPTP$ DEBUG$ *** Sent PDelay Response message
+gPTP$ DEBUG$ *** Sent PDelay Response FollowUp message
+gPTP$ DEBUG$ SYNC receipt timeout
+gPTP$ DEBUG$ SYNC receipt timeout
+gPTP$ DEBUG$ PDELAY_INTERVAL_TIMEOUT_EXPIRES occured
+gPTP$ DEBUG$ case PDELAY_INTERVAL_TIMEOUT_EXPIRES:
+gPTP$ DEBUG$ automotive_profile : YES
+gPTP$ DEBUG$ getPortState() == 9
+gPTP$ DEBUG$ TX PHY compensation: 0 0.000000184 sec
+gPTP$ DEBUG$ *** Sent PDelay Request message
+gPTP$ DEBUG$ Schedule PDELAY_RESP_RECEIPT_TIMEOUT_EXPIRES, PDelay interval 0, timeout 3000000000
+gPTP$ DEBUG$ *** Received message with unsupported transportSpecific type=0
+gPTP$ DEBUG$ Discarding invalid message
+gPTP$ DEBUG$ *** Received PDelay Response message, Timestamp 6583 (sec) 940708440 (ns), seqID 7
+gPTP$ DEBUG$ RX PHY compensation: 0 0.000000382 sec
+gPTP$ DEBUG$ *** Received message with unsupported transportSpecific type=0
+gPTP$ DEBUG$ Discarding invalid message
+gPTP$ DEBUG$ *** Received PDelay Response FollowUp message
+gPTP$ DEBUG$ Link delay: 1903472 ns
+gPTP$ DEBUG$ SYNC receipt timeout
+gPTP$ DEBUG$ *** Received PDelay Request message
+gPTP$ DEBUG$ RX PHY compensation: 0 0.000000382 sec
+gPTP$ DEBUG$ Process PDelay Request SeqId: 14	
+gPTP$ DEBUG$ TX PHY compensation: 0 0.000000184 sec
+gPTP$ DEBUG$ *** Sent PDelay Response message
+gPTP$ DEBUG$ *** Sent PDelay Response FollowUp message
+gPTP$ DEBUG$ SYNC receipt timeout
+gPTP$ DEBUG$ SYNC receipt timeout
+gPTP$ DEBUG$ PDELAY_INTERVAL_TIMEOUT_EXPIRES occured
+gPTP$ DEBUG$ case PDELAY_INTERVAL_TIMEOUT_EXPIRES:
+gPTP$ DEBUG$ automotive_profile : YES
+gPTP$ DEBUG$ getPortState() == 9
+gPTP$ DEBUG$ TX PHY compensation: 0 0.000000184 sec
+gPTP$ DEBUG$ *** Sent PDelay Request message
+gPTP$ DEBUG$ Schedule PDELAY_RESP_RECEIPT_TIMEOUT_EXPIRES, PDelay interval 0, timeout 3000000000
+gPTP$ DEBUG$ *** Received PDelay Response message, Timestamp 6584 (sec) 956201140 (ns), seqID 8
+gPTP$ DEBUG$ RX PHY compensation: 0 0.000000382 sec
+gPTP$ DEBUG$ *** Received message with unsupported transportSpecific type=0
+gPTP$ DEBUG$ Discarding invalid message
+gPTP$ DEBUG$ *** Received PDelay Response FollowUp message
+gPTP$ DEBUG$ Link delay: 1576390 ns
+gPTP$ DEBUG$ *** Received message with unsupported transportSpecific type=0
+gPTP$ DEBUG$ Discarding invalid message
+gPTP$ DEBUG$ SYNC receipt timeout
+gPTP$ DEBUG$ *** Received PDelay Request message
+gPTP$ DEBUG$ RX PHY compensation: 0 0.000000382 sec
+gPTP$ DEBUG$ Process PDelay Request SeqId: 15	
+gPTP$ DEBUG$ TX PHY compensation: 0 0.000000184 sec
+gPTP$ DEBUG$ *** Sent PDelay Response message
+gPTP$ DEBUG$ *** Sent PDelay Response FollowUp message
+gPTP$ DEBUG$ SYNC receipt timeout
+gPTP$ DEBUG$ SYNC receipt timeout
+gPTP$ DEBUG$ PDELAY_INTERVAL_TIMEOUT_EXPIRES occured
+gPTP$ DEBUG$ case PDELAY_INTERVAL_TIMEOUT_EXPIRES:
+gPTP$ DEBUG$ automotive_profile : YES
+gPTP$ DEBUG$ getPortState() == 9
+gPTP$ DEBUG$ TX PHY compensation: 0 0.000000184 sec
+gPTP$ DEBUG$ *** Sent PDelay Request message
+gPTP$ DEBUG$ Schedule PDELAY_RESP_RECEIPT_TIMEOUT_EXPIRES, PDelay interval 0, timeout 3000000000
+gPTP$ DEBUG$ *** Received PDelay Response message, Timestamp 6585 (sec) 973244940 (ns), seqID 9
+gPTP$ DEBUG$ RX PHY compensation: 0 0.000000382 sec
+gPTP$ DEBUG$ *** Received message with unsupported transportSpecific type=0
+gPTP$ DEBUG$ Discarding invalid message
+gPTP$ DEBUG$ *** Received message with unsupported transportSpecific type=0
+gPTP$ DEBUG$ Discarding invalid message
+gPTP$ DEBUG$ *** Received PDelay Response FollowUp message
+gPTP$ DEBUG$ Link delay: 1629800 ns
+gPTP$ DEBUG$ *** Received PDelay Request message
+gPTP$ DEBUG$ RX PHY compensation: 0 0.000000382 sec
+gPTP$ DEBUG$ Process PDelay Request SeqId: 16	
+gPTP$ DEBUG$ TX PHY compensation: 0 0.000000184 sec
+gPTP$ DEBUG$ *** Sent PDelay Response message
+gPTP$ DEBUG$ *** Sent PDelay Response FollowUp message
+gPTP$ DEBUG$ SYNC receipt timeout
+gPTP$ DEBUG$ SYNC receipt timeout
+gPTP$ DEBUG$ PDELAY_INTERVAL_TIMEOUT_EXPIRES occured
+gPTP$ DEBUG$ case PDELAY_INTERVAL_TIMEOUT_EXPIRES:
+gPTP$ DEBUG$ automotive_profile : YES
+gPTP$ DEBUG$ getPortState() == 9
+gPTP$ DEBUG$ TX PHY compensation: 0 0.000000184 sec
+gPTP$ DEBUG$ *** Sent PDelay Request message
+gPTP$ DEBUG$ Schedule PDELAY_RESP_RECEIPT_TIMEOUT_EXPIRES, PDelay interval 0, timeout 3000000000
+gPTP$ DEBUG$ *** Received PDelay Response message, Timestamp 6586 (sec) 990220010 (ns), seqID 10
+gPTP$ DEBUG$ RX PHY compensation: 0 0.000000382 sec
+gPTP$ DEBUG$ *** Received message with unsupported transportSpecific type=0
+gPTP$ DEBUG$ Discarding invalid message
+gPTP$ DEBUG$ *** Received PDelay Response FollowUp message
+gPTP$ DEBUG$ Link delay: 1613619 ns
+gPTP$ DEBUG$ *** Received message with unsupported transportSpecific type=0
+gPTP$ DEBUG$ Discarding invalid message
+gPTP$ DEBUG$ SYNC receipt timeout
+gPTP$ DEBUG$ *** Received PDelay Request message
+gPTP$ DEBUG$ RX PHY compensation: 0 0.000000382 sec
+gPTP$ DEBUG$ Process PDelay Request SeqId: 17	
+gPTP$ DEBUG$ TX PHY compensation: 0 0.000000184 sec
+gPTP$ DEBUG$ *** Sent PDelay Response message
+gPTP$ DEBUG$ *** Sent PDelay Response FollowUp message
+gPTP$ DEBUG$ SYNC receipt timeout
+gPTP$ DEBUG$ SYNC receipt timeout
+gPTP$ DEBUG$ PDELAY_INTERVAL_TIMEOUT_EXPIRES occured
+gPTP$ DEBUG$ case PDELAY_INTERVAL_TIMEOUT_EXPIRES:
+gPTP$ DEBUG$ automotive_profile : YES
+gPTP$ DEBUG$ getPortState() == 9
+gPTP$ DEBUG$ TX PHY compensation: 0 0.000000184 sec
+gPTP$ DEBUG$ *** Sent PDelay Request message
+gPTP$ DEBUG$ Schedule PDELAY_RESP_RECEIPT_TIMEOUT_EXPIRES, PDelay interval 0, timeout 3000000000
+gPTP$ DEBUG$ *** Received PDelay Response message, Timestamp 6588 (sec) 7134190 (ns), seqID 11
+gPTP$ DEBUG$ RX PHY compensation: 0 0.000000382 sec
+gPTP$ DEBUG$ *** Received message with unsupported transportSpecific type=0
+gPTP$ DEBUG$ Discarding invalid message
+gPTP$ DEBUG$ *** Received PDelay Response FollowUp message
+gPTP$ DEBUG$ Link delay: 1609540 ns
+gPTP$ DEBUG$ *** Received message with unsupported transportSpecific type=0
+gPTP$ DEBUG$ Discarding invalid message
+gPTP$ DEBUG$ SYNC receipt timeout
+gPTP$ DEBUG$ *** Received PDelay Request message
+gPTP$ DEBUG$ RX PHY compensation: 0 0.000000382 sec
+gPTP$ DEBUG$ Process PDelay Request SeqId: 18	
+gPTP$ DEBUG$ TX PHY compensation: 0 0.000000184 sec
+gPTP$ DEBUG$ *** Sent PDelay Response message
+gPTP$ DEBUG$ *** Sent PDelay Response FollowUp message
+gPTP$ DEBUG$ SYNC receipt timeout
+gPTP$ DEBUG$ SYNC receipt timeout
+gPTP$ DEBUG$ PDELAY_INTERVAL_TIMEOUT_EXPIRES occured
+gPTP$ DEBUG$ case PDELAY_INTERVAL_TIMEOUT_EXPIRES:
+gPTP$ DEBUG$ automotive_profile : YES
+gPTP$ DEBUG$ getPortState() == 9
+gPTP$ DEBUG$ TX PHY compensation: 0 0.000000184 sec
+gPTP$ DEBUG$ *** Sent PDelay Request message
+gPTP$ DEBUG$ Schedule PDELAY_RESP_RECEIPT_TIMEOUT_EXPIRES, PDelay interval 0, timeout 3000000000
+gPTP$ DEBUG$ *** Received PDelay Response message, Timestamp 6589 (sec) 24200530 (ns), seqID 12
+gPTP$ DEBUG$ RX PHY compensation: 0 0.000000382 sec
+gPTP$ DEBUG$ *** Received message with unsupported transportSpecific type=0
+gPTP$ DEBUG$ Discarding invalid message
+gPTP$ DEBUG$ *** Received message with unsupported transportSpecific type=0
+gPTP$ DEBUG$ Discarding invalid message
+gPTP$ DEBUG$ *** Received PDelay Response FollowUp message
+gPTP$ DEBUG$ Link delay: 1643137 ns
+gPTP$ DEBUG$ *** Received PDelay Request message
+gPTP$ DEBUG$ RX PHY compensation: 0 0.000000382 sec
+gPTP$ DEBUG$ Process PDelay Request SeqId: 19	
+gPTP$ DEBUG$ TX PHY compensation: 0 0.000000184 sec
+gPTP$ DEBUG$ *** Sent PDelay Response message
+gPTP$ DEBUG$ *** Sent PDelay Response FollowUp message
+gPTP$ DEBUG$ SYNC receipt timeout
+gPTP$ DEBUG$ SYNC receipt timeout
+gPTP$ DEBUG$ PDELAY_INTERVAL_TIMEOUT_EXPIRES occured
+gPTP$ DEBUG$ case PDELAY_INTERVAL_TIMEOUT_EXPIRES:
+gPTP$ DEBUG$ automotive_profile : YES
+gPTP$ DEBUG$ getPortState() == 9
+gPTP$ DEBUG$ TX PHY compensation: 0 0.000000184 sec
+gPTP$ DEBUG$ *** Sent PDelay Request message
+gPTP$ DEBUG$ Schedule PDELAY_RESP_RECEIPT_TIMEOUT_EXPIRES, PDelay interval 0, timeout 3000000000
+gPTP$ DEBUG$ *** Received message with unsupported transportSpecific type=0
+gPTP$ DEBUG$ Discarding invalid message
+gPTP$ DEBUG$ *** Received message with unsupported transportSpecific type=0
+gPTP$ DEBUG$ Discarding invalid message
+gPTP$ DEBUG$ SYNC receipt timeout
+gPTP$ DEBUG$ SYNC receipt timeout
+gPTP$ DEBUG$ SYNC receipt timeout
+gPTP$ DEBUG$ PDELAY_INTERVAL_TIMEOUT_EXPIRES occured
+gPTP$ DEBUG$ case PDELAY_INTERVAL_TIMEOUT_EXPIRES:
+gPTP$ DEBUG$ automotive_profile : YES
+gPTP$ DEBUG$ getPortState() == 9
+gPTP$ DEBUG$ TX PHY compensation: 0 0.000000184 sec
+gPTP$ DEBUG$ *** Sent PDelay Request message
+gPTP$ DEBUG$ Schedule PDELAY_RESP_RECEIPT_TIMEOUT_EXPIRES, PDelay interval 0, timeout 3000000000
+gPTP$ DEBUG$ *** Received message with unsupported transportSpecific type=0
+gPTP$ DEBUG$ Discarding invalid message
+gPTP$ DEBUG$ *** Received message with unsupported transportSpecific type=0
+gPTP$ DEBUG$ Discarding invalid message
+gPTP$ DEBUG$ SYNC receipt timeout
+gPTP$ DEBUG$ SYNC receipt timeout
+gPTP$ DEBUG$ SYNC receipt timeout
+gPTP$ DEBUG$ PDELAY_INTERVAL_TIMEOUT_EXPIRES occured
+gPTP$ DEBUG$ case PDELAY_INTERVAL_TIMEOUT_EXPIRES:
+gPTP$ DEBUG$ automotive_profile : YES
+gPTP$ DEBUG$ getPortState() == 9
+gPTP$ DEBUG$ TX PHY compensation: 0 0.000000184 sec
+gPTP$ DEBUG$ *** Sent PDelay Request message
+gPTP$ DEBUG$ Schedule PDELAY_RESP_RECEIPT_TIMEOUT_EXPIRES, PDelay interval 0, timeout 3000000000
+gPTP$ DEBUG$ SYNC receipt timeout
+gPTP$ DEBUG$ SYNC receipt timeout
+gPTP$ DEBUG$ PDELAY_INTERVAL_TIMEOUT_EXPIRES occured
+gPTP$ DEBUG$ case PDELAY_INTERVAL_TIMEOUT_EXPIRES:
+gPTP$ DEBUG$ automotive_profile : YES
+gPTP$ DEBUG$ getPortState() == 9
+gPTP$ DEBUG$ TX PHY compensation: 0 0.000000184 sec
+gPTP$ DEBUG$ *** Sent PDelay Request message
+gPTP$ DEBUG$ Schedule PDELAY_RESP_RECEIPT_TIMEOUT_EXPIRES, PDelay interval 0, timeout 3000000000
+gPTP$ DEBUG$ SYNC receipt timeout
+gPTP$ DEBUG$ SYNC receipt timeout
+gPTP$ DEBUG$ SYNC receipt timeout
+gPTP$ DEBUG$ PDELAY_INTERVAL_TIMEOUT_EXPIRES occured
+gPTP$ DEBUG$ case PDELAY_INTERVAL_TIMEOUT_EXPIRES:
+gPTP$ DEBUG$ automotive_profile : YES
+gPTP$ DEBUG$ getPortState() == 9
+gPTP$ DEBUG$ TX PHY compensation: 0 0.000000184 sec
+gPTP$ DEBUG$ *** Sent PDelay Request message
+gPTP$ DEBUG$ Schedule PDELAY_RESP_RECEIPT_TIMEOUT_EXPIRES, PDelay interval 0, timeout 3000000000
+gPTP$ DEBUG$ SYNC receipt timeout
+gPTP$ DEBUG$ SYNC receipt timeout
+gPTP$ DEBUG$ SYNC receipt timeout
+gPTP$ DEBUG$ PDELAY_INTERVAL_TIMEOUT_EXPIRES occured
+gPTP$ DEBUG$ case PDELAY_INTERVAL_TIMEOUT_EXPIRES:
+gPTP$ DEBUG$ automotive_profile : YES
+gPTP$ DEBUG$ getPortState() == 9
+gPTP$ DEBUG$ TX PHY compensation: 0 0.000000184 sec
+gPTP$ DEBUG$ *** Sent PDelay Request message
+gPTP$ DEBUG$ Schedule PDELAY_RESP_RECEIPT_TIMEOUT_EXPIRES, PDelay interval 0, timeout 3000000000
+gPTP$ DEBUG$ SYNC receipt timeout
+gPTP$ DEBUG$ SYNC receipt timeout
+gPTP$ DEBUG$ SYNC receipt timeout
+gPTP$ DEBUG$ PDELAY_INTERVAL_TIMEOUT_EXPIRES occured
+gPTP$ DEBUG$ case PDELAY_INTERVAL_TIMEOUT_EXPIRES:
+gPTP$ DEBUG$ automotive_profile : YES
+gPTP$ DEBUG$ getPortState() == 9
+gPTP$ DEBUG$ TX PHY compensation: 0 0.000000184 sec
+gPTP$ DEBUG$ *** Sent PDelay Request message
+gPTP$ DEBUG$ Schedule PDELAY_RESP_RECEIPT_TIMEOUT_EXPIRES, PDelay interval 0, timeout 3000000000
+gPTP$ DEBUG$ *** Received PDelay Response message, Timestamp 6596 (sec) 102445460 (ns), seqID 19
+gPTP$ DEBUG$ RX PHY compensation: 0 0.000000382 sec
+gPTP$ DEBUG$ *** Received PDelay Response FollowUp message
+gPTP$ DEBUG$ Link delay: 1413113 ns
+gPTP$ DEBUG$ *** Received PDelay Request message
+gPTP$ DEBUG$ RX PHY compensation: 0 0.000000382 sec
+gPTP$ DEBUG$ Process PDelay Request SeqId: 0	
+gPTP$ DEBUG$ TX PHY compensation: 0 0.000000184 sec
+gPTP$ DEBUG$ *** Sent PDelay Response message
+gPTP$ DEBUG$ *** Sent PDelay Response FollowUp message
+gPTP$ DEBUG$ SYNC receipt timeout
+gPTP$ DEBUG$ SYNC receipt timeout
+gPTP$ DEBUG$ PDELAY_INTERVAL_TIMEOUT_EXPIRES occured
+gPTP$ DEBUG$ case PDELAY_INTERVAL_TIMEOUT_EXPIRES:
+gPTP$ DEBUG$ automotive_profile : YES
+gPTP$ DEBUG$ getPortState() == 9
+gPTP$ DEBUG$ TX PHY compensation: 0 0.000000184 sec
+gPTP$ DEBUG$ *** Sent PDelay Request message
+gPTP$ DEBUG$ Schedule PDELAY_RESP_RECEIPT_TIMEOUT_EXPIRES, PDelay interval 0, timeout 3000000000
+gPTP$ DEBUG$ *** Received message with unsupported transportSpecific type=2
+gPTP$ DEBUG$ Discarding invalid message
+gPTP$ DEBUG$ *** Received PDelay Response message, Timestamp 6597 (sec) 107430840 (ns), seqID 20
+gPTP$ DEBUG$ RX PHY compensation: 0 0.000000382 sec
+gPTP$ DEBUG$ *** Received message with unsupported transportSpecific type=2
+gPTP$ DEBUG$ Discarding invalid message
+gPTP$ DEBUG$ *** Received PDelay Response FollowUp message
+gPTP$ DEBUG$ Link delay: 1387396 ns
+gPTP$ DEBUG$ *** Received PDelay Request message
+gPTP$ DEBUG$ RX PHY compensation: 0 0.000000382 sec
+gPTP$ DEBUG$ Process PDelay Request SeqId: 11	
+gPTP$ DEBUG$ TX PHY compensation: 0 0.000000184 sec
+gPTP$ DEBUG$ *** Sent PDelay Response message
+gPTP$ DEBUG$ *** Sent PDelay Response FollowUp message
+gPTP$ DEBUG$ SYNC receipt timeout
+gPTP$ DEBUG$ SYNC receipt timeout
+gPTP$ DEBUG$ SYNC receipt timeout
+gPTP$ DEBUG$ PDELAY_INTERVAL_TIMEOUT_EXPIRES occured
+gPTP$ DEBUG$ case PDELAY_INTERVAL_TIMEOUT_EXPIRES:
+gPTP$ DEBUG$ automotive_profile : YES
+gPTP$ DEBUG$ getPortState() == 9
+gPTP$ DEBUG$ TX PHY compensation: 0 0.000000184 sec
+gPTP$ DEBUG$ *** Sent PDelay Request message
+gPTP$ DEBUG$ Schedule PDELAY_RESP_RECEIPT_TIMEOUT_EXPIRES, PDelay interval 0, timeout 3000000000
+gPTP$ DEBUG$ *** Received PDelay Response message, Timestamp 6598 (sec) 124499030 (ns), seqID 21
+gPTP$ DEBUG$ RX PHY compensation: 0 0.000000382 sec
+gPTP$ DEBUG$ *** Received message with unsupported transportSpecific type=2
+gPTP$ DEBUG$ Discarding invalid message
+gPTP$ DEBUG$ *** Received PDelay Response FollowUp message
+gPTP$ DEBUG$ Link delay: 1586620 ns
+gPTP$ DEBUG$ *** Received message with unsupported transportSpecific type=2
+gPTP$ DEBUG$ Discarding invalid message
+gPTP$ DEBUG$ *** Received PDelay Request message
+gPTP$ DEBUG$ RX PHY compensation: 0 0.000000382 sec
+gPTP$ DEBUG$ Process PDelay Request SeqId: 12	
+gPTP$ DEBUG$ TX PHY compensation: 0 0.000000184 sec
+gPTP$ DEBUG$ *** Sent PDelay Response message
+gPTP$ DEBUG$ *** Sent PDelay Response FollowUp message
+gPTP$ DEBUG$ SYNC receipt timeout
+gPTP$ DEBUG$ SYNC receipt timeout
+gPTP$ DEBUG$ SYNC receipt timeout
+gPTP$ DEBUG$ PDELAY_INTERVAL_TIMEOUT_EXPIRES occured
+gPTP$ DEBUG$ case PDELAY_INTERVAL_TIMEOUT_EXPIRES:
+gPTP$ DEBUG$ automotive_profile : YES
+gPTP$ DEBUG$ getPortState() == 9
+gPTP$ DEBUG$ TX PHY compensation: 0 0.000000184 sec
+gPTP$ DEBUG$ *** Sent PDelay Request message
+gPTP$ DEBUG$ Schedule PDELAY_RESP_RECEIPT_TIMEOUT_EXPIRES, PDelay interval 0, timeout 3000000000
+gPTP$ DEBUG$ *** Received message with unsupported transportSpecific type=2
+gPTP$ DEBUG$ Discarding invalid message
+gPTP$ DEBUG$ *** Received PDelay Response message, Timestamp 6599 (sec) 139305580 (ns), seqID 22
+gPTP$ DEBUG$ RX PHY compensation: 0 0.000000382 sec
+gPTP$ DEBUG$ *** Received message with unsupported transportSpecific type=2
+gPTP$ DEBUG$ Discarding invalid message
+gPTP$ DEBUG$ *** Received PDelay Response FollowUp message
+gPTP$ DEBUG$ Link delay: 1937720 ns
+gPTP$ DEBUG$ *** Received PDelay Request message
+gPTP$ DEBUG$ RX PHY compensation: 0 0.000000382 sec
+gPTP$ DEBUG$ Process PDelay Request SeqId: 13	
+gPTP$ DEBUG$ TX PHY compensation: 0 0.000000184 sec
+gPTP$ DEBUG$ *** Sent PDelay Response message
+gPTP$ DEBUG$ *** Sent PDelay Response FollowUp message
+gPTP$ DEBUG$ SYNC receipt timeout
+gPTP$ DEBUG$ SYNC receipt timeout
+gPTP$ DEBUG$ PDELAY_INTERVAL_TIMEOUT_EXPIRES occured
+gPTP$ DEBUG$ case PDELAY_INTERVAL_TIMEOUT_EXPIRES:
+gPTP$ DEBUG$ automotive_profile : YES
+gPTP$ DEBUG$ getPortState() == 9
+gPTP$ DEBUG$ TX PHY compensation: 0 0.000000184 sec
+gPTP$ DEBUG$ *** Sent PDelay Request message
+gPTP$ DEBUG$ Schedule PDELAY_RESP_RECEIPT_TIMEOUT_EXPIRES, PDelay interval 0, timeout 3000000000
+gPTP$ DEBUG$ *** Received PDelay Response message, Timestamp 6600 (sec) 154932170 (ns), seqID 23
+gPTP$ DEBUG$ RX PHY compensation: 0 0.000000382 sec
+gPTP$ DEBUG$ *** Received PDelay Response FollowUp message
+gPTP$ DEBUG$ Link delay: 1574095 ns
+gPTP$ DEBUG$ *** Received message with unsupported transportSpecific type=2
+gPTP$ DEBUG$ Discarding invalid message
+gPTP$ DEBUG$ *** Received message with unsupported transportSpecific type=2
+gPTP$ DEBUG$ Discarding invalid message
+gPTP$ DEBUG$ *** Received PDelay Request message
+gPTP$ DEBUG$ RX PHY compensation: 0 0.000000382 sec
+gPTP$ DEBUG$ Process PDelay Request SeqId: 14	
+gPTP$ DEBUG$ TX PHY compensation: 0 0.000000184 sec
+gPTP$ DEBUG$ *** Sent PDelay Response message
+gPTP$ DEBUG$ *** Sent PDelay Response FollowUp message
+gPTP$ DEBUG$ SYNC receipt timeout
+gPTP$ DEBUG$ SYNC receipt timeout
+gPTP$ DEBUG$ SYNC receipt timeout
+gPTP$ DEBUG$ PDELAY_INTERVAL_TIMEOUT_EXPIRES occured
+gPTP$ DEBUG$ case PDELAY_INTERVAL_TIMEOUT_EXPIRES:
+gPTP$ DEBUG$ automotive_profile : YES
+gPTP$ DEBUG$ getPortState() == 9
+gPTP$ DEBUG$ TX PHY compensation: 0 0.000000184 sec
+gPTP$ DEBUG$ *** Sent PDelay Request message
+gPTP$ DEBUG$ Schedule PDELAY_RESP_RECEIPT_TIMEOUT_EXPIRES, PDelay interval 0, timeout 3000000000
+gPTP$ DEBUG$ *** Received message with unsupported transportSpecific type=2
+gPTP$ DEBUG$ Discarding invalid message
+gPTP$ DEBUG$ *** Received PDelay Response message, Timestamp 6601 (sec) 173435300 (ns), seqID 24
+gPTP$ DEBUG$ RX PHY compensation: 0 0.000000382 sec
+gPTP$ DEBUG$ *** Received message with unsupported transportSpecific type=2
+gPTP$ DEBUG$ Discarding invalid message
+gPTP$ DEBUG$ *** Received PDelay Response FollowUp message
+gPTP$ DEBUG$ Link delay: 2096115 ns
+gPTP$ DEBUG$ *** Received PDelay Request message
+gPTP$ DEBUG$ RX PHY compensation: 0 0.000000382 sec
+gPTP$ DEBUG$ Process PDelay Request SeqId: 15	
+gPTP$ DEBUG$ TX PHY compensation: 0 0.000000184 sec
+gPTP$ DEBUG$ *** Sent PDelay Response message
+gPTP$ DEBUG$ *** Sent PDelay Response FollowUp message
+gPTP$ DEBUG$ SYNC receipt timeout
+gPTP$ DEBUG$ SYNC receipt timeout
+gPTP$ DEBUG$ SYNC receipt timeout
+gPTP$ DEBUG$ PDELAY_INTERVAL_TIMEOUT_EXPIRES occured
+gPTP$ DEBUG$ case PDELAY_INTERVAL_TIMEOUT_EXPIRES:
+gPTP$ DEBUG$ automotive_profile : YES
+gPTP$ DEBUG$ getPortState() == 9
+gPTP$ DEBUG$ TX PHY compensation: 0 0.000000184 sec
+gPTP$ DEBUG$ *** Sent PDelay Request message
+gPTP$ DEBUG$ Schedule PDELAY_RESP_RECEIPT_TIMEOUT_EXPIRES, PDelay interval 0, timeout 3000000000
+gPTP$ DEBUG$ *** Received PDelay Request message
+gPTP$ DEBUG$ RX PHY compensation: 0 0.000000382 sec
+gPTP$ DEBUG$ Process PDelay Request SeqId: 16	
+gPTP$ DEBUG$ TX PHY compensation: 0 0.000000184 sec
+gPTP$ DEBUG$ *** Sent PDelay Response message
+gPTP$ DEBUG$ *** Sent PDelay Response FollowUp message
+gPTP$ DEBUG$ *** Received PDelay Response message, Timestamp 6602 (sec) 188242570 (ns), seqID 25
+gPTP$ DEBUG$ RX PHY compensation: 0 0.000000382 sec
+gPTP$ DEBUG$ *** Received message with unsupported transportSpecific type=2
+gPTP$ DEBUG$ Discarding invalid message
+gPTP$ DEBUG$ *** Received PDelay Response FollowUp message
+gPTP$ DEBUG$ Link delay: 1425427 ns
+gPTP$ DEBUG$ *** Received message with unsupported transportSpecific type=2
+gPTP$ DEBUG$ Discarding invalid message
+gPTP$ DEBUG$ SYNC receipt timeout
+gPTP$ DEBUG$ SYNC receipt timeout
+gPTP$ DEBUG$ PDELAY_INTERVAL_TIMEOUT_EXPIRES occured
+gPTP$ DEBUG$ case PDELAY_INTERVAL_TIMEOUT_EXPIRES:
+gPTP$ DEBUG$ automotive_profile : YES
+gPTP$ DEBUG$ getPortState() == 9
+gPTP$ DEBUG$ TX PHY compensation: 0 0.000000184 sec
+gPTP$ DEBUG$ *** Sent PDelay Request message
+gPTP$ DEBUG$ *** Received PDelay Request message
+gPTP$ DEBUG$ Schedule PDELAY_RESP_RECEIPT_TIMEOUT_EXPIRES, PDelay interval 0, timeout 3000000000gPTP$ DEBUG$ RX PHY compensation: 0 0.000000382 sec
+
+gPTP$ DEBUG$ Process PDelay Request SeqId: 17	
+gPTP$ DEBUG$ TX PHY compensation: 0 0.000000184 sec
+gPTP$ DEBUG$ *** Sent PDelay Response message
+gPTP$ DEBUG$ *** Sent PDelay Response FollowUp message
+gPTP$ DEBUG$ *** Received message with unsupported transportSpecific type=2
+gPTP$ DEBUG$ Discarding invalid message
+gPTP$ DEBUG$ *** Received PDelay Response message, Timestamp 6603 (sec) 196868900 (ns), seqID 26
+gPTP$ DEBUG$ RX PHY compensation: 0 0.000000382 sec
+gPTP$ DEBUG$ *** Received message with unsupported transportSpecific type=2
+gPTP$ DEBUG$ Discarding invalid message
+gPTP$ DEBUG$ SYNC receipt timeout
+gPTP$ DEBUG$ *** Received PDelay Response FollowUp message
+gPTP$ DEBUG$ Link delay: 2647810 ns
+gPTP$ DEBUG$ SYNC receipt timeout
+gPTP$ DEBUG$ SYNC receipt timeout
+gPTP$ DEBUG$ PDELAY_INTERVAL_TIMEOUT_EXPIRES occured
+gPTP$ DEBUG$ case PDELAY_INTERVAL_TIMEOUT_EXPIRES:
+gPTP$ DEBUG$ automotive_profile : YES
+gPTP$ DEBUG$ getPortState() == 9
+gPTP$ DEBUG$ *** Received PDelay Request message
+gPTP$ DEBUG$ RX PHY compensation: 0 0.000000382 sec
+gPTP$ DEBUG$ Process PDelay Request SeqId: 18	
+gPTP$ DEBUG$ TX PHY compensation: 0 0.000000184 sec
+gPTP$ DEBUG$ *** Sent PDelay Request message
+gPTP$ DEBUG$ Schedule PDELAY_RESP_RECEIPT_TIMEOUT_EXPIRES, PDelay interval 0, timeout 3000000000
+gPTP$ DEBUG$ TX PHY compensation: 0 0.000000184 sec
+gPTP$ DEBUG$ *** Sent PDelay Response message
+gPTP$ DEBUG$ *** Sent PDelay Response FollowUp message
+gPTP$ DEBUG$ *** Received message with unsupported transportSpecific type=2
+gPTP$ DEBUG$ Discarding invalid message
+gPTP$ DEBUG$ *** Received PDelay Response message, Timestamp 6604 (sec) 196065590 (ns), seqID 27
+gPTP$ DEBUG$ RX PHY compensation: 0 0.000000382 sec
+gPTP$ DEBUG$ *** Received message with unsupported transportSpecific type=2
+gPTP$ DEBUG$ Discarding invalid message
+gPTP$ DEBUG$ *** Received PDelay Response FollowUp message
+gPTP$ DEBUG$ Link delay: 1582547 ns
+gPTP$ DEBUG$ SYNC receipt timeout
+gPTP$ DEBUG$ SYNC receipt timeout
+gPTP$ DEBUG$ SYNC receipt timeout
+gPTP$ DEBUG$ *** Received PDelay Request message
+gPTP$ DEBUG$ RX PHY compensation: 0 0.000000382 sec
+gPTP$ DEBUG$ Process PDelay Request SeqId: 19	
+gPTP$ DEBUG$ PDELAY_INTERVAL_TIMEOUT_EXPIRES occured
+gPTP$ DEBUG$ case PDELAY_INTERVAL_TIMEOUT_EXPIRES:
+gPTP$ DEBUG$ automotive_profile : YES
+gPTP$ DEBUG$ getPortState() == 9
+gPTP$ DEBUG$ TX PHY compensation: 0 0.000000184 sec
+gPTP$ DEBUG$ *** Sent PDelay Response message
+gPTP$ DEBUG$ *** Sent PDelay Response FollowUp message
+gPTP$ DEBUG$ TX PHY compensation: 0 0.000000184 sec
+gPTP$ DEBUG$ *** Sent PDelay Request message
+gPTP$ DEBUG$ Schedule PDELAY_RESP_RECEIPT_TIMEOUT_EXPIRES, PDelay interval 0, timeout 3000000000
+gPTP$ DEBUG$ *** Received message with unsupported transportSpecific type=2
+gPTP$ DEBUG$ Discarding invalid message
+gPTP$ DEBUG$ *** Received PDelay Response message, Timestamp 6605 (sec) 201283580 (ns), seqID 28
+gPTP$ DEBUG$ RX PHY compensation: 0 0.000000382 sec
+gPTP$ DEBUG$ *** Received message with unsupported transportSpecific type=2
+gPTP$ DEBUG$ Discarding invalid message
+gPTP$ DEBUG$ *** Received PDelay Response FollowUp message
+gPTP$ DEBUG$ Link delay: 2395158 ns
+gPTP$ DEBUG$ SYNC receipt timeout
+gPTP$ DEBUG$ SYNC receipt timeout
+gPTP$ DEBUG$ PDELAY_INTERVAL_TIMEOUT_EXPIRES occured
+gPTP$ DEBUG$ case PDELAY_INTERVAL_TIMEOUT_EXPIRES:
+gPTP$ DEBUG$ automotive_profile : YES
+gPTP$ DEBUG$ getPortState() == 9
+gPTP$ DEBUG$ TX PHY compensation: 0 0.000000184 sec
+gPTP$ DEBUG$ *** Sent PDelay Request message
+gPTP$ DEBUG$ Schedule PDELAY_RESP_RECEIPT_TIMEOUT_EXPIRES, PDelay interval 0, timeout 3000000000
+gPTP$ DEBUG$ SYNC receipt timeout
+gPTP$ DEBUG$ *** Received message with unsupported transportSpecific type=2
+gPTP$ DEBUG$ Discarding invalid message
+gPTP$ DEBUG$ *** Received PDelay Response message, Timestamp 6606 (sec) 206797610 (ns), seqID 29
+gPTP$ DEBUG$ RX PHY compensation: 0 0.000000382 sec
+gPTP$ DEBUG$ *** Received message with unsupported transportSpecific type=2
+gPTP$ DEBUG$ Discarding invalid message
+gPTP$ DEBUG$ *** Received PDelay Response FollowUp message
+gPTP$ DEBUG$ Link delay: 1837333 ns
+gPTP$ DEBUG$ SYNC receipt timeout
+gPTP$ DEBUG$ SYNC receipt timeout
+gPTP$ DEBUG$ PDELAY_INTERVAL_TIMEOUT_EXPIRES occured
+gPTP$ DEBUG$ case PDELAY_INTERVAL_TIMEOUT_EXPIRES:
+gPTP$ DEBUG$ automotive_profile : YES
+gPTP$ DEBUG$ getPortState() == 9
+gPTP$ DEBUG$ TX PHY compensation: 0 0.000000184 sec
+gPTP$ DEBUG$ *** Sent PDelay Request message
+gPTP$ DEBUG$ Schedule PDELAY_RESP_RECEIPT_TIMEOUT_EXPIRES, PDelay interval 0, timeout 3000000000
+gPTP$ DEBUG$ *** Received PDelay Response message, Timestamp 6607 (sec) 213810990 (ns), seqID 30
+gPTP$ DEBUG$ RX PHY compensation: 0 0.000000382 sec
+gPTP$ DEBUG$ *** Received message with unsupported transportSpecific type=2
+gPTP$ DEBUG$ Discarding invalid message
+gPTP$ DEBUG$ *** Received PDelay Response FollowUp message
+gPTP$ DEBUG$ Link delay: 1589341 ns
+gPTP$ DEBUG$ *** Received message with unsupported transportSpecific type=2
+gPTP$ DEBUG$ Discarding invalid message
+gPTP$ DEBUG$ SYNC receipt timeout
+gPTP$ DEBUG$ SYNC receipt timeout
+gPTP$ DEBUG$ SYNC receipt timeout
+gPTP$ DEBUG$ PDELAY_INTERVAL_TIMEOUT_EXPIRES occured
+gPTP$ DEBUG$ case PDELAY_INTERVAL_TIMEOUT_EXPIRES:
+gPTP$ DEBUG$ automotive_profile : YES
+gPTP$ DEBUG$ getPortState() == 9
+gPTP$ DEBUG$ TX PHY compensation: 0 0.000000184 sec
+gPTP$ DEBUG$ *** Sent PDelay Request message
+gPTP$ DEBUG$ Schedule PDELAY_RESP_RECEIPT_TIMEOUT_EXPIRES, PDelay interval 0, timeout 3000000000
+gPTP$ DEBUG$ *** Received PDelay Response message, Timestamp 6608 (sec) 217032680 (ns), seqID 31
+gPTP$ DEBUG$ RX PHY compensation: 0 0.000000382 sec
+gPTP$ DEBUG$ *** Received PDelay Response FollowUp message
+gPTP$ DEBUG$ Link delay: 1401638 ns
+gPTP$ DEBUG$ SYNC receipt timeout
+gPTP$ DEBUG$ SYNC receipt timeout
+gPTP$ DEBUG$ SYNC receipt timeout
+gPTP$ DEBUG$ PDELAY_INTERVAL_TIMEOUT_EXPIRES occured
+gPTP$ DEBUG$ case PDELAY_INTERVAL_TIMEOUT_EXPIRES:
+gPTP$ DEBUG$ automotive_profile : YES
+gPTP$ DEBUG$ getPortState() == 9
+gPTP$ DEBUG$ TX PHY compensation: 0 0.000000184 sec
+gPTP$ DEBUG$ *** Sent PDelay Request message
+gPTP$ DEBUG$ Schedule PDELAY_RESP_RECEIPT_TIMEOUT_EXPIRES, PDelay interval 0, timeout 3000000000
+gPTP$ DEBUG$ SYNC receipt timeout
+gPTP$ DEBUG$ SYNC receipt timeout
+gPTP$ DEBUG$ PDELAY_INTERVAL_TIMEOUT_EXPIRES occured
+gPTP$ DEBUG$ case PDELAY_INTERVAL_TIMEOUT_EXPIRES:
+gPTP$ DEBUG$ automotive_profile : YES
+gPTP$ DEBUG$ getPortState() == 9
+gPTP$ DEBUG$ TX PHY compensation: 0 0.000000184 sec
+gPTP$ DEBUG$ *** Sent PDelay Request message
+gPTP$ DEBUG$ Schedule PDELAY_RESP_RECEIPT_TIMEOUT_EXPIRES, PDelay interval 0, timeout 3000000000
+gPTP$ DEBUG$ SYNC receipt timeout
+gPTP$ DEBUG$ SYNC receipt timeout
+gPTP$ DEBUG$ SYNC receipt timeout
+gPTP$ DEBUG$ PDELAY_INTERVAL_TIMEOUT_EXPIRES occured
+gPTP$ DEBUG$ case PDELAY_INTERVAL_TIMEOUT_EXPIRES:
+gPTP$ DEBUG$ automotive_profile : YES
+g

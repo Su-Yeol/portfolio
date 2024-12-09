@@ -1,0 +1,75 @@
+diff --git a/sources/app.sample/app.lpa/master_app/demo_tsnc.c b/sources/app.sample/app.lpa/master_app/demo_tsnc.c
+index 0713493..2cb3a84 100644
+--- a/sources/app.sample/app.lpa/master_app/demo_tsnc.c
++++ b/sources/app.sample/app.lpa/master_app/demo_tsnc.c
+@@ -49,6 +49,7 @@
+ #if (SIC_BSP_SUPPORT_TEST_APP_TPA == 1)
+ #include "rt_tbl.h"
+ #include "demo_tsnc.h"
++#include "core_cm7.h" // 241107 sy.kim
+ 
+ #include "tpa_drv.h"
+ 
+@@ -75,13 +76,15 @@
+ 
+ //static uint8 TSNC_Task_cnt;
+ 
++#define CPU_CLOCK_HZ 600000000 // 241107 sy.kim
++
+ static EthFrame_t ethFrame_tx;
+ static EthFrame_t ethFrame_rx;
+ 
+ static uint16 ethSize;
+ static uint16 rxEthSize;
+ 
+-static uint16 ip_header_sum[9]; // ip header�� 20����Ʈ -> word�� 10, ip checksum ���� 9
++static uint16 ip_header_sum[9]; // ip header�� 20����Ʈ -> word�� 10, ip checksum ���� 9
+ 
+ /*misra_c_2012_rule_8_4_violation:	Object definition does not have a visible prototype.*/
+ static CANMessage_t TSNC_CANMsg;
+@@ -105,6 +108,17 @@ static uint16 cal_checksum(uint16 header[], uint8 arr_size);
+ /**************************************************************************************************
+ *                                             FUNCTIONS
+ **************************************************************************************************/
++// 241107 sy.kim
++void DWT_Init(void) {
++    // DWT CYCCNT 초기화
++    CoreDebug->DEMCR |= CoreDebug_DEMCR_TRCENA_Msk; // DWT 활성화
++    DWT->CYCCNT = 0; // 카운터 초기화
++    DWT->CTRL |= DWT_CTRL_CYCCNTENA_Msk; // 카운터 시작
++}
++uint32_t DWT_GetMicroseconds(void) {
++    return DWT->CYCCNT / (CPU_CLOCK_HZ / 1000000); // 마이크로초 단위 시간 계산
++}
++
+ void TSNC_Init(void)
+ {
+     add_TSNC_routeTable();
+@@ -329,7 +343,13 @@ void cb_tsnc_eth_to_can_cnvt(const TSNC_ETH_DATA *eth_data)
+ 
+         (void*)SAL_MemCopy(TSNC_CANMsg.mData, ethFrame_rx.payload.data, data_length);
+ 
++        // 241106 sy.kim
++        DWT_Init();
++        uint32 start_time = DWT_GetMicroseconds();
+         frm_cnvt_msg_send(TSNC_CANMsg.portNum, TSNC_CANMsg.mFDFormat, TSNC_CANMsg.mExtendedId, TSNC_CANMsg.mId, data_length, TSNC_CANMsg.mData);
++        uint32 end_time = DWT_GetMicroseconds();
++	    uint32 elapsed_time = end_time - start_time;
++	    mcu_printf("ETH to CAN Convert Time: %ld us\n", elapsed_time);
+     }
+     else
+     {
+@@ -474,7 +494,13 @@ void cb_tsnc_can_to_eth_cnvt(const CNVT_CAN_DATA *can_data)
+     mcu_printf("===================================================\n");
+     */
+     /*misra_c_2012_rule_17_7_violation:	The return value of a non-void function "tpa_write" is unused.*/
++    // 241106 sy.kim
++    // gettimeofday(&start, NULL);
+ 	(void)tpa_write((uint8*)&ethFrame_tx, ethSize);
++    // gettimeofday(&end, NULL);
++	// elapsed_time = (end.tv_sec - start.tv_sec) * 1000000L + (end.tv_usec - start.tv_usec);
++	// mcu_printf("CAN to ETH Convert Time: %ld us\n", elapsed_time);
++	
+ #endif
+ }
+ #endif // #if (SIC_BSP_SUPPORT_TEST_APP_TPA == 1)

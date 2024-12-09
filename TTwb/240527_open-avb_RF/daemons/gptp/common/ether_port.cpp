@@ -703,12 +703,13 @@ bool EtherPort::_processEvent(Event e)
 		if (tx_succeed)
 		{
 			Timestamp sync_timestamp = sync->getTimestamp();
-
-			GPTP_LOG_VERBOSE("Successful Sync timestamp");
-			GPTP_LOG_VERBOSE("Seconds: %u",
-							 sync_timestamp.seconds_ls);
-			GPTP_LOG_VERBOSE("Nanoseconds: %u",
-							 sync_timestamp.nanoseconds);
+			// 241126 sy.kim
+			GPTP_LOG_DEBUG("Timestamp: Seconds: %u, Nanoseconds: %u", sync_timestamp.seconds_ls, sync_timestamp.nanoseconds);
+			// GPTP_LOG_VERBOSE("Successful Sync timestamp");
+			// GPTP_LOG_VERBOSE("Seconds: %u",
+			// 				 sync_timestamp.seconds_ls);
+			// GPTP_LOG_VERBOSE("Nanoseconds: %u",
+			// 				 sync_timestamp.nanoseconds);
 
 			PTPMessageFollowUp *follow_up = new PTPMessageFollowUp(this);
 			PortIdentity dest_id;

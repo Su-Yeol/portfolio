@@ -1,0 +1,1191 @@
+gPTP$ DEBUG$ daemon_cl VERSION : May 27 2024 18:41:19
+gPTP$ DEBUG$ Group vnw not found, will try root (0) instead
+gPTP$ DEBUG$ priority1 = 248
+gPTP$ DEBUG$ announceReceiptTimeout: 3
+gPTP$ DEBUG$ syncReceiptTimeout: 3
+gPTP$ DEBUG$ LINKSPEED_100MB - PHY delay
+			TX: 1044 | RX: 2133
+gPTP$ DEBUG$ LINKSPEED_1G - PHY delay
+			TX: 184 | RX: 382
+gPTP$ DEBUG$ neighborPropDelayThresh: 800
+gPTP$ DEBUG$ syncReceiptThreshold: 8
+gPTP$ DEBUG$ initialLogSyncInterval: -3
+gPTP$ DEBUG$ initialLogPdelayReqInterval: 0
+gPTP$ DEBUG$ Configuring port state to Slave
+
+gPTP$ DEBUG$ automotive profile True isGM False
+
+gPTP$ DEBUG$ priority1 248 and priority2 248 clockClass 248 srt 3 art 3
+
+gPTP$ DEBUG$ qtimer_to_mono_offset -- min:5918868000 max:5918868200 new avg: 5918868050 
+gPTP$ DEBUG$ AsCapable: Enabled
+gPTP$ DEBUG$ Using clock device: /dev/ptp0
+gPTP$ DEBUG$ gPTP starting
+gPTP$ DEBUG$ Received POWERUP/INITIALIZE event
+gPTP$ DEBUG$ Switching to Slave
+gPTP$ DEBUG$ EtherPort::startPDelay()
+gPTP$ DEBUG$ automotive_profile : YES
+gPTP$ DEBUG$ getPortState() == 9
+gPTP$ DEBUG$ AVnu AP Status : STATION_STATE_ETHERNET_READY
+gPTP$ DEBUG$ Interface pfe0 is up
+gPTP$ DEBUG$ Link Speed: 1000000 kb/sec
+gPTP$ DEBUG$ SYNC receipt timeout
+gPTP$ DEBUG$ SYNC receipt timeout
+gPTP$ DEBUG$ PDELAY_INTERVAL_TIMEOUT_EXPIRES occured
+gPTP$ DEBUG$ case PDELAY_INTERVAL_TIMEOUT_EXPIRES:
+gPTP$ DEBUG$ automotive_profile : YES
+gPTP$ DEBUG$ getPortState() == 9
+gPTP$ DEBUG$ TX PHY compensation: 0 0.000000184 sec
+gPTP$ DEBUG$ *** Sent PDelay Request message
+gPTP$ DEBUG$ Schedule PDELAY_RESP_RECEIPT_TIMEOUT_EXPIRES, PDelay interval 0, timeout 3000000000
+gPTP$ DEBUG$ *** Received PDelay Response message, Timestamp 472 (sec) 711943498 (ns), seqID 0
+gPTP$ DEBUG$ RX PHY compensation: 0 0.000000382 sec
+gPTP$ DEBUG$ *** Received PDelay Response FollowUp message
+gPTP$ DEBUG$ Link delay: 2029480 ns
+gPTP$ DEBUG$ *** Received Sync message
+gPTP$ DEBUG$ RX PHY compensation: 0 0.000000382 sec
+gPTP$ DEBUG$ *** Received Follow Up message
+gPTP$ DEBUG$ Processing a follow-up message
+gPTP$ DEBUG$ Calculated master to local clock rate difference
+gPTP$ DEBUG$ Calculated local to system clock rate difference
+gPTP$ DEBUG$ phase_error = 0.000000, ppm = 0.000000
+gPTP$ DEBUG$ *** Received Sync message
+gPTP$ DEBUG$ RX PHY compensation: 0 0.000000382 sec
+gPTP$ DEBUG$ *** Received Follow Up message
+gPTP$ DEBUG$ Processing a follow-up message
+gPTP$ DEBUG$ Calculated master to local clock rate difference
+gPTP$ DEBUG$ Calculated local to system clock rate difference
+gPTP$ DEBUG$ Local to system clock ratio (73619357861.830382) exceeding threshold
+gPTP$ DEBUG$ Local to mono clock ratio (73619357861.830382) exceeding threshold
+gPTP$ DEBUG$ phase_error = -98257.000000, ppm = -235.816803
+gPTP$ DEBUG$ AVnu AP Status : STATION_STATE_AVB_SYNC
+gPTP$ DEBUG$ *** Received Sync message
+gPTP$ DEBUG$ RX PHY compensation: 0 0.000000382 sec
+gPTP$ DEBUG$ *** Received Follow Up message
+gPTP$ DEBUG$ Processing a follow-up message
+gPTP$ DEBUG$ Calculated master to local clock rate difference
+gPTP$ DEBUG$ Calculated local to system clock rate difference
+gPTP$ DEBUG$ phase_error = 41342.000000, ppm = 973.143555
+gPTP$ DEBUG$ *** Received Sync message
+gPTP$ DEBUG$ RX PHY compensation: 0 0.000000382 sec
+gPTP$ DEBUG$ *** Received Follow Up message
+gPTP$ DEBUG$ Processing a follow-up message
+gPTP$ DEBUG$ Calculated master to local clock rate difference
+gPTP$ DEBUG$ Calculated local to system clock rate difference
+gPTP$ DEBUG$ phase_error = -3624.000000, ppm = -116.295532
+gPTP$ DEBUG$ *** Received Sync message
+gPTP$ DEBUG$ RX PHY compensation: 0 0.000000382 sec
+gPTP$ DEBUG$ *** Received Follow Up message
+gPTP$ DEBUG$ Processing a follow-up message
+gPTP$ DEBUG$ Calculated master to local clock rate difference
+gPTP$ DEBUG$ Calculated local to system clock rate difference
+gPTP$ DEBUG$ phase_error = -48176.000000, ppm = -586.473145
+gPTP$ DEBUG$ *** Received Sync message
+gPTP$ DEBUG$ RX PHY compensation: 0 0.000000382 sec
+gPTP$ DEBUG$ *** Received Follow Up message
+gPTP$ DEBUG$ Processing a follow-up message
+gPTP$ DEBUG$ Calculated master to local clock rate difference
+gPTP$ DEBUG$ Calculated local to system clock rate difference
+gPTP$ DEBUG$ phase_error = -117848.000000, ppm = -1086.954956
+gPTP$ DEBUG$ *** Received PDelay Request message
+gPTP$ DEBUG$ RX PHY compensation: 0 0.000000382 sec
+gPTP$ DEBUG$ Process PDelay Request SeqId: 0	
+gPTP$ DEBUG$ TX PHY compensation: 0 0.000000184 sec
+gPTP$ DEBUG$ *** Sent PDelay Response message
+gPTP$ DEBUG$ *** Sent PDelay Response FollowUp message
+gPTP$ DEBUG$ *** Received Sync message
+gPTP$ DEBUG$ RX PHY compensation: 0 0.000000382 sec
+gPTP$ DEBUG$ *** Received Follow Up message
+gPTP$ DEBUG$ Processing a follow-up message
+gPTP$ DEBUG$ Calculated master to local clock rate difference
+gPTP$ DEBUG$ Calculated local to system clock rate difference
+gPTP$ DEBUG$ phase_error = -119045.000000, ppm = -545.239563
+gPTP$ DEBUG$ PDELAY_INTERVAL_TIMEOUT_EXPIRES occured
+gPTP$ DEBUG$ case PDELAY_INTERVAL_TIMEOUT_EXPIRES:
+gPTP$ DEBUG$ automotive_profile : YES
+gPTP$ DEBUG$ getPortState() == 9
+gPTP$ DEBUG$ TX PHY compensation: 0 0.000000184 sec
+gPTP$ DEBUG$ *** Sent PDelay Request message
+gPTP$ DEBUG$ Schedule PDELAY_RESP_RECEIPT_TIMEOUT_EXPIRES, PDelay interval 0, timeout 3000000000
+gPTP$ DEBUG$ *** Received PDelay Response message, Timestamp 3 (sec) 706951402 (ns), seqID 1
+gPTP$ DEBUG$ RX PHY compensation: 0 0.000000382 sec
+gPTP$ DEBUG$ *** Received PDelay Response FollowUp message
+gPTP$ DEBUG$ Link delay: 1458302 ns
+gPTP$ DEBUG$ *** Received Sync message
+gPTP$ DEBUG$ RX PHY compensation: 0 0.000000382 sec
+gPTP$ DEBUG$ *** Received Follow Up message
+gPTP$ DEBUG$ Processing a follow-up message
+gPTP$ DEBUG$ Calculated master to local clock rate difference
+gPTP$ DEBUG$ Calculated local to system clock rate difference
+gPTP$ DEBUG$ phase_error = -626630.000000, ppm = -5795.699707
+gPTP$ DEBUG$ *** Received Sync message
+gPTP$ DEBUG$ RX PHY compensation: 0 0.000000382 sec
+gPTP$ DEBUG$ *** Received Follow Up message
+gPTP$ DEBUG$ Processing a follow-up message
+gPTP$ DEBUG$ Calculated master to local clock rate difference
+gPTP$ DEBUG$ Calculated local to system clock rate difference
+gPTP$ DEBUG$ phase_error = -456627.000000, ppm = 8.291290
+gPTP$ DEBUG$ *** Received Sync message
+gPTP$ DEBUG$ RX PHY compensation: 0 0.000000382 sec
+gPTP$ DEBUG$ *** Received Follow Up message
+gPTP$ DEBUG$ Processing a follow-up message
+gPTP$ DEBUG$ Calculated master to local clock rate difference
+gPTP$ DEBUG$ Calculated local to system clock rate difference
+gPTP$ DEBUG$ phase_error = -466574.000000, ppm = -1190.647461
+gPTP$ DEBUG$ *** Received Sync message
+gPTP$ DEBUG$ RX PHY compensation: 0 0.000000382 sec
+gPTP$ DEBUG$ *** Received Follow Up message
+gPTP$ DEBUG$ Processing a follow-up message
+gPTP$ DEBUG$ Calculated master to local clock rate difference
+gPTP$ DEBUG$ Calculated local to system clock rate difference
+gPTP$ DEBUG$ phase_error = -558353.000000, ppm = -2319.647217
+gPTP$ DEBUG$ *** Received Sync message
+gPTP$ DEBUG$ RX PHY compensation: 0 0.000000382 sec
+gPTP$ DEBUG$ *** Received Follow Up message
+gPTP$ DEBUG$ Processing a follow-up message
+gPTP$ DEBUG$ Calculated master to local clock rate difference
+gPTP$ DEBUG$ Calculated local to system clock rate difference
+gPTP$ DEBUG$ phase_error = -465818.000000, ppm = -631.054199
+gPTP$ DEBUG$ *** Received Sync message
+gPTP$ DEBUG$ RX PHY compensation: 0 0.000000382 sec
+gPTP$ DEBUG$ *** Received Follow Up message
+gPTP$ DEBUG$ Processing a follow-up message
+gPTP$ DEBUG$ Calculated master to local clock rate difference
+gPTP$ DEBUG$ Calculated local to system clock rate difference
+gPTP$ DEBUG$ phase_error = -527157.000000, ppm = -2003.434204
+gPTP$ DEBUG$ *** Received Sync message
+gPTP$ DEBUG$ RX PHY compensation: 0 0.000000382 sec
+gPTP$ DEBUG$ *** Received Follow Up message
+gPTP$ DEBUG$ Processing a follow-up message
+gPTP$ DEBUG$ Calculated master to local clock rate difference
+gPTP$ DEBUG$ Calculated local to system clock rate difference
+gPTP$ DEBUG$ phase_error = -473062.000000, ppm = -954.484619
+gPTP$ DEBUG$ *** Received PDelay Request message
+gPTP$ DEBUG$ RX PHY compensation: 0 0.000000382 sec
+gPTP$ DEBUG$ Process PDelay Request SeqId: 11	
+gPTP$ DEBUG$ TX PHY compensation: 0 0.000000184 sec
+gPTP$ DEBUG$ *** Sent PDelay Response message
+gPTP$ DEBUG$ *** Sent PDelay Response FollowUp message
+gPTP$ DEBUG$ *** Received Sync message
+gPTP$ DEBUG$ RX PHY compensation: 0 0.000000382 sec
+gPTP$ DEBUG$ *** Received Follow Up message
+gPTP$ DEBUG$ Processing a follow-up message
+gPTP$ DEBUG$ Calculated master to local clock rate difference
+gPTP$ DEBUG$ Calculated local to system clock rate difference
+gPTP$ DEBUG$ phase_error = -409661.000000, ppm = -728.122009
+gPTP$ DEBUG$ PDELAY_INTERVAL_TIMEOUT_EXPIRES occured
+gPTP$ DEBUG$ case PDELAY_INTERVAL_TIMEOUT_EXPIRES:
+gPTP$ DEBUG$ automotive_profile : YES
+gPTP$ DEBUG$ getPortState() == 9
+gPTP$ DEBUG$ TX PHY compensation: 0 0.000000184 sec
+gPTP$ DEBUG$ *** Sent PDelay Request message
+gPTP$ DEBUG$ Schedule PDELAY_RESP_RECEIPT_TIMEOUT_EXPIRES, PDelay interval 0, timeout 3000000000
+gPTP$ DEBUG$ *** Received PDelay Response message, Timestamp 4 (sec) 711765322 (ns), seqID 2
+gPTP$ DEBUG$ RX PHY compensation: 0 0.000000382 sec
+gPTP$ DEBUG$ *** Received PDelay Response FollowUp message
+gPTP$ DEBUG$ Link delay: 1539485 ns
+gPTP$ DEBUG$ *** Received Sync message
+gPTP$ DEBUG$ RX PHY compensation: 0 0.000000382 sec
+gPTP$ DEBUG$ *** Received Follow Up message
+gPTP$ DEBUG$ Processing a follow-up message
+gPTP$ DEBUG$ Calculated master to local clock rate difference
+gPTP$ DEBUG$ Calculated local to system clock rate difference
+gPTP$ DEBUG$ phase_error = -248068.000000, ppm = 441.676941
+gPTP$ DEBUG$ *** Received Sync message
+gPTP$ DEBUG$ RX PHY compensation: 0 0.000000382 sec
+gPTP$ DEBUG$ *** Received Follow Up message
+gPTP$ DEBUG$ Processing a follow-up message
+gPTP$ DEBUG$ Calculated master to local clock rate difference
+gPTP$ DEBUG$ Calculated local to system clock rate difference
+gPTP$ DEBUG$ phase_error = -309727.000000, ppm = -983.654663
+gPTP$ DEBUG$ *** Received Sync message
+gPTP$ DEBUG$ RX PHY compensation: 0 0.000000382 sec
+gPTP$ DEBUG$ *** Received Follow Up message
+gPTP$ DEBUG$ Processing a follow-up message
+gPTP$ DEBUG$ Calculated master to local clock rate difference
+gPTP$ DEBUG$ Calculated local to system clock rate difference
+gPTP$ DEBUG$ phase_error = -185031.000000, ppm = 299.664062
+gPTP$ DEBUG$ *** Received Sync message
+gPTP$ DEBUG$ RX PHY compensation: 0 0.000000382 sec
+gPTP$ DEBUG$ *** Received Follow Up message
+gPTP$ DEBUG$ Processing a follow-up message
+gPTP$ DEBUG$ Calculated master to local clock rate difference
+gPTP$ DEBUG$ Calculated local to system clock rate difference
+gPTP$ DEBUG$ phase_error = -310210.000000, ppm = -1490.366333
+gPTP$ DEBUG$ *** Received Sync message
+gPTP$ DEBUG$ RX PHY compensation: 0 0.000000382 sec
+gPTP$ DEBUG$ *** Received Follow Up message
+gPTP$ DEBUG$ Processing a follow-up message
+gPTP$ DEBUG$ Calculated master to local clock rate difference
+gPTP$ DEBUG$ Calculated local to system clock rate difference
+gPTP$ DEBUG$ phase_error = -196883.000000, ppm = 179.929016
+gPTP$ DEBUG$ *** Received Sync message
+gPTP$ DEBUG$ RX PHY compensation: 0 0.000000382 sec
+gPTP$ DEBUG$ *** Received Follow Up message
+gPTP$ DEBUG$ Processing a follow-up message
+gPTP$ DEBUG$ Calculated master to local clock rate difference
+gPTP$ DEBUG$ Calculated local to system clock rate difference
+gPTP$ DEBUG$ phase_error = -281650.000000, ppm = -1170.578857
+gPTP$ DEBUG$ *** Received Sync message
+gPTP$ DEBUG$ RX PHY compensation: 0 0.000000382 sec
+gPTP$ DEBUG$ *** Received Follow Up message
+gPTP$ DEBUG$ Processing a follow-up message
+gPTP$ DEBUG$ Calculated master to local clock rate difference
+gPTP$ DEBUG$ Calculated local to system clock rate difference
+gPTP$ DEBUG$ phase_error = -237364.000000, ppm = -467.049286
+gPTP$ DEBUG$ *** Received PDelay Request message
+gPTP$ DEBUG$ RX PHY compensation: 0 0.000000382 sec
+gPTP$ DEBUG$ Process PDelay Request SeqId: 12	
+gPTP$ DEBUG$ TX PHY compensation: 0 0.000000184 sec
+gPTP$ DEBUG$ *** Sent PDelay Response message
+gPTP$ DEBUG$ *** Sent PDelay Response FollowUp message
+gPTP$ DEBUG$ *** Received Sync message
+gPTP$ DEBUG$ RX PHY compensation: 0 0.000000382 sec
+gPTP$ DEBUG$ *** Received Follow Up message
+gPTP$ DEBUG$ Processing a follow-up message
+gPTP$ DEBUG$ Calculated master to local clock rate difference
+gPTP$ DEBUG$ Calculated local to system clock rate difference
+gPTP$ DEBUG$ phase_error = -113214.000000, ppm = 467.070068
+gPTP$ DEBUG$ PDELAY_INTERVAL_TIMEOUT_EXPIRES occured
+gPTP$ DEBUG$ case PDELAY_INTERVAL_TIMEOUT_EXPIRES:
+gPTP$ DEBUG$ automotive_profile : YES
+gPTP$ DEBUG$ getPortState() == 9
+gPTP$ DEBUG$ TX PHY compensation: 0 0.000000184 sec
+gPTP$ DEBUG$ *** Sent PDelay Request message
+gPTP$ DEBUG$ Schedule PDELAY_RESP_RECEIPT_TIMEOUT_EXPIRES, PDelay interval 0, timeout 3000000000
+gPTP$ DEBUG$ *** Received PDelay Response message, Timestamp 5 (sec) 716778212 (ns), seqID 3
+gPTP$ DEBUG$ RX PHY compensation: 0 0.000000382 sec
+gPTP$ DEBUG$ *** Received PDelay Response FollowUp message
+gPTP$ DEBUG$ Link delay: 1509697 ns
+gPTP$ DEBUG$ *** Received Sync message
+gPTP$ DEBUG$ RX PHY compensation: 0 0.000000382 sec
+gPTP$ DEBUG$ *** Received Follow Up message
+gPTP$ DEBUG$ Processing a follow-up message
+gPTP$ DEBUG$ Calculated master to local clock rate difference
+gPTP$ DEBUG$ Calculated local to system clock rate difference
+gPTP$ DEBUG$ phase_error = -231501.000000, ppm = -1246.539917
+gPTP$ DEBUG$ *** Received Sync message
+gPTP$ DEBUG$ RX PHY compensation: 0 0.000000382 sec
+gPTP$ DEBUG$ *** Received Follow Up message
+gPTP$ DEBUG$ Processing a follow-up message
+gPTP$ DEBUG$ Calculated master to local clock rate difference
+gPTP$ DEBUG$ Calculated local to system clock rate difference
+gPTP$ DEBUG$ phase_error = -229383.000000, ppm = -783.669373
+gPTP$ DEBUG$ *** Received Sync message
+gPTP$ DEBUG$ RX PHY compensation: 0 0.000000382 sec
+gPTP$ DEBUG$ *** Received Follow Up message
+gPTP$ DEBUG$ Processing a follow-up message
+gPTP$ DEBUG$ Calculated master to local clock rate difference
+gPTP$ DEBUG$ Calculated local to system clock rate difference
+gPTP$ DEBUG$ phase_error = -192392.000000, ppm = -417.522919
+gPTP$ DEBUG$ *** Received Sync message
+gPTP$ DEBUG$ RX PHY compensation: 0 0.000000382 sec
+gPTP$ DEBUG$ *** Received Follow Up message
+gPTP$ DEBUG$ Processing a follow-up message
+gPTP$ DEBUG$ Calculated master to local clock rate difference
+gPTP$ DEBUG$ Calculated local to system clock rate difference
+gPTP$ DEBUG$ phase_error = -93619.000000, ppm = 311.463501
+gPTP$ DEBUG$ *** Received Sync message
+gPTP$ DEBUG$ RX PHY compensation: 0 0.000000382 sec
+gPTP$ DEBUG$ *** Received Follow Up message
+gPTP$ DEBUG$ Processing a follow-up message
+gPTP$ DEBUG$ Calculated master to local clock rate difference
+gPTP$ DEBUG$ Calculated local to system clock rate difference
+gPTP$ DEBUG$ phase_error = -159018.000000, ppm = -651.714783
+gPTP$ DEBUG$ *** Received Sync message
+gPTP$ DEBUG$ RX PHY compensation: 0 0.000000382 sec
+gPTP$ DEBUG$ *** Received Follow Up message
+gPTP$ DEBUG$ Processing a follow-up message
+gPTP$ DEBUG$ Calculated master to local clock rate difference
+gPTP$ DEBUG$ Calculated local to system clock rate difference
+gPTP$ DEBUG$ phase_error = -105045.000000, ppm = -71.965973
+gPTP$ DEBUG$ *** Received Sync message
+gPTP$ DEBUG$ RX PHY compensation: 0 0.000000382 sec
+gPTP$ DEBUG$ *** Received Follow Up message
+gPTP$ DEBUG$ Processing a follow-up message
+gPTP$ DEBUG$ Calculated master to local clock rate difference
+gPTP$ DEBUG$ Calculated local to system clock rate difference
+gPTP$ DEBUG$ phase_error = -177242.000000, ppm = -1072.313232
+gPTP$ DEBUG$ *** Received PDelay Request message
+gPTP$ DEBUG$ RX PHY compensation: 0 0.000000382 sec
+gPTP$ DEBUG$ Process PDelay Request SeqId: 13	
+gPTP$ DEBUG$ TX PHY compensation: 0 0.000000184 sec
+gPTP$ DEBUG$ *** Sent PDelay Response message
+gPTP$ DEBUG$ *** Sent PDelay Response FollowUp message
+gPTP$ DEBUG$ *** Received Sync message
+gPTP$ DEBUG$ RX PHY compensation: 0 0.000000382 sec
+gPTP$ DEBUG$ *** Received Follow Up message
+gPTP$ DEBUG$ Processing a follow-up message
+gPTP$ DEBUG$ Calculated master to local clock rate difference
+gPTP$ DEBUG$ Calculated local to system clock rate difference
+gPTP$ DEBUG$ phase_error = -169523.000000, ppm = -595.377258
+gPTP$ DEBUG$ PDELAY_INTERVAL_TIMEOUT_EXPIRES occured
+gPTP$ DEBUG$ case PDELAY_INTERVAL_TIMEOUT_EXPIRES:
+gPTP$ DEBUG$ automotive_profile : YES
+gPTP$ DEBUG$ getPortState() == 9
+gPTP$ DEBUG$ TX PHY compensation: 0 0.000000184 sec
+gPTP$ DEBUG$ *** Sent PDelay Request message
+gPTP$ DEBUG$ Schedule PDELAY_RESP_RECEIPT_TIMEOUT_EXPIRES, PDelay interval 0, timeout 3000000000
+gPTP$ DEBUG$ *** Received PDelay Response message, Timestamp 6 (sec) 721285622 (ns), seqID 4
+gPTP$ DEBUG$ RX PHY compensation: 0 0.000000382 sec
+gPTP$ DEBUG$ *** Received PDelay Response FollowUp message
+gPTP$ DEBUG$ Link delay: 1434323 ns
+gPTP$ DEBUG$ *** Received Sync message
+gPTP$ DEBUG$ RX PHY compensation: 0 0.000000382 sec
+gPTP$ DEBUG$ *** Received Follow Up message
+gPTP$ DEBUG$ Processing a follow-up message
+gPTP$ DEBUG$ Calculated master to local clock rate difference
+gPTP$ DEBUG$ Calculated local to system clock rate difference
+gPTP$ DEBUG$ phase_error = -104773.000000, ppm = 14.336853
+gPTP$ DEBUG$ *** Received Sync message
+gPTP$ DEBUG$ RX PHY compensation: 0 0.000000382 sec
+gPTP$ DEBUG$ *** Received Follow Up message
+gPTP$ DEBUG$ Processing a follow-up message
+gPTP$ DEBUG$ Calculated master to local clock rate difference
+gPTP$ DEBUG$ Calculated local to system clock rate difference
+gPTP$ DEBUG$ phase_error = -26162.000000, ppm = 577.447449
+gPTP$ DEBUG$ SYNC_RATE_INTERVAL_TIMEOUT_EXPIRED occured
+gPTP$ DEBUG$ *** Received Sync message
+gPTP$ DEBUG$ RX PHY compensation: 0 0.000000382 sec
+gPTP$ DEBUG$ *** Received Follow Up message
+gPTP$ DEBUG$ Processing a follow-up message
+gPTP$ DEBUG$ Calculated master to local clock rate difference
+gPTP$ DEBUG$ Calculated local to system clock rate difference
+gPTP$ DEBUG$ phase_error = -67109.000000, ppm = -156.411926
+gPTP$ DEBUG$ *** Received Sync message
+gPTP$ DEBUG$ RX PHY compensation: 0 0.000000382 sec
+gPTP$ DEBUG$ *** Received Follow Up message
+gPTP$ DEBUG$ Processing a follow-up message
+gPTP$ DEBUG$ Calculated master to local clock rate difference
+gPTP$ DEBUG$ Calculated local to system clock rate difference
+gPTP$ DEBUG$ phase_error = -89939.000000, ppm = -446.183868
+gPTP$ DEBUG$ *** Received Sync message
+gPTP$ DEBUG$ RX PHY compensation: 0 0.000000382 sec
+gPTP$ DEBUG$ *** Received Follow Up message
+gPTP$ DEBUG$ Processing a follow-up message
+gPTP$ DEBUG$ Calculated master to local clock rate difference
+gPTP$ DEBUG$ Calculated local to system clock rate difference
+gPTP$ DEBUG$ phase_error = -105204.000000, ppm = -497.824707
+gPTP$ DEBUG$ *** Received Sync message
+gPTP$ DEBUG$ RX PHY compensation: 0 0.000000382 sec
+gPTP$ DEBUG$ *** Received Follow Up message
+gPTP$ DEBUG$ Processing a follow-up message
+gPTP$ DEBUG$ Calculated master to local clock rate difference
+gPTP$ DEBUG$ Calculated local to system clock rate difference
+gPTP$ DEBUG$ phase_error = -57279.000000, ppm = 63.167755
+gPTP$ DEBUG$ *** Received Sync message
+gPTP$ DEBUG$ RX PHY compensation: 0 0.000000382 sec
+gPTP$ DEBUG$ *** Received Follow Up message
+gPTP$ DEBUG$ Processing a follow-up message
+gPTP$ DEBUG$ Calculated master to local clock rate difference
+gPTP$ DEBUG$ Calculated local to system clock rate difference
+gPTP$ DEBUG$ phase_error = -90112.000000, ppm = -306.367126
+gPTP$ DEBUG$ *** Received PDelay Request message
+gPTP$ DEBUG$ RX PHY compensation: 0 0.000000382 sec
+gPTP$ DEBUG$ Process PDelay Request SeqId: 14	
+gPTP$ DEBUG$ TX PHY compensation: 0 0.000000184 sec
+gPTP$ DEBUG$ *** Sent PDelay Response message
+gPTP$ DEBUG$ *** Sent PDelay Response FollowUp message
+gPTP$ DEBUG$ *** Received Sync message
+gPTP$ DEBUG$ RX PHY compensation: 0 0.000000382 sec
+gPTP$ DEBUG$ *** Received Follow Up message
+gPTP$ DEBUG$ Processing a follow-up message
+gPTP$ DEBUG$ Calculated master to local clock rate difference
+gPTP$ DEBUG$ Calculated local to system clock rate difference
+gPTP$ DEBUG$ phase_error = 22669.000000, ppm = 676.050354
+gPTP$ DEBUG$ PDELAY_INTERVAL_TIMEOUT_EXPIRES occured
+gPTP$ DEBUG$ case PDELAY_INTERVAL_TIMEOUT_EXPIRES:
+gPTP$ DEBUG$ automotive_profile : YES
+gPTP$ DEBUG$ getPortState() == 9
+gPTP$ DEBUG$ TX PHY compensation: 0 0.000000184 sec
+gPTP$ DEBUG$ *** Sent PDelay Request message
+gPTP$ DEBUG$ Schedule PDELAY_RESP_RECEIPT_TIMEOUT_EXPIRES, PDelay interval 1, timeout 6000000000
+gPTP$ DEBUG$ *** Received PDelay Response message, Timestamp 7 (sec) 729100932 (ns), seqID 5
+gPTP$ DEBUG$ RX PHY compensation: 0 0.000000382 sec
+gPTP$ DEBUG$ *** Received PDelay Response FollowUp message
+gPTP$ DEBUG$ Link delay: 1477966 ns
+gPTP$ DEBUG$ *** Received Sync message
+gPTP$ DEBUG$ RX PHY compensation: 0 0.000000382 sec
+gPTP$ DEBUG$ *** Received Follow Up message
+gPTP$ DEBUG$ Processing a follow-up message
+gPTP$ DEBUG$ Calculated master to local clock rate difference
+gPTP$ DEBUG$ Calculated local to system clock rate difference
+gPTP$ DEBUG$ phase_error = 50720.000000, ppm = 534.145996
+gPTP$ DEBUG$ *** Received Sync message
+gPTP$ DEBUG$ RX PHY compensation: 0 0.000000382 sec
+gPTP$ DEBUG$ *** Received Follow Up message
+gPTP$ DEBUG$ Processing a follow-up message
+gPTP$ DEBUG$ Calculated master to local clock rate difference
+gPTP$ DEBUG$ Calculated local to system clock rate difference
+gPTP$ DEBUG$ phase_error = -20605.000000, ppm = -342.278931
+gPTP$ DEBUG$ *** Received Sync message
+gPTP$ DEBUG$ RX PHY compensation: 0 0.000000382 sec
+gPTP$ DEBUG$ *** Received Follow Up message
+gPTP$ DEBUG$ Processing a follow-up message
+gPTP$ DEBUG$ Calculated master to local clock rate difference
+gPTP$ DEBUG$ Calculated local to system clock rate difference
+gPTP$ DEBUG$ phase_error = 31729.000000, ppm = 205.171295
+gPTP$ DEBUG$ *** Received Sync message
+gPTP$ DEBUG$ RX PHY compensation: 0 0.000000382 sec
+gPTP$ DEBUG$ *** Received Follow Up message
+gPTP$ DEBUG$ Processing a follow-up message
+gPTP$ DEBUG$ Calculated master to local clock rate difference
+gPTP$ DEBUG$ Calculated local to system clock rate difference
+gPTP$ DEBUG$ phase_error = 23132.000000, ppm = 164.462372
+gPTP$ DEBUG$ *** Received Sync message
+gPTP$ DEBUG$ RX PHY compensation: 0 0.000000382 sec
+gPTP$ DEBUG$ *** Received Follow Up message
+gPTP$ DEBUG$ Processing a follow-up message
+gPTP$ DEBUG$ Calculated master to local clock rate difference
+gPTP$ DEBUG$ Calculated local to system clock rate difference
+gPTP$ DEBUG$ phase_error = -65873.000000, ppm = -623.120239
+gPTP$ DEBUG$ *** Received Sync message
+gPTP$ DEBUG$ RX PHY compensation: 0 0.000000382 sec
+gPTP$ DEBUG$ *** Received Follow Up message
+gPTP$ DEBUG$ Processing a follow-up message
+gPTP$ DEBUG$ Calculated master to local clock rate difference
+gPTP$ DEBUG$ Calculated local to system clock rate difference
+gPTP$ DEBUG$ phase_error = 47915.000000, ppm = 714.435608
+gPTP$ DEBUG$ *** Received Sync message
+gPTP$ DEBUG$ RX PHY compensation: 0 0.000000382 sec
+gPTP$ DEBUG$ *** Received Follow Up message
+gPTP$ DEBUG$ Processing a follow-up message
+gPTP$ DEBUG$ Calculated master to local clock rate difference
+gPTP$ DEBUG$ Calculated local to system clock rate difference
+gPTP$ DEBUG$ phase_error = 1291773.000000, ppm = 11705.858398
+gPTP$ DEBUG$ *** Received PDelay Request message
+gPTP$ DEBUG$ RX PHY compensation: 0 0.000000382 sec
+gPTP$ DEBUG$ Process PDelay Request SeqId: 15	
+gPTP$ DEBUG$ TX PHY compensation: 0 0.000000184 sec
+gPTP$ DEBUG$ *** Sent PDelay Response message
+gPTP$ DEBUG$ *** Sent PDelay Response FollowUp message
+gPTP$ DEBUG$ *** Received Sync message
+gPTP$ DEBUG$ RX PHY compensation: 0 0.000000382 sec
+gPTP$ DEBUG$ *** Received Follow Up message
+gPTP$ DEBUG$ Processing a follow-up message
+gPTP$ DEBUG$ Calculated master to local clock rate difference
+gPTP$ DEBUG$ Calculated local to system clock rate difference
+gPTP$ DEBUG$ phase_error = -41874.000000, ppm = -10309.115234
+gPTP$ DEBUG$ *** Received Sync message
+gPTP$ DEBUG$ RX PHY compensation: 0 0.000000382 sec
+gPTP$ DEBUG$ *** Received Follow Up message
+gPTP$ DEBUG$ Processing a follow-up message
+gPTP$ DEBUG$ Calculated master to local clock rate difference
+gPTP$ DEBUG$ Calculated local to system clock rate difference
+gPTP$ DEBUG$ phase_error = -140410.000000, ppm = -1202.971680
+gPTP$ DEBUG$ *** Received Sync message
+gPTP$ DEBUG$ RX PHY compensation: 0 0.000000382 sec
+gPTP$ DEBUG$ *** Received Follow Up message
+gPTP$ DEBUG$ Processing a follow-up message
+gPTP$ DEBUG$ Calculated master to local clock rate difference
+gPTP$ DEBUG$ Calculated local to system clock rate difference
+gPTP$ DEBUG$ phase_error = -25614.000000, ppm = 634.646851
+gPTP$ DEBUG$ *** Received Sync message
+gPTP$ DEBUG$ RX PHY compensation: 0 0.000000382 sec
+gPTP$ DEBUG$ *** Received Follow Up message
+gPTP$ DEBUG$ Processing a follow-up message
+gPTP$ DEBUG$ Calculated master to local clock rate difference
+gPTP$ DEBUG$ Calculated local to system clock rate difference
+gPTP$ DEBUG$ phase_error = 60164.000000, ppm = 1005.611816
+gPTP$ DEBUG$ *** Received Sync message
+gPTP$ DEBUG$ RX PHY compensation: 0 0.000000382 sec
+gPTP$ DEBUG$ *** Received Follow Up message
+gPTP$ DEBUG$ Processing a follow-up message
+gPTP$ DEBUG$ Calculated master to local clock rate difference
+gPTP$ DEBUG$ Calculated local to system clock rate difference
+gPTP$ DEBUG$ phase_error = 36186.000000, ppm = 102.544586
+gPTP$ DEBUG$ *** Received Sync message
+gPTP$ DEBUG$ RX PHY compensation: 0 0.000000382 sec
+gPTP$ DEBUG$ *** Received Follow Up message
+gPTP$ DEBUG$ Processing a follow-up message
+gPTP$ DEBUG$ Calculated master to local clock rate difference
+gPTP$ DEBUG$ Calculated local to system clock rate difference
+gPTP$ DEBUG$ phase_error = -122148.000000, ppm = -1302.910278
+gPTP$ DEBUG$ *** Received Sync message
+gPTP$ DEBUG$ RX PHY compensation: 0 0.000000382 sec
+gPTP$ DEBUG$ *** Received Follow Up message
+gPTP$ DEBUG$ Processing a follow-up message
+gPTP$ DEBUG$ Calculated master to local clock rate difference
+gPTP$ DEBUG$ Calculated local to system clock rate difference
+gPTP$ DEBUG$ phase_error = -104836.000000, ppm = -237.997849
+gPTP$ DEBUG$ *** Received Sync message
+gPTP$ DEBUG$ RX PHY compensation: 0 0.000000382 sec
+gPTP$ DEBUG$ *** Received Follow Up message
+gPTP$ DEBUG$ Processing a follow-up message
+gPTP$ DEBUG$ Calculated master to local clock rate difference
+gPTP$ DEBUG$ Calculated local to system clock rate difference
+gPTP$ DEBUG$ phase_error = -65586.000000, ppm = -3.858261
+gPTP$ DEBUG$ *** Received PDelay Request message
+gPTP$ DEBUG$ RX PHY compensation: 0 0.000000382 sec
+gPTP$ DEBUG$ Process PDelay Request SeqId: 16	
+gPTP$ DEBUG$ TX PHY compensation: 0 0.000000184 sec
+gPTP$ DEBUG$ *** Sent PDelay Response message
+gPTP$ DEBUG$ *** Sent PDelay Response FollowUp message
+gPTP$ DEBUG$ *** Received Sync message
+gPTP$ DEBUG$ RX PHY compensation: 0 0.000000382 sec
+gPTP$ DEBUG$ *** Received Follow Up message
+gPTP$ DEBUG$ Processing a follow-up message
+gPTP$ DEBUG$ Calculated master to local clock rate difference
+gPTP$ DEBUG$ Calculated local to system clock rate difference
+gPTP$ DEBUG$ phase_error = -69687.000000, ppm = -120.119133
+gPTP$ DEBUG$ PDELAY_INTERVAL_TIMEOUT_EXPIRES occured
+gPTP$ DEBUG$ case PDELAY_INTERVAL_TIMEOUT_EXPIRES:
+gPTP$ DEBUG$ automotive_profile : YES
+gPTP$ DEBUG$ getPortState() == 9
+gPTP$ DEBUG$ TX PHY compensation: 0 0.000000184 sec
+gPTP$ DEBUG$ *** Sent PDelay Request message
+gPTP$ DEBUG$ Schedule PDELAY_RESP_RECEIPT_TIMEOUT_EXPIRES, PDelay interval 1, timeout 6000000000
+gPTP$ DEBUG$ *** Received PDelay Response message, Timestamp 9 (sec) 736824632 (ns), seqID 6
+gPTP$ DEBUG$ RX PHY compensation: 0 0.000000382 sec
+gPTP$ DEBUG$ *** Received PDelay Response FollowUp message
+gPTP$ DEBUG$ Link delay: 1485829 ns
+gPTP$ DEBUG$ *** Received Sync message
+gPTP$ DEBUG$ RX PHY compensation: 0 0.000000382 sec
+gPTP$ DEBUG$ *** Received Follow Up message
+gPTP$ DEBUG$ Processing a follow-up message
+gPTP$ DEBUG$ Calculated master to local clock rate difference
+gPTP$ DEBUG$ Calculated local to system clock rate difference
+gPTP$ DEBUG$ phase_error = 151647.000000, ppm = 1826.140625
+gPTP$ DEBUG$ *** Received Sync message
+gPTP$ DEBUG$ RX PHY compensation: 0 0.000000382 sec
+gPTP$ DEBUG$ *** Received Follow Up message
+gPTP$ DEBUG$ Processing a follow-up message
+gPTP$ DEBUG$ Calculated master to local clock rate difference
+gPTP$ DEBUG$ Calculated local to system clock rate difference
+gPTP$ DEBUG$ phase_error = 30987.000000, ppm = -672.292542
+gPTP$ DEBUG$ *** Received Sync message
+gPTP$ DEBUG$ RX PHY compensation: 0 0.000000382 sec
+gPTP$ DEBUG$ *** Received Follow Up message
+gPTP$ DEBUG$ Processing a follow-up message
+gPTP$ DEBUG$ Calculated master to local clock rate difference
+gPTP$ DEBUG$ Calculated local to system clock rate difference
+gPTP$ DEBUG$ phase_error = -35591.000000, ppm = -822.262451
+gPTP$ DEBUG$ *** Received Sync message
+gPTP$ DEBUG$ RX PHY compensation: 0 0.000000382 sec
+gPTP$ DEBUG$ *** Received Follow Up message
+gPTP$ DEBUG$ Processing a follow-up message
+gPTP$ DEBUG$ Calculated master to local clock rate difference
+gPTP$ DEBUG$ Calculated local to system clock rate difference
+gPTP$ DEBUG$ phase_error = 32941.000000, ppm = 335.441650
+gPTP$ DEBUG$ *** Received Sync message
+gPTP$ DEBUG$ RX PHY compensation: 0 0.000000382 sec
+gPTP$ DEBUG$ *** Received Follow Up message
+gPTP$ DEBUG$ Processing a follow-up message
+gPTP$ DEBUG$ Calculated master to local clock rate difference
+gPTP$ DEBUG$ Calculated local to system clock rate difference
+gPTP$ DEBUG$ phase_error = 57238.000000, ppm = 512.289795
+gPTP$ DEBUG$ *** Received Sync message
+gPTP$ DEBUG$ RX PHY compensation: 0 0.000000382 sec
+gPTP$ DEBUG$ *** Received Follow Up message
+gPTP$ DEBUG$ Processing a follow-up message
+gPTP$ DEBUG$ Calculated master to local clock rate difference
+gPTP$ DEBUG$ Calculated local to system clock rate difference
+gPTP$ DEBUG$ phase_error = 29931.000000, ppm = 68.474762
+gPTP$ DEBUG$ *** Received Sync message
+gPTP$ DEBUG$ RX PHY compensation: 0 0.000000382 sec
+gPTP$ DEBUG$ *** Received Follow Up message
+gPTP$ DEBUG$ Processing a follow-up message
+gPTP$ DEBUG$ Calculated master to local clock rate difference
+gPTP$ DEBUG$ Calculated local to system clock rate difference
+gPTP$ DEBUG$ phase_error = -45994.000000, ppm = -591.258179
+gPTP$ DEBUG$ *** Received PDelay Request message
+gPTP$ DEBUG$ RX PHY compensation: 0 0.000000382 sec
+gPTP$ DEBUG$ Process PDelay Request SeqId: 17	
+gPTP$ DEBUG$ TX PHY compensation: 0 0.000000184 sec
+gPTP$ DEBUG$ *** Sent PDelay Response message
+gPTP$ DEBUG$ *** Sent PDelay Response FollowUp message
+gPTP$ DEBUG$ *** Received Sync message
+gPTP$ DEBUG$ RX PHY compensation: 0 0.000000382 sec
+gPTP$ DEBUG$ *** Received Sync message
+gPTP$ DEBUG$ RX PHY compensation: 0 0.000000382 sec
+gPTP$ DEBUG$ *** Received Follow Up message
+gPTP$ DEBUG$ Processing a follow-up message
+gPTP$ DEBUG$ Received Follow Up 1 times but cannot find corresponding Sync
+gPTP$ DEBUG$ *** Received Sync message
+gPTP$ DEBUG$ RX PHY compensation: 0 0.000000382 sec
+gPTP$ DEBUG$ *** Received Follow Up message
+gPTP$ DEBUG$ Processing a follow-up message
+gPTP$ DEBUG$ Received Follow Up 2 times but cannot find corresponding Sync
+gPTP$ DEBUG$ *** Received Sync message
+gPTP$ DEBUG$ RX PHY compensation: 0 0.000000382 sec
+gPTP$ DEBUG$ *** Received Follow Up message
+gPTP$ DEBUG$ Processing a follow-up message
+gPTP$ DEBUG$ Received Follow Up 3 times but cannot find corresponding Sync
+gPTP$ DEBUG$ *** Received Sync message
+gPTP$ DEBUG$ RX PHY compensation: 0 0.000000382 sec
+gPTP$ DEBUG$ *** Received Follow Up message
+gPTP$ DEBUG$ Processing a follow-up message
+gPTP$ DEBUG$ Received Follow Up 4 times but cannot find corresponding Sync
+gPTP$ DEBUG$ *** Received Sync message
+gPTP$ DEBUG$ RX PHY compensation: 0 0.000000382 sec
+gPTP$ DEBUG$ *** Received Follow Up message
+gPTP$ DEBUG$ Processing a follow-up message
+gPTP$ DEBUG$ Received Follow Up 5 times but cannot find corresponding Sync
+gPTP$ DEBUG$ *** Received Sync message
+gPTP$ DEBUG$ RX PHY compensation: 0 0.000000382 sec
+gPTP$ DEBUG$ *** Received Follow Up message
+gPTP$ DEBUG$ Processing a follow-up message
+gPTP$ DEBUG$ Received Follow Up 6 times but cannot find corresponding Sync
+gPTP$ DEBUG$ *** Received PDelay Request message
+gPTP$ DEBUG$ RX PHY compensation: 0 0.000000382 sec
+gPTP$ DEBUG$ Process PDelay Request SeqId: 18	
+gPTP$ DEBUG$ TX PHY compensation: 0 0.000000184 sec
+gPTP$ DEBUG$ *** Sent PDelay Response message
+gPTP$ DEBUG$ *** Sent PDelay Response FollowUp message
+gPTP$ DEBUG$ *** Received Sync message
+gPTP$ DEBUG$ RX PHY compensation: 0 0.000000382 sec
+gPTP$ DEBUG$ *** Received Follow Up message
+gPTP$ DEBUG$ Processing a follow-up message
+gPTP$ DEBUG$ Received Follow Up 7 times but cannot find corresponding Sync
+gPTP$ DEBUG$ PDELAY_INTERVAL_TIMEOUT_EXPIRES occured
+gPTP$ DEBUG$ case PDELAY_INTERVAL_TIMEOUT_EXPIRES:
+gPTP$ DEBUG$ automotive_profile : YES
+gPTP$ DEBUG$ getPortState() == 9
+gPTP$ DEBUG$ TX PHY compensation: 0 0.000000184 sec
+gPTP$ DEBUG$ *** Sent PDelay Request message
+gPTP$ DEBUG$ Schedule PDELAY_RESP_RECEIPT_TIMEOUT_EXPIRES, PDelay interval 1, timeout 6000000000
+gPTP$ DEBUG$ *** Received PDelay Response message, Timestamp 11 (sec) 756622322 (ns), seqID 7
+gPTP$ DEBUG$ RX PHY compensation: 0 0.000000382 sec
+gPTP$ DEBUG$ *** Received PDelay Response FollowUp message
+gPTP$ DEBUG$ Link delay: 1437075 ns
+gPTP$ DEBUG$ *** Received Sync message
+gPTP$ DEBUG$ RX PHY compensation: 0 0.000000382 sec
+gPTP$ DEBUG$ *** Received Follow Up message
+gPTP$ DEBUG$ Processing a follow-up message
+gPTP$ DEBUG$ Switching to Master
+gPTP$ DEBUG$ Received Follow Up 8 times but cannot find corresponding Sync
+gPTP$ DEBUG$ SYNC_INTERVAL_TIMEOUT_EXPIRES occured
+gPTP$ DEBUG$ TX PHY compensation: 0 0.000000184 sec
+gPTP$ DEBUG$ Sent SYNC message
+gPTP$ DEBUG$ Calculated local to system clock rate difference
+gPTP$ DEBUG$ *** Received Sync message
+gPTP$ DEBUG$ RX PHY compensation: 0 0.000000382 sec
+gPTP$ DEBUG$ *** Received Follow Up message
+gPTP$ DEBUG$ Processing a follow-up message
+gPTP$ DEBUG$ Received Follow Up 1 times but cannot find corresponding Sync
+gPTP$ DEBUG$ *** Received Sync message
+gPTP$ DEBUG$ RX PHY compensation: 0 0.000000382 sec
+gPTP$ DEBUG$ *** Received Follow Up message
+gPTP$ DEBUG$ Processing a follow-up message
+gPTP$ DEBUG$ Received Follow Up 2 times but cannot find corresponding Sync
+gPTP$ DEBUG$ SYNC_INTERVAL_TIMEOUT_EXPIRES occured
+gPTP$ DEBUG$ TX PHY compensation: 0 0.000000184 sec
+gPTP$ DEBUG$ Sent SYNC message
+gPTP$ DEBUG$ Calculated local to system clock rate difference
+gPTP$ DEBUG$ *** Received Sync message
+gPTP$ DEBUG$ RX PHY compensation: 0 0.000000382 sec
+gPTP$ DEBUG$ *** Received Follow Up message
+gPTP$ DEBUG$ Processing a follow-up message
+gPTP$ DEBUG$ Received Follow Up 3 times but cannot find corresponding Sync
+gPTP$ DEBUG$ *** Received Sync message
+gPTP$ DEBUG$ RX PHY compensation: 0 0.000000382 sec
+gPTP$ DEBUG$ *** Received Follow Up message
+gPTP$ DEBUG$ Processing a follow-up message
+gPTP$ DEBUG$ Received Follow Up 4 times but cannot find corresponding Sync
+gPTP$ DEBUG$ SYNC_INTERVAL_TIMEOUT_EXPIRES occured
+gPTP$ DEBUG$ TX PHY compensation: 0 0.000000184 sec
+gPTP$ DEBUG$ Sent SYNC message
+gPTP$ DEBUG$ Calculated local to system clock rate difference
+gPTP$ DEBUG$ *** Received Sync message
+gPTP$ DEBUG$ RX PHY compensation: 0 0.000000382 sec
+gPTP$ DEBUG$ *** Received Follow Up message
+gPTP$ DEBUG$ Processing a follow-up message
+gPTP$ DEBUG$ Received Follow Up 5 times but cannot find corresponding Sync
+gPTP$ DEBUG$ *** Received Sync message
+gPTP$ DEBUG$ RX PHY compensation: 0 0.000000382 sec
+gPTP$ DEBUG$ *** Received Follow Up message
+gPTP$ DEBUG$ Processing a follow-up message
+gPTP$ DEBUG$ Received Follow Up 6 times but cannot find corresponding Sync
+gPTP$ DEBUG$ *** Received PDelay Request message
+gPTP$ DEBUG$ RX PHY compensation: 0 0.000000382 sec
+gPTP$ DEBUG$ Process PDelay Request SeqId: 19	
+gPTP$ DEBUG$ TX PHY compensation: 0 0.000000184 sec
+gPTP$ DEBUG$ *** Sent PDelay Response message
+gPTP$ DEBUG$ *** Sent PDelay Response FollowUp message
+gPTP$ DEBUG$ SYNC_INTERVAL_TIMEOUT_EXPIRES occured
+gPTP$ DEBUG$ TX PHY compensation: 0 0.000000184 sec
+gPTP$ DEBUG$ Sent SYNC message
+gPTP$ DEBUG$ Calculated local to system clock rate difference
+gPTP$ DEBUG$ *** Received Sync message
+gPTP$ DEBUG$ RX PHY compensation: 0 0.000000382 sec
+gPTP$ DEBUG$ *** Received Follow Up message
+gPTP$ DEBUG$ Processing a follow-up message
+gPTP$ DEBUG$ Received Follow Up 7 times but cannot find corresponding Sync
+gPTP$ DEBUG$ *** Received Sync message
+gPTP$ DEBUG$ RX PHY compensation: 0 0.000000382 sec
+gPTP$ DEBUG$ *** Received Follow Up message
+gPTP$ DEBUG$ Processing a follow-up message
+gPTP$ DEBUG$ Switching to Master
+gPTP$ DEBUG$ Received Follow Up 8 times but cannot find corresponding Sync
+gPTP$ DEBUG$ SYNC_INTERVAL_TIMEOUT_EXPIRES occured
+gPTP$ DEBUG$ TX PHY compensation: 0 0.000000184 sec
+gPTP$ DEBUG$ Sent SYNC message
+gPTP$ DEBUG$ Calculated local to system clock rate difference
+gPTP$ DEBUG$ *** Received Sync message
+gPTP$ DEBUG$ RX PHY compensation: 0 0.000000382 sec
+gPTP$ DEBUG$ *** Received Follow Up message
+gPTP$ DEBUG$ Processing a follow-up message
+gPTP$ DEBUG$ Received Follow Up 1 times but cannot find corresponding Sync
+gPTP$ DEBUG$ *** Received Sync message
+gPTP$ DEBUG$ RX PHY compensation: 0 0.000000382 sec
+gPTP$ DEBUG$ *** Received Follow Up message
+gPTP$ DEBUG$ Processing a follow-up message
+gPTP$ DEBUG$ Received Follow Up 2 times but cannot find corresponding Sync
+gPTP$ DEBUG$ SYNC_INTERVAL_TIMEOUT_EXPIRES occured
+gPTP$ DEBUG$ TX PHY compensation: 0 0.000000184 sec
+gPTP$ DEBUG$ Sent SYNC message
+gPTP$ DEBUG$ Calculated local to system clock rate difference
+gPTP$ DEBUG$ *** Received Sync message
+gPTP$ DEBUG$ RX PHY compensation: 0 0.000000382 sec
+gPTP$ DEBUG$ *** Received Follow Up message
+gPTP$ DEBUG$ Processing a follow-up message
+gPTP$ DEBUG$ Received Follow Up 3 times but cannot find corresponding Sync
+gPTP$ DEBUG$ *** Received Sync message
+gPTP$ DEBUG$ RX PHY compensation: 0 0.000000382 sec
+gPTP$ DEBUG$ *** Received Follow Up message
+gPTP$ DEBUG$ Processing a follow-up message
+gPTP$ DEBUG$ Received Follow Up 4 times but cannot find corresponding Sync
+gPTP$ DEBUG$ SYNC_INTERVAL_TIMEOUT_EXPIRES occured
+gPTP$ DEBUG$ TX PHY compensation: 0 0.000000184 sec
+gPTP$ DEBUG$ Sent SYNC message
+gPTP$ DEBUG$ Calculated local to system clock rate difference
+gPTP$ DEBUG$ *** Received Sync message
+gPTP$ DEBUG$ RX PHY compensation: 0 0.000000382 sec
+gPTP$ DEBUG$ *** Received Follow Up message
+gPTP$ DEBUG$ Processing a follow-up message
+gPTP$ DEBUG$ Received Follow Up 5 times but cannot find corresponding Sync
+gPTP$ DEBUG$ *** Received Sync message
+gPTP$ DEBUG$ RX PHY compensation: 0 0.000000382 sec
+gPTP$ DEBUG$ *** Received Follow Up message
+gPTP$ DEBUG$ Processing a follow-up message
+gPTP$ DEBUG$ Received Follow Up 6 times but cannot find corresponding Sync
+gPTP$ DEBUG$ *** Received PDelay Request message
+gPTP$ DEBUG$ RX PHY compensation: 0 0.000000382 sec
+gPTP$ DEBUG$ Process PDelay Request SeqId: 20	
+gPTP$ DEBUG$ TX PHY compensation: 0 0.000000184 sec
+gPTP$ DEBUG$ *** Sent PDelay Response message
+gPTP$ DEBUG$ *** Sent PDelay Response FollowUp message
+gPTP$ DEBUG$ SYNC_INTERVAL_TIMEOUT_EXPIRES occured
+gPTP$ DEBUG$ *** Received Sync message
+gPTP$ DEBUG$ RX PHY compensation: 0 0.000000382 sec
+gPTP$ DEBUG$ TX PHY compensation: 0 0.000000184 sec
+gPTP$ DEBUG$ Sent SYNC message
+gPTP$ DEBUG$ Calculated local to system clock rate difference
+gPTP$ DEBUG$ *** Received Follow Up message
+gPTP$ DEBUG$ Processing a follow-up message
+gPTP$ DEBUG$ Received Follow Up 7 times but cannot find corresponding Sync
+gPTP$ DEBUG$ PDELAY_INTERVAL_TIMEOUT_EXPIRES occured
+gPTP$ DEBUG$ case PDELAY_INTERVAL_TIMEOUT_EXPIRES:
+gPTP$ DEBUG$ automotive_profile : YES
+gPTP$ DEBUG$ No pDelay Req from Master!
+gPTP$ DEBUG$ *** Received Sync message
+gPTP$ DEBUG$ RX PHY compensation: 0 0.000000382 sec
+gPTP$ DEBUG$ *** Received Follow Up message
+gPTP$ DEBUG$ Processing a follow-up message
+gPTP$ DEBUG$ Switching to Master
+gPTP$ DEBUG$ Received Follow Up 8 times but cannot find corresponding Sync
+gPTP$ DEBUG$ SYNC_INTERVAL_TIMEOUT_EXPIRES occured
+gPTP$ DEBUG$ TX PHY compensation: 0 0.000000184 sec
+gPTP$ DEBUG$ Sent SYNC message
+gPTP$ DEBUG$ Calculated local to system clock rate difference
+gPTP$ DEBUG$ *** Received Sync message
+gPTP$ DEBUG$ RX PHY compensation: 0 0.000000382 sec
+gPTP$ DEBUG$ *** Received Follow Up message
+gPTP$ DEBUG$ Processing a follow-up message
+gPTP$ DEBUG$ Received Follow Up 1 times but cannot find corresponding Sync
+gPTP$ DEBUG$ *** Received Sync message
+gPTP$ DEBUG$ RX PHY compensation: 0 0.000000382 sec
+gPTP$ DEBUG$ *** Received Follow Up message
+gPTP$ DEBUG$ Processing a follow-up message
+gPTP$ DEBUG$ Received Follow Up 2 times but cannot find corresponding Sync
+gPTP$ DEBUG$ SYNC_INTERVAL_TIMEOUT_EXPIRES occured
+gPTP$ DEBUG$ TX PHY compensation: 0 0.000000184 sec
+gPTP$ DEBUG$ Sent SYNC message
+gPTP$ DEBUG$ Calculated local to system clock rate difference
+gPTP$ DEBUG$ *** Received Sync message
+gPTP$ DEBUG$ RX PHY compensation: 0 0.000000382 sec
+gPTP$ DEBUG$ *** Received Follow Up message
+gPTP$ DEBUG$ Processing a follow-up message
+gPTP$ DEBUG$ Received Follow Up 3 times but cannot find corresponding Sync
+gPTP$ DEBUG$ *** Received Sync message
+gPTP$ DEBUG$ RX PHY compensation: 0 0.000000382 sec
+gPTP$ DEBUG$ *** Received Follow Up message
+gPTP$ DEBUG$ Processing a follow-up message
+gPTP$ DEBUG$ Received Follow Up 4 times but cannot find corresponding Sync
+gPTP$ DEBUG$ SYNC_INTERVAL_TIMEOUT_EXPIRES occured
+gPTP$ DEBUG$ TX PHY compensation: 0 0.000000184 sec
+gPTP$ DEBUG$ Sent SYNC message
+gPTP$ DEBUG$ Calculated local to system clock rate difference
+gPTP$ DEBUG$ *** Received Sync message
+gPTP$ DEBUG$ RX PHY compensation: 0 0.000000382 sec
+gPTP$ DEBUG$ *** Received Follow Up message
+gPTP$ DEBUG$ Processing a follow-up message
+gPTP$ DEBUG$ Received Follow Up 5 times but cannot find corresponding Sync
+gPTP$ DEBUG$ *** Received Sync message
+gPTP$ DEBUG$ RX PHY compensation: 0 0.000000382 sec
+gPTP$ DEBUG$ *** Received Follow Up message
+gPTP$ DEBUG$ Processing a follow-up message
+gPTP$ DEBUG$ Received Follow Up 6 times but cannot find corresponding Sync
+gPTP$ DEBUG$ *** Received PDelay Request message
+gPTP$ DEBUG$ RX PHY compensation: 0 0.000000382 sec
+gPTP$ DEBUG$ Process PDelay Request SeqId: 21	
+gPTP$ DEBUG$ TX PHY compensation: 0 0.000000184 sec
+gPTP$ DEBUG$ *** Sent PDelay Response message
+gPTP$ DEBUG$ *** Sent PDelay Response FollowUp message
+gPTP$ DEBUG$ SYNC_INTERVAL_TIMEOUT_EXPIRES occured
+gPTP$ DEBUG$ TX PHY compensation: 0 0.000000184 sec
+gPTP$ DEBUG$ Sent SYNC message
+gPTP$ DEBUG$ Calculated local to system clock rate difference
+gPTP$ DEBUG$ *** Received Sync message
+gPTP$ DEBUG$ RX PHY compensation: 0 0.000000382 sec
+gPTP$ DEBUG$ *** Received Follow Up message
+gPTP$ DEBUG$ Processing a follow-up message
+gPTP$ DEBUG$ Received Follow Up 7 times but cannot find corresponding Sync
+gPTP$ DEBUG$ *** Received Sync message
+gPTP$ DEBUG$ RX PHY compensation: 0 0.000000382 sec
+gPTP$ DEBUG$ *** Received Follow Up message
+gPTP$ DEBUG$ Processing a follow-up message
+gPTP$ DEBUG$ Switching to Master
+gPTP$ DEBUG$ Received Follow Up 8 times but cannot find corresponding Sync
+gPTP$ DEBUG$ SYNC_INTERVAL_TIMEOUT_EXPIRES occured
+gPTP$ DEBUG$ TX PHY compensation: 0 0.000000184 sec
+gPTP$ DEBUG$ Sent SYNC message
+gPTP$ DEBUG$ Calculated local to system clock rate difference
+gPTP$ DEBUG$ *** Received Sync message
+gPTP$ DEBUG$ RX PHY compensation: 0 0.000000382 sec
+gPTP$ DEBUG$ *** Received Follow Up message
+gPTP$ DEBUG$ Processing a follow-up message
+gPTP$ DEBUG$ Received Follow Up 1 times but cannot find corresponding Sync
+gPTP$ DEBUG$ *** Received Sync message
+gPTP$ DEBUG$ RX PHY compensation: 0 0.000000382 sec
+gPTP$ DEBUG$ *** Received Follow Up message
+gPTP$ DEBUG$ Processing a follow-up message
+gPTP$ DEBUG$ Received Follow Up 2 times but cannot find corresponding Sync
+gPTP$ DEBUG$ SYNC_INTERVAL_TIMEOUT_EXPIRES occured
+gPTP$ DEBUG$ TX PHY compensation: 0 0.000000184 sec
+gPTP$ DEBUG$ Sent SYNC message
+gPTP$ DEBUG$ Calculated local to system clock rate difference
+gPTP$ DEBUG$ *** Received Sync message
+gPTP$ DEBUG$ RX PHY compensation: 0 0.000000382 sec
+gPTP$ DEBUG$ *** Received Follow Up message
+gPTP$ DEBUG$ Processing a follow-up message
+gPTP$ DEBUG$ Received Follow Up 3 times but cannot find corresponding Sync
+gPTP$ DEBUG$ *** Received Sync message
+gPTP$ DEBUG$ RX PHY compensation: 0 0.000000382 sec
+gPTP$ DEBUG$ *** Received Follow Up message
+gPTP$ DEBUG$ Processing a follow-up message
+gPTP$ DEBUG$ Received Follow Up 4 times but cannot find corresponding Sync
+gPTP$ DEBUG$ SYNC_INTERVAL_TIMEOUT_EXPIRES occured
+gPTP$ DEBUG$ TX PHY compensation: 0 0.000000184 sec
+gPTP$ DEBUG$ Sent SYNC message
+gPTP$ DEBUG$ Calculated local to system clock rate difference
+gPTP$ DEBUG$ *** Received Sync message
+gPTP$ DEBUG$ RX PHY compensation: 0 0.000000382 sec
+gPTP$ DEBUG$ *** Received Follow Up message
+gPTP$ DEBUG$ Processing a follow-up message
+gPTP$ DEBUG$ Received Follow Up 5 times but cannot find corresponding Sync
+gPTP$ DEBUG$ *** Received Sync message
+gPTP$ DEBUG$ RX PHY compensation: 0 0.000000382 sec
+gPTP$ DEBUG$ *** Received Follow Up message
+gPTP$ DEBUG$ Processing a follow-up message
+gPTP$ DEBUG$ Received Follow Up 6 times but cannot find corresponding Sync
+gPTP$ DEBUG$ *** Received PDelay Request message
+gPTP$ DEBUG$ RX PHY compensation: 0 0.000000382 sec
+gPTP$ DEBUG$ Process PDelay Request SeqId: 22	
+gPTP$ DEBUG$ TX PHY compensation: 0 0.000000184 sec
+gPTP$ DEBUG$ *** Sent PDelay Response message
+gPTP$ DEBUG$ *** Sent PDelay Response FollowUp message
+gPTP$ DEBUG$ SYNC_INTERVAL_TIMEOUT_EXPIRES occured
+gPTP$ DEBUG$ *** Received Sync message
+gPTP$ DEBUG$ RX PHY compensation: 0 0.000000382 sec
+gPTP$ DEBUG$ TX PHY compensation: 0 0.000000184 sec
+gPTP$ DEBUG$ Sent SYNC message
+gPTP$ DEBUG$ Calculated local to system clock rate difference
+gPTP$ DEBUG$ *** Received Follow Up message
+gPTP$ DEBUG$ Processing a follow-up message
+gPTP$ DEBUG$ Received Follow Up 7 times but cannot find corresponding Sync
+gPTP$ DEBUG$ *** Received Sync message
+gPTP$ DEBUG$ RX PHY compensation: 0 0.000000382 sec
+gPTP$ DEBUG$ *** Received Follow Up message
+gPTP$ DEBUG$ Processing a follow-up message
+gPTP$ DEBUG$ Switching to Master
+gPTP$ DEBUG$ Received Follow Up 8 times but cannot find corresponding Sync
+gPTP$ DEBUG$ SYNC_INTERVAL_TIMEOUT_EXPIRES occured
+gPTP$ DEBUG$ TX PHY compensation: 0 0.000000184 sec
+gPTP$ DEBUG$ Sent SYNC message
+gPTP$ DEBUG$ Calculated local to system clock rate difference
+gPTP$ DEBUG$ *** Received Sync message
+gPTP$ DEBUG$ RX PHY compensation: 0 0.000000382 sec
+gPTP$ DEBUG$ *** Received Follow Up message
+gPTP$ DEBUG$ Processing a follow-up message
+gPTP$ DEBUG$ Received Follow Up 1 times but cannot find corresponding Sync
+gPTP$ DEBUG$ *** Received Sync message
+gPTP$ DEBUG$ RX PHY compensation: 0 0.000000382 sec
+gPTP$ DEBUG$ *** Received Follow Up message
+gPTP$ DEBUG$ Processing a follow-up message
+gPTP$ DEBUG$ Received Follow Up 2 times but cannot find corresponding Sync
+gPTP$ DEBUG$ SYNC_INTERVAL_TIMEOUT_EXPIRES occured
+gPTP$ DEBUG$ TX PHY compensation: 0 0.000000184 sec
+gPTP$ DEBUG$ Sent SYNC message
+gPTP$ DEBUG$ Calculated local to system clock rate difference
+gPTP$ DEBUG$ *** Received Sync message
+gPTP$ DEBUG$ RX PHY compensation: 0 0.000000382 sec
+gPTP$ DEBUG$ *** Received Follow Up message
+gPTP$ DEBUG$ Processing a follow-up message
+gPTP$ DEBUG$ Received Follow Up 3 times but cannot find corresponding Sync
+gPTP$ DEBUG$ *** Received Sync message
+gPTP$ DEBUG$ RX PHY compensation: 0 0.000000382 sec
+gPTP$ DEBUG$ *** Received Follow Up message
+gPTP$ DEBUG$ Processing a follow-up message
+gPTP$ DEBUG$ Received Follow Up 4 times but cannot find corresponding Sync
+gPTP$ DEBUG$ SYNC_INTERVAL_TIMEOUT_EXPIRES occured
+gPTP$ DEBUG$ TX PHY compensation: 0 0.000000184 sec
+gPTP$ DEBUG$ Sent SYNC message
+gPTP$ DEBUG$ Calculated local to system clock rate difference
+gPTP$ DEBUG$ *** Received Sync message
+gPTP$ DEBUG$ RX PHY compensation: 0 0.000000382 sec
+gPTP$ DEBUG$ *** Received Follow Up message
+gPTP$ DEBUG$ Processing a follow-up message
+gPTP$ DEBUG$ Received Follow Up 5 times but cannot find corresponding Sync
+gPTP$ DEBUG$ *** Received Sync message
+gPTP$ DEBUG$ RX PHY compensation: 0 0.000000382 sec
+gPTP$ DEBUG$ *** Received Follow Up message
+gPTP$ DEBUG$ Processing a follow-up message
+gPTP$ DEBUG$ Received Follow Up 6 times but cannot find corresponding Sync
+gPTP$ DEBUG$ *** Received PDelay Request message
+gPTP$ DEBUG$ RX PHY compensation: 0 0.000000382 sec
+gPTP$ DEBUG$ Process PDelay Request SeqId: 23	
+gPTP$ DEBUG$ TX PHY compensation: 0 0.000000184 sec
+gPTP$ DEBUG$ *** Sent PDelay Response message
+gPTP$ DEBUG$ *** Sent PDelay Response FollowUp message
+gPTP$ DEBUG$ SYNC_INTERVAL_TIMEOUT_EXPIRES occured
+gPTP$ DEBUG$ TX PHY compensation: 0 0.000000184 sec
+gPTP$ DEBUG$ Sent SYNC message
+gPTP$ DEBUG$ Calculated local to system clock rate difference
+gPTP$ DEBUG$ *** Received Sync message
+gPTP$ DEBUG$ RX PHY compensation: 0 0.000000382 sec
+gPTP$ DEBUG$ *** Received Follow Up message
+gPTP$ DEBUG$ Processing a follow-up message
+gPTP$ DEBUG$ Received Follow Up 7 times but cannot find corresponding Sync
+gPTP$ DEBUG$ *** Received Sync message
+gPTP$ DEBUG$ RX PHY compensation: 0 0.000000382 sec
+gPTP$ DEBUG$ *** Received Follow Up message
+gPTP$ DEBUG$ Processing a follow-up message
+gPTP$ DEBUG$ Switching to Master
+gPTP$ DEBUG$ Received Follow Up 8 times but cannot find corresponding Sync
+gPTP$ DEBUG$ SYNC_INTERVAL_TIMEOUT_EXPIRES occured
+gPTP$ DEBUG$ TX PHY compensation: 0 0.000000184 sec
+gPTP$ DEBUG$ Sent SYNC message
+gPTP$ DEBUG$ Calculated local to system clock rate difference
+gPTP$ DEBUG$ *** Received Sync message
+gPTP$ DEBUG$ RX PHY compensation: 0 0.000000382 sec
+gPTP$ DEBUG$ *** Received Follow Up message
+gPTP$ DEBUG$ Processing a follow-up message
+gPTP$ DEBUG$ Received Follow Up 1 times but cannot find corresponding Sync
+gPTP$ DEBUG$ *** Received Sync message
+gPTP$ DEBUG$ RX PHY compensation: 0 0.000000382 sec
+gPTP$ DEBUG$ *** Received Follow Up message
+gPTP$ DEBUG$ Processing a follow-up message
+gPTP$ DEBUG$ Received Follow Up 2 times but cannot find corresponding Sync
+gPTP$ DEBUG$ SYNC_INTERVAL_TIMEOUT_EXPIRES occured
+gPTP$ DEBUG$ TX PHY compensation: 0 0.000000184 sec
+gPTP$ DEBUG$ Sent SYNC message
+gPTP$ DEBUG$ Calculated local to system clock rate difference
+gPTP$ DEBUG$ *** Received Sync message
+gPTP$ DEBUG$ RX PHY compensation: 0 0.000000382 sec
+gPTP$ DEBUG$ *** Received Follow Up message
+gPTP$ DEBUG$ Processing a follow-up message
+gPTP$ DEBUG$ Received Follow Up 3 times but cannot find corresponding Sync
+gPTP$ DEBUG$ *** Received Sync message
+gPTP$ DEBUG$ RX PHY compensation: 0 0.000000382 sec
+gPTP$ DEBUG$ *** Received Follow Up message
+gPTP$ DEBUG$ Processing a follow-up message
+gPTP$ DEBUG$ Received Follow Up 4 times but cannot find corresponding Sync
+gPTP$ DEBUG$ SYNC_INTERVAL_TIMEOUT_EXPIRES occured
+gPTP$ DEBUG$ TX PHY compensation: 0 0.000000184 sec
+gPTP$ DEBUG$ Sent SYNC message
+gPTP$ DEBUG$ Calculated local to system clock rate difference
+gPTP$ DEBUG$ *** Received Sync message
+gPTP$ DEBUG$ RX PHY compensation: 0 0.000000382 sec
+gPTP$ DEBUG$ *** Received Follow Up message
+gPTP$ DEBUG$ Processing a follow-up message
+gPTP$ DEBUG$ Received Follow Up 5 times but cannot find corresponding Sync
+gPTP$ DEBUG$ *** Received Sync message
+gPTP$ DEBUG$ RX PHY compensation: 0 0.000000382 sec
+gPTP$ DEBUG$ *** Received Follow Up message
+gPTP$ DEBUG$ Processing a follow-up message
+gPTP$ DEBUG$ Received Follow Up 6 times but cannot find corresponding Sync
+gPTP$ DEBUG$ *** Received PDelay Request message
+gPTP$ DEBUG$ RX PHY compensation: 0 0.000000382 sec
+gPTP$ DEBUG$ Process PDelay Request SeqId: 24	
+gPTP$ DEBUG$ TX PHY compensation: 0 0.000000184 sec
+gPTP$ DEBUG$ *** Sent PDelay Response message
+gPTP$ DEBUG$ *** Sent PDelay Response FollowUp message
+gPTP$ DEBUG$ SYNC_INTERVAL_TIMEOUT_EXPIRES occured
+gPTP$ DEBUG$ TX PHY compensation: 0 0.000000184 sec
+gPTP$ DEBUG$ Sent SYNC message
+gPTP$ DEBUG$ Calculated local to system clock rate difference
+gPTP$ DEBUG$ *** Received Sync message
+gPTP$ DEBUG$ RX PHY compensation: 0 0.000000382 sec
+gPTP$ DEBUG$ *** Received Follow Up message
+gPTP$ DEBUG$ Processing a follow-up message
+gPTP$ DEBUG$ Received Follow Up 7 times but cannot find corresponding Sync
+gPTP$ DEBUG$ *** Received Sync message
+gPTP$ DEBUG$ RX PHY compensation: 0 0.000000382 sec
+gPTP$ DEBUG$ *** Received Follow Up message
+gPTP$ DEBUG$ Processing a follow-up message
+gPTP$ DEBUG$ Switching to Master
+gPTP$ DEBUG$ Received Follow Up 8 times but cannot find corresponding Sync
+gPTP$ DEBUG$ SYNC_INTERVAL_TIMEOUT_EXPIRES occured
+gPTP$ DEBUG$ TX PHY compensation: 0 0.000000184 sec
+gPTP$ DEBUG$ Sent SYNC message
+gPTP$ DEBUG$ Calculated local to system clock rate difference
+gPTP$ DEBUG$ *** Received Sync message
+gPTP$ DEBUG$ RX PHY compensation: 0 0.000000382 sec
+gPTP$ DEBUG$ *** Received Follow Up message
+gPTP$ DEBUG$ Processing a follow-up message
+gPTP$ DEBUG$ Received Follow Up 1 times but cannot find corresponding Sync
+gPTP$ DEBUG$ *** Received Sync message
+gPTP$ DEBUG$ RX PHY compensation: 0 0.000000382 sec
+gPTP$ DEBUG$ *** Received Follow Up message
+gPTP$ DEBUG$ Processing a follow-up message
+gPTP$ DEBUG$ Received Follow Up 2 times but cannot find corresponding Sync
+gPTP$ DEBUG$ SYNC_INTERVAL_TIMEOUT_EXPIRES occured
+gPTP$ DEBUG$ TX PHY compensation: 0 0.000000184 sec
+gPTP$ DEBUG$ Sent SYNC message
+gPTP$ DEBUG$ Calculated local to system clock rate difference
+gPTP$ DEBUG$ *** Received Sync message
+gPTP$ DEBUG$ RX PHY compensation: 0 0.000000382 sec
+gPTP$ DEBUG$ *** Received Follow Up message
+gPTP$ DEBUG$ Processing a follow-up message
+gPTP$ DEBUG$ Received Follow Up 3 times but cannot find corresponding Sync
+gPTP$ DEBUG$ *** Received Sync message
+gPTP$ DEBUG$ RX PHY compensation: 0 0.000000382 sec
+gPTP$ DEBUG$ *** Received Follow Up message
+gPTP$ DEBUG$ Processing a follow-up message
+gPTP$ DEBUG$ Received Follow Up 4 times but cannot find corresponding Sync
+gPTP$ DEBUG$ SYNC_INTERVAL_TIMEOUT_EXPIRES occured
+gPTP$ DEBUG$ TX PHY compensation: 0 0.000000184 sec
+gPTP$ DEBUG$ Sent SYNC message
+gPTP$ DEBUG$ Calculated local to system clock rate difference
+gPTP$ DEBUG$ *** Received Sync message
+gPTP$ DEBUG$ RX PHY compensation: 0 0.000000382 sec
+gPTP$ DEBUG$ *** Received Follow Up message
+gPTP$ DEBUG$ Processing a follow-up message
+gPTP$ DEBUG$ Received Follow Up 5 times but cannot find corresponding Sync
+gPTP$ DEBUG$ *** Received Sync message
+gPTP$ DEBUG$ RX PHY compensation: 0 0.000000382 sec
+gPTP$ DEBUG$ *** Received Follow Up message
+gPTP$ DEBUG$ Processing a follow-up message
+gPTP$ DEBUG$ Received Follow Up 6 times but cannot find corresponding Sync
+gPTP$ DEBUG$ *** Received PDelay Request message
+gPTP$ DEBUG$ RX PHY compensation: 0 0.000000382 sec
+gPTP$ DEBUG$ Process PDelay Request SeqId: 25	
+gPTP$ DEBUG$ TX PHY compensation: 0 0.000000184 sec
+gPTP$ DEBUG$ *** Sent PDelay Response message
+gPTP$ DEBUG$ *** Sent PDelay Response FollowUp message
+gPTP$ DEBUG$ SYNC_INTERVAL_TIMEOUT_EXPIRES occured
+gPTP$ DEBUG$ TX PHY compensation: 0 0.000000184 sec
+gPTP$ DEBUG$ Sent SYNC message
+gPTP$ DEBUG$ Calculated local to system clock rate difference
+gPTP$ DEBUG$ *** Received Follow Up message
+gPTP$ DEBUG$ Processing a follow-up message
+gPTP$ DEBUG$ Received Follow Up but there is no sync message
+gPTP$ DEBUG$ SYNC_INTERVAL_TIMEOUT_EXPIRES occured
+gPTP$ DEBUG$ TX PHY compensation: 0 0.000000184 sec
+gPTP$ DEBUG$ Sent SYNC message
+gPTP$ DEBUG$ Calculated local to system clock rate difference
+gPTP$ DEBUG$ SYNC_INTERVAL_TIMEOUT_EXPIRES occured
+gPTP$ DEBUG$ TX PHY compensation: 0 0.000000184 sec
+gPTP$ DEBUG$ Sent SYNC message
+gPTP$ DEBUG$ Calculated local to system clock rate difference
+gPTP$ DEBUG$ SYNC_INTERVAL_TIMEOUT_EXPIRES occured
+gPTP$ DEBUG$ TX PHY compensation: 0 0.000000184 sec
+gPTP$ DEBUG$ Sent SYNC message
+gPTP$ DEBUG$ Calculated local to system clock rate difference
+gPTP$ DEBUG$ *** Received PDelay Request message
+gPTP$ DEBUG$ RX PHY compensation: 0 0.000000382 sec
+gPTP$ DEBUG$ Process PDelay Request SeqId: 26	
+gPTP$ DEBUG$ TX PHY compensation: 0 0.000000184 sec
+gPTP$ DEBUG$ *** Sent PDelay Response message
+gPTP$ DEBUG$ *** Sent PDelay Response FollowUp message
+gPTP$ DEBUG$ SYNC_INTERVAL_TIMEOUT_EXPIRES occured
+gPTP$ DEBUG$ TX PHY compensation: 0 0.000000184 sec
+gPTP$ DEBUG$ Sent SYNC message
+gPTP$ DEBUG$ Calculated local to system clock rate difference
+gPTP$ DEBUG$ SYNC_INTERVAL_TIMEOUT_EXPIRES occured
+gPTP$ DEBUG$ TX PHY compensation: 0 0.000000184 sec
+gPTP$ DEBUG$ Sent SYNC message
+gPTP$ DEBUG$ Calculated local to system clock rate difference
+gPTP$ DEBUG$ SYNC_INTERVAL_TIMEOUT_EXPIRES occured
+gPTP$ DEBUG$ TX PHY compensation: 0 0.000000184 sec
+gPTP$ DEBUG$ Sent SYNC message
+gPTP$ DEBUG$ Calculated local to system clock rate difference
+gPTP$ DEBUG$ SYNC_INTERVAL_TIMEOUT_EXPIRES occured
+gPTP$ DEBUG$ TX PHY compensation: 0 0.000000184 sec
+gPTP$ DEBUG$ Sent SYNC message
+gPTP$ DEBUG$ Calculated local to system clock rate difference
+gPTP$ DEBUG$ *** Received PDelay Request message
+gPTP$ DEBUG$ RX PHY compensation: 0 0.000000382 sec
+gPTP$ DEBUG$ Process PDelay Request SeqId: 27	
+gPTP$ DEBUG$ TX PHY compensation: 0 0.000000184 sec
+gPTP$ DEBUG$ *** Sent PDelay Response message
+gPTP$ DEBUG$ *** Sent PDelay Response FollowUp message
+gPTP$ DEBUG$ SYNC_INTERVAL_TIMEOUT_EXPIRES occured
+gPTP$ DEBUG$ TX PHY compensation: 0 0.000000184 sec
+gPTP$ DEBUG$ Sent SYNC message
+gPTP$ DEBUG$ Calculated local to system clock rate difference
+gPTP$ DEBUG$ SYNC_INTERVAL_TIMEOUT_EXPIRES occured
+gPTP$ DEBUG$ TX PHY compensation: 0 0.000000184 sec
+gPTP$ DEBUG$ Sent SYNC message
+gPTP$ DEBUG$ Calculated local to system clock rate difference
+gPTP$ DEBUG$ SYNC_INTERVAL_TIMEOUT_EXPIRES occured
+gPTP$ DEBUG$ TX PHY compensation: 0 0.000000184 sec
+gPTP$ DEBUG$ Sent SYNC message
+gPTP$ DEBUG$ Calculated local to system clock rate difference
+gPTP$ DEBUG$ SYNC_INTERVAL_TIMEOUT_EXPIRES occured
+gPTP$ DEBUG$ TX PHY compensation: 0 0.000000184 sec
+gPTP$ DEBUG$ Sent SYNC message
+gPTP$ DEBUG$ Calculated local to system clock rate difference
+gPTP$ DEBUG$ SYNC_INTERVAL_TIMEOUT_EXPIRES occured
+gPTP$ DEBUG$ TX PHY compensation: 0 0.000000184 sec
+gPTP$ DEBUG$ Sent SYNC message
+gPTP$ DEBUG$ Calculated local to system clock rate difference
+gPTP$ DEBUG$ SYNC_INTERVAL_TIMEOUT_EXPIRES occured
+gPTP$ DEBUG$ TX PHY compensation: 0 0.000000184 sec
+gPTP$ DEBUG$ Sent SYNC message
+gPTP$ DEBUG$ Calculated local to system clock rate difference
+gPTP$ DEBUG$ SYNC_INTERVAL_TIMEOUT_EXPIRES occured
+gPTP$ DEBUG$ TX PHY compensation: 0 0.000000184 sec
+gPTP$ DEBUG$ Sent SYNC message
+gPTP$ DEBUG$ Calculated local to system clock rate difference
+gPTP$ DEBUG$ SYNC_INTERVAL_TIMEOUT_EXPIRES occured
+gPTP$ DEBUG$ TX PHY compensation: 0 0.000000184 sec
+gPTP$ DEBUG$ Sent SYNC message
+gPTP$ DEBUG$ Calculated local to system clock rate difference
+gPTP$ DEBUG$ SYNC_INTERVAL_TIMEOUT_EXPIRES occured
+gPTP$ DEBUG$ TX PHY compensation: 0 0.000000184 sec
+gPTP$ DEBUG$ Sent SYNC message
+gPTP$ DEBUG$ Calculated local to system clock rate difference
+gPTP$ DEBUG$ SYNC_INTERVAL_TIMEOUT_EXPIRES occured
+gPTP$ DEBUG$ TX PHY compensation: 0 0.000000184 sec
+gPTP$ DEBUG$ Sent SYNC message
+gPTP$ DEBUG$ Calculated local to system clock rate difference
+gPTP$ DEBUG$ SYNC_INTERVAL_TIMEOUT_EXPIRES occured
+gPTP$ DEBUG$ TX PHY compensation: 0 0.000000184 sec
+gPTP$ DEBUG$ Sent SYNC message
+gPTP$ DEBUG$ Calculated local to system clock rate difference
+gPTP$ DEBUG$ SYNC_INTERVAL_TIMEOUT_EXPIRES occured
+gPTP$ DEBUG$ TX PHY compensation: 0 0.000000184 sec
+gPTP$ DEBUG$ Sent SYNC message
+gPTP$ DEBUG$ Calculated local to system clock rate difference
+gPTP$ DEBUG$ SYNC_INTERVAL_TIMEOUT_EXPIRES occured
+gPTP$ DEBUG$ TX PHY compensation: 0 0.000000184 sec
+gPTP$ DEBUG$ Sent SYNC message
+gPTP$ DEBUG$ Calculated local to system clock rate difference
+gPTP$ DEBUG$ SYNC_INTERVAL_TIMEOUT_EXPIRES occured
+gPTP$ DEBUG$ TX PHY compensation: 0 0.000000184 sec
+gPTP$ DEBUG$ Sent SYNC message
+gPTP$ DEBUG$ Calculated local to system clock rate difference
+gPTP$ DEBUG$ SYNC_INTERVAL_TIMEOUT_EXPIRES occured
+gPTP$ DEBUG$ TX PHY compensation: 0 0.000000
