@@ -63,7 +63,7 @@ void gptplogUnregister(void)
 // logcat support
 gptplogcat_t gptplogcat = GPTP_LOGCAT_OFF;
 
-#ifndef LOG_GPTP
+// #ifndef LOG_GPTP
 // #error LOG_GPTP is NOT defined
 void gptpLog(GPTP_LOG_LEVEL level, const char *tag, const char *path, int line, const char *fmt, ...)
 {
@@ -154,4 +154,4 @@ void gptpLog(GPTP_LOG_LEVEL level, const char *tag, const char *path, int line, 
 // 		va_end(arglist);
 // 	}
 // }
-#endif
+// #endif

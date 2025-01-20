@@ -725,8 +725,8 @@ void UDPRecv()
 
 int main(int argc, const char *argv[])
 {
-    (void)(argc); // 메인함수에 전달되는 정보의 갯수
-    (void)(argv); // 메인함수에 전달되는 실질적인 정보로, 문자열의 배열
+    (void)(argc);
+    (void)(argv);
 
     MDPSFrame.SetSocket("can0", 1);
     C_CANFrame.SetSocket("can1", 1);

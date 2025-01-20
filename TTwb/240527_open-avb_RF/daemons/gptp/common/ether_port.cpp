@@ -249,7 +249,7 @@ void EtherPort::startSyncRateIntervalTimer()
 			clock->addEventTimerLocked(this, SYNC_RATE_INTERVAL_TIMEOUT_EXPIRED, 8000000000);
 			
 			// 240930 sy.kim
-			GPTP_LOG_DEBUG("GM, 8sec event start");
+			// GPTP_LOG_DEBUG("GM, 8sec event start");
 		}
 		else
 		{
@@ -257,7 +257,7 @@ void EtherPort::startSyncRateIntervalTimer()
 			clock->addEventTimerLocked(this, SYNC_RATE_INTERVAL_TIMEOUT_EXPIRED, 4000000000);
 			
 			// 240930 sy.kim
-			GPTP_LOG_DEBUG("Slave, 4sec event start");
+			// GPTP_LOG_DEBUG("Slave, 4sec event start");
 		}
 	}
 }
@@ -811,16 +811,16 @@ bool EtherPort::_processEvent(Event e)
 						sigMsg->setintervals(PTPMessageSignalling::sigMsgInterval_NoChange, getSyncInterval(), PTPMessageSignalling::sigMsgInterval_NoChange);
 						
 						// 240930 sy.kim
-						GPTP_LOG_DEBUG("GM %s, Sig %s, Prof %s, Oper Sync interval %d, Oper Pdelay interval %d", 
-										isGM, sigMsg, automotive_profile, getSyncInterval(), PTPMessageSignalling::sigMsgInterval_NoChange);
+						// GPTP_LOG_DEBUG("GM %s, Sig %s, Prof %s, Oper Sync interval %d, Oper Pdelay interval %d", 
+										// isGM, sigMsg, automotive_profile, getSyncInterval(), PTPMessageSignalling::sigMsgInterval_NoChange);
 					}
 					else
 					{
 						sigMsg->setintervals(log_min_mean_pdelay_req_interval, getSyncInterval(), PTPMessageSignalling::sigMsgInterval_NoChange);
 
 						// 240930 sy.kim
-						GPTP_LOG_DEBUG("GM %s, Sig %s, Prof %s, Oper Sync interval %d, Oper Pdelay interval %d", 
-										isGM, sigMsg, automotive_profile, getSyncInterval(), log_min_mean_pdelay_req_interval);
+						// GPTP_LOG_DEBUG("GM %s, Sig %s, Prof %s, Oper Sync interval %d, Oper Pdelay interval %d", 
+										// isGM, sigMsg, automotive_profile, getSyncInterval(), log_min_mean_pdelay_req_interval);
 					}
 					sigMsg->sendPort(this, NULL);
 					delete sigMsg;
