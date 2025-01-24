@@ -1,0 +1,61 @@
+diff --git a/sources/app.sample/app.lpa/master/data_router.h b/sources/app.sample/app.lpa/master/data_router.h
+index 18f7067..1ece480 100644
+--- a/sources/app.sample/app.lpa/master/data_router.h
++++ b/sources/app.sample/app.lpa/master/data_router.h
+@@ -130,5 +130,56 @@ uint16 get_master_ack(void);
+ /*misra_c_2012_rule_8_5_violation:	Symbol "frm_findRouteTbl" is declared more than once*/
+ uint8 frm_findRouteTbl(uint8 input_port, uint32 input_id, uint8 index);
+ 
++// 241106 sy.kim
++static void NP_IpcCbFunc_A65_Test(uint16 uhwCmd, uint8 *pucData, uint16 uhwLength);
++
++/************************************** 241202 sy.kim IONIQ5 RX ************************************/
++/* CAN0(C-CAN) RX 
++	0x4A, 0x65, 0xa0, 0x125, 0x130, 0x175, 0x1AA, 0x255, 0x1e5
++*/
++static void RxCAN0_YRS_01_10ms(uint8 *YRS_RxData);
++static void RxCAN0_IEB_01_10ms(uint8 *BrkPedal_RxData);
++static void RxCAN0_WHL_01_10ms(uint8 *WHL_RxData);
++static void RxCAN0_SAS_01_10ms(uint8 *SAS_RxData);
++static void RxCAN0_Unknown_0x130(uint8 *Unknown_RxData);
++static void RxCAN0_ESC_03_20ms(uint8 *ESC03_RxData);
++static void RxCAN0_CLU_01_20ms(uint8 *CLU_RxData);
++static void RxCAN0_CLU_02_100ms(uint8 *CLU2_RxData);
++static void RxCAN0_RR_C_RDR_01_50ms(uint8 *RR_C_RDR_01_50ms);
++static void katech_rx_can0(uint32 can_id, uint8 *data);
++
++/* CAN1(E-CAN) RX
++	0x35, 0xa0, 0x175, 0x1AA, 0x1B5, 0x1BA, 0x1cf, 0x3c1
++*/
++static void RxCAN1_Unknown_0x35(uint8 *Unknown_0x35);
++static void RxCAN1_WHL_01_10ms(uint8 *WHL_01_10ms); 
++static void RxCAN1_ESC_03_20ms(uint8 *ESC_03_20ms);
++static void RxCAN1_CLU_01_20ms(uint8 *CLU_01_20ms);
++static void RxCAN1_CLU_01_20ms2(uint8 *LaneInfoRxData);
++static void RxCAN1_RR_C_RDR_02_50ms(uint8 *RR_C_RDR_02_50ms);
++static void RxCAN1_SWRC_03_20ms(uint8 *SWRC_03_20ms);
++static void RxCAN1_MFSW_01_200ms(uint8 *MFSW_01_200ms);
++static void katech_rx_can1(uint32 can_id, uint8 *data);
++
++/* CAN2(MDPS) RX
++	0xEA, 0x377, 0x378, 0x379
++*/
++static void RxCAN2_MDPS_01_10ms(uint8 *MDPS_RxData);
++static void RxCAN2_Unknown_0x377(uint8 *CMD_RxData);
++static void RxCAN2_Unknown_0x378(uint8 *CMD_RxData);
++static void RxCAN2_Unknown_0x379(uint8 *CMD_RxData);
++static void katech_rx_can2(uint32 can_id, uint8 *data);
++
++/* CAN3(DRV) RX
++	0x1EA, 0x1A0, , 0x165
++*/
++static void RxCAN3_ADAS_CMD_20_20ms(uint8 *data);
++static void RxCAN3_ADAS_CMD_32_50ms(uint8 *ADAS_CMD_20_20ms_Temp);
++static void RxCAN3_ADAS_CMD_10_20ms(uint8 *ADAS_CMD_10_20ms);
++static void RxCAN0_ADAS_PRK_20_20ms(uint8 *ADAS_PRK_20_20ms);
++static void katech_rx_can3(uint32 can_id, uint8 *data);
++
++/***************************************************************************************************/
++
+ 
+ #endif /* DATA_ROUTER_H */

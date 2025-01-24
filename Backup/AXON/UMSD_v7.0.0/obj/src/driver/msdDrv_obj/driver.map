@@ -1,0 +1,323 @@
+
+Memory Configuration
+
+Name             Origin             Length             Attributes
+*default*        0x0000000000000000 0xffffffffffffffff
+
+Linker script and memory map
+
+LOAD /home/root/UMSD_v7.0.0/obj/src/driver/msdDrv_obj/msdSysConfig.o
+LOAD /home/root/UMSD_v7.0.0/obj/src/driver/msdDrv_obj/msdHwAccess.o
+LOAD /home/root/UMSD_v7.0.0/obj/src/driver/msdDrv_obj/msdVersion.o
+LOAD /home/root/UMSD_v7.0.0/obj/src/driver/msdDrv_obj/msdDevObj.o
+
+.interp
+ *(.interp)
+
+.note.gnu.build-id
+ *(.note.gnu.build-id)
+
+.hash
+ *(.hash)
+
+.gnu.hash
+ *(.gnu.hash)
+
+.dynsym
+ *(.dynsym)
+
+.dynstr
+ *(.dynstr)
+
+.gnu.version
+ *(.gnu.version)
+
+.gnu.version_d
+ *(.gnu.version_d)
+
+.gnu.version_r
+ *(.gnu.version_r)
+
+.rela.init
+ *(.rela.init)
+
+.rela.text
+ *(.rela.text)
+
+.rela.fini
+ *(.rela.fini)
+
+.rela.rodata
+ *(.rela.rodata)
+
+.rela.data.rel.ro
+ *(.rela.data.rel.ro)
+
+.rela.data
+ *(.rela.data)
+
+.rela.tdata
+ *(.rela.tdata)
+
+.rela.tbss
+ *(.rela.tbss)
+
+.rela.ctors
+ *(.rela.ctors)
+
+.rela.dtors
+ *(.rela.dtors)
+
+.rela.got
+ *(.rela.got)
+
+.rela.bss
+ *(.rela.bss)
+
+.rela.ifunc
+ *(.rela.ifunc)
+
+.rela.plt
+ *(.rela.plt)
+
+.init
+ *(SORT_NONE(.init))
+
+.plt
+ *(.plt)
+
+.text           0x0000000000000000     0x3e08
+ *(.text .stub)
+ .text          0x0000000000000000      0xc54 /home/root/UMSD_v7.0.0/obj/src/driver/msdDrv_obj/msdSysConfig.o
+                0x0000000000000000                msdUnLoadDriver
+                0x0000000000000144                msdLoadDriver
+                0x0000000000000810                msdSetDriverInterface
+                0x0000000000000844                msdGetDriverInterface
+                0x0000000000000880                sohoDevGet
+                0x00000000000008a4                msdlport2port
+                0x00000000000008e4                msdport2lport
+                0x0000000000000950                msdlportvec2portvec
+                0x00000000000009a0                msdportvec2lportvec
+                0x00000000000009e0                msdlport2phy
+                0x0000000000000a40                msdlport2serdes
+                0x0000000000000ba0                msdEnableHwSemaphore
+                0x0000000000000c10                msdDisableHwSemaphore
+ *fill*         0x0000000000000c54        0xc 1f2003d5
+ .text          0x0000000000000c60     0x14cc /home/root/UMSD_v7.0.0/obj/src/driver/msdDrv_obj/msdHwAccess.o
+                0x0000000000000e50                msdSetSMIC45PhyReg
+                0x0000000000000ed0                msdGetSMIC45PhyReg
+                0x0000000000000f50                msdSetSMIPhyReg
+                0x0000000000000fc4                msdGetSMIPhyReg
+                0x0000000000001040                msdSetSMIPhyXMDIOReg
+                0x00000000000010c0                msdGetSMIPhyXMDIOReg
+                0x0000000000001140                msdSetSMIExtPhyReg
+                0x00000000000011b4                msdGetSMIExtPhyReg
+                0x0000000000001230                msdSetSMIExtPhyXMDIOReg
+                0x00000000000012b0                msdGetSMIExtPhyXMDIOReg
+                0x0000000000001330                msdRmuTxRxPkt
+                0x0000000000001360                msdRmuReqPktCreate
+                0x00000000000015b4                msdRmuPackEthReqPkt
+                0x00000000000018c4                msdSetAnyReg
+                0x00000000000019e0                msdSetAnyExtendedReg
+                0x0000000000001c40                msdGetAnyReg
+                0x0000000000001d60                msdSetAnyRegField
+                0x0000000000001e20                msdGetAnyRegField
+                0x0000000000001eb0                msdGetAnyExtendedReg
+                0x0000000000001ff0                msdSetAnyExtendedRegField
+                0x00000000000020b0                msdGetAnyExtendedRegField
+ *fill*         0x000000000000212c        0x4 1f2003d5
+ .text          0x0000000000002130       0x84 /home/root/UMSD_v7.0.0/obj/src/driver/msdDrv_obj/msdVersion.o
+                0x0000000000002130                msdVersion
+ *fill*         0x00000000000021b4        0xc 1f2003d5
+ .text          0x00000000000021c0     0x1c48 /home/root/UMSD_v7.0.0/obj/src/driver/msdDrv_obj/msdDevObj.o
+                0x00000000000021c0                InitDevObj
+ *(.gnu.warning)
+
+.fini
+ *(SORT_NONE(.fini))
+
+.rodata         0x0000000000000000        0xe
+ *(.rodata)
+ .rodata        0x0000000000000000        0xe /home/root/UMSD_v7.0.0/obj/src/driver/msdDrv_obj/msdHwAccess.o
+
+.rodata1
+ *(.rodata1)
+
+.eh_frame_hdr
+ *(.eh_frame_hdr)
+
+.eh_frame       0x0000000000000000      0x8ec
+ *(.eh_frame)
+ .eh_frame      0x0000000000000000      0x1d8 /home/root/UMSD_v7.0.0/obj/src/driver/msdDrv_obj/msdSysConfig.o
+ .eh_frame      0x00000000000001d8      0x690 /home/root/UMSD_v7.0.0/obj/src/driver/msdDrv_obj/msdHwAccess.o
+ .eh_frame      0x0000000000000868       0x48 /home/root/UMSD_v7.0.0/obj/src/driver/msdDrv_obj/msdVersion.o
+ .eh_frame      0x00000000000008b0       0x3c /home/root/UMSD_v7.0.0/obj/src/driver/msdDrv_obj/msdDevObj.o
+                                         0x40 (size before relaxing)
+
+.gcc_except_table
+ *(.gcc_except_table)
+
+.gnu_extab
+ *(.gnu_extab*)
+
+.exception_ranges
+ *(.exception_ranges)
+
+.eh_frame
+ *(.eh_frame)
+
+.gnu_extab
+ *(.gnu_extab)
+
+.gcc_except_table
+ *(.gcc_except_table)
+
+.exception_ranges
+ *(.exception_ranges)
+
+.tdata
+ *(.tdata)
+
+.tbss
+ *(.tbss)
+
+.jcr
+ *(.jcr)
+
+.dynamic
+ *(.dynamic)
+
+.got
+ *(.got)
+
+.got.plt
+ *(.got.plt)
+
+.data           0x0000000000000000        0x6
+ *(.data)
+ .data          0x0000000000000000        0x0 /home/root/UMSD_v7.0.0/obj/src/driver/msdDrv_obj/msdSysConfig.o
+ .data          0x0000000000000000        0x0 /home/root/UMSD_v7.0.0/obj/src/driver/msdDrv_obj/msdHwAccess.o
+ .data          0x0000000000000000        0x6 /home/root/UMSD_v7.0.0/obj/src/driver/msdDrv_obj/msdVersion.o
+                0x0000000000000000                msdApiVersion
+ .data          0x0000000000000006        0x0 /home/root/UMSD_v7.0.0/obj/src/driver/msdDrv_obj/msdDevObj.o
+
+.data1
+ *(.data1)
+
+.bss            0x0000000000000000    0x23900
+ *(.bss)
+ .bss           0x0000000000000000    0x23900 /home/root/UMSD_v7.0.0/obj/src/driver/msdDrv_obj/msdSysConfig.o
+ .bss           0x0000000000023900        0x0 /home/root/UMSD_v7.0.0/obj/src/driver/msdDrv_obj/msdHwAccess.o
+ .bss           0x0000000000023900        0x0 /home/root/UMSD_v7.0.0/obj/src/driver/msdDrv_obj/msdVersion.o
+ .bss           0x0000000000023900        0x0 /home/root/UMSD_v7.0.0/obj/src/driver/msdDrv_obj/msdDevObj.o
+
+.stab
+ *(.stab)
+
+.stabstr
+ *(.stabstr)
+
+.stab.excl
+ *(.stab.excl)
+
+.stab.exclstr
+ *(.stab.exclstr)
+
+.stab.index
+ *(.stab.index)
+
+.stab.indexstr
+ *(.stab.indexstr)
+
+.comment        0x0000000000000000       0x4c
+ *(.comment)
+ .comment       0x0000000000000000       0x13 /home/root/UMSD_v7.0.0/obj/src/driver/msdDrv_obj/msdSysConfig.o
+ .comment       0x0000000000000013       0x13 /home/root/UMSD_v7.0.0/obj/src/driver/msdDrv_obj/msdHwAccess.o
+ .comment       0x0000000000000026       0x13 /home/root/UMSD_v7.0.0/obj/src/driver/msdDrv_obj/msdVersion.o
+ .comment       0x0000000000000039       0x13 /home/root/UMSD_v7.0.0/obj/src/driver/msdDrv_obj/msdDevObj.o
+
+.note.GNU-stack
+                0x0000000000000000        0x0
+ .note.GNU-stack
+                0x0000000000000000        0x0 /home/root/UMSD_v7.0.0/obj/src/driver/msdDrv_obj/msdSysConfig.o
+ .note.GNU-stack
+                0x0000000000000000        0x0 /home/root/UMSD_v7.0.0/obj/src/driver/msdDrv_obj/msdHwAccess.o
+ .note.GNU-stack
+                0x0000000000000000        0x0 /home/root/UMSD_v7.0.0/obj/src/driver/msdDrv_obj/msdVersion.o
+ .note.GNU-stack
+                0x0000000000000000        0x0 /home/root/UMSD_v7.0.0/obj/src/driver/msdDrv_obj/msdDevObj.o
+
+.gnu.build.attributes
+ *(.gnu.build.attributes)
+
+.debug
+ *(.debug)
+
+.line
+ *(.line)
+
+.debug_srcinfo
+ *(.debug_srcinfo)
+
+.debug_sfnames
+ *(.debug_sfnames)
+
+.debug_aranges
+ *(.debug_aranges)
+
+.debug_pubnames
+ *(.debug_pubnames)
+
+.debug_info
+ *(.debug_info)
+
+.debug_abbrev
+ *(.debug_abbrev)
+
+.debug_line
+ *(.debug_line)
+
+.debug_frame
+ *(.debug_frame)
+
+.debug_str
+ *(.debug_str)
+
+.debug_loc
+ *(.debug_loc)
+
+.debug_macinfo
+ *(.debug_macinfo)
+
+.debug_weaknames
+ *(.debug_weaknames)
+
+.debug_funcnames
+ *(.debug_funcnames)
+
+.debug_typenames
+ *(.debug_typenames)
+
+.debug_varnames
+ *(.debug_varnames)
+
+.debug_pubtypes
+ *(.debug_pubtypes)
+
+.debug_ranges
+ *(.debug_ranges)
+
+.debug_macro
+ *(.debug_macro)
+
+.debug_addr
+ *(.debug_addr)
+
+.ARM.attributes
+ *(.ARM.attributes)
+ *(.gnu.attributes)
+
+.note.gnu.arm.ident
+ *(.note.gnu.arm.ident)
+OUTPUT(/home/root/UMSD_v7.0.0/obj/src/driver/msdDrv_obj/driver.o elf64-littleaarch64)
+LOAD linker stubs

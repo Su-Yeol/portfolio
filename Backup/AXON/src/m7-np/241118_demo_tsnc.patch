@@ -1,0 +1,119 @@
+diff --git a/sources/app.sample/app.lpa/master_app/demo_tsnc.c b/sources/app.sample/app.lpa/master_app/demo_tsnc.c
+index 0713493..9f2dfb1 100644
+--- a/sources/app.sample/app.lpa/master_app/demo_tsnc.c
++++ b/sources/app.sample/app.lpa/master_app/demo_tsnc.c
+@@ -49,8 +49,8 @@
+ #if (SIC_BSP_SUPPORT_TEST_APP_TPA == 1)
+ #include "rt_tbl.h"
+ #include "demo_tsnc.h"
+-
+ #include "tpa_drv.h"
++#include "core_cm7.h" // 241118 sy.kim
+ 
+ /**************************************************************************************************
+ *                                            DEFINITIONS
+@@ -81,7 +81,7 @@ static EthFrame_t ethFrame_rx;
+ static uint16 ethSize;
+ static uint16 rxEthSize;
+ 
+-static uint16 ip_header_sum[9]; // ip header´Â 20¹ÙÀÌÆ® -> word´Â 10, ip checksum »©¸é 9
++static uint16 ip_header_sum[9]; // ip headerï¿½ï¿½ 20ï¿½ï¿½ï¿½ï¿½Æ® -> wordï¿½ï¿½ 10, ip checksum ï¿½ï¿½ï¿½ï¿½ 9
+ 
+ /*misra_c_2012_rule_8_4_violation:	Object definition does not have a visible prototype.*/
+ static CANMessage_t TSNC_CANMsg;
+@@ -102,6 +102,8 @@ static uint16 cal_checksum(uint16 header[], uint8 arr_size);
+ //static void TSNC_EthToCAN(void);
+ //static void TSNC_CANToEth(void);
+ 
++uint32 startTime; // 241118 sy.kim
++uint32 endTime; // 241118 sy.kim
+ /**************************************************************************************************
+ *                                             FUNCTIONS
+ **************************************************************************************************/
+@@ -330,6 +332,7 @@ void cb_tsnc_eth_to_can_cnvt(const TSNC_ETH_DATA *eth_data)
+         (void*)SAL_MemCopy(TSNC_CANMsg.mData, ethFrame_rx.payload.data, data_length);
+ 
+         frm_cnvt_msg_send(TSNC_CANMsg.portNum, TSNC_CANMsg.mFDFormat, TSNC_CANMsg.mExtendedId, TSNC_CANMsg.mId, data_length, TSNC_CANMsg.mData);
++
+     }
+     else
+     {
+@@ -352,11 +355,25 @@ static void set_ethDstAddrInfo(uint8 rx_sourcePort, uint32 route_id)
+             SAL_MemCopy(ethFrame_tx.ipHeader.dstIPAddr, can2ethTbl[i].tpa_dst.dstIp, 4);
+         }
+     }
++
++    // 241118 sy.kim
++    mcu_printf("Dst MAC: ");
++    for(uint8 j=0; j<6; j++)
++    {
++        mcu_printf("%X ", ethFrame_tx.dst[j]);
++    }
++    mcu_printf("\n");
++    mcu_printf("Dst IP: ");
++    for(uint8 k=0; k<4; k++)
++    {
++        mcu_printf("%d ", ethFrame_tx.ipHeader.dstIPAddr[k]);
++    }
++    mcu_printf("\n");
+ }
+ 
+ void cb_tsnc_can_to_eth_cnvt(const CNVT_CAN_DATA *can_data)
+ {
+-/*misra_c_2012_rule_10_4_violation:	Essential type of the left hand operand "can_data->len" (unsigned) is not the same as that of the right operand "15"(signed).*/
++    /*misra_c_2012_rule_10_4_violation:	Essential type of the left hand operand "can_data->len" (unsigned) is not the same as that of the right operand "15"(signed).*/
+     uint8 rxDataLen = can_data->len - 15u;
+     uint16 ip_total_len = 0u;
+     uint16 udp_len = 0u;
+@@ -380,7 +397,7 @@ void cb_tsnc_can_to_eth_cnvt(const CNVT_CAN_DATA *can_data)
+         tbl_id = (can_data->id | 0x80000000u);
+     }
+ 
+-    set_ethDstAddrInfo(can_data->port, tbl_id);
++    set_ethDstAddrInfo(can_data->port, tbl_id); // can port, can id
+ 
+ 	ethFrame_tx.udpHeader.dstPort[0] = 0x02u;
+ 	ethFrame_tx.udpHeader.dstPort[1] = 0x02u;
+@@ -423,6 +440,11 @@ void cb_tsnc_can_to_eth_cnvt(const CNVT_CAN_DATA *can_data)
+     ethFrame_tx.payload.dlc = get_dlc(rxDataLen);
+     SAL_MemCopy(ethFrame_tx.payload.data, can_data->data, rxDataLen);
+ 
++    // 241118 sy.kim
++    mcu_printf("CAN %d, CAN port %d, CAN ID 0x%X, CAN length %d\n", ethFrame_tx.payload.extId, ethFrame_tx.payload.ecuId,
++    ((ethFrame_tx.payload.id[0]<<24u)+(ethFrame_tx.payload.id[1]<<16u)+(ethFrame_tx.payload.id[2]<<8u)+(ethFrame_tx.payload.id[3])), 
++    ethFrame_tx.payload.dlc);
++
+     /* UDP Checksum */
+     /* IPv4 Pseudo Header */
+     udp_header_sum[0] = trans_8_to_16(ethFrame_tx.ipHeader.srcIPAddr[0], ethFrame_tx.ipHeader.srcIPAddr[1]);
+@@ -465,16 +487,21 @@ void cb_tsnc_can_to_eth_cnvt(const CNVT_CAN_DATA *can_data)
+     (void)SAL_QueuePut(gTpaTxQueueHandle, (void*)&tpa_msg, sizeof(TPA_TX_MESSAGE), portMAX_DELAY, SAL_OPT_BLOCKING);
+ #else
+ /* for TSNC latency */
+-    /*
+-    SAL_GetTickCount(&tick_tpa_write);
+-
+-    mcu_printf("===================================================\n");
+-    mcu_printf("tpa_write = %d lpa_rx = %d\n", tick_tpa_write, tick_lpa_rx);
+-    mcu_printf("%s_%d can2eth latency = %d (ms)\n", __func__, __LINE__, (tick_tpa_write - tick_lpa_rx));
+-    mcu_printf("===================================================\n");
+-    */
++    // 241118 sy.kim
++    if (!(CoreDebug->DEMCR & CoreDebug_DEMCR_TRCENA_Msk)) {
++        CoreDebug->DEMCR |= CoreDebug_DEMCR_TRCENA_Msk;
++    }
++    DWT->CYCCNT = 0;
++    DWT->CTRL |= DWT_CTRL_CYCCNTENA_Msk;
++
++    startTime = DWT->CYCCNT;
++
+     /*misra_c_2012_rule_17_7_violation:	The return value of a non-void function "tpa_write" is unused.*/
+-	(void)tpa_write((uint8*)&ethFrame_tx, ethSize);
++    (void)tpa_write((uint8*)&ethFrame_tx, ethSize);
++
++    endTime = DWT->CYCCNT;
++    mcu_printf("CAN2ETH time: %u us\n", (uint32)((endTime - startTime) / (400000000 / 1000000)));
++	
+ #endif
+ }
+ #endif // #if (SIC_BSP_SUPPORT_TEST_APP_TPA == 1)

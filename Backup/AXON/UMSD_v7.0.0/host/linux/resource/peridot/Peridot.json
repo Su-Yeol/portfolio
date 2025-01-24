@@ -1,0 +1,4196 @@
+{
+	"atu":	{
+		"desc":	"Show atu commands",
+		"help":	"atu help [subcmd]: Display atu command options\n",
+		"subcmd":	{
+			"addEntry":	{
+				"help":	"atu addEntry [options] : Creates the new entry in MAC address table\n",
+				"paraList":	{
+					"[options](default value for option item is 0):":	{
+						"":	"options for atu entry, format as: -macAddr aabbccddee00 -state 7\n",
+						"-macAddr":	"mac address, format as aabbccddee00\n",
+						"-lag":	"trunk member or LAG\n",
+						"-portVec":	"port vector\n",
+						"-fid":	"ATU MAC Address Database number\n",
+						"-state":	"atu entry state\n",
+						"-FPri":	"MAC frame priority data\n",
+						"-QPri":	"MAC queue priority data\n"
+					}
+				},
+				"example":	{
+					"":	"atu addentry -macaddr 112233445566 -state 0xe -portvec 3 -fid 1\n"
+				}
+			},
+			"getNext":	{
+				"help":	"atu getNext <macAddr> <fid>: Get next atu entry\n",
+				"paraList":	{
+					"macAddr":	"mac address strart to search, format as aabbccddee00\n",
+					"fid":	"ATU MAC Address Database Number\n"
+				},
+				"example":	{
+					"":	"atu getNext aabbccddee00 0\n"
+				}
+			},
+			"delAll":	{
+				"help":	"atu delAll <deleteCMD> : Delete all or all non-static atu entry\n",
+				"paraList":	{
+					"deleteCMD":	{
+						"":	"1: delete All\n",
+						"":	"2: delete All non static\n"
+					}
+				},
+				"example":	{
+					"":	"atu delAll 1\n"
+				}
+			},
+			"delAllInDB":	{
+				"help":	"atu delAllInDB <deleteCMD> <fid>: Delete all atu entry based on the DB number\n",
+				"paraList":	{
+					"deleteCMD":	{
+						"":	"1: delete All\n",
+						"":	"2: delete All non static\n"
+					},
+					"fid":	"ATU MAC Address Database Number\n"
+				},
+				"example":	{
+					"":	"atu delAllInDB 1 1\n"
+				}
+			},
+			"move":	{
+				"help":	"atu move <moveCMD> <moveFrom> <moveTo>: Move all or all non-static atu entry\n",
+				"paraList":	{
+					"moveCMD":	{
+						"":	"1: Move All\n",
+						"":	"2: Move All non static\n"
+					},
+					"moveFrom":	"port where moving from\n",
+					"moveTo":	"port where moving to\n"
+				},
+				"example":	{
+					"":	"atu move 1 2 3\n"
+				}
+			},
+			"moveInDB":	{
+				"help":	"atu moveInDB <moveCMD> <fid> <moveFrom> <moveTo>: Move the atu entry based on fid\n",
+				"paraList":	{
+					"moveCMD":	{
+						"":	"1: Move All\n",
+						"":	"2: Move All non static\n"
+					},
+					"fid":	"ATU MAC Address Database Number\n",
+					"moveFrom":	"port where moving from\n",
+					"moveTo":	"port where moving to\n"
+				},
+				"example":	{
+					"":	"atu moveInDB 1 1 2 3\n"
+				}
+			},
+			"delEntry":	{
+				"help":	"atu delEntry <macAddr> <fid> : Delete the specified atu entry\n",
+				"paraList":	{
+					"macAddr":	"mac address, format as aabbccddee00\n",
+					"fid":	"ATU MAC Address Database number\n"
+				},
+				"example":	{
+					"":	"atu delEntry 112233445566 1\n"
+				}
+			},
+			"getVio":	{
+				"help":	"atu getVio : Get the atu Violation data\n",
+				"paraList":	{
+				},
+				"example":	{
+					"":	"atu getVio\n"
+				}
+			},
+			"findEntry":	{
+				"help":	"atu findEntry <macAddr> <fid> : Find atu entry\n",
+				"paraList":	{
+					"macAddr":	"mac address, format as aabbccddee00\n",
+					"fid":	"ATU MAC Address Database number\n"
+				},
+				"example":	{
+					"":	"atu findEntry 112233445566 1\n"
+				}
+			},
+			"setAging":	{
+				"help":	"atu setAging <timeout> : Set the atu entry aging time out in millisecond\n",
+				"paraList":	{
+					"timeout":	"aging time in millisecond\n"
+				},
+				"example":	{
+					"":	"atu setAging 120000\n"
+				}
+			},
+			"getAging":	{
+				"help":	"atu getAging : Get the atu entry aging time out in millisecond\n",
+				"paraList":	{
+				},
+				"example":	{
+					"":	"atu getAging\n"
+				}
+			},
+			"portRemove":	{
+				"help":	"atu portRemove <RemoveCMD> <port> : Remove all or all non-static addresses from a port\n",
+				"paraList":	{
+					"RemoveCMD":	{
+						"":	"1: Remove All\n",
+						"":	"2: Remove All non static\n"
+					},
+					"port":	"logical port number \n"
+				},
+				"example":	{
+					"":	"atu portRemove 1 0\n"
+				}
+			},
+			"portRemoveInDB":	{
+				"help":	"atu portRemoveInDB <RemoveCMD> <fid> <port> : Remove all or all non-static addresses from a port in the specified ATU fid\n",
+				"paraList":	{
+					"RemoveCMD":	{
+						"":	"1: Remove All\n",
+						"":	"2: Remove All non static\n"
+					},
+					"fid":	"ATU MAC Address Database Number\n",
+					"port":	"logical port number \n"
+				},
+				"example":	{
+					"":	"atu portRemoveInDB 1 1 0\n"
+				}
+			},
+			"getLearn2All":	{
+				"help":	"atu getLearn2All : Get the learn on all devices status\n",
+				"paraList":	{
+				},
+				"example":	{
+					"":	"atu getLearn2All\n"
+				}
+			},
+			"setLearn2All":	{
+				"help":	"atu setLearn2All <en> : Set the learn on all devices\n",
+				"paraList":	{
+					"en":	"1 if Learn2All is enabled, 0 otherwise\n"
+				},
+				"example":	{
+					"":	"atu setLearn2All 1 \n"
+				}
+			},
+			"setPortLearnLimit":	{
+				"help":	"atu setPortLearnLimit <port> <limit> : Set auto learning limit for specified port of a specified device\n",
+				"paraList":	{
+					"port":	"logical port number \n",
+					"limit":	"auto learning limit \n"
+				},
+				"example":	{
+					"":	"atu setPortLearnLimit 1 1 \n"
+				}
+			},
+			"getPortLearnLimit":	{
+				"help":	"atu getPortLearnLimit <port> : Get auto learning limit for specified port of a specified device\n",
+				"paraList":	{
+					"port":	"logical port number \n"
+				},
+				"example":	{
+					"":	"atu getPortLearnLimit 1 \n"
+				}
+			},
+			"getLearnCount":	{
+				"help":	"atu getLearnCount <port>: Read the current number of active unicast MAC addresses associated with the given port\n",
+				"paraList":	{
+					"port":	"logical port number \n"
+				},
+				"example":	{
+					"":	"atu getLearnCount 0 \n"
+				}
+			},
+			"getCount":	{
+				"help":	"atu getCount : Counts all entries in the Address Translation Unit\n",
+				"paraList":	{
+				},
+				"example":	{
+					"":	"atu getCount\n"
+				}
+			},
+			"getCountPerFid":	{
+				"help":	"atu getCountPerFid <fid> : Counts all non-static entries in the specified fid in the Address Translation Unit\n",
+				"paraList":	{
+					"fid":	"ATU MAC Address Database Number\n"
+				},
+				"example":	{
+					"":	"atu getCountPerFid 1\n"
+				}
+			},
+			"getNonStaticCount":	{
+				"help":	"atu getNonStaticCount : Counts all non-static entries in the Address Translation Unit\n",
+				"paraList":	{
+				},
+				"example":	{
+					"":	"atu getNonStaticCount\n"
+				}
+			},
+			"getNonStaticCountPerFid":	{
+				"help":	"atu getNonStaticCountPerFid <fid> : Counts all non-static entries in the specified fid in the Address Translation Unit\n",
+				"paraList":	{
+					"fid":	"ATU MAC Address Database Number\n"
+				},
+				"example":	{
+					"":	"atu getNonStaticCountPerFid 1\n"
+				}
+			},
+			"dump":	{
+				"help":	"atu dump <fid> : Find all MAC address in the specified fid and print them out\n",
+				"paraList":	{
+					"fid":	"ATU MAC Address Database Number\n"
+				},
+				"example":	{
+					"":	"atu dump 1\n"
+				}
+			}
+		}
+	},
+	"stu":	{
+		"desc":	"Show stu commands",
+		"help":	"stu help [subcmd]: Display stu command options\n",
+		"subcmd":	{
+			"addEntry":	{
+				"help":	"stu addEntry [options] : Add stu entry\n",
+				"paraList":	{
+					"[options](default value for option item is 0):":	{
+						"":	"options for stu entry, format as: -sid 1 -portState {1 2 3}\n",
+						"-sid":	"802.1s Port State Information Database (SID) number\n",
+						"-portState":	{
+							"":	"array of Per VLAN Port States for each port\n",
+							"": "-portState {1 2 3} means port0 is blocking, port1 is learning\n",
+							"": "port2 is forwarding, and all other ports are disable\n",
+							"":	"0: port disable\n",
+							"":	"1: port blocking\n",
+							"":	"2: port learning\n",
+							"":	"3: port forwarding\n"
+						}
+					}
+				},
+				"example":	{
+					"":	"stu addentry -sid 1 -portstate {0 1}\n"
+				}
+			},
+			"getNext":	{
+				"help":	"stu getNext <sid> : Get next valid stu entry\n",
+				"paraList":	{
+					"sid":	"802.1s Port State Information Database (SID) number, valid value is 0 ~ 63\n"
+				},
+				"example":	{
+					"":	"stu getNext 1 \n"
+				}
+			},
+			"findEntry":	{
+				"help":	"stu findEntry <sid> : Find stu entry with input sid\n",
+				"paraList":	{
+					"sid":	"802.1s Port State Information Database (SID) number, valid value is 0 ~ 63\n"
+				},
+				"example":	{
+					"":	"stu findEntry 1 \n"
+				}
+			},
+			"delEntry":	{
+				"help":	"stu delEntry <sid>: Delete the specified stu entry\n",
+				"paraList":	{
+					"sid":	"802.1s Port State Information Database (SID) number, valid value is 0 ~ 63\n"
+				},
+				"example":	{
+					"":	"stu delentry 1 \n"
+				}
+			},
+			"getCount":	{
+				"help":	"stu getCount : Get number of valid entries in the STU table\n",
+				"paraList":	{
+				},
+				"example":	{
+					"":	"stu getCount\n"
+				}
+			},
+			"dump":	{
+				"help":	"stu dump : Find all the stu entries and print them out\n",
+				"paraList":	{
+				},
+				"example":	{
+					"":	"stu dump\n"
+				}
+			}
+		}
+	},
+	"vlan":	{
+		"desc":	"Show vtu commands",
+		"help":	"vlan help [subcmd]: Display vtu command options\n",
+		"subcmd":	{
+			"addEntry":	{
+				"help":	"vlan addEntry [options] : Add vlan entry\n",
+				"paraList":	{
+					"[options](default value for option item is 0):":	{
+						"":	"options for vtu entry, format as: -vid 1 -sid 1\n",
+						"-fid":	"database number or FID (forwarding information database)\n",
+						"-vid":	"VLAN ID\n",
+						"-sid":	"802.1s Port State Information Database (SID) number\n",
+						"-TagP":	{
+							"":	"Membership and Egress Tagging array\n",
+							"": "-TagP {1 2 3} means port0 is MEMBER_EGRESS_UNTAGGED, port1 is MEMBER_EGRESS_TAGGED\n",
+							"": "port2 is NOT_A_MEMBER, and all other ports are MEMBER_EGRESS_UNMODIFIED\n",
+							"":	"0: MEMBER_EGRESS_UNMODIFIED\n",
+							"":	"1: MEMBER_EGRESS_UNTAGGED\n",
+							"":	"2: MEMBER_EGRESS_TAGGED\n",
+							"":	"3: NOT_A_MEMBER\n"
+						},
+						"-vidPolicy":	"indicate that the frame with this VID uses VID Policy\n",
+						"-useVIDFPri":	"Use VID queue priority override  \n",
+						"-vidFPri":	"VID frame priority data (0 ~ 7) \n",
+						"-useVIDQPri":	"Use VID frame priority override \n",
+						"-vidQPri":	"VID queue priority data \n",
+						"-dontLearn":	"Don't learn \n",
+						"-filterUC":	"Filter Unicast frames \n",
+						"-filterBC":	"Filter Broadcast frames \n",
+						"-filterMC":	"Filter Multicast frames \n"
+					}
+				},
+				"example":	{
+					"":	"vlan addentry -sid 1 -vid 1 -fid 1 -TagP {1 2 3} -vidPolicy 1 \n"
+				}
+			},
+			"delAll":	{
+				"help":	"vlan delAll : Flush all vlan entry\n",
+				"paraList":	{
+				},
+				"example":	{
+					"":	"vlan delAll\n"
+				}
+			},
+			"findEntry":	{
+				"help":	"vlan findEntry <vlanId> : Find vtu entry\n",
+				"paraList":	{
+					"vlanId":	"vlan entry id\n"
+				},
+				"example":	{
+					"":	"vlan findEntry 2\n"
+				}
+			},
+			"isExist":	{
+				"help":	"vlan isExist <vlanId> : Check if the vlan entry exist\n",
+				"paraList":	{
+					"vlanId":	"vlan entry Id\n"
+				},
+				"example":	{
+					"":	"vlan isExist 1\n"
+				}
+			},
+			"getNext":	{
+				"help":	"vlan getNext <vlanId> : Get next vlan entry\n",
+				"paraList":	{
+					"vlanId":	"vlan entry id (this parameter is optional)\n"
+				},
+				"example":	{
+					"":	"vlan getNext or vlan getNext 1\n"
+				}
+			},
+			"delEntry":	{
+				"help":	"vlan delEntry <vlanId>: Delete the specified vlan entry\n",
+				"paraList":	{
+					"vlanId":	"vlan entry id\n"
+				},
+				"example":	{
+					"":	"vlan delEntry 1\n"
+				}
+			},
+			"setMode":	{
+				"help":	"vlan setMode <modeValue>: Set the vlan mode\n",
+				"paraList":	{
+					"<modeValue>":	{
+						"":	"vtu mode:\n",
+						"":	"0 : 4K vtu, vtu page should be 0 unless overridden by TCAM \n",
+						"":	"1 : 8K vtu with vtu page being 0 if a frame is a unicast frame \n",
+						"":	"2 : use 8K vtu with vtu page being = to the source \n\tport VTU page bit(port offset 0x05)\n",
+						"":	"3 : use 8K vtu with vtu page being a one if frame is not properly \n\tProvider tagged entering a Provider port \n"
+					}
+				},
+				"example":	{
+					"":	"vlan setMode 0\n"
+				}
+			},
+			"getMode":	{
+				"help":	"vlan getMode : Get the vlan mode\n",
+				"paraList":	{
+				},
+				"example":	{
+					"":	"vlan getMode\n"
+				}
+			},
+			"getVio":	{
+				"help":	"vlan getVio : Get the vlan Violation data\n",
+				"paraList":	{
+				},
+				"example":	{
+					"":	"vlan getVio\n"
+				}
+			},
+			"getCount":	{
+				"help":	"vlan getCount : Get the valid entry count in the VTU table\n",
+				"paraList":	{
+				},
+				"example":	{
+					"":	"vlan getCount\n"
+				}
+			},
+			"setMemberTag":	{
+				"help":	"vlan setMemberTag <vlanId> <portNum> <memberTag> : update the vlan entry member tag\n",
+				"paraList":	{
+					"vlanId":	"vlan entry Id\n",
+					"portNum":	"port number\n",
+					"memberTag":	{
+						"":	"enum element of MSD_VLAN_MEMBER_TAG\n",
+						"":	"0 : MEMBER_EGRESS_UNMODIFIED\n",
+						"":	"1 : MEMBER_EGRESS_UNTAGGED\n",
+						"":	"2 : MEMBER_EGRESS_TAGGED\n",
+						"":	"3 : NOT_A_MEMBER\n"
+					}
+				},
+				"example":	{
+					"":	"vlan setMemberTag 2 0 1\n"
+				}
+			},
+			"getMemberTag":	{
+				"help":	"vlan getMemberTag <vlanId> <portNum> : Get the memberTag for special port if it exist\n",
+				"paraList":	{
+					"vlanId":	"vlan entry Id\n",
+					"portNum":	"port number\n"
+				},
+				"example":	{
+					"":	"vlan getMemberTag 2 0\n"
+				}
+			},
+			"dump":	{
+				"help":	"vlan dump : Find all the vlan entries and print them out\n",
+				"paraList":	{
+				},
+				"example":	{
+					"":	"vlan dump\n"
+				}
+			}
+		}
+	},
+	"imp":	{
+		"desc":	"Show imp commands",
+		"help":	"imp help [subcmd]: Display imp command options\n",
+		"subcmd":	{
+			"run":	{
+				"help":	"imp run <addr> : Run the imp with specified address\n",
+				"paraList":	{
+					"addr":	"specified start address\n"
+				},
+				"example":	{
+					"":	"imp run 0\n"
+				}
+			},
+			"reset":	{
+				"help":	"imp reset : Reset imp module\n",
+				"paraList":	{
+				},
+				"example":	{
+					"":	"imp reset\n"
+				}
+			},
+			"stop":	{
+				"help":	"imp stop : Stop the imp\n",
+				"paraList":	{
+				},
+				"example":	{
+					"":	"imp stop\n"
+				}
+			},
+			"writeEEPROM":	{
+				"help":	"imp writeEEPROM <addr> <data>: Write data to EEPROM\n",
+				"paraList":	{
+					"addr":	"EEPROM address\n",
+					"data":	"to be written\n"
+				},
+				"example":	{
+					"":	"imp writeEEPROM 20 00\n"
+				}
+			},
+			"loadToEEPROM":	{
+				"help":	"imp loadToEEPROM  <filename>: Load ihx file to EEPROM\n",
+				"paraList":	{
+					"filename":	"ihx file name to load\n"
+				},
+				"example":	{
+					"":	"imp loadToEEPROM test.ihx\n"
+				}
+			},
+			"loadToRAM":	{
+				"help":	"imp loadToRAM <filename>: Load ihx file data to RAM\n",
+				"paraList":	{
+					"filename":	"ihx file name to load\n"
+				},
+				"example":	{
+					"":	"imp loadToRAM test.ihx\n"
+				}
+			}
+		}
+	},
+	"phy":	{
+		"desc":	"Show phy commands",
+		"help":	"phy help [subcmd]: Display phy command options\n",
+		"subcmd":	{
+			"reset":	{
+				"help":	"phy reset <port>: Phy reset per port\n",
+				"paraList":	{
+					"port":	"The logical port number for normal access and physical address for SERDES access\n"
+				},
+				"example":	{
+					"":	"phy reset 1\n"
+				}
+			},
+			"setLoopback":	{
+				"help":	"phy setLoopback <port> <enable> : Enable/Disable internal port loopback\n",
+				"paraList":	{
+					"port":	"The logical port number for normal access and physical address for SERDES access\n",
+					"enable":	{
+						"":	"enable/disable loopback mode\n",
+						"":	"1 : enable loopback mode\n",
+						"":	"0 : disable loopback mode\n"
+					}
+				},
+				"example":	{
+					"":	"phy setLoopback 1 1\n"
+				}
+			},
+			"setSpeed":	{
+				"help":	"phy setSpeed <port> <speed> : Set speed per port\n",
+				"paraList":	{
+					"port":	"The logical port number for normal access and physical address for SERDES access\n",
+					"setSpeed":	"Disables auto negotiation and sets speed bits in PHY Page 0 register 0 then resets PHY.\n",
+						"":	"port speed:\n",
+						"":	"0 : PHY_SPEED_10_MBPS for 10Mbps\n",
+						"":	"1 : PHY_SPEED_100_MBPS for 100Mbps\n",
+						"":	"2 : PHY_SPEED_1000_MBPS for 1000Mbps\n"
+				},
+				"example":	{
+					"":	"phy setSpeed 1 1\n"
+				}
+			},
+			"powerDown":	{
+				"help":	"phy powerDown <port> <state> : Enable/disable power down\n",
+				"paraList":	{
+					"port":	"The logical port number for normal access and physical address for SERDES access\n",
+					"enable":	{
+						"":	"enable/disable <power down>\n",
+						"":	"1 : power down\n",
+						"":	"0 : normal operation\n"
+					}
+				},
+				"example":	{
+					"":	"phy powerDown 1 1\n"
+				}
+			},
+			"setDuplex":	{
+				"help":	"phy setDuplex <port> <mode> : Sets duplex mode per port\n",
+				"paraList":	{
+					"port":	"The logical port number for normal access and physical address for SERDES access\n",
+					"mode":	{
+						"":	"dulpex mode:\n",
+						"":	"1 : Full-duplex\n",
+						"":	"0 : Half-duplex\n"
+					}
+				},
+				"example":	{
+					"":	"phy setDuplex 1 1\n"
+				}
+			},
+			"setAutoMode":	{
+				"help":	"phy setAutoMode <port> <mode> : Sets auto mode per port\n",
+				"paraList":	{
+					"port":	"The logical port number for normal access and physical address for SERDES access\n",
+					"mode":	{
+						"":	"Auto Mode to be written:\n",
+						"":	"0 : SPEED_AUTO_DUPLEX_AUTO\n",
+						"":	"1 : SPEED_1000_DUPLEX_AUTO\n",
+						"":	"2 : SPEED_100_DUPLEX_AUTO\n",
+						"":	"3 : SPEED_10_DUPLEX_AUTO\n",
+						"":	"4 : SPEED_AUTO_DUPLEX_FULL\n",
+						"":	"5 : SPEED_AUTO_DUPLEX_HALF\n",
+						"":	"6 : SPEED_1000_DUPLEX_FULL\n",
+						"":	"7 : SPEED_1000_DUPLEX_HALF\n",
+						"":	"8 : SPEED_100_DUPLEX_FULL\n",
+						"":	"9 : SPEED_100_DUPLEX_HALF\n",
+						"":	"10 : SPEED_10_DUPLEX_FULL\n",
+						"":	"11 : SPEED_10_DUPLEX_HALF\n"
+					}
+				},
+				"example":	{
+					"":	"phy setAutoMode 1 1\n"
+				}
+			},
+			"setEEE":	{
+				"help":	"phy setEEE <port> <en>: Enable or disable the energy efficient ethernet feature per port \n",
+				"paraList":	{
+					"port":	"The logical port number, unless SERDES device is accessed\n",
+					"en":	"1 is enable EEE, 0 is disable EEE\n"
+				},
+				"example":	{
+					"":	"phy setEEE 1 1\n"
+				}
+			},
+			"rr":	{
+				"help":	"phy rr <devAddr> <regAddr> : Indirectly read internal PHY register through SMI PHY command\n",
+				"paraList":	{
+					"devAddr":	"physical phy address, the base address is 0\n",
+					"regAddr":	"register address\n"
+				},
+				"example":	{
+					"":	"phy rr 1 1\n"
+				}
+			},
+			"rw":	{
+				"help":	"phy rw <devAddr> <regAddr> <data> : Indirectly write internal PHY register through SMI PHY command\n",
+				"paraList":	{
+					"devAddr":	"physical phy address, the base address is 0\n",
+					"regAddr":	"register address\n",
+					"data":	"data to be written\n"
+				},
+				"example":	{
+					"":	"phy rw 1 0 0x1940\n"
+				}
+			},		
+			"xrr":	{
+				"help":	"phy xrr <portNum> <devAddr> <regAddr> : Indirectly read internal XMDIO PHY register through SMI PHY command\n",
+				"paraList":	{
+					"portNum":	"port number\n",
+					"devAddr":	"device address\n",
+					"regAddr":	"register address\n"
+				},
+				"example":	{
+					"":	"phy xrr 1 3 1 \n"
+				}
+			},
+			"xrw":	{
+				"help":	"phy xrw <portNum> <devAddr> <regAddr> <data> : Indirectly write internal XMDIO PHY register through SMI PHY command\n",
+				"paraList":	{
+					"portNum":	"port number\n",
+					"devAddr":	"device address\n",
+					"regAddr":	"register address\n",
+					"data":	"data to be written\n"
+				},
+				"example":	{
+					"":	"phy xrw 1 7 60 0x0004\n"
+				}
+			},
+			"extrr":	{
+				"help":	"phy extrr <devAddr> <regAddr> : Indirectly read external PHY register through SMI PHY command\n",
+				"paraList":	{
+					"devAddr":	"physical phy address\n",
+					"regAddr":	"register address\n"
+				},
+				"example":	{
+					"":	"phy extrr 0 1\n"
+				}
+			},
+			"extrw":	{
+				"help":	"phy extrw <devAddr> <regAddr> <data> : Indirectly write external PHY register through SMI PHY command\n",
+				"paraList":	{
+					"devAddr":	"physical phy address\n",
+					"regAddr":	"register address\n",
+					"data":	"data to be written\n"
+				},
+				"example":	{
+					"":	"phy extrw 0 0 0x1940\n"
+				}
+			},
+			"extxrr":	{
+				"help":	"phy extxrr <portNum> <devAddr> <regAddr> : Indirectly read external XMDIO PHY register through SMI PHY command\n",
+				"paraList":	{
+					"portNum":	"port number\n",
+					"devAddr":	"device address\n",
+					"regAddr":	"register address\n"
+				},
+				"example":	{
+					"":	"phy extxrr 0 3 1 \n"
+				}
+			},
+			"extxrw":	{
+				"help":	"phy extxrw <portNum> <devAddr> <regAddr> <data> : Indirectly write external XMDIO PHY register through SMI PHY command\n",
+				"paraList":	{
+					"portNum":	"port number\n",
+					"devAddr":	"device address\n",
+					"regAddr":	"register address\n",
+					"data":	"data to be written\n"
+				},
+				"example":	{
+					"":	"phy extxrw 0 3 0 0x400\n"
+				}
+			}
+		}
+	},
+	"interrupt":	{
+		"desc":	"Show interrupt commands",
+		"help":	"interrupt help [subcmd]: Display interrupt command options\n",
+		"subcmd":	{
+			"setphyIntEnable":	{
+				"help":	"interrupt setphyIntEnable <port> <en>: Enables or disables one PHY Interrupt, select the interrupt events that can activate the interrupt pin.\n",
+				"paraList":	{
+					"port":	"The logical port number, unless SERDES device is accessed\n",
+					"en":	{
+						"": "the data of interrupt to enable/disable. any combination of below\n",
+                        "0x8000": "MSD_PHY_AUTO_NEG_ERROR\n",
+                        "0x4000": "MSD_PHY_SPEED_CHANGED\n",
+                        "0x2000": "MSD_PHY_DUPLEX_CHANGED\n",
+                        "0x1000": "MSD_PHY_PAGE_RECEIVED\n",
+                        "0x800":  "MSD_PHY_AUTO_NEG_COMPLETED\n",
+                        "0x400":  "MSD_PHY_LINK_STATUS_CHANGED\n",
+                        "0x200":  "MSD_PHY_SYMBOL_ERROR\n",
+                        "0x100":  "MSD_PHY_FALSE_CARRIER\n",
+                        "0x40":   "MSD_PHY_MDI_CROSSOVER_CHANGED\n",
+                        "0x10":   "MSD_PHY_DOWNSHIFT\n",
+                        "0x10":   "MSD_PHY_ENERGY_DETECT\n",
+                        "0x8":    "MSD_PHY_FLP_EXCHANGE_COMPLETE\n",
+                        "0x4":    "MSD_PHY_DTE_POWER_DETECTION\n",
+                        "0x2":    "MSD_PHY_POLARITY_CHANGED\n",
+                        "0x1":    "MSD_PHY_JABBER\n"
+					}
+				},
+				"example":	{
+					"":	"interrupt setphyIntEnable 1 0x400\n"
+				}
+			},
+			"getphyIntEnable":	{
+				"help":	"interrupt getphyIntEnable <port>: gets one PHY Interrupt, select the interrupt events that can activate the interrupt pin.\n",
+				"paraList":	{
+					"port":	"The logical port number, unless SERDES device is accessed\n"
+				},
+				"example":	{
+					"":	"interrupt getphyIntEnable 1\n"
+				}
+			},
+			"getphyIntStatus":	{
+				"help":	"interrupt getphyIntStatus <port>: gets one PHY Interrupt status\n",
+				"paraList":	{
+					"port":	"The logical port number, unless SERDES device is accessed\n"
+				},
+				"example":	{
+					"":	"interrupt getphyIntStatus 1\n"
+				}
+			},
+			"setDevIntEnable":	{
+				"help":	"interrupt setDevIntEnable <data>: Enables or disables interrupt Mask to drive the DeviceInt bit.\n",
+				"paraList":	{
+					"en":	{
+						"": "the data of interrupt to enable/disable. any combination of below\n",
+                        "0x8000": "MSD_WATCH_DOG_INT\n",
+                        "0x4000": "MSD_JAM_LIMIT_INT\n",
+                        "0x2000": "MSD_DUPLEX_MISMATCH_INT\n",
+                        "0x1000": "MSD_WAKE_EVENT_INT\n",
+                        "0x400":  "MSD_PHY_INT_10\n",
+                        "0x200":  "MSD_PHY_INT_9\n",
+                        "0x100":  "MSD_PHY_INT_8\n",
+                        "0x80":   "MSD_PHY_INT_7\n",
+                        "0x40":   "MSD_PHY_INT_6\n",
+                        "0x20":   "MSD_PHY_INT_5\n",
+                        "0x10":   "MSD_PHY_INT_4\n",
+                        "0x8":    "MSD_PHY_INT_3\n",
+                        "0x4":    "MSD_PHY_INT_2\n",
+                        "0x2":    "MSD_PHY_INT_1\n"
+					}
+				},
+				"example":	{
+					"":	"interrupt setDevIntEnable 0x4\n"
+				}
+			},
+			"getDevIntEnable":	{
+				"help":	"interrupt getDevIntEnable: gets interrupt Mask enable or disable drive the DeviceInt bit.\n",
+				"paraList":	{
+
+				},
+				"example":	{
+					"":	"interrupt getDevIntEnable\n"
+				}
+			},
+			"getDevIntStatus":	{
+				"help":	"interrupt getDevIntStatus: gets interrupt source\n",
+				"paraList":	{
+
+				},
+				"example":	{
+					"":	"interrupt getDevIntStatus\n"
+				}
+			},
+			"setActiveIntEnable":	{
+				"help":	"interrupt setActiveIntEnable <data>: Enables or disables interrupt to drive the device's INTn pin low.\n",
+				"paraList":	{
+					"en":	{
+						"": "the data of interrupt to enable/disable. any combination of below\n",
+                        "0x100":  "MSD_AVB_INT\n",
+                        "0x80":   "MSD_DEVICE_INT\n",
+                        "0x40":   "MSD_STATS_DONE\n",
+                        "0x20":   "MSD_VTU_PROB\n",
+                        "0x10":   "MSD_VTU_DONE\n",
+                        "0x8":    "MSD_ATU_PROB\n",
+                        "0x4":    "MSD_ATU_DONE\n",
+                        "0x2":    "MSD_TCAM_INT\n",
+						"0x1":    "MSD_EE_INT\n"
+					}
+				},
+				"example":	{
+					"":	"interrupt setActiveIntEnable 0x4\n"
+				}
+			},
+			"getActiveIntEnable":	{
+				"help":	"interrupt getActiveIntEnable: gets interrupt enable or disable to drive the device's INTn pin low.\n",
+				"paraList":	{
+
+				},
+				"example":	{
+					"":	"interrupt getActiveIntEnable\n"
+				}
+			},
+			"getActiveIntStatus":	{
+				"help":	"interrupt getActiveIntStatus: reads an hardware driven event status\n",
+				"paraList":	{
+
+				},
+				"example":	{
+					"":	"interrupt getActiveIntStatus\n"
+				}
+			}
+		}
+	},
+	"serdes": {
+		"desc":	"Show serdes commands",
+		"help":	"serdes help [subcmd] : Display serdes command options\n",
+		"subcmd":	{
+			"reset":	{
+				"help":	"serdes reset <portNum> : Internal serdes reset\n",
+				"paraList":	{
+					"portNum":	"logical port number, valid ports are 2-7, and 9, 10\n"
+				},
+				"example":	{
+					"":	"serdes reset 9\n"
+				}
+			},
+			"xrr":	{
+				"help":	"serdes xrr <devAddr> <phyAddr> <regAddr> : Indirectly read internal Serdes register through SMI C45 command\n",
+				"paraList":	{
+					"devAddr":	"serdes device address\n",
+					"phyAddr":	"serdes physical phy address\n",
+					"regAddr":	"serdes register address\n"
+				},
+				"example":	{
+					"":	"serdes xrr 4 0x9 0x1000\n"
+				}
+			},
+			"xrw":	{
+				"help":	"serdes xrw <devAddr> <phyAddr> <regAddr> <data> : Indirectly write internal Serdes register through SMI C45 command\n",
+				"paraList":	{
+					"devAddr":	"serdes device address\n",
+					"phyAddr":	"serdes physical phy address\n",
+					"regAddr":	"serdes register address\n",
+					"data":	"data to be written\n"
+				},
+				"example":	{
+					"":	"serdes xrw 4 0x9 0x1000 0x6040\n"
+				}
+			}
+		}
+	},
+	"irl":	{
+		"desc":	"Show ingress rate limiter commands",
+		"help":	"irl help [subcmd]: Display ingress rate limiter command options\n",
+		"subcmd":	{
+			"reset":	{
+				"help":	"irl reset : Initializes all PIRL Resources for all ports\n",
+				"paraList":	{
+				},
+				"example":	{
+					"":	"irl reset\n"
+				}
+			},
+			"initResCount":	{
+				"help":	"irl initResCount <port> <res>: Initializes the selected PIRL Resource counter per port\n",
+				"paraList":	{
+					"port":	"target logical port\n",
+					"res":	"resource unit to be accessed\n"
+				},
+				"example":	{
+					"":	"irl initResCount 0 0\n"
+				}
+			},
+			"customSetup":	{
+				"help":	"irl customSetup <tgtRate> <tgtBstSize> <countMode> : Calculate CBS/EBS/BI/BRFGrn/BRFYel\n",
+				"paraList":	{
+					"tgtRate":	"target rate (units is kfps when countMode = MSD_PIRL_COUNT_FRAME, otherwise units is kbps)\n",
+					"tgtBstSize":	"target burst size (uints is Byte)\n",
+					"countMode  ":	{
+						"":	"0 : MSD_PIRL_COUNT_FRAME\n",
+						"":	"1 : MSD_PIRL_COUNT_ALL_LAYER1\n",
+						"":	"2 : MSD_PIRL_COUNT_ALL_LAYER2\n",
+						"":	"3 : MSD_PIRL_COUNT_ALL_LAYER3\n"
+					}
+				},
+				"example":	{
+					"":	"irl customSetup 1000 3000 2\n"
+				}
+			},
+			"readRes":	{
+				"help":	"irl readRes <port> <res> : Read Resource bucket parameter\n",
+				"paraList":	{
+					"port":	"target logical port\n",
+					"res":	"resource unit to be accessed\n"
+				},
+				"example":	{
+					"":	"irl readRes 1 1\n"
+				}
+			},
+			"writeRes":	{
+				"help":	"irl writeRes <port> <res> [options]: Writes Resource bucket parameter\n",
+				"paraList":	{
+					"port":	"target logical port\n",
+					"res":	"resource unit to be accessed\n",
+					"[options](default value for option item is 0):":	{
+						"":	"options to set IRL data\n",
+						"-bktTypeMask":	"various traffic type to be counted\n",
+						"-tcamFlows":	"indicate to account for tcam flows 0 to 3, but not TCP/UDP data\n",
+						"-priAndPt":	{
+							"":	"determine the incoming frames\n",
+							"":	"0 : typeMask Or priMask\n",
+							"":	"1 : typeMask And priMask\n"
+						},
+						"-useFPri":	{
+							"":	"determine what priority type this resource is to account\n",
+							"":	"0 : use the QPri assigned to the frame\n",
+							"":	"1 : use the FPri assigned to the frame\n"
+						},
+						"-priSelect":	"priority bit mask that each bit indicates one of the eight priorities\n",
+						"-colorAware":	"set to color aware mode or color blind mode\n",
+						"-accountGrnOverflow":	"Green&Yellow buckets are connected when in Coloar Aware mode\n",
+						"-accountQConf":	"account discarded frames due to queue congestion\n",
+						"-accountFiltered":	"account filtered frames. Account for All\n",
+						"-samplingMode":	"sample one out of so many frames/bytes for a stream of frames\n",
+						"-actionMode":	{
+							"":	"action should be taken when there are not enough tokens to accept the entire incoming frame\n",
+							"":	"0 : PIRL_ACTION_DROP - drop frame\n",
+							"":	"1 : PIRL_ACTION_FC - send flow control mode\n"
+						},
+						"-fcMode":	{
+							"":	"flow control de-assertion mode\n",
+							"":	"0 : MSD_PIRL_FC_DEASSERT_EMPTY\n",
+							"":	"1 : MSD_PIRL_FC_DEASSERT_CBS_LIMIT\n"
+						},
+						"-fcPriority":	"used when port PFC mode enabled\n",
+						"-isValid":	"Reserved for future use\n",
+						"-ebsLimit":	"Excess Burst Size limit on the Yellow bucket ( 0 ~ 0xFFFFFF)\n",
+						"-cbsLimit":	"Committed Burst Size limit on the Green bucket\n",
+						"-bktIncrement":	"the amount of tokens that need to be added for each byte of packet information\n",
+						"-bktRateFactorGrn":	"the amount of tokens that need to be decremented for each rate\n",
+						"-bktRateFactorYel":	"the amount of tokens that need to be decremented for each rate\n",
+						"-IRLConstant":	"Constant can be 500000000\n",
+						"-countMode":	"Frame bytes or Frames to be accounted for in the rate resource's rate limiting calculations\n"
+					}
+				},
+				"example":	{
+					"":	"irl writeRes 1 1 -bktTypeMask 5 -tcamFlows 0 -priAndPt 1 -priSelect 4 -colorAware 0 -accountGrnOverflow 0 -accountQConf 1  -samplingMode 1 -actionMode 1 -fcPriority 2 -isValid 1 -ebsLimit 0xff00 -cbsLimit 1 -bktIncrement 1 -bktRateFactorGrn 1 -IRLConstant 500000000 -countMode 2\n"
+				}
+			},
+			"rr":	{
+				"help":	"irl rr <port> <res> <offset>: Read general IRL register value\n",
+				"paraList":	{
+					"port":	"logical port number\n",
+					"res":	"target resource\n",
+					"offset":	"register address\n"
+				},
+				"example":	{
+					"":	"irl rr 0 0 0\n"
+				}
+			},
+			"rw":	{
+				"help":	"irl rw <port> <res> <offset> <data>: Write general IRL register value\n",
+				"paraList":	{
+					"port":	"logical port number\n",
+					"res":	"target resource\n",
+					"offset":	"register address\n",
+					"data":	"register value\n"
+				},
+				"example":	{
+					"":	"irl rw 0 0 0 1\n"
+				}
+			},
+			"advConfig":	{
+				"help":	"irl advConfig <port> <res> <tgtRate> <tgtBstSize> <countMode> [options] : Config ingress rate limit based on packet type or priority the given resource of the port\n",
+				"paraList":	{
+					"port":	"target logical port\n",
+					"res":	"resource unit to be accessed\n",
+					"tgtRate":	"target rate (units is kfps when countMode = MSD_PIRL_COUNT_FRAME, otherwise units is kbps)\n",
+					"tgtBstSize":	"target burst size (uints is Byte)\n",
+					"countMode  ":	{
+						"":	"0 : MSD_PIRL_COUNT_FRAME\n",
+						"":	"1 : MSD_PIRL_COUNT_ALL_LAYER1\n",
+						"":	"2 : MSD_PIRL_COUNT_ALL_LAYER2\n",
+						"":	"3 : MSD_PIRL_COUNT_ALL_LAYER3\n"
+					},
+					"[options](default value for option item is 0):":	{
+						"":	"options to set packet type or priority\n",
+						"-bktTypeMask":	"various traffic type to be counted\n",
+						"-tcamFlows":	"indicate to account for tcam flows 0 to 3, but not TCP/UDP data\n",
+						"-priAndPt":	{
+							"":	"determine the incoming frames\n",
+							"":	"0 : typeMask Or priMask\n",
+							"":	"1 : typeMask And priMask\n"
+						},
+						"-useFPri":	"used to determine what priority type this resource is to account\n",
+						"-priSelect":	"priority bit mask that each bit indicates one of the eight priorities\n"
+					}
+				},
+				"example":	{
+					"":	"irl advConfig 1 2 1000 3000 2 -bktTypeMask 5 -tcamFlows 0 -priAndPt 1\n"
+				}
+			},
+			"disableAdvConfig":	{
+				"help":	"irl disableAdvConfig <port> <res> : Clear config for ingress rate limit to the given resource of the port\n",
+				"paraList":	{
+					"port":	"target logical port\n",
+					"res":	"resource unit to be accessed\n"
+				},
+				"example":	{
+					"":	"irl disableAdvConfig 1 2\n"
+				}
+			}
+		}
+	},
+	"vct":	{
+		"desc":	"Show vct commands",
+		"help":	"vct help [subcmd]: Display vct command options\n",
+		"subcmd":	{
+			"cableDiag":	{
+				"help":	"vct cableDiag <port> <modeOptions> : Get the status per MDI pair\n",
+				"paraList":	{
+					"port":	"target internal phy port\n",
+					"[options](default value for option item is 0):":	{
+						"":	"options for mode select\n",
+						"-mode ":	{
+							"":	"0 :  MSD ADV VCT MAX PEAK \n",
+							"":	"1 :  MSD ADV VCT FIRST PEAK \n",
+							"":	"2 :  MSD ADV VCT OFFSET \n",
+							"":	"3 :  MSD ADV VCT SAMPLE POINT \n"
+						},
+						"-transChanSel":	{
+							"": "Transmitter channel select:\n",
+							"":	"0 :  MSD ADV VCT TCS NO CROSSPAIR\n",
+							"":	"4 :  MSD ADV VCT TCS CROSSPAIR 0\n",
+							"":	"5 :  MSD ADV VCT TCS CROSSPAIR 1\n",
+							"":	"6 :  MSD ADV VCT TCS CROSSPAIR 2\n",
+							"":	"7 :  MSD ADV VCT TCS CROSSPAIR 3\n"
+						},
+						"-sampleAvg":	{
+							"": "Number of sample averaged:\n",
+							"":	"0 :  MSD ADV VCT SAVG 2\n",
+							"":	"1 :  MSD ADV VCT SAVG 4\n",
+							"":	"2 :  MSD ADV VCT SAVG 8\n",
+							"":	"3 :  MSD ADV VCT SAVG 16\n",
+							"":	"4 :  MSD ADV VCT SAVG 32\n",
+							"":	"5 :  MSD ADV VCT SAVG 64\n",
+							"":	"6 :  MSD ADV VCT SAVG 128\n",
+							"":	"7 :  MSD ADV VCT SAVG 256\n"
+						},
+						"-peakDetHyst":	"peak detection hysteresis\n",
+						"-samplePointDist":	"sample point at distance\n"
+					}
+				},
+				"example":	{
+					"":	"vct cableDiag 1 -mode 0 -transChanSel 4\n"
+				}
+			},
+			"extenedStatus":	{
+				"help":	"vct extenedStatus <port> : Retrieves extended cable status, such as Pair Poloarity, Pair Swap, and Pair Skew.\n",
+				"paraList":	{
+					"port":	"target internal phy port\n"
+				},
+				"example":	{
+					"":	"vct extenedStatus 1\n"
+				}
+			}
+		}
+	},
+	"qav":	{
+		"desc":	"Show 802.1qav commands",
+		"help":	"qav help [subcmd]: Display 802.1qav command options\n",
+		"subcmd":	{
+			"setXRate":	{
+				"help":	"qav setXRate <port> <queue> <rate> : Set priority queue rate on a port\n",
+				"paraList":	{
+					"port":	"target logical port\n",
+					"queue":	"queue priority\n",
+					"rate":	"rate in kbps and increments of 64kbps\n"
+				},
+				"example":	{
+					"":	"qav setXRate 1 1 64\n"
+				}
+			},
+			"getXRate":	{
+				"help":	"qav getXRate <port> <queue> : Get priority queue rate per prot\n",
+				"paraList":	{
+					"port":	"target logical port\n",
+					"queue":	"queue priority\n"
+				},
+				"example":	{
+					"":	"qav getXRate 1 1\n"
+				}
+			},
+			"setXHiLimit":	{
+				"help":	"qav setXHiLimit <port> <queue> <hiLimit> : Set priority queue HiLimit on a port\n",
+				"paraList":	{
+					"port":	"target logical port\n",
+					"queue":	"queue priority\n",
+					"hiLimit":	"number of credits in bytes\n"
+				},
+				"example":	{
+					"":	"qav setXHiLimit 1 1 1\n"
+				}
+			},
+			"getXHiLimit":	{
+				"help":	"qav getXHiLimit <port> <queue> : Get priority queue HiLimit on a port\n",
+				"paraList":	{
+					"port":	"target logical port\n",
+					"queue":	"queue priority\n"
+				},
+				"example":	{
+					"":	"qav getXHiLimit 1 1\n"
+				}
+			}
+		}
+	},
+	"qbv":{
+		"desc": "Show 802.1qbv commands",
+		"help": "qbv help [subcmd]: Display 802.1Qbv command options\n",
+		"subcmd":	{
+			"write":{
+				"help": "qbv write <port> <regOffset> <data> : Write data to Qbv register\n",
+				"paraList":{
+					"port":	"Specified port number\n",
+					"regOffset":	"Qbv register offset\n",
+					"data": "data to be written\n"
+				},
+				"example": {
+					"": "qbv write 1 0x0 0x5\n"
+				}
+			},
+			"read":{
+				"help": "qbv read <port> <regOffset> : Read data from Qbv register\n",
+				"paraList":{
+					"port":	"Specified port number\n",
+					"regOffset": "Qbv register offset\n"
+				},
+				"example": {
+					"": "qbv read 1 0x0\n"
+				}
+			}
+		}
+	},
+	"ptp":	{
+		"desc":	"Show precise time protocol commands",
+		"help":	"ptp help [subcmd]: Display precise time protocol command options\n",
+		"subcmd":	{
+			"setPortPTPEn":	{
+				"help":	"ptp setPortPTPEn <port> <en> : Enables or disables PTP on a port\n",
+				"paraList":	{
+					"port":	"logical port number to set\n",
+					"en":	"1 to enable PTP, 0 to disable PTP\n"
+				},
+				"example":	{
+					"":	"ptp setPortPTPEn 1 1\n"
+				}
+			},
+			"getPortPTPEn":	{
+				"help":	"ptp getPortPTPEn <port> : Get the PTP enable status on a port\n",
+				"paraList":	{
+					"port":	"logical port number to set\n"
+				},
+				"example":	{
+					"":	"ptp getPortPTPEn 1\n"
+				}
+			},
+			"setIntEn":	{
+				"help":	"ptp setIntEn <port> [options] : Set port arrival/departure interrupt enable/disable\n",
+				"paraList":	{
+					"port":	"logical port number to set\n",
+					"[options](default value for option item is 0):":	{
+						"":	"options for Port PTP interrupt Enable/Disable, format as: -ptpArrIntEn 1 -ptpDepIntEn 1\n",
+						"-ptpArrIntEn":	{
+							"":	"Port Arrival Interrupt enable\n",
+							"":	"0 : Disable PTP Arrival capture interrupts\n",
+							"":	"1 : Enable PTP Arrival capture interrupts\n"
+						},
+						"-ptpDepIntEn":	{
+							"":	"Port Departure Interrupt enable\n",
+							"":	"0 : Disable PTP Departure capture interrupts\n",
+							"":	"1 : Enable PTP Departure capture interrupts\n"
+						}
+					}
+				},
+				"example":	{
+					"":	"To update PTP Interrupt configure, using getIntEn to get origin value and update the field you concern\n",
+					"": "Note that the not zero origin value should be set back explicitly\n",
+					"": "ptp getIntEn 1\n",
+					"": "ptp setIntEn 1 -ptpArrIntEn 1 -ptpDepIntEn 0\n"
+				}
+			},
+			"getIntEn":	{
+				"help":	"ptp getIntEn <port> : Get port arrival/departure interrupt enable/disable status\n",
+				"paraList":	{
+					"port":	"logical port number to set\n"
+				},
+				"example":	{
+					"":	"ptp getIntEn 1\n"
+				}
+			},
+			"setPortConfig":	{
+				"help":	"ptp setPortConfig <port> [options] : Set PTP port configuration parameters\n",
+				"paraList":	{
+					"port":	"logical port number to set\n",
+					"[options](default value for option item is 0):":	{
+						"":	"options for  PTP configuration parameters for each port\n",
+						"-transSpec":	{
+							"":	"PTP (Precise Time Protocol) SPEC type\n",
+							"":	"0 : IEEE 1588\n",
+							"":	"1 : IEEE 802.1as\n"
+						},
+						"-disTSpec":	{
+							"":	"Disable Transport specific check\n",
+							"":	"0 : Enable checking for Transport Spec\n",
+							"":	"1 : Disnable checking for Transport Spec\n"
+						},
+						"-etJump":	"offset to Ether type start address in bytes\n",
+						"-ipJump":	"offset to IP header start address counting from Ether type offset\n",
+						"-ptpArrIntEn":	{
+							"":	"Port Arrival Interrupt enable\n",
+							"":	"0 : Disable PTP Arrival capture interrupts\n",
+							"":	"1 : Enable PTP Arrival capture interrupts\n"
+						},
+						"-ptpDepIntEn":	{
+							"":	"Port Departure Interrupt enable\n",
+							"":	"0 : Disable PTP Departure capture interrupts\n",
+							"":	"1 : Enable PTP Departure capture interrupts\n"
+						},
+						"-disTSOverwrite":	{
+							"":	"time stamp counter overwriting\n",
+							"":	"0 : Overwrite unread Time Stamps in the registers with new data\n",
+							"":	"1 : Keep unread Time Stamps in the registers until read\n"
+						},
+						"-filterAct":	{
+							"":	"Filter LED Activity\n",
+							"":	"0 : LED Activity is activated for all frames\n",
+							"":	"1 : LED Activity is not activated for most IEEE 802.1 frames\n"
+						},
+						"-hwAccPtp":	{
+							"":	"Port PTP Hardware Acceleration enable\n",
+							"":	"0 : No, or only Ingress PTP hardware acceleration\n",
+							"":	"1 : Ingress and Egress PTP hardware acceleration is enabled\n"
+						},
+						"-kpFramwSa":	{
+							"":	"Keep Frame's SA\n",
+							"":	"0 : Place Port's SA into modified egressing PTP frames\n",
+							"":	"1 : Keep the frame's SA even for modified egressing PTP frames\n"
+						},
+						"-ExthwAcc":	{
+							"":	"External Hardware Acceleration enable\n",
+							"":	"0 : Port has no External PHY or its PTP hardware acceleration is off\n",
+							"":	"1 : Port's Extermal PHY is enabled with PTP hardware acceleration\n"
+						},
+						"-arrTSMode":	"Arrival Time Stamp Mode\n",
+						"-arrLedCtrl":	"LED control for packets entering the device\n",
+						"-depLedCtrl":	"LED control for packets departing the device\n"
+					}
+				},
+				"example":	{
+					"":	"To update PTP port configure, using getPortConfig to get origin value and update the field you concern\n",
+					"": "Note that the not zero origin value should be set back explicitly\n",
+					"": "ptp getPortConfig 1\n",
+					"": "ptp setPortConfig 1 -transSpec 1 -disTSpec 0 -etJump 0xc -depLedCtrl 0x80\n"
+				}
+			},
+			"getPortConfig":	{
+				"help":	"ptp getPortConfig <port> : Get PTP port configuration parameters\n",
+				"paraList":	{
+					"port":	"logical port number to set\n"
+				},
+				"example":	{
+					"":	"ptp getPortConfig 1\n"
+				}
+			},
+			"getTimeStamp":	{
+				"help":	"ptp getTimeStamp <port> <timeToRead> : Get PTP port time stamp value\n",
+				"paraList":	{
+					"port":	"logical port number to set\n",
+					"timeToRead":	{
+						"":	"MSD_PTP_TIME enum type:\n",
+						"":	"0 : PTP Arrival Time 0\n",
+						"":	"1 : PTP Arrival Time 1\n",
+						"":	"2 : PTP Departure Time\n"
+					}
+				},
+				"example":	{
+					"":	"ptp getTimeStamp 1 2\n"
+				}
+			},
+			"getTSValid":	{
+				"help":	"ptp getTSValid <port> <timeToRead> : Get PTP time valid bit\n",
+				"paraList":	{
+					"port":	"logical port number to set\n",
+					"timeToRead":	{
+						"":	"MSD_PTP_TIME enum type:\n",
+						"":	"0 : PTP Arrival Time 0\n",
+						"":	"1 : PTP Arrival Time 1\n",
+						"":	"2 : PTP Departure Time\n"
+					}
+				},
+				"example":	{
+					"":	"ptp getTSValid 1 2\n"
+				}
+			},
+			"resetTS":	{
+				"help":	"ptp resetTS <port> <timeToReset> : Reset PTP time valid bit\n",
+				"paraList":	{
+					"port":	"logical port number to set\n",
+					"timeToRead":	{
+						"":	"MSD_PTP_TIME enum type:\n",
+						"":	"0 : PTP Arrival Time 0\n",
+						"":	"1 : PTP Arrival Time 1\n",
+						"":	"2 : PTP Departure Time\n"
+					}
+				},
+				"example":	{
+					"":	"ptp resetTS 1 2\n"
+				}
+			},
+			"setGlobalConfig":	{
+				"help":	"ptp setGlobalConfig [options] : Set PTP global configuration parameters\n",
+				"paraList":	{
+					"[options](default value for option item is 0):":	{
+						"":	"options for Port PTP Global configuration\n",
+						"-ptpEType":	"PTP Ether Type\n",
+						"-msgIdTSEn":	"Message IDs that needs time stamp\n",
+						"-tsArrPtr":	"Time stamp arrival time counter pointer (either Arr0Time or Arr1Time)\n"
+					}
+				},
+				"example":	{
+					"":	"To update PTP Global configure, using getGlobalConfig to get origin value and update the field you concern\n",
+					"": "Note that the not zero origin value should be set back explicitly\n",
+					"": "ptp getGlobalConfig\n",
+					"": "ptp setGlobalConfig -ptpEType 0x88F7 -msgIdTSEn 0xFFFF -tsArrPtr 0\n"
+				}
+			},
+			"getGlobalConfig":	{
+				"help":	"ptp getGlobalConfig : Get PTP global configuration parameters\n",
+				"paraList":	{
+				},
+				"example":	{
+					"":	"ptp getGlobalConfig\n"
+				}
+			},
+			"getIntStatus":	{
+				"help":	"ptp getIntStatus : Get PTP interrupt status\n",
+				"paraList":	{
+				},
+				"example":	{
+					"":	"ptp getIntStatus\n"
+				}
+			},
+			"setMeanPathDelay":	{
+				"help":	"ptp setMeanPathDelay <port> <delay>: Set ingress mean path delay on a port\n",
+				"paraList":	{
+					"port":	"logical port number to set\n",
+					"delay":	"cable delay between this port and its link partner in unsiged nano seconds\n"
+				},
+				"example":	{
+					"":	"ptp setMeanPathDelay 0 10\n"
+				}
+			},
+			"getMeanPathDelay":	{
+				"help":	"ptp getMeanPathDelay <port>: Get ingress mean path delay on a port\n",
+				"paraList":	{
+					"port":	"logical port number to set\n"
+				},
+				"example":	{
+					"":	"ptp getMeanPathDelay 0\n"
+				}
+			},
+			"setIgrPathDelayAsym":	{
+				"help":	"ptp setIgrPathDelayAsym <port> <asym>: Set ingress path delay asymmetry on a port\n",
+				"paraList":	{
+					"port":	"logical port number to set\n",
+					"asym":	"bit 15 is path delay asymmetry sign(0 added, 1 subtracted), bit 14"
+				},
+				"example":	{
+					"":	"ptp setIgrPathDelayAsym 0 0x10\n"
+				}
+			},
+			"getIgrPathDelayAsym":	{
+				"help":	"ptp getIgrPathDelayAsym <port> : Get ingress path delay asymmetry on a port\n",
+				"paraList":	{
+					"port":	"logical port number to set\n"
+				},
+				"example":	{
+					"":	"ptp getIgrPathDelayAsym 0\n"
+				}
+			},
+			"setEgrPathDelayAsym":	{
+				"help":	"ptp setEgrPathDelayAsym <port> <asym>: Set egress path delay asymmetry on a port\n",
+				"paraList":	{
+					"port":	"logical port number to set\n",
+					"asym":	"bit 15 is path delay asymmetry sign(0 added, 1 subtracted), bit 14"
+				},
+				"example":	{
+					"":	"ptp setEgrPathDelayAsym 0 0x10\n"
+				}
+			},
+			"getEgrPathDelayAsym":	{
+				"help":	"ptp getEgrPathDelayAsym <port> : Get egress path delay asymmetry on a port\n",
+				"paraList":	{
+					"port":	"logical port number to set\n"
+				},
+				"example":	{
+					"":	"ptp getEgrPathDelayAsym 0\n"
+				}
+			},
+			"setPtpMode":	{
+				"help":	"ptp setPtpMode [options] : Set PTP mode configuration\n",
+				"paraList":	{
+					"[options](default value for option item is 0):":	{
+						"":	"options for PTP mode parameters\n",
+						"-altScheme":	{
+							"":	"define the values that are returned in the requestReceiptTimestamp filed in IEEE 1588\n",
+							"":	"0 : RequestReceiptTimestamp=t2, responseOriginTimestamp=t3 & the correctionFiled = 0\n",
+							"":	"1 : RequestReceiptTimestamp=0 , responseOriginTimestamp=0  & the correctionFiled = turn around time\n"
+						},
+						"-grandMstr":	{
+							"":	"Grand Master enable\n",
+							"":	"0 : Hardware accelerate with this device NOT being the Grand Master\n",
+							"":	"1 : Hardware accelerate with this device being the Grand Master\n"
+						},
+						"-oneStep":	{
+							"":	"One step enable\n",
+							"":	"0 : Hardware accelerate using AutoFollowUp Two Step frame formats\n",
+							"":	"1 : Hardware accelerate using One Step frame formats\n"
+						},
+						"-PTPMode":	{
+							"":	"PTP mode\n",
+							"":	"0 : Boundary Clock\n",
+							"":	"1 : Peer to Peer Transparent Clock\n",
+							"":	"2 : End to End Transparent Clock\n"
+						}
+					}
+				},
+				"example":	{
+					"":	"To update PTP mode configure, using getPtpMode to get origin value and update the field you concern\n",
+					"": "Note that the not zero origin value should be set back explicitly\n",
+					"": "ptp getPtpMode\n",
+					"": "ptp setPtpMode -altScheme 0 -grandMstr 1 -oneStep 1 -PTPMode 0\n"
+				}
+			},
+			"getPtpMode":	{
+				"help":	"ptp getPtpMode : Get PTP mode configuration\n",
+				"paraList":	{
+				},
+				"example":	{
+					"":	"ptp getPtpMode\n"
+				}
+			},
+			"setMasterSlave":	{
+				"help":	"ptp setMasterSlave <role> : Set PTP device as Master or Slave\n",
+				"paraList":	{
+					"role":	{
+						"":	"MSD_PTP_MASTER_SLAVE enum type:\n",
+						"":	"0 : device as slave\n",
+						"":	"1 : device as master\n"
+					}
+				},
+				"example":	{
+					"":	"ptp setMasterSlave 0\n"
+				}
+			},
+			"getMasterSlave":	{
+				"help":	"ptp getMasterSlave : Get PTP device role, 0 for slave, 1 for master\n",
+				"paraList":	{
+				},
+				"example":	{
+					"":	"ptp getMasterSlave\n"
+				}
+			},
+			"getTODBusyBit":	{
+				"help":	"ptp getTODBusyBit : Get the busy bit status to see if the Hardware is busy\n",
+				"paraList":	{
+				},
+				"example":	{
+					"":	"ptp getTODBusyBit\n"
+				}
+			},
+			"storeCompensation":	{
+				"help":	"ptp storeCompensation <Index> [options] : Store Compensation register only to selected TimeArray\n",
+				"paraList":	{
+					"Index":	"time array index\n",
+					"[options](default value for option item is 0):":	{
+						"":	"options for PTP Time Array parameters\n",
+						"-todLoadPoint":	"Time of Day Load Point\n",
+						"-clkValid":	"Clock Valid bit\n",
+						"-domainNumber":	"Domain Number, to be associated with the selected Time Array\n",
+						"-todNanoseconds":	"Time Array Time of Day, Nano second 32 bits\n",
+						"-todSecondsLow":	"Time Array Time of Day, second portion 0-31 bits\n",
+						"-todSecondsHigh":	"Time Array Time of Day, second portion 32-47 bits\n",
+						"-Nanoseconds1722Low":	"Time Array 1722 Time of Day in Nano seconds 0-31 bits\n",
+						"-Nanoseconds1722High":	"Time Array 1722 Time of Day in Nano seconds 32-63 bits\n",
+						"-todCompensation":	"Time Array Time of Day Compensation 32 bits\n"
+					}
+				},
+				"example":	{
+					"":	"ptp storeCompensation 0 -todLoadPoint 0 -clkValid 1 -domainNumber 0 -todNanoseconds 0x100 -todCompensation 0x200\n"
+				}
+			},
+			"storeAll":	{
+				"help":	"ptp storeAll <Index> [options] : Store all register to selected TimeArray\n",
+				"paraList":	{
+					"Index":	"time array index\n",
+					"[options](default value for option item is 0):":	{
+						"":	"options for PTP Time Array parameters\n",
+						"-todLoadPoint":	"Time of Day Load Point\n",
+						"-clkValid":	"Clock Valid bit\n",
+						"-domainNumber":	"Domain Number, to be associated with the selected Time Array\n",
+						"-todNanoseconds":	"Time Array Time of Day, Nano second 32 bits\n",
+						"-todSecondsLow":	"Time Array Time of Day, second portion 0-31 bits\n",
+						"-todSecondsHigh":	"Time Array Time of Day, second portion 32-47 bits\n",
+						"-Nanoseconds1722Low":	"Time Array 1722 Time of Day in Nano seconds 0-31 bits\n",
+						"-Nanoseconds1722High":	"Time Array 1722 Time of Day in Nano seconds 32-63 bits\n",
+						"-todCompensation":	"Time Array Time of Day Compensation 32 bits\n"
+					}
+				},
+				"example":	{
+					"":	"ptp storeAll 0 -todLoadPoint 0 -clkValid 1 -domainNumber 0 -todNanoseconds 0x100 -todCompensation 0x200\n"
+				}
+			},
+			"captureAll":	{
+				"help":	"ptp captureAll <Index> : Capture selected TimeArray\n",
+				"paraList":	{
+					"Index":	"time array index\n"
+				},
+				"example":	{
+					"":	"ptp captureAll 0\n"
+				}
+			},
+			"setPtpPulse":	{
+				"help":	"ptp setPtpPulse [options] : Set PTP Pulse parameters\n",
+				"paraList":	{
+					"[options](default value for option item is 0):":	{
+						"":	"options for PTP Pulse parameters\n",
+						"-ptpPulseWidth":	"Pulse Width for the 1 Pulse Per Second on the Second signal (0~0xf)\n",
+						"-ptp1ppsWidthRange":	{
+							"":	"Pulse Width Range for the 1 Pulse Per Second on the Second signal\n",
+							"":	"0 : 8 nSec units for a 125MHz PTP clock\n",
+							"":	"1 : 64 nSec units for a 125MHz PTP clock\n",
+							"":	"2 : 512 nSec units for a 125MHz PTP clock\n",
+							"":	"3 : 4096 nSec units for a 125MHz PTP clock\n",
+							"":	"4 : 32.768 uSec units for a 125MHz PTP clock\n",
+							"":	"5 : 262.144 uSec units for a 125MHz PTP clock\n",
+							"":	"6 : 2.097 mSec units for a 125MHz PTP clock\n",
+							"":	"7 : 16.777 mSec units for a 125MHz PTP clock\n"
+						},
+						"-ptp1ppsPhase":	{
+							"":	"Phase of the 1 Pulse Per Second on the Second signal\n",
+							"":	"0 : leading edge of the 1 PPS signal is the rising edge if the signal\n",
+							"":	"1 : leading edge of the 1 PPS signal is the falling edge if the signal\n"
+						},
+						"-ptp1ppsSelect":	"selected time array used to generate the 1 PPS signal\n"
+					}
+				},
+				"example":	{
+					"":	"ptp setPtpPulse -ptpPulseWidth 0xf -ptp1ppsWidthRange 3 -ptp1ppsPhase 1 -ptp1ppsSelect 0\n"
+				}
+			},
+			"getPtpPulse":	{
+				"help":	"ptp getPtpPulse : Get PTP Pulse parameters\n",
+				"paraList":	{
+				},
+				"example":	{
+					"":	"ptp getPtpPulse\n"
+				}
+			},
+			"getPTPGlobalTime":	{
+				"help":	"ptp getPTPGlobalTime : Get the global timer value that is running of the free running clock\n",
+				"paraList":	{
+				},
+				"example":	{
+					"":	"ptp getPTPGlobalTime\n"
+				}
+			}
+		}
+	},
+	"qos":	{
+		"desc":	"Show quality of service commands",
+		"help":	"qos help [subcmd]: Display quality of service command options\n",
+		"subcmd":	{
+			"setPrioMap":	{
+				"help":	"qos setPrioMap <port> <table> <entryPtr> [option] : Set port IEEE Priority Mapping\n",
+				"paraList":	{
+					"port":	"logical port number \n",
+					"table":	{
+						"":	"0 : MSD_IEEE_PRIORITY_TABLE_ING_PCP_2_F_Q_PRI   \n",
+						"":	"1 : MSD_IEEE_PRIORITY_TABLE_EG_GREEN_FPRI_2_PCP \n",
+						"":	"2 : MSD_IEEE_PRIORITY_TABLE_EG_YEL_FPRI_2_PCP   \n",
+						"":	"3 : MSD_IEEE_PRIORITY_TABLE_EG_AVB_FPRI_2_PCP   \n",
+						"":	"5 : MSD_IEEE_PRIORITY_TABLE_EG_GREEN_FPRI_2_DSCP\n",
+						"":	"6 : MSD_IEEE_PRIORITY_TABLE_EG_YEL_FPRI_2_DSCP  \n",
+						"":	"7 : MSD_IEEE_PRIORITY_TABLE_EG_AVB_FPRI_2_DSCP  \n"
+					},
+					"entryPtr":	"Pointer to the desired entry of the IEEE Priority Mapping table selected \n",
+					"[options](default value for option item is 0):":	{
+						"":	"IEEE priority map options, union struct for different table\n",
+						"":	"Ingress PCP to IEEE_FPRI & IEEE_QPRI mapping:\n",
+						"-ieeeYellow":	"IEEE Yellow\n",
+						"-disIeeeQpri":	"disable IEEE Qpri Mapping\n",
+						"-ieeeQpri":	"IEEE Qpri Mapping\n",
+						"-disIeeeFpri":	"disable IEEE Fpri Mapping\n",
+						"-ieeeFpri":	"IEEE Fpri Mapping\n",
+						"":	"Egress Green Frame FPRI to PCP mapping (non-AVB):\n",
+						"-disVIDMarkingGreen":	"disable VID Marking Green\n",
+						"-disPCPMarkingGreen":	"disable PCP Marking Green\n",
+						"-framePCPGreen":	"frame PCP Green\n",
+						"":	"Egress Yellow Frame FPRI to PCP mapping (non-AVB):\n",
+						"-disVIDMarkingYel":	"disable VID Marking Yellow\n",
+						"-disPCPMarkingYel":	"disable PCP Marking Yellow\n",
+						"-framePCPYel":	"frame PCP Yellow\n",
+						"":	"Egress AVB Frame FPRI to PCP mapping:\n",
+						"-disVIDMarkingAVB":	"disable VID Marking AVB\n",
+						"-disPCPMarkingAVB":	"disable PCP Marking AVB\n",
+						"-framePCPAVB":	"frame PCP AVB\n",
+						"":	"Egress Green Frame FPRI to DSCP mapping (non-AVB):\n",
+						"-enDSCPMarkingGreen":	"enDSCP Marking Green\n",
+						"-frameDSCPGreen":	"frame DSCP Green\n",
+						"":	"Egress Yellow Frame FPRI to DSCP mapping (non-AVB):\n",
+						"-enDSCPMarkingYel":	"enDSCP Marking Yellow\n",
+						"-frameDSCPYel":	"frame DSCP Yellow\n",
+						"":	"Egress AVB Frame FPRI to DSCP mapping:\n",
+						"-enDSCPMarkingAVB":	"enDSCP Marking AVB\n",
+						"-frameDSCPAVB":	"frame DSCP AVB\n"
+					}
+				},
+				"example":	{
+					"":	"qos setPrioMap 1 0 1 -ieeeYellow 1 -ieeeQpri 1\n",
+					"": "qos setPrioMap 1 1 1 -disVIDMarkingGreen 1 -disPCPMarkingGreen 1\n",
+					"": "qos setPrioMap 1 2 1 -disVIDMarkingYel 1 -disPCPMarkingYel 1\n"
+				}
+			},
+			"getPrioMap":	{
+				"help":	"qos getPrioMap <port> <table> <entryPtr> : Get port IEEE Priority Mapping\n",
+				"paraList":	{
+					"port":	"logical port number \n",
+					"table":	{
+						"":	"0 : Ingress PCP to IEEE_FPRI & IEEE_QPRI mapping   \n",
+						"":	"1 : Egress Green Frame FPRI to PCP mapping (non-AVB) \n",
+						"":	"2 : Egress Yellow Frame FPRI to PCP mapping (non-AVB) \n",
+						"":	"3 : Egress AVB Frame FPRI to PCP mapping   \n",
+						"":	"5 : Egress Green Frame FPRI to DSCP mapping (non-AVB)\n",
+						"":	"6 : Egress Yellow Frame FPRI to DSCP mapping (non-AVB)  \n",
+						"":	"7 : Egress AVB Frame FPRI to DSCP mapping  \n"
+					},
+					"entryPtr":	"Pointer to the desired entry of the IEEE Priority Mapping table selected \n"
+				},
+				"example":	{
+					"":	"qos getPrioMap 1 1 1\n"
+				}
+			},
+			"setCosQueue":	{
+				"help":	"qos setCosQueue <port> <cos> <queue> : Update the COS to egress queue mapping\n",
+				"paraList":	{
+					"port":	"logical port number \n",
+					"cos":	"Trusted or assigned cos for the packet\n",
+					"queue":	"Physical queue to be mapped for trusted or assigned cos\n"
+				},
+				"example":	{
+					"":	"qos setCosQueue 1 1 1\n"
+				}
+			},
+			"getCosQueue":	{
+				"help":	"qos getCosQueue <port> <cos> : Get the physical queue to be mapped for trusted or assigned cos\n",
+				"paraList":	{
+					"port":	"logical port number \n",
+					"cos":	"Trusted or assigned cos for the packet\n"
+				},
+				"example":	{
+					"":	"qos getCosQueue 1 1\n"
+				}
+			},
+			"setCosDscp":	{
+				"help":	"qos setCosDscp <port> <cos> <dscp> : Update the COS to DSCP mapping. This will be used for rewriting DSCP for IPv4/IPv6 packets based on the assigned cos value\n",
+				"paraList":	{
+					"port":	"logical port number \n",
+					"cos":	"Trusted or assigned cos for the packet\n",
+					"dscp":	"frame differentiated services code point\n"
+				},
+				"example":	{
+					"":	"qos setCosDscp 1 1 1\n"
+				}
+			},
+			"getCosDscp":	{
+				"help":	"qos getCosDscp <port> <cos> :  Get the DSCP for IPv4/IPv6 packets based on the assigned cos value\n",
+				"paraList":	{
+					"port":	"logical port number \n",
+					"cos":	"Trusted or assigned cos for the packet\n"
+				},
+				"example":	{
+					"":	"qos getCosDscp 1 1\n"
+				}
+			},
+			"setPriMapRule":	{
+				"help":	"qos setPriMapRule <port> <mode> : Sets priority mapping rule(TagIfBoth bit)\n",
+				"paraList":	{
+					"port":	"logical port number \n",
+					"mode":	"1 for user prio rule, 0 for otherwise\n"
+				},
+				"example":	{
+					"":	"qos setPriMapRule 1 1\n"
+				}
+			},
+			"getPriMapRule":	{
+				"help":	"qos getPriMapRule <port> : Gets priority mapping rule(TagIfBoth bit)\n",
+				"paraList":	{
+					"port":	"logical port number \n"
+				},
+				"example":	{
+					"":	"qos getPriMapRule 1\n"
+				}
+			},
+			"setInitPri":	{
+				"help":	"qos setInitPri <port> <mode> : Sets initial Priority assignment\n",
+				"paraList":	{
+					"port":	"logical port number \n",
+					"mode":	{
+						"":	"",
+						"":	"0 : MSD_INITIAL_PRI_DEFAULT\n",
+						"":	"1 : MSD_INITIAL_PRI_TAG\n",
+						"":	"2 : MSD_INITIAL_PRI_IP\n",
+						"":	"3 : MSD_INITIAL_PRI_TAG_IP\n"
+					}
+				},
+				"example":	{
+					"":	"qos setInitPri 1 1\n"
+				}
+			},
+			"getInitPri":	{
+				"help":	"qos getInitPri <port> : Gets initial Priority assignment\n",
+				"paraList":	{
+					"port":	"logical port number \n"
+				},
+				"example":	{
+					"":	"qos getInitPri 1\n"
+				}
+			},
+			"setDefQPri":	{
+				"help":	"qos setDefQPri <port> <mode> : Set Default queue priority\n",
+				"paraList":	{
+					"port":	"logical port number \n",
+					"mode":	"default queue priority (0~7)\n"
+				},
+				"example":	{
+					"":	"qos setDefQPri 1 1\n"
+				}
+			},
+			"getDefQPri":	{
+				"help":	"qos getDefQPri <port> : Get Default queue priority\n",
+				"paraList":	{
+					"port":	"logical port number \n"
+				},
+				"example":	{
+					"":	"qos getDefQPri 1\n"
+				}
+			},
+			"setDefFPri":	{
+				"help":	"qos setDefFPri <port> <mode> : Set Default frame priority\n",
+				"paraList":	{
+					"port":	"logical port number \n",
+					"mode":	"default frame priority (0~7)\n"
+				},
+				"example":	{
+					"":	"qos setDefFPri 1 1\n"
+				}
+			},
+			"getDefFPri":	{
+				"help":	"qos getDefFPri <port> : Get Default frame priority\n",
+				"paraList":	{
+					"port":	"logical port number \n"
+				},
+				"example":	{
+					"":	"qos getDefFPri 1\n"
+				}
+			},
+			"enRewriteDscp":	{
+				"help":	"qos enRewriteDscp <port> <en> : Enable/disable DSCP re-write at egress on the packet\n",
+				"paraList":	{
+					"port":	"logical port number \n",
+					"en":	"enable/disable DSCP re-write at egress on the packet\n"
+				},
+				"example":	{
+					"":	"qos enRewriteDscp 1 1\n"
+				}
+			}
+		}
+	},
+	"tcam":	{
+		"desc":	"Show tcam commands",
+		"help":	"tcam help [subcmd]: Display tcam command options\n",
+		"subcmd":	{
+			"delAll":	{
+				"help":	"tcam delAll : Flush all entries\n",
+				"paraList":	{
+				},
+				"example":	{
+					"":	"tcam delAll\n"
+				}
+			},
+			"delEntry":	{
+				"help":	"tcam delEntry <entryNum> : Flush one tcam entry\n",
+				"paraList":	{
+					"entryNum":	"pointer to the desired entry of TCAM\n"
+				},
+				"example":	{
+					"":	"tcam delEntry 0\n"
+				}
+			},
+			"addEntry":	{
+				"help":	"tcam addEntry <entryNum> [options] : Load one tcam entry\n",
+				"paraList":	{
+					"entryNum":	"pointer to the desired entry of TCAM\n",
+					"[options](default value for option item is 0):":	{
+						"":	"options for tcam entry, format as: -continu 0 -dpvMode 1\n",
+						"-frameType":	"frame type\n",
+						"-frameTypeMask":	"mask for frame type\n",
+						"-spv":	"source port vector\n",
+						"-spvMask":	"mask for source port vector\n",
+						"-ppri":	"provider PRI\n",
+						"-ppriMask":	"mask for provider PRI\n",
+						"-pvid":	"provider VID\n",
+						"-pvidMask":	"mask for provider VID\n",
+						"-Octet": "Ethernet Frame Content octet, format as -Octet <Octet #> <Octet Data> <Octet Mask>, octets start at 1\n",
+						"-frameOctet":	"array of Ethernet Frame Content,format as -frameOctet {0x11 0x22}\n",
+						"-frameOctetMask":	"array of Ethernet Frame Content,format as -frameOctetMask {0xff 0xff}\n",
+						"-continu":	"Continue this TCAM entry\n",
+						"-interrupt":	"Interrupt on a TCAM hit\n",
+						"-IncTcamCtr":	"Increment the port's TCAM Counter\n",
+						"-vidOverride":	"VID Override Enable\n",
+						"-vidData":	"VID Override Data\n",
+						"-nextId":	"Next Index\n",
+						"-qpriOverride":	"QPRI Override Enable\n",
+						"-qpriData":	"QPRI Override Data\n",
+						"-fpriOverride":	"FPRI Override Enable\n",
+						"-fpriData":	"FPRI Override Data\n",
+						"-dpvSF":	"DPV Source Port Filter\n",
+						"-dpvMode":	{
+								"": "0: TCAM_DPV_DO_NOTHING\n",
+								"": "1: TCAM_DPV_AND_DPV\n",
+								"": "2: TCAM_DPV_OR_DPV\n",
+								"": "3: TCAM_DPV_OVERRIDE\n"
+						},
+						"-dpvData":	"DPV Data\n",
+						"-colorMode":	"Color Mode\n",
+						"-vtuPageOverride":	"VTU Page Override\n",
+						"-vtuPage":	"VTU Page Data\n",
+						"-unKnownFilter":	"UnKnown Filter\n",
+						"-egActPoint":	"Egress Action Pointer\n",
+						"-ldBalanceOverride":	"Load Balance Override Enable\n",
+						"-ldBalanceData":	"Load Balance Override Data\n",
+						"-DSCPOverride":	"DSCP Override Enable\n",
+						"-DSCP":	"DSCP Override Data\n",
+						"-factionOverride":	"Frame Action Override Enable\n",
+						"-factionData":	"Frame Action Override Data\n"
+					}
+				},
+				"example":	{
+					"":	"tcam addEntry 0 -frameType 0 -frameTypeMask 3 -spv 3 -spvMask 4 -ppri 5\n"
+				}
+			},
+			"modifyEntry":	{
+				"help":	"tcam modifyEntry <entryNum> [options] : Modify one existed tcam entry\n",
+				"paraList":	{
+					"entryNum":	"pointer to the desired entry of TCAM\n",
+					"[options](default value for option item is 0):":	{
+						"":	"options for tcam entry, format as: -continu 0 -dpvMode 1\n",
+						"-frameType":	"frame type\n",
+						"-frameTypeMask":	"mask for frame type\n",
+						"-spv":	"source port vector\n",
+						"-spvMask":	"mask for source port vector\n",
+						"-ppri":	"provider PRI\n",
+						"-ppriMask":	"mask for provider PRI\n",
+						"-pvid":	"provider VID\n",
+						"-pvidMask":	"mask for provider VID\n",
+						"-Octet": "Ethernet Frame Content octet, format as -Octet <Octet #> <Octet Data> <Octet Mask>, octets start at 1\n",
+						"-frameOctet":	"array of Ethernet Frame Content,format as -frameOctet {0x11 0x22}\n",
+						"-frameOctetMask":	"array of Ethernet Frame Content,format as -frameOctetMask {0xff 0xff}\n",
+						"-continu":	"Continue this TCAM entry\n",
+						"-interrupt":	"Interrupt on a TCAM hit\n",
+						"-IncTcamCtr":	"Increment the port's TCAM Counter\n",
+						"-vidOverride":	"VID Override Enable\n",
+						"-vidData":	"VID Override Data\n",
+						"-nextId":	"Next Index\n",
+						"-qpriOverride":	"QPRI Override Enable\n",
+						"-qpriData":	"QPRI Override Data\n",
+						"-fpriOverride":	"FPRI Override Enable\n",
+						"-fpriData":	"FPRI Override Data\n",
+						"-dpvSF":	"DPV Source Port Filter\n",
+						"-dpvMode":	{
+								"": "0: TCAM_DPV_DO_NOTHING\n",
+								"": "1: TCAM_DPV_AND_DPV\n",
+								"": "2: TCAM_DPV_OR_DPV\n",
+								"": "3: TCAM_DPV_OVERRIDE\n"
+						},
+						"-dpvData":	"DPV Data\n",
+						"-colorMode":	"Color Mode\n",
+						"-vtuPageOverride":	"VTU Page Override\n",
+						"-vtuPage":	"VTU Page Data\n",
+						"-unKnownFilter":	"UnKnown Filter\n",
+						"-egActPoint":	"Egress Action Pointer\n",
+						"-ldBalanceOverride":	"Load Balance Override Enable\n",
+						"-ldBalanceData":	"Load Balance Override Data\n",
+						"-DSCPOverride":	"DSCP Override Enable\n",
+						"-DSCP":	"DSCP Override Data\n",
+						"-factionOverride":	"Frame Action Override Enable\n",
+						"-factionData":	"Frame Action Override Data\n"
+					}
+				},
+				"example":	{
+					"":	"tcam modifyEntry 0 -frameType 0 -frameTypeMask 3 -spv 3 -spvMask 4 -ppri 5\n"
+				}
+			},
+			"copyEntry": {
+				"help": "tcam copyEntry <sourceEntry> <targetEntry> : Copy one existed tcam entry to another entry\n",
+				"paraList": {
+					"sourceEntry": "pointer to the source entry of TCAM\n",
+					"targetEntry": "pointer to the target entry of TCAM\n"
+				},
+				"example": {
+					"": "tcam copyEntry 0 1\n"
+				}
+			},
+			"readEntry":	{
+				"help":	"tcam readEntry <entryNum> : Read one entry data\n",
+				"paraList":	{
+					"entryNum":	"pointer to the desired entry of TCAM\n"
+				},
+				"example":	{
+					"":	"tcam readEntry 0\n"
+				}
+			},
+			"getNextEntry":	{
+				"help":	"tcam getNextEntry <entryNum> : Get next valied entry\n",
+				"paraList":	{
+					"entryNum":	"pointer to the desired entry of TCAM\n"
+				},
+				"example":	{
+					"":	"tcam getNextEntry 0\n"
+				}
+			},
+			"findEntry":	{
+				"help":	"tcam findEntry <entryNum> : Find one entry\n",
+				"paraList":	{
+					"entryNum":	"the tcam entry index to search\n"
+				},
+				"example":	{
+					"":	"tcam findEntry 0\n"
+				}
+			},
+			"setMode":	{
+				"help":	"tcam setMode <port> <mode> : Set tcam mode per port\n",
+				"paraList":	{
+					"port":	"switch port\n",
+					"mode":	{
+						"":	"tcam mode:\n",
+						"":	"0 : MSD_TCAM_MODE_DISABLE\n",
+						"":	"1 : MSD_TCAM_MODE_ENABLE_48\n",
+						"":	"2 : MSD_TCAM_MODE_ENABLE_96\n"
+					}
+				},
+				"example":	{
+					"":	"tcam setMode 0 0\n"
+				}
+			},
+			"getMode":	{
+				"help":	"tcam getMode <port> : Get tcam mode per port\n",
+				"paraList":	{
+					"port":	"switch port\n"
+				},
+				"example":	{
+					"":	"tcam getMode 0\n"
+				}
+			},
+			"addPort":	{
+				"help":	"tcam addPort <entryNum> <port> : Add a port to an existing tcam entry\n",
+				"paraList":	{
+					"entryNum":	"pointer to the desired entry of TCAM\n",
+					"port":	"switch port\n"
+				},
+				"example":	{
+					"":	"tcam addPort 0 0\n"
+				}
+			},
+			"removePort":	{
+				"help":	"tcam removePort <entryNum> <port> : Remove a port to an existing tcam entry\n",
+				"paraList":	{
+					"entryNum":	"pointer to the desired entry of TCAM\n",
+					"port":	"switch port\n"
+				},
+				"example":	{
+					"":	"tcam removePort 0 0\n"
+				}
+			},
+			"egrDelAllPorts":	{
+				"help":	"tcam egrDelAllPorts <entryNum>: Flush one egress entries for all the ports\n",
+				"paraList":	{
+					"entryNum":	"pointer to the desired entry of TCAM (1 ~ 63)\n"
+				},
+				"example":	{
+					"":	"tcam egrDelAllPorts 1\n"
+				}
+			},
+			"egrDelEntry":	{
+				"help":	"tcam egrDelEntry <port> <entryNum> : Flush one single egress entry per port\n",
+				"paraList":	{
+					"port":	"switch port\n",
+					"entryNum":	"pointer to the desired entry of TCAM (1 ~ 63)\n"
+				},
+				"example":	{
+					"":	"tcam egrDelEntry 1 1\n"
+				}
+			},
+			"egrAddEntry":	{
+				"help":	"tcam egrAddEntry <port> <entryNum> [options] : Load one egress TCAM entry\n",
+				"paraList":	{
+					"port":	"switch port\n",
+					"entryNum":	"pointer to the desired entry of TCAM (1 ~ 63)\n",
+					"[options](default value for option item is 0):":	{
+						"":	"options for tcam entry, format as: -frameModeOverride 0 -frameMode 1\n",
+						"-frameModeOverride":	"Egress Frame Mode Override Enable\n",
+						"-frameMode":	"Egress Frame Mode Data\n",
+						"-tagModeOverride":	"Egress tag Mode Override Enable\n",
+						"-tagMode":	"Egress tag Mode Data\n",
+						"-daMode":	"da Mode\n",
+						"-saMode":	"sa Mode\n",
+						"-egVidModeOverride":	"Egress Vid Mode Override Enable\n",
+						"-egVidMode":	"Egress Vid Mode \n",
+						"-egVidData":	"Egress Vid Mode Data\n",
+						"-egDSCPMode":	"Egress DSCP Mode \n",
+						"-egDSCP":	"Egress DSCP \n",
+						"-egfpriModeOverride":	"Egress FPRI Mode Override Enable\n",
+						"-egfpriMode":	"Egress FPRI Mode \n",
+						"-egEC":	"Egress CFI/DE Override Data\n",
+						"-egFPRI":	"Egress FPRI Override Data\n"
+					}
+				},
+				"example":	{
+					"":	"tcam egrAddEntry 1 1 -frameModeOverride 1 -frameMode 1 -tagModeOverride 1\n"
+				}
+			},
+			"egrReadEntry":	{
+				"help":	"tcam egrReadEntry <port> <entryNum> : Read one egress TCAM entry data\n",
+				"paraList":	{
+					"port":	"switch port\n",
+					"entryNum":	"pointer to the desired entry of TCAM (1 ~ 63)\n"
+				},
+				"example":	{
+					"":	"tcam egrReadEntry 1 1\n"
+				}
+			},
+			"egrGetNextEntry":	{
+				"help":	"tcam egrGetNextEntry <port> <entryNum> : Get next valied egress entry\n",
+				"paraList":	{
+					"port":	"switch port\n",
+					"entryNum":	"pointer to start search TCAM\n"
+				},
+				"example":	{
+					"":	"tcam egrGetNextEntry 1 0\n"
+				}
+			},
+			"advanceConfig":	{
+				"help":	"tcam advanceConfig <pktType> <entryNum1> <entrynum2> [options] : Set tcam entry to match standard IPv4/IPv6, TCP/UDP packets with given header and mask\n",
+				"paraList":	{
+					"pktType":	{
+						"":	"Enumeration of TCAM mapping packet type\n",
+						"":	"0 : TCP over IPv4 packet\n",
+						"":	"1 : UDP over IPv4 packet\n",
+						"":	"2 : TCP over IPv6 packet\n",
+						"":	"3 : UDP over IPv6 packet\n"
+					},
+					"entryNum1":	"the first tcam entry number\n",
+					"entryNum2":	"the second tcam entry number\n",
+					"[options](default value for option item is 0):":	{
+						"":	"options for tcam key/mask, format as: -frameType 0 -frameTypeMask 0x3\n",
+						"-frameType":	"frame type\n",
+						"-frameTypeMask":	"mask for frame type\n",
+						"-spv":	"source port vector\n",
+						"-spvMask":	"mask for source port vector\n",
+						"-ppri":	"provider PRI\n",
+						"-ppriMask":	"mask for provider PRI\n",
+						"-pvid":	"provider VID\n",
+						"-pvidMask":	"mask for provider VID\n",
+						"":	"options for standard layer2 header data/mask, format as: -da aabbccddee00 -daMask ffffffffffff\n",
+						"-da":	"destination mac address, format as aabbccddee00\n",
+						"-sa":	"source  mac address, format as aabbccddee00\n",
+						"-vlanTag":	"vlan tag\n",
+						"-etherType":	"ether type\n",
+						"-daMask":	"Mask for destination mac address, format as aabbccddee00\n",
+						"-saMask":	"Mask for source  mac address, format as aabbccddee00\n",
+						"-vlanTagMask":	"Mask for vlan tag\n",
+						"-etherTypeMask":	"Mask for ether type\n",
+						"":	"options for standard ipv4 header data/mask, format as: -version 4 -versionMask 0xf\n",
+						"-version":	"version number(4bits)\n",
+						"-ihl":	"header length(4bits)\n",
+						"-tos":	"type of service(8bits)\n",
+						"-ipLength":	"total length(16bits)\n",
+						"-id":	"identification(16bits)\n",
+						"-flag":	"fragment flag(3bits)\n",
+						"-fragOffset":	"fragmentation offset(13bits)\n",
+						"-ttl":	"time to live(8bits)\n",
+						"-protocol":	"up level protocol type(8bits)\n",
+						"-hdrChkSum":	"header checksum(16bits)\n",
+						"-sV4Ip":	"source ip address, format as 192.168.0.1\n",
+						"-dV4Ip":	"destination ip address, format as 192.168.0.1\n",
+						"-versionMask":	"Mask for version number(4bits)\n",
+						"-ihlMask":	"Mask for header length(4bits)\n",
+						"-tosMask":	"Mask for type of service(8bits)\n",
+						"-ipLengthMask":	"Mask for total length(16bits)\n",
+						"-idMask":	"Mask for identification(16bits)\n",
+						"-flagMask":	"Mask for fragment flag(3bits)\n",
+						"-fragOffsetMask":	"Mask for fragmentation offset(13bits)\n",
+						"-ttlMask":	"Mask for time to live(8bits)\n",
+						"-protocolMask":	"Mask for up level protocol type(8bits)\n",
+						"-hdrChkSumMask":	"Mask for header checksum(16bits)\n",
+						"-sV4IpMask":	"Mask for source ip address, format as ff.ff.ff.ff\n",
+						"-dV4IpMask":	"Mask for destination ip address, format as ff.ff.ff.ff\n",
+						"":	"options for standard ipv6 header data/mask, format as: -version 6 -versionMask 0xf\n",
+						"-version":	"version number(4bits)\n",
+						"-tc":	"traffic class(8bits)\n",
+						"-flowLbl":	"flow label(20bits)\n",
+						"-payloadLen":	"payload length(16bits)\n",
+						"-nextHdr":	"next header(8bits)\n",
+						"-hopLimit":	"hop limit(8bits)\n",
+						"-sV6Ip":	"source ip address, format as 2015:1123\n",
+						"-dV6Ip":	"destination ip address, format as 2015:1123\n",
+						"-versionMask":	"Mask for version number(4bits)\n",
+						"-tcMask":	"Mask for traffic class(8bits)\n",
+						"-flowLblMask":	"Mask for flow label(20bits)\n",
+						"-payloadLenMask":	"Mask for payload length(16bits)\n",
+						"-nextHdrMask":	"Mask for next header(8bits)\n",
+						"-hopLimitMask":	"Mask for hop limit(8bits)\n",
+						"-sV6IpMask":	"Mask for source ip address, format as ffff:ffff\n",
+						"-dV6IpMask":	"Mask for destination ip address, format as ffff:ffff\n",
+						"":	"options for standard tcp header data/mask, format as: -srcPort 0x123 -srcPortMask 0xffff\n",
+						"-srcPort":	"source port(16bits)\n",
+						"-destPort":	"destonation port(16bits)\n",
+						"-seqNum":	"sequence number(32bits)\n",
+						"-ackNum":	"acknowledgment number(32bits)\n",
+						"-tcpOffset":	"data offset/header length(4bits)\n",
+						"-tcpFlags":	"contral flag(6bits)\n",
+						"-windowSize":	"window size(16bits)\n",
+						"-chkSum":	"checksum(16bits)\n",
+						"-urgPtr":	"urgent pointer(16bits)\n",
+						"-srcPortMask":	"Mask for source port(16bits)\n",
+						"-destPortMask":	"Mask for destonation port(16bits)\n",
+						"-seqNumMask":	"Mask for sequence number(32bits)\n",
+						"-ackNumMask":	"Mask for acknowledgment number(32bits)\n",
+						"-tcpOffsetMask":	"Mask for data offset/header length(4bits)\n",
+						"-tcpFlagsMask":	"Mask for contral flag(6bits)\n",
+						"-windowSizeMask":	"Mask for window size(16bits)\n",
+						"-chkSumMask":	"Mask for checksum(16bits)\n",
+						"-urgPtrMask":	"Mask for urgent pointer(16bits)\n",
+						"":	"options for standard udp header data/mask, format as: -srcPort 0x123 -srcPortMask 0xffff\n",
+						"-srcPort":	"source port(16bits)\n",
+						"-destPort":	"destonation port(16bits)\n",
+						"-udpLength":	"length(16bits)\n",
+						"-chkSum":	"checksum(16bits)\n",
+						"-srcPortMask":	"Mask for source port(16bits)\n",
+						"-destPortMask":	"Mask for destonation port(16bits)\n",
+						"-udpLengthMask":	"Mask for length(16bits)\n",
+						"-chkSumMask":	"Mask for checksum(16bits)\n",
+						"":	"options for tcam action, format as: -interrupt 1 -dpvMode 0x3\n",
+						"-interrupt":	"Interrupt on a TCAM hit\n",
+						"-IncTcamCtr":	"Increment the port's TCAM Counter\n",
+						"-vidOverride":	"VID Override Enable\n",
+						"-vidData":	"VID Override Data\n",
+						"-qpriOverride":	"QPRI Override Enable\n",
+						"-qpriData":	"QPRI Override Data\n",
+						"-fpriOverride":	"FPRI Override Enable\n",
+						"-fpriData":	"FPRI Override Data\n",
+						"-dpvSF":	"DPV Source Port Filter\n",
+						"-dpvMode":	{
+								"": "0: TCAM_DPV_DO_NOTHING\n",
+								"": "1: TCAM_DPV_AND_DPV\n",
+								"": "2: TCAM_DPV_OR_DPV\n",
+								"": "3: TCAM_DPV_OVERRIDE\n"
+						},
+						"-dpvData":	"DPV Data\n",
+						"-colorMode":	"Color Mode\n",
+						"-vtuPageOverride":	"VTU Page Override\n",
+						"-vtuPage":	"VTU Page Data\n",
+						"-unKnownFilter":	"UnKnown Filter\n",
+						"-egActPoint":	"Egress Action Pointer\n",
+						"-ldBalanceOverride":	"Load Balance Override Enable\n",
+						"-ldBalanceData":	"Load Balance Override Data\n",
+						"-DSCPOverride":	"DSCP Override Enable\n",
+						"-DSCP":	"DSCP Override Data\n",
+						"-factionOverride":	"Frame Action Override Enable\n",
+						"-factionData":	"Frame Action Override Data\n"
+					}
+				},
+				"example":	{
+					"":	"To match destionation macAddr and destionation IPV6 ipAddr and replace the frame's DPV\n",
+					"": "tcam advanceConfig 2 1 15 -frameType 0 -frameTypeMask 0x3 -da 01005e000000 -daMask ffffffffffff -etherType 0x86dd -etherTypeMask 0xffff -dV6Ip 2015:1123:4567:89AB:CDEF:0550:A00A:5AA5 -dV6IpMask ffff:ffff:ffff:ffff:ffff:ffff:ffff:ffff -dpvData 6 -dpvMode 3\n"
+				}
+			},
+			"dump":	{
+				"help":	"tcam dump : Find all the tcam entries and print them out\n",
+				"paraList":	{
+				},
+				"example":	{
+					"":	"tcam dump\n"
+				}
+			}
+		}
+	},
+	"rmu":	{
+		"desc":	"Show rmu commands",
+		"help":	"rmu help [subcmd]: Display rmu command options\n",
+		"subcmd":	{
+			"getID":	{
+				"help":	"rmu getID : Get the current Device ID\n",
+				"paraList":	{
+				},
+				"example":	{
+					"":	"rmu getID\n"
+				}
+			},
+			"dumpAtu":	{
+				"help":	"rmu dumpAtu <continueCode> : Dump ATU entry from the specified starting address\n",
+				"paraList":	{
+					"continueCode":	"seaching pointer for ATU dump, using 0 to start at the beginning of the ATU's memory\n"
+				},
+				"example":	{
+					"":	"rmu dumpAtu 0\n"
+				}
+			},
+			"dumpMib2":	{
+				"help":	"rmu dumpMib2 <enClearOnRead> <port> : Dump MIB2 from the specified port\n",
+				"paraList":	{
+					"enClearOnRead":	"indicate dump mib clear or not. 1 to clear, 0 to otherwise\n",
+					"port":	"request port\n"
+				},
+				"example":	{
+					"":	"rmu dumpMib2 0 0\n"
+				}
+			},
+			"dumpTcam":	{
+				"help":	"rmu dumpTcam <continueCode> : Dump valid TCAM entries\n",
+				"paraList":	{
+					"continueCode":	"seaching pointer for TCAM dump, logic like the GetNex operation.\n\tusing 0xff to start at the beginning of the memery\n"
+				},
+				"example":	{
+					"":	"rmu dumpTcam 0xff\n"
+				}
+			},
+			"tcamRead":	{
+				"help":	"rmu tcamRead <entryNum> : Read back single TCAM entry\n",
+				"paraList":	{
+					"entryNum":	"tcam entry number\n"
+				},
+				"example":	{
+					"":	"rmu tcamRead 0\n"
+				}
+			},
+			"tcamWrite":	{
+				"help":	"rmu tcamWrite <entryNum> [options] : Load single TCAM entry\n",
+				"paraList":	{
+					"entryNum":	"tcam entry number\n",
+					"[options](default value for option item is 0):":	{
+						"":	"options for tcam entry, format as: -continu 0 -dpvMode 1\n",
+						"-frameType":	"frame type\n",
+						"-frameTypeMask":	"mask for frame type\n",
+						"-spv":	"source port vector\n",
+						"-spvMask":	"mask for source port vector\n",
+						"-ppri":	"provider PRI\n",
+						"-ppriMask":	"mask for provider PRI\n",
+						"-pvid":	"provider VID\n",
+						"-pvidMask":	"mask for provider VID\n",
+						"-Octet": "Ethernet Frame Content octet, format as -Octet <Octet #> <Octet Data> <Octet Mask>, octets start at 1\n",
+						"-frameOctet":	"array of Ethernet Frame Content,format as -frameOctet {0x11 0x22}\n",
+						"-frameOctetMask":	"array of Ethernet Frame Content,format as -frameOctetMask {0xff 0xff}\n",
+						"-continu":	"Continue this TCAM entry\n",
+						"-interrupt":	"Interrupt on a TCAM hit\n",
+						"-IncTcamCtr":	"Increment the port's TCAM Counter\n",
+						"-vidOverride":	"VID Override Enable\n",
+						"-vidData":	"VID Override Data\n",
+						"-nextId":	"Next Index\n",
+						"-qpriOverride":	"QPRI Override Enable\n",
+						"-qpriData":	"QPRI Override Data\n",
+						"-fpriOverride":	"FPRI Override Enable\n",
+						"-fpriData":	"FPRI Override Data\n",
+						"-dpvSF":	"DPV Source Port Filter\n",
+						"-dpvMode":	{
+								"": "0: TCAM_DPV_DO_NOTHING\n",
+								"": "1: TCAM_DPV_AND_DPV\n",
+								"": "2: TCAM_DPV_OR_DPV\n",
+								"": "3: TCAM_DPV_OVERRIDE\n"
+						},
+						"-dpvData":	"DPV Data\n",
+						"-colorMode":	"Color Mode\n",
+						"-vtuPageOverride":	"VTU Page Override\n",
+						"-vtuPage":	"VTU Page Data\n",
+						"-unKnownFilter":	"UnKnown Filter\n",
+						"-egActPoint":	"Egress Action Pointer\n",
+						"-ldBalanceOverride":	"Load Balance Override Enable\n",
+						"-ldBalanceData":	"Load Balance Override Data\n",
+						"-DSCPOverride":	"DSCP Override Enable\n",
+						"-DSCP":	"DSCP Override Data\n",
+						"-factionOverride":	"Frame Action Override Enable\n",
+						"-factionData":	"Frame Action Override Data\n"
+					}
+				},
+				"example":	{
+					"":	"rmu tcamWrite 0 -frameType 0 -frameTypeMask 3 -spv 3 -spvMask 4 \n"
+				}
+			},
+			"dumpReg":	{
+				"help":	"rmu dumpReg <devAddr> : Dump 32 registers for the specified device address\n",
+				"paraList":	{
+					"devAddr":	"device address\n"
+				},
+				"example":	{
+					"":	"rmu dumpReg 0x0\n"
+				}
+			}
+		}
+	},
+	"trunk": {
+		"desc":	"Show link aggregation (LAG/port trunking) commands",
+		"help":	"trunk help [subcmd]: Display link aggregation (LAG/port trunking) command options\n",
+		"subcmd":	{
+			"setTrunkMask":	{
+				"help":	"trunk setTrunkMask <maskNum> <trunkMask> : Sets Trunk Mask for the given Mask Number\n",
+				"paraList":	{
+					"maskNum":	"Mask Number \n",
+					"trunkMask":	"Trunk mask bits. Bit 0 controls trunk masking for port 0, bit 1 for port 1 , etc\n"
+				},
+				"example":	{
+					"":	"trunk setTrunkMask 1 1\n"
+				}
+			},
+			"getTrunkMask":	{
+				"help":	"trunk getTrunkMask <maskNum> : Gets Trunk Mask for the given Trunk Number\n",
+				"paraList":	{
+					"maskNum":	"Mask Number \n"
+				},
+				"example":	{
+					"":	"trunk getTrunkMask 1\n"
+				}
+			},
+			"setTrunkHash":	{
+				"help":	"trunk setTrunkHash <en> : Sets Hash DA & SA for TrunkMask selection enable or disable\n",
+				"paraList":	{
+					"en":	"MSD_TRUE to use lookup table, MSD_FALSE to use XOR \n"
+				},
+				"example":	{
+					"":	"trunk setTrunkHash 1\n"
+				}
+			},
+			"getTrunkHash":	{
+				"help":	"trunk getTrunkHash  : Gets Trunk Mask for the given Trunk Number enable or disable\n",
+				"paraList":	{
+				},
+				"example":	{
+					"":	"trunk getTrunkHash\n"
+				}
+			},
+			"setTrunkRoute":	{
+				"help":	"trunk setTrunkRoute <trunkId> <trunkMap> : This command same as setTrunkMap, in order to version compatibility\n",
+				"paraList":	{
+					"trunkId":	"Trunk ID\n",
+					"trunkMap":	"Trunk map bits. Bit 0 controls trunk mapping for port 0, bit 1 for port 1 , etc\n"
+				},
+				"example":	{
+					"":	"trunk setTrunkRoute 1 1\n"
+				}
+			},
+			"getTrunkRoute":	{
+				"help":	"trunk getTrunkRoute <trunkId> : This command same as getTrunkMap, in order to version compatibility\n",
+				"paraList":	{
+					"trunkId":	"Trunk ID\n"
+				},
+				"example":	{
+					"":	"trunk getTrunkRoute 1\n"
+				}
+			},
+			"setTrunkMap":	{
+				"help":	"trunk setTrunkMap <trunkId> <trunkMap> : Sets mapping information for the given Trunk ID\n",
+				"paraList":	{
+					"trunkId":	"Trunk ID\n",
+					"trunkMap":	"Trunk map bits. Bit 0 controls trunk mapping for port 0, bit 1 for port 1 , etc\n"
+				},
+				"example":	{
+					"":	"trunk setTrunkMap 1 1\n"
+				}
+			},
+			"getTrunkMap":	{
+				"help":	"trunk getTrunkMap <trunkId> : Gets mapping information for the given Trunk ID\n",
+				"paraList":	{
+					"trunkId":	"Trunk ID\n"
+				},
+				"example":	{
+					"":	"trunk getTrunkMap 1\n"
+				}
+			},
+			"setLAGPort":	{
+				"help":	"trunk setLAGPort <port> <en> <LAGId> : Enables/disables and sets the LAG ID\n",
+				"paraList":	{
+					"portNum":	"the logical port number\n",
+					"en":	"1 for the LAG port, 0 otherwise\n",
+					"LAGId":	"0 ~ 31, valid only if en is MSD_TRUE\n"
+				},
+				"example":	{
+					"":	"trunk setLAGPort 1 1 1\n"
+				}
+			},
+			"getLAGPort":	{
+				"help":	"trunk getLAGPort <port> : Gets the trunk state of the port \n",
+				"paraList":	{
+					"portNum":	"the logical port number\n"
+				},
+				"example":	{
+					"":	"trunk getLAGPort 1\n"
+				}
+			}
+		}
+	},
+	"port":	{
+		"desc":	"Show port commands",
+		"help":	"port help [subcmd]: Display port command options\n",
+		"subcmd":	{
+			"setForceDefVid":	{
+				"help":	"port setForceDefVid <port> <en> : Set the port ForceDefaultVID\n",
+				"paraList":	{
+					"port":	"logical port number to set\n",
+					"en":	"the port ForceDefaultVID\n"
+				},
+				"example":	{
+					"":	"port setForceDefVid 0 1\n"
+				}
+			},
+			"getForceDefVid":	{
+				"help":	"port getForceDefVid <port> : Get the port ForceDefaultVID\n",
+				"paraList":	{
+					"port":	"logical port number to set\n"
+				},
+				"example":	{
+					"":	"port getForceDefVid 0\n"
+				}
+			},
+			"setDefVid":	{
+				"help":	"port setDefVid <port> <vid> : Set the port default vlan id\n",
+				"paraList":	{
+					"port":	"logical port number to set\n",
+					"vid":	"the port vlan id\n"
+				},
+				"example":	{
+					"":	"port setDefVid 0 1\n"
+				}
+			},
+			"getDefVid":	{
+				"help":	"port getDefVid <port> : Get the port default vlan id\n",
+				"paraList":	{
+					"port":	"logical port number to set\n"
+				},
+				"example":	{
+					"":	"port getDefVid 0\n"
+				}
+			},
+			"setQMode":	{
+				"help":	"port setQMode <port> <mode> : Sets the IEEE 802.1Q mode for this port\n",
+				"paraList":	{
+					"port":	"logical port number\n",
+					"mode":	{
+						"":	"802.1Q mode for this port:\n",
+						"":	"0 : Disable\n",
+						"":	"1 : Fallback\n",
+						"":	"2 : Check\n",
+						"":	"3 : Secure\n"
+					}
+				},
+				"example":	{
+					"":	"port setQMode 0 1\n"
+				}
+			},
+			"getQMode":	{
+				"help":	"port getQMode <port> : Gets the IEEE 802.1Q mode for this port\n",
+				"paraList":	{
+					"port":	"logical port number\n"
+				},
+				"example":	{
+					"":	"port getQMode 0\n"
+				}
+			},
+			"setDiscardTagged":	{
+				"help":	"port setDiscardTagged <port> <en> : Set discard tagged frame,1 to discard tagged frame, 0 otherwise\n",
+				"paraList":	{
+					"port":	"logical port number \n",
+					"en":	"1 to discard tagged frame, 0 otherwise\n"
+				},
+				"example":	{
+					"":	"port setDiscardTagged 0 1\n"
+				}
+			},
+			"getDiscardTagged":	{
+				"help":	"port getDiscardTagged <port> : Get discard tagged frame,1 to discard tagged frame, 0 otherwise\n",
+				"paraList":	{
+					"port":	"logical port number \n"
+				},
+				"example":	{
+					"":	"port getDiscardTagged 0\n"
+				}
+			},
+			"setDiscardUTagged":	{
+				"help":	"port setDiscardUTagged <port> <en> : Set discard untagged frame,1 to discard untagged frame, 0 otherwise\n",
+				"paraList":	{
+					"port":	"logical port number \n",
+					"en":	"1 to discard untagged frame, 0 otherwise\n"
+				},
+				"example":	{
+					"":	"port setDiscardUTagged 0 1\n"
+				}
+			},
+			"getDiscardUTagged":	{
+				"help":	"port getDiscardUTagged <port> : Get discard untagged,1 to discard untagged frame, 0 otherwise\n",
+				"paraList":	{
+					"port":	"logical port number \n"
+				},
+				"example":	{
+					"":	"port getDiscardUTagged 0\n"
+				}
+			},
+			"setUCFloodBlock":	{
+				"help":	"port setUCFloodBlock <port> <en> : Set Egress Flooding mode for unitcaset of a switch port\n",
+				"paraList":	{
+					"port":	"logical port number \n",
+					"en":	"1 to do not egress out the unknown DA unicast frames, 0 for normal operation\n"
+				},
+				"example":	{
+					"":	"port setUCFloodBlock 0 1\n"
+				}
+			},
+			"getUCFloodBlock":	{
+				"help":	"port getUCFloodBlock <port> : Get Egress Flooding mode for unitcaset of a switch port\n",
+				"paraList":	{
+					"port":	"logical port number \n"
+				},
+				"example":	{
+					"":	"port getUCFloodBlock 0\n"
+				}
+			},
+			"setMCFloodBlock":	{
+				"help":	"port setMCFloodBlock <port> <en> : Set Egress Flooding mode for multicast of a switch port\n",
+				"paraList":	{
+					"port":	"logical port number \n",
+					"en":	"1 to do not egress out the unknown DA multicast frames, 0 for normal operation\n"
+				},
+				"example":	{
+					"":	"port setMCFloodBlock 0 1\n"
+				}
+			},
+			"getMCFloodBlock":	{
+				"help":	"port getMCFloodBlock <port> : Get Egress Flooding mode for multicast of a switch port\n",
+				"paraList":	{
+					"port":	"logical port number \n"
+				},
+				"example":	{
+					"":	"port getMCFloodBlock 0\n"
+				}
+			},
+			"setBCMode":	{
+				"help":	"port setBCMode <port> <en> : Sets the Discard Broadcast mode\n",
+				"paraList":	{
+					"port":	"logical port number \n",
+					"en":	"1 to enable the discard broadcast mode, 0 for normal operation\n"
+				},
+				"example":	{
+					"":	"port setBCMode 0 1\n"
+				}
+			},
+			"getBCMode":	{
+				"help":	"port getBCMode <port> : Gets the Discard Broadcast mode\n",
+				"paraList":	{
+					"port":	"logical port number \n"
+				},
+				"example":	{
+					"":	"port getBCMode 0\n"
+				}
+			},
+			"setIGMPSnoopEnable":	{
+				"help":	"port setIGMPSnoopEnable <port> <en> : Sets the Enable/disable trapping all IPV4 IGMP packets to the CPU,based on their ingress port\n",
+				"paraList":	{
+					"port":	"logical port number \n",
+					"en":	"1 to enable the mode that trapping all the IPV4 IGMP or IPV6 MLD packets to CPU, 0 to disable the mode\n"
+				},
+				"example":	{
+					"":	"port setIGMPSnoopEnable 1 1\n"
+				}
+			},
+			"getIGMPSnoopEnable":	{
+				"help":	"port getIGMPSnoopEnable <port>  : Gets the Enable/disable trapping all IPV4 IGMP packets to the CPU,based on their ingress port\n",
+				"paraList":	{
+					"port":	"logical port number \n"
+				},
+				"example":	{
+					"":	"port getIGMPSnoopEnable 1\n"
+				}
+			},
+			"setHeaderMode":	{
+				"help":	"port setHeaderMode <port> <en> : Sets the ingress and egress header mode of a switch port\n",
+				"paraList":	{
+					"port":	"logical port number \n",
+					"en":	"1 to enable the ingress and egress header mode, 0 to disable the mode\n"
+				},
+				"example":	{
+					"":	"port setHeaderMode 0 1\n"
+				}
+			},
+			"getHeaderMode":	{
+				"help":	"port getHeaderMode <port> : Gets the ingress and egress header mode of a switch port\n",
+				"paraList":	{
+					"port":	"logical port number \n"
+				},
+				"example":	{
+					"":	"port getHeaderMode 0\n"
+				}
+			},
+			"setDropOnLock":	{
+				"help":	"port setDropOnLock <port> <en> : Sets the DropOnLock mode of specified port on specified device\n",
+				"paraList":	{
+					"port":	"logical port number \n",
+					"en":	"1 to enable the drop on lock mode, 0 to disable the mode\n"
+				},
+				"example":	{
+					"":	"port setDropOnLock 0 1\n"
+				}
+			},
+			"getDropOnLock":	{
+				"help":	"port getDropOnLock <port> : Gets the DropOnLock mode of specified port on specified device\n",
+				"paraList":	{
+					"port":	"logical port number \n"
+				},
+				"example":	{
+					"":	"port getDropOnLock 0\n"
+				}
+			},
+			"setMtu":	{
+				"help":	"port setMtu <port> <mode> : Set the max frame size allowed to be received and transmitted from or to a given port\n",
+				"paraList":	{
+					"port":	"logical port number \n",
+					"mode":	{
+						"":	"frame max byte size:\n",
+						"":	"0: Rx and Tx frames with max byte of 1522\n",
+						"":	"1: Rx and Tx frames with max byte of 2048\n",
+						"":	"2: Rx and Tx frames with max byte of 10240 \n"
+					}
+				},
+				"example":	{
+					"":	"port setMtu 1 1\n"
+				}
+			},
+			"getMtu":	{
+				"help":	"port getMtu <port> : Get the max frame size allowed to be received and transmitted from or to a given port\n",
+				"paraList":	{
+					"port":	"logical port number \n"
+				},
+				"example":	{
+					"":	"port getMtu 1\n"
+				}
+			},
+			"setLearnEnable":	{
+				"help":	"port setLearnEnable <port> <en> : Enables/disables automatic learning of new source MAC\n",
+				"paraList":	{
+					"port":	"logical port number \n",
+					"mode":	"1 for learning enable, 0 otherwise\n"
+				},
+				"example":	{
+					"":	"port setLearnEnable 0 1\n"
+				}
+			},
+			"getLearnEnable":	{
+				"help":	"port getLearnEnable <port> : Gets LearnEnable setup status\n",
+				"paraList":	{
+					"port":	"logical port number \n"
+				},
+				"example":	{
+					"":	"port getLearnEnable 0\n"
+				}
+			},
+			"setVTUPriOverride":	{
+				"help":	"port setVTUPriOverride <port> <mode> : Set VTU Priority Override of specified port on specified device\n",
+				"paraList":	{
+					"port":	"logical port number \n",
+					"mode":	{
+						"":	"",
+						"":	"0: MSD_PRI_OVERRIDE_NONE \n",
+						"":	"1: MSD_PRI_OVERRIDE_FRAME \n",
+						"":	"2: MSD_PRI_OVERRIDE_QUEUE \n",
+						"":	"3: MSD_PRI_OVERRIDE_FRAME_QUEUE \n"
+					}
+				},
+				"example":	{
+					"":	"port setVTUPriOverride 0 1\n"
+				}
+			},
+			"getVTUPriOverride":	{
+				"help":	"port getVTUPriOverride <port> : Get VTU Priority Override of specified port on specified device\n",
+				"paraList":	{
+					"port":	"logical port number \n"
+				},
+				"example":	{
+					"":	"port getVTUPriOverride 0\n"
+				}
+			},
+			"setSAPriOverride":	{
+				"help":	"port setSAPriOverride <port> <mode> : Set SA Priority Override of specified port on specified device\n",
+				"paraList":	{
+					"port":	"logical port number \n",
+					"mode":	{
+						"":	"",
+						"":	"0: MSD_PRI_OVERRIDE_NONE \n",
+						"":	"1: MSD_PRI_OVERRIDE_FRAME \n",
+						"":	"2: MSD_PRI_OVERRIDE_QUEUE \n",
+						"":	"3: MSD_PRI_OVERRIDE_FRAME_QUEUE \n"
+					}
+				},
+				"example":	{
+					"":	"port setSAPriOverride 0 1\n"
+				}
+			},
+			"getSAPriOverride":	{
+				"help":	"port getSAPriOverride <port> : Get SA Priority Override of specified port on specified device\n",
+				"paraList":	{
+					"port":	"logical port number \n"
+				},
+				"example":	{
+					"":	"port getSAPriOverride 0\n"
+				}
+			},
+			"setDAPriOverride":	{
+				"help":	"port setDAPriOverride <port> <mode> : Set DA Priority Override of specified port on specified device\n",
+				"paraList":	{
+					"port":	"logical port number \n",
+					"mode":	{
+						"":	"",
+						"":	"0: MSD_PRI_OVERRIDE_NONE \n",
+						"":	"1: MSD_PRI_OVERRIDE_FRAME \n",
+						"":	"2: MSD_PRI_OVERRIDE_QUEUE \n",
+						"":	"3: MSD_PRI_OVERRIDE_FRAME_QUEUE \n"
+					}
+				},
+				"example":	{
+					"":	"port setDAPriOverride 0 1\n"
+				}
+			},
+			"getDAPriOverride":	{
+				"help":	"port getDAPriOverride <port> : Get DA Priority Override of specified port on specified device\n",
+				"paraList":	{
+					"port":	"logical port number \n"
+				},
+				"example":	{
+					"":	"port getDAPriOverride 0\n"
+				}
+			},
+			"setMsgPort":	{
+				"help":	"port setMsgPort <port> <en> : Set message port for specific port on a specific device\n",
+				"paraList":	{
+					"port":	"logical port number \n",
+					"en":	"1 to enable this port as message port, 0 to disable the mode\n"
+				},
+				"example":	{
+					"":	"port setMsgPort 0 1\n"
+				}
+			},
+			"getMsgPort":	{
+				"help":	"port getMsgPort <port> : Get if one specified port is message port\n",
+				"paraList":	{
+					"port":	"logical port number \n"
+				},
+				"example":	{
+					"":	"port getMsgPort 0\n"
+				}
+			},
+			"setEtherType":	{
+				"help":	"port setEtherType <port> <eType> : Sets the port's special Ether Type\n",
+				"paraList":	{
+					"port":	"logical port number \n",
+					"eType":	"ethernet type\n"
+				},
+				"example":	{
+					"":	"port setEtherType 0 1\n"
+				}
+			},
+			"getEtherType":	{
+				"help":	"port getEtherType <port> : Gets the port's special Ether Type\n",
+				"paraList":	{
+					"port":	"logical port number \n"
+				},
+				"example":	{
+					"":	"port getEtherType 0\n"
+				}
+			},
+			"setAllowVidZero":	{
+				"help":	"port setAllowVidZero <port> <en> : Set allow VID of Zero of specified port on specified device\n",
+				"paraList":	{
+					"port":	"logical port number \n",
+					"en":	"1 to allow the vid of zero, 0 to disable the mode.\n"
+				},
+				"example":	{
+					"":	"port setAllowVidZero 0 1\n"
+				}
+			},
+			"getAllowVidZero":	{
+				"help":	"port getAllowVidZero <port> :  Get allow VID of Zero of specified port on specified device\n",
+				"paraList":	{
+					"port":	"logical port number \n"
+				},
+				"example":	{
+					"":	"port getAllowVidZero 0 \n"
+				}
+			},
+			"setEgrRate":	{
+				"help":	"port setEgrRate <port> <mode> <rate> : Sets the port's egress data limit\n",
+				"paraList":	{
+					"port":	"logical port number \n",
+					"mode":	{
+						"":	"Enumeration of the port egress rate limit counting mode:\n",
+						"":	"0:Count the number of frames\n",
+						"":	"1:Count all Layer 1 bytes\n",
+						"":	"2:Count all Layer 2 bytes\n",
+						"":	"3:Count all Layer 3 bytes\n"
+					},
+					"rate":	"union data, kbRate or frame Rate based on ELIMIT_MODE\n",
+					"kbRate valid value":	{
+						"":	"64, 128, 192, 256, 320, 384,..., 960,\n",
+						"":	"1000, 2000, 3000, 4000, ..., 100000,\n",
+						"":	"110000, 120000, 130000, ..., 1000000\n",
+						"":	"1100000, 1200000, 1300000, ..., 5000000.\n"
+					},
+					"fRate valid value":	{
+						"":	"3815 and 14880000\n"
+					}
+				},
+				"example":	{
+					"":	"port setEgrRate 1 1 100000\n"
+				}
+			},
+			"getEgrRate":	{
+				"help":	"port getEgrRate <port> : Gets the port's egress data limit mode and limit value\n",
+				"paraList":	{
+					"port":	"logical port number \n"
+				},
+				"example":	{
+					"":	"port getEgrRate 1\n"
+				}
+			},
+			"setFlowCtrl":	{
+				"help":	"port setFlowCtrl <port> <isEnable> <mode> : Enable/disable port flow control and set flow control mode\n",
+				"paraList":	{
+					"port":	"logical port number \n",
+					"isEnable":	"enable/disable the flow control\n",
+					"mode":	{
+						"":	"flow control mode:\n",
+						"":	"0:PORT_FC_TX_RX_ENABLED\n",
+						"":	"1:PORT_RX_ONLY\n",
+						"":	"2:PORT_TX_ONLY\n",
+						"":	"3:PORT_PFC_ENABLED\n"
+					}
+				},
+				"example":	{
+					"":	"port setFlowCtrl 1 1 1\n"
+				}
+			},
+			"getFlowCtrl":	{
+				"help":	"port getFlowCtrl <port> : Get switch port flow control enable/disable status and return flow control mode\n",
+				"paraList":	{
+					"port":	"logical port number \n"
+				},
+				"example":	{
+					"":	"port getFlowCtrl 1\n"
+				}
+			},
+			"setEMS":	{
+				"help":	"port setEMS <port> <mode> : 1 to set EgressMonitorSource, 0 otherwise\n",
+				"paraList":	{
+					"port":	"logical port number \n",
+					"mode":	"1 to set EgressMonitorSource, 0 otherwise\n"
+				},
+				"example":	{
+					"":	"port setEMS 0 1\n"
+				}
+			},
+			"getEMS":	{
+				"help":	"port getEMS <port> : Gets EgressMonitorSource bit for the given port\n",
+				"paraList":	{
+					"port":	"logical port number \n"
+				},
+				"example":	{
+					"":	"port getEMS 0\n"
+				}
+			},
+			"setIMS":	{
+				"help":	"port setIMS <port> <mode> : 1 to set IngressMonitorSource, 0 otherwise\n",
+				"paraList":	{
+					"port":	"logical port number \n",
+					"mode":	"1 to set IngressMonitorSource, 0 otherwise\n"
+				},
+				"example":	{
+					"":	"port setIMS 0 1\n"
+				}
+			},
+			"getIMS":	{
+				"help":	"port getIMS <port> : Gets IngressMonitorSource bit for the given port\n",
+				"paraList":	{
+					"port":	"logical port number \n"
+				},
+				"example":	{
+					"":	"port getIMS 0\n"
+				}
+			},
+			"setForceDuplexMode":	{
+				"help":	"port setForceDuplexMode <port> <mode> : Set the port duplex mode\n",
+				"paraList":	{
+					"port":	"logical port number \n",
+					"mode":	{
+						"":	"",
+						"":	"0: MSD_DUPLEX_HALF \n",
+						"":	"1: MSD_DUPLEX_FULL \n",
+						"":	"2: MSD_DUPLEX_AUTO \n"
+					}
+				},
+				"example":	{
+					"":	"port setForceDuplexMode 1 1\n"
+				}
+			},
+			"getForceDuplexMode":	{
+				"help":	"port getForceDuplexMode <port> : Get the port duplex mode\n",
+				"paraList":	{
+					"port":	"logical port number \n"
+				},
+				"example":	{
+					"":	"port getForceDuplexMode 1\n"
+				}
+			},
+			"getDuplex":	{
+				"help":	"port getDuplex <port> : Retrives the port duplex mode\n",
+				"paraList":	{
+					"port":	"logical port number \n"
+				},
+				"example":	{
+					"":	"port getDuplex 1\n"
+				}
+			},
+			"setForceLinkMode":	{
+				"help":	"port setForceLinkMode <port> <mode> : Set the force link mode per port\n",
+				"paraList":	{
+					"port":	"logical port number \n",
+					"mode":	{
+						"":	"",
+						"":	"0: PORT_FORCE_LINK_UP \n",
+						"":	"1: PORT_FORCE_LINK_DOWN \n",
+						"":	"2: PORT_DO_NOT_FORCE_LINK \n"
+					}
+				},
+				"example":	{
+					"":	"port setForceLinkMode 1 1\n"
+				}
+			},
+			"getForceLinkMode":	{
+				"help":	"port getForceLinkMode <port> : Get the force link mode per port\n",
+				"paraList":	{
+					"port":	"logical port number \n"
+				},
+				"example":	{
+					"":	"port getForceLinkMode 1\n"
+				}
+			},
+			"getLinkState":	{
+				"help":	"port getLinkState <port> : Retrives the link state\n",
+				"paraList":	{
+					"port":	"logical port number \n"
+				},
+				"example":	{
+					"":	"port getLinkState 1\n"
+				}
+			},
+			"setForceSpeed":	{
+				"help":	"port setForceSpeed <port> <mode> : Forces switch MAC speed\n",
+				"paraList":	{
+					"port":	"logical port number \n",
+					"mode":	{
+						"":	"MSD_PORT_FORCED_SPEED_MODE:\n",
+						"":	"0 : MSD_PORT_FORCE_SPEED_10M\n",
+						"":	"1 : MSD_PORT_FORCE_SPEED_100M\n",
+						"":	"2 : MSD_PORT_FORCE_SPEED_200M\n",
+						"":	"3 : MSD_PORT_FORCE_SPEED_1000M\n",
+						"":	"4 : MSD_PORT_FORCE_SPEED_2_5G\n",
+						"":	"6 : MSD_PORT_FORCE_SPEED_10G\n",
+						"":	"7 : MSD_PORT_DO_NOT_FORCE_SPEED\n"
+					}
+				},
+				"example":	{
+					"":	"port setForceSpeed 0 1\n"
+				}
+			},
+			"getForceSpeed":	{
+				"help":	"port getForceSpeed <port> : Retrieves switch MAC Force Speed value\n",
+				"paraList":	{
+					"port":	"logical port number \n"
+				},
+				"example":	{
+					"":	"port getForceSpeed 0\n"
+				}
+			},
+			"getSpeed":	{
+				"help":	"port getSpeed <port> : Retrives the port MAC speed\n",
+				"paraList":	{
+					"port":	"logical port number \n"
+				},
+				"example":	{
+					"":	"port getSpeed 1\n"
+				}
+			},
+			"setPortBasedVlanMap":	{
+				"help":	"port setPortBasedVlanMap <port> <memPortsArray> : Set port based vlan table of a specified port\n",
+				"paraList":	{
+					"Format as":	"port setPortBasedVlanMap 0 {1 2 3 4}\n",
+					"port":	"logical port number \n",
+					"memPortsArray":	"array of vlan ports for this port, {} clear port based vlan table of this port\n"
+				},
+				"example":	{
+					"":	"port setPortBasedVlanMap 0 {1 2 3}\n"
+				}
+			},
+			"getPortBasedVlanMap":	{
+				"help":	"port getPortBasedVlanMap <port> : Get port based vlan table of a specified port\n",
+				"paraList":	{
+					"port":	"logical port number \n"
+				},
+				"example":	{
+					"":	"port getPortBasedVlanMap 0\n"
+				}
+			},
+			"setFrameMode":	{
+				"help":	"port setFrameMode <port> <mode> : Set the expected Ingress and the generated Egress tagging frame format\n",
+				"paraList":	{
+					"port":	"logical port number \n",
+					"mode":	{
+						"":	"frame mode:\n",
+						"":	"0 : Normal Network mode\n",
+						"":	"1 : DSA mode\n",
+						"":	"2 : Provider mode\n",
+						"":	"3 : Ether Type DSA mode\n"
+					}
+				},
+				"example":	{
+					"":	"port setFrameMode 0 1\n"
+				}
+			},
+			"getFrameMode":	{
+				"help":	"port getFrameMode <port> : Get frame mode of a specified port\n",
+				"paraList":	{
+					"port":	"logical port number \n"
+				},
+				"example":	{
+					"":	"port getFrameMode 0\n"
+				}
+			},
+			"setEgressMode":	{
+				"help":	"port setEgressMode <port> <mode> : Set the expected Egress tagging frame format\n",
+				"paraList":	{
+					"port":	"logical port number \n",
+					"mode":	{
+						"":	"egress mode:\n",
+						"":	"0 : egress unmodified\n",
+						"":	"1 : egress untagged\n",
+						"":	"2 : egress tagged\n"
+					}
+				},
+				"example":	{
+					"":	"port setEgressMode 0 1\n"
+				}
+			},
+			"getEgressMode":	{
+				"help":	"port getEgressMode <port> : Get egress mode of a specified port\n",
+				"paraList":	{
+					"port":	"logical port number \n"
+				},
+				"example":	{
+					"":	"port getEgressMode 0\n"
+				}
+			},
+			"setPortState":	{
+				"help":	"port setPortState <port> <mode> : Set the port state\n",
+				"paraList":	{
+					"port":	"logical port number \n",
+					"mode":	{
+						"":	"Port state mode:\n",
+						"":	"0 : disabled\n",
+						"":	"1 : blocking/listening\n",
+						"":	"2 : learning\n",
+						"":	"3 : forwarding\n"
+					}
+				},
+				"example":	{
+					"":	"port setPortState 0 1\n"
+				}
+			},
+			"getPortState":	{
+				"help":	"port getPortState <port> : Get the port state\n",
+				"paraList":	{
+					"port":	"logical port number \n"
+				},
+				"example":	{
+					"":	"port getPortState 0\n"
+				}
+			},
+			"setIgnoreFcs":	{
+				"help":	"port setIgnoreFcs <port> <en> : Enable or disable force good FCS\n",
+				"paraList":	{
+					"port":	"logical port number \n",
+					"en":	"1 to force good fcs, 0 otherwise\n"
+				},
+				"example":	{
+					"":	"port setIgnoreFcs 0 1\n"
+				}
+			},
+			"getIgnoreFcs":	{
+				"help":	"port getIgnoreFcs <port> : Get the force good FCS status\n",
+				"paraList":	{
+					"port":	"logical port number \n"
+				},
+				"example":	{
+					"":	"port getIgnoreFcs 0\n"
+				}
+			},
+			"setAllowBadFcs":	{
+				"help":	"port setAllowBadFcs <port> <en> : Set allow bad fcs to receiving frames or not\n",
+				"paraList":	{
+					"port":	"logical port number \n",
+					"en":	"1 to allow bad fcs, 0 otherwise\n"
+				},
+				"example":	{
+					"":	"port setAllowBadFcs 0 1\n"
+				}
+			},
+			"getAllowBadFcs":	{
+				"help":	"port getAllowBadFcs <port> : Get the allow bad fcs status\n",
+				"paraList":	{
+					"port":	"logical port number \n"
+				},
+				"example":	{
+					"":	"port getAllowBadFcs 0\n"
+				}
+			},
+			"setPauseLimitOut":	{
+				"help":	"port setPauseLimitOut <port> <limit> : Set pause refresh frames transmit limit\n",
+				"paraList":	{
+					"port":	"logical port number \n",
+					"limit":	"the max number of Pause refresh frames for each congestion situation(0 ~ 0xff)\n"
+				},
+				"example":	{
+					"":	"port setPauseLimitOut 0 10\n"
+				}
+			},
+			"getPauseLimitOut":	{
+				"help":	"port getPauseLimitOut <port> : Get pause refresh frames transmit limit\n",
+				"paraList":	{
+					"port":	"logical port number \n"
+				},
+				"example":	{
+					"":	"port getPauseLimitOut 0\n"
+				}
+			},
+			"setPauseLimitIn":	{
+				"help":	"port setPauseLimitIn <port> <limit> : Set pause refresh frames receive limit\n",
+				"paraList":	{
+					"port":	"logical port number \n",
+					"limit":	"the max number of Pause refresh frames for each congestion situation(0 ~ 0xff)\n"
+				},
+				"example":	{
+					"":	"port setPauseLimitIn 0 10\n"
+				}
+			},
+			"getPauseLimitIn":	{
+				"help":	"port getPauseLimitIn <port> : Get pause refresh frames receive limit\n",
+				"paraList":	{
+					"port":	"logical port number \n"
+				},
+				"example":	{
+					"":	"port getPauseLimitIn 0\n"
+				}
+			},
+			"setQueueToPause":	{
+				"help":	"port setQueueToPause <port> <queue> : Set which queue paused when receiving a pause frame\n",
+				"paraList":	{
+					"port":	"logical port number \n",
+					"queue":	"output queues that are paused off\n"
+				},
+				"example":	{
+					"":	"port setQueueToPause 0 0\n"
+				}
+			},
+			"getQueueToPause":	{
+				"help":	"port getQueueToPause <port> : Get queue value that is used to determine which queue pasued\n",
+				"paraList":	{
+					"port":	"logical port number \n"
+				},
+				"example":	{
+					"":	"port getQueueToPause 0\n"
+				}
+			},
+			"setRxPriFCEnable":	{
+				"help":	"port setRxPriFCEnable <port> <pfcPri> <en> : Decides which port pay attention for specified PFC pri when recevie pause frame\n",
+				"paraList":	{
+					"port":	"logical port number \n",
+					"pfcPri":	"priority flow control frame's priority\n",
+					"en":	"1 to enable, 0 to disable \n"
+				},
+				"example":	{
+					"":	"port setRxPriFCEnable 0 0 1\n"
+				}
+			},
+			"getRxPriFCEnable":	{
+				"help":	"port getRxPriFCEnable <port> <pfcPri> : Get the status for one port with one pri pay attention for pause frame or not\n",
+				"paraList":	{
+					"port":	"logical port number \n",
+					"pfcPri":	"priority flow control frame's priority\n"
+				},
+				"example":	{
+					"":	"port getRxPriFCEnable 0 0\n"
+				}
+			},
+			"setRxPriFCToQueue":	{
+				"help":	"port setRxPriFCToQueue <port> <pfcPri> <queue> : Set receive priority flow control frame's priority\n",
+				"paraList":	{
+					"port":	"logical port number \n",
+					"pfcPri":	"priority flow control frame's priority\n",
+					"queue":	"priority queue \n"
+				},
+				"example":	{
+					"":	"port setRxPriFCToQueue 0 0 1\n"
+				}
+			},
+			"getRxPriFCToQueue":	{
+				"help":	"port getRxPriFCToQueue <port> <pfcPri> : Get receive priority flow control frame's priority\n",
+				"paraList":	{
+					"port":	"logical port number \n",
+					"pfcPri":	"priority flow control frame's priority\n"
+				},
+				"example":	{
+					"":	"port getRxPriFCToQueue 0 0\n"
+				}
+			},
+			"setTxPriFCEnable":	{
+				"help":	"port setTxPriFCEnable <port> <pfcPri> <en> : Set transmit priority flow control enable\n",
+				"paraList":	{
+					"port":	"logical port number \n",
+					"pfcPri":	"priority flow control frame's priority\n",
+					"en":	"1 to enable, 0 to disable \n"
+				},
+				"example":	{
+					"":	"port setTxPriFCEnable 0 0 1\n"
+				}
+			},
+			"getTxPriFCEnable":	{
+				"help":	"port getTxPriFCEnable <port> <pfcPri> : Get transmit priority flow control enable\n",
+				"paraList":	{
+					"port":	"logical port number \n",
+					"pfcPri":	"priority flow control frame's priority\n"
+				},
+				"example":	{
+					"":	"port getTxPriFCEnable 0 0\n"
+				}
+			},
+			"getOutQueueSize":	{
+				"help":	"port getOutQueueSize <port> <queue> : Get egress queue size counter value\n",
+				"paraList":	{
+					"port":	"logical port number \n",
+					"queue":	"priority queue number(0 ~ 7)\n"
+				},
+				"example":	{
+					"":	"port getOutQueueSize 0 0\n"
+				}
+			},
+			"setMapDA":	{
+				"help":	"port setMapDA <port> <en> : Set map DA mode\n",
+				"paraList":	{
+					"port":	"logical port number \n",
+					"en":	"1 to enable map DA, 0 to disable \n"
+				},
+				"example":	{
+					"":	"port setMapDA 0 1\n"
+				}
+			},
+			"getMapDA":	{
+				"help":	"port getMapDA <port> : Get map DA mode\n",
+				"paraList":	{
+					"port":	"logical port number \n"
+				},
+				"example":	{
+					"":	"port getMapDA 0\n"
+				}
+			},
+			"setARPMirror":	{
+				"help":	"port setARPMirror <port> <en> : Set ARP mirror enable status\n",
+				"paraList":	{
+					"port":	"logical port number \n",
+					"en":	"1 to enable, 0 to disable \n"
+				},
+				"example":	{
+					"":	"port setARPMirror 0 1\n"
+				}
+			},
+			"getARPMirror":	{
+				"help":	"port getARPMirror <port> : Get ARP mirror enable status\n",
+				"paraList":	{
+					"port":	"logical port number \n"
+				},
+				"example":	{
+					"":	"port getARPMirror 0\n"
+				}
+			},
+			"setLocked":	{
+				"help":	"port setLocked <port> <en> : Enable or disable port locked mode\n",
+				"paraList":	{
+					"port":	"logical port number \n",
+					"en":	"1 to enable, 0 to disable \n"
+				},
+				"example":	{
+					"":	"port setLocked 0 1\n"
+				}
+			},
+			"getLocked":	{
+				"help":	"port getLocked <port> : Get port locked mode status\n",
+				"paraList":	{
+					"port":	"logical port number \n"
+				},
+				"example":	{
+					"":	"port getLocked 0\n"
+				}
+			},
+			"setHoldAt1":	{
+				"help":	"port setHoldAt1 <port> <en> : Enable or disable port HoldAt1 mode\n",
+				"paraList":	{
+					"port":	"logical port number \n",
+					"en":	"1 to enable, 0 to disable \n"
+				},
+				"example":	{
+					"":	"port setHoldAt1 0 1\n"
+				}
+			},
+			"getHoldAt1":	{
+				"help":	"port getHoldAt1 <port> : Get port HoldAt1 mode status\n",
+				"paraList":	{
+					"port":	"logical port number \n"
+				},
+				"example":	{
+					"":	"port getHoldAt1 0\n"
+				}
+			},
+			"setIntOnAgeOut":	{
+				"help":	"port setIntOnAgeOut <port> <en> : Enable or disable interrupt on age out\n",
+				"paraList":	{
+					"port":	"logical port number \n",
+					"en":	"1 to enable, 0 to disable \n"
+				},
+				"example":	{
+					"":	"port setIntOnAgeOut 0 1\n"
+				}
+			},
+			"getIntOnAgeOut":	{
+				"help":	"port getIntOnAgeOut <port> : Get interrupt enable status on age out\n",
+				"paraList":	{
+					"port":	"logical port number \n"
+				},
+				"example":	{
+					"":	"port getIntOnAgeOut 0\n"
+				}
+			},
+			"setRefreshLocked":	{
+				"help":	"port setRefreshLocked <port> <en> : Enable or disable auto refresh known addresses when port is locked\n",
+				"paraList":	{
+					"port":	"logical port number \n",
+					"en":	"1 to enable, 0 to disable \n"
+				},
+				"example":	{
+					"":	"port setRefreshLocked 0 1\n"
+				}
+			},
+			"getRefreshLocked":	{
+				"help":	"port getRefreshLocked <port> : Get auto refresh mode status when port is locked\n",
+				"paraList":	{
+					"port":	"logical port number \n"
+				},
+				"example":	{
+					"":	"port getRefreshLocked 0\n"
+				}
+			},
+			"setIgnoreWrongData":	{
+				"help":	"port setIgnoreWrongData <port> <en> : Enable or disable ignore wrong data mode of specified port\n",
+				"paraList":	{
+					"port":	"logical port number \n",
+					"en":	"1 to enable, 0 to disable \n"
+				},
+				"example":	{
+					"":	"port setIgnoreWrongData 0 1\n"
+				}
+			},
+			"getIgnoreWrongData":	{
+				"help":	"port getIgnoreWrongData <port> : Get ignore wrong data mode\n",
+				"paraList":	{
+					"port":	"logical port number \n"
+				},
+				"example":	{
+					"":	"port getIgnoreWrongData 0\n"
+				}
+			},
+			"setCutThroughEnable":	{
+				"help":	"port setCutThroughEnable <port> [options] : Set port Cut Through configuration\n",
+				"paraList":	{
+					"port":	"logical port number \n",
+					"[options](default value for option item is 0):":	{
+						"":	"options for Cut Through, format as: -enable 1 -queue 0\n",
+						"-enable":	"1 to enable cut through, 0 to disable\n",
+						"-queue":	"the value of the cut through queue, bit 0 of this registers is the enable for Pri 0, bit 1 for Pri 1, etc\n"
+					}
+				},
+				"example":	{
+					"":	"port setCutThroughEnable 0 -enable 1 -queue 0\n"
+				}
+			},
+			"getCutThroughEnable":	{
+				"help":	"port getCutThroughEnable <port> : Get port Cut Through configuration\n",
+				"paraList":	{
+					"port":	"logical port number \n"
+				},
+				"example":	{
+					"":	"port getCutThroughEnable 0\n"
+				}
+			},
+			"getPortStatus": {
+				"help": "port getPortStatus <portList> : Get ports link/Speed/Duplex/FlowControl status\n",
+				"paraList": {
+					"portList": "logical port number list, format support as 1,3,6/all/1-9 \n"
+				},
+				"example": {
+					"": "port getPortStatus all\n"
+				}
+			},
+			"dump":	{
+				"help":	"port dump <port>: Reads all the registers for specified port and print them out\n",
+				"paraList":	{
+					"port":	"logical port number \n"
+				},
+				"example":	{
+					"":	"port dump 0\n"
+				}
+			}
+		}
+	},
+	"mib":	{
+		"desc":	"Show mib commands",
+		"help":	"mib help [subcmd]: Display mib command options\n",
+		"subcmd":	{
+			"flush":	{
+				"help":	"mib flush : Flush All MIBs counters for all ports\n",
+				"paraList":	{
+				},
+				"example":	{
+					"":	"mib flush\n"
+				}
+			},
+			"flushport":	{
+				"help":	"mib flushport <port> : Flush All MIBs counters for a given port\n",
+				"paraList":	{
+					"port":	"logical port number \n"
+				},
+				"example":	{
+					"":	"mib flushport 0\n"
+				}
+			},
+			"getPortCounter":	{
+				"help":	"mib getPortCounter <port> <counter> : Gets a specific counter of the given port\n",
+				"paraList":	{
+					"port":	"logical port number \n",
+					"counter":	{
+						"":	"the counter which will be read:\n",
+						"0 : STATS_InGoodOctetsLo.\n":       "",
+						"1 : STATS_InGoodOctetsHi.\n":       "",
+						"2 : STATS_InBadOctets.\n":          "",
+						"3 : STATS_OutFCSErr.\n":            "",
+						"4 : STATS_InUnicasts.\n":           "",
+						"5 : STATS_Deferred.\n":             "",
+						"6 : STATS_InBroadcasts.\n":         "",
+						"7 : STATS_InMulticasts.\n":         "",
+						"8 : STATS_64Octets.\n":             "",
+						"9 : STATS_127Octets.\n":            "",
+						"10 : STATS_255Octets.\n":           "",
+						"11 : STATS_511Octets.\n":           "",
+						"12 : STATS_1023Octets.\n":          "",
+						"13 : STATS_MaxOctets.\n":           "",
+						"14 : STATS_OutOctetsLo.\n":         "",
+						"15 : STATS_OutOctetsHi.\n":         "",
+						"16 : STATS_OutUnicasts.\n":         "",
+						"17 : STATS_Excessive.\n":           "",
+						"18 : STATS_OutMulticasts.\n":       "",
+						"19 : STATS_OutBroadcasts.\n":       "",
+						"20 : STATS_Single.\n":              "",
+						"21 : STATS_OutPause.\n":            "",
+						"22 : STATS_InPause.\n":             "",
+						"23 : STATS_Multiple.\n":            "",
+						"24 : STATS_InUndersize.\n":         "",
+						"25 : STATS_InFragments.\n":         "",
+						"26 : STATS_InOversize.\n":          "",
+						"27 : STATS_InJabber.\n":            "",
+						"28 : STATS_InRxErr.\n":             "",
+						"29 : STATS_InFCSErr.\n":            "",
+						"30 : STATS_Collisions.\n":          "",
+						"31 : STATS_Late.\n":                "",
+						"0x400 : STATS_InDiscards.\n":       "",
+						"0x401 : STATS_InFiltered.\n":       "",
+						"0x402 : STATS_InAccepted.\n":       "",
+						"0x403 : STATS_InBadAccepted.\n":    "",
+						"0x404 : STATS_InGoodAvbClassA.\n":  "",
+						"0x405 : STATS_InGoodAvbClassB.\n":  "",
+						"0x406 : STATS_InBadAvbClassA.\n":   "",
+						"0x407 : STATS_InBadAvbClassB.\n":   "",
+						"0x408 : STATS_TCAMCounter0.\n":     "",
+						"0x409 : STATS_TCAMCounter1.\n":     "",
+						"0x40a : STATS_TCAMCounter2.\n":     "",
+						"0x40b : STATS_TCAMCounter3.\n":     "",
+						"0x40c : STATS_InDroppedAvbA.\n":    "",
+						"0x40d : STATS_InDroppedAvbB.\n":    "",
+						"0x40e : STATS_InDaUnknown.\n":      "",
+						"0x40f : STATS_InMGMT.\n":           "",
+						"0x410 : STATS_OutQueue0.\n":        "",
+						"0x411 : STATS_OutQueue1.\n":        "",
+						"0x412 : STATS_OutQueue2.\n":        "",
+						"0x413 : STATS_OutQueue3.\n":        "",
+						"0x414 : STATS_OutQueue4.\n":        "",
+						"0x415 : STATS_OutQueue5.\n":        "",
+						"0x416 : STATS_OutQueue6.\n":        "",
+						"0x417 : STATS_OutQueue7.\n":        "",
+						"0x418 : STATS_OutCutThrough.\n":    "",
+						"0x419 : Reserved.\n":               "",
+						"0x41a : STATS_OutOctetsA.\n":       "",
+						"0x41b : STATS_OutOctetsB.\n":       "",
+						"0x41c : STATS_OutYel.\n":           "",
+						"0x41d : STATS_OutDroppedYel.\n":    "",
+						"0x41e : STATS_OutDiscards.\n":      "",
+						"0x41f : STATS_OutMGMT.\n":          ""
+					}
+				},
+				"example":	{
+					"":	"mib getPortCounter 0 0\n"
+				}
+			},
+			"getPortAllCounter":	{
+				"help":	"mib getPortAllCounter <port> : Gets all MIBs counters of the given port\n",
+				"paraList":	{
+					"port":	"logical port number \n"
+				},
+				"example":	{
+					"":	"mib getPortAllCounter 0\n"
+				}
+			},
+			"getHistogramMode":	{
+				"help":	"mib getHistogramMode : Gets the Histogram Counters Mode\n",
+				"paraList":	{
+				},
+				"example":	{
+					"":	"mib getHistogramMode\n"
+				}
+			},
+			"setHistogramMode":	{
+				"help":	"mib setHistogramMode <mode>: Sets the Histogram Counters Mode\n",
+				"paraList":	{
+					"mode":	{
+						"":	"Histogram Mode:\n",
+						"":	"1: MSD_COUNT_RX_ONLY\n",
+						"":	"2: MSD_COUNT_TX_ONLY\n",
+						"":	"3: MSD_COUNT_RX_TX\n"
+					}
+				},
+				"example":	{
+					"":	"mib setHistogramMode 1\n"
+				}
+			},
+			"dump":	{
+				"help":	"mib dump <portList>: dump all the mibs information for specified port list\n",
+				"paraList":	{
+					"portList":	"logical port number list, format support as 1,3,6/all/1-4 \n"
+				},
+				"example":	{
+					"":	"mib dump all\n"
+				}
+			}
+		}
+	},
+	"qc":	{
+		"desc":	"Show queue control commands",
+		"help":	"qc help [subcmd]: Display queue control command options\n",
+		"subcmd":	{
+			"setQc":	{
+				"help":	"qc setQc <port> <point> <data> : Set Queue control data to the Queue Control register\n",
+				"paraList":	{
+					"port":	"logical port number \n",
+					"point":	"Pointer to the Queue control register \n",
+					"data":	"Queue Control data written to the register pointed to by the point above \n"
+				},
+				"example":	{
+					"":	"qc setQc 0 0 1\n"
+				}
+			},
+			"getQc":	{
+				"help":	"qc getQc <port> <point> : Get Queue control data to the Queue Control register\n",
+				"paraList":	{
+					"port":	"logical port number \n",
+					"point":	"Pointer to the Queue control register \n"
+				},
+				"example":	{
+					"":	"qc getQc 0 0\n"
+				}
+			},
+			"setPortSched":	{
+				"help":	"qc setPortSched <port> <mode> : Sets Port Scheduling Mode\n",
+				"paraList":	{
+					"port":	"logical port number \n",
+					"mode":	{
+						"":	"",
+						"":	"0 : MSD_PORT_SCHED_WRR_PRI7_6_5_4_3_2_1_0\n",
+						"":	"1 : MSD_PORT_SCHED_WRR_PRI6_5_4_3_2_1_0\n",
+						"":	"2 : MSD_PORT_SCHED_WRR_PRI5_4_3_2_1_0\n",
+						"":	"3 : MSD_PORT_SCHED_WRR_PRI4_3_2_1_0\n",
+						"":	"4 : MSD_PORT_SCHED_WRR_PRI3_2_1_0\n",
+						"":	"5 : MSD_PORT_SCHED_WRR_PRI2_1_0\n",
+						"":	"6 : MSD_PORT_SCHED_WRR_PRI1_0\n",
+						"":	"7 : MSD_PORT_SCHED_STRICT_PRI_ALL\n"
+					}
+				},
+				"example":	{
+					"":	"qc setPortSched 0 1\n"
+				}
+			},
+			"getPortSched":	{
+				"help":	"qc getPortSched <port> : Gets Port Scheduling Mode\n",
+				"paraList":	{
+					"port":	"logical port number \n"
+				},
+				"example":	{
+					"":	"qc getPortSched 0\n"
+				}
+			},
+			"setQosWeight":	{
+				"help":	"qc setQosWeight [options] : Programmable Round Robin Weights\n",
+				"paraList":	{
+					"[options](default value for option item is 0):":	{
+						"":	"options for Qos weight, format as: -len 4 -queue {3 2 1 0}\n",
+						"-len":	"length of the valid queue data\n",
+						"-queue":	"array of queue\n"
+					}
+				},
+				"example":	{
+					"":	"qc setQosWeight -len 4 -queue {0 1 2 3}\n"
+				}
+			},
+			"getQosWeight":	{
+				"help":	"qc getQosWeight : Get the round robin weights\n",
+				"paraList":	{
+				},
+				"example":	{
+					"":	"qc getQosWeight\n"
+				}
+			}
+		}
+	},
+	"global":	{
+		"desc":	"Show global commands",
+		"help":	"global help [subcmd]: Display global command options\n",
+		"subcmd":	{
+			"setFloodBC":	{
+				"help":	"global setFloodBC <en> : Sets Flood Broadcast\n",
+				"paraList":	{
+					"en":	"1 to enable Flood Broadcast, 0 otherwise\n"
+				},
+				"example":	{
+					"":	"global setFloodBC 1\n"
+				}
+			},
+			"getFloodBC":	{
+				"help":	"global getFloodBC : Gets Flood Broadcast state \n",
+				"paraList":	{
+				},
+				"example":	{
+					"":	"global getFloodBC\n"
+				}
+			},
+			"setCPUDest":	{
+				"help":	"global setCPUDest <port> : Sets CPU Destination Port\n",
+				"paraList":	{
+					"port":	"the logical port number\n"
+				},
+				"example":	{
+					"":	"global setCPUDest 1\n"
+				}
+			},
+			"getCPUDest":	{
+				"help":	"global getCPUDest : Gets CPU Destination Port \n",
+				"paraList":	{
+				},
+				"example":	{
+					"":	"global getCPUDest\n"
+				}
+			},
+			"setIMD":	{
+				"help":	"global setIMD <port> : Sets Ingress Monitor Destination Port\n",
+				"paraList":	{
+					"port":	"the logical port number. If port = 0x1F,IMD is disabled.\n"
+				},
+				"example":	{
+					"":	"global setIMD 1\n"
+				}
+			},
+			"getIMD":	{
+				"help":	"global getIMD : Gets Ingress Monitor Destination Port\n",
+				"paraList":	{
+				},
+				"example":	{
+					"":	"global getIMD\n"
+				}
+			},
+			"setEMD":	{
+				"help":	"global setEMD <port> : Sets Egress Monitor Destination Port\n",
+				"paraList":	{
+					"port":	"the logical port number. If port = 0x1F, EMD is disabled\n"
+				},
+				"example":	{
+					"":	"global setEMD 1\n"
+				}
+			},
+			"getEMD":	{
+				"help":	"global getEMD : Gets Egress Monitor Destination Port\n",
+				"paraList":	{
+				},
+				"example":	{
+					"":	"global getEMD\n"
+				}
+			},
+			"setMMC":	{
+				"help":	"global setMMC <point> <data> :  Set Monitor and mgmt control data\n",
+				"paraList":	{
+					"point":	{
+						"":	"Pointer to the Monitor and mgmt control register\n",
+						"":	"0x00 to 0x01: Rsvd2Cpu Enables for 01:C2:80:00:00:0x\n",
+						"":	"0x02 to 0x03: Rsvd2Cpu Enables for 01:C2:80:00:00:2x\n",
+						"":	"0x04 to 0x05: Rsvd2IntCpu Enables for 01:C2:80:00:00:0x\n",
+						"":	"0x06 to 0x07: Rsvd2IntCpu Enables for 01:C2:80:00:00:2x\n",
+						"":	"0x20 to 0x2F: Mirror Destination Port Settings\n",
+						"":	"0x30 to 0x3F: Trap Destination Port Settings\n"
+					},
+					"data":	"Monitor and mgmt Control data\n"
+				},
+				"example":	{
+					"":	"global setMMC 1 1\n"
+				}
+			},
+			"getMMC":	{
+				"help":	"global getMMC <point> : Get Monitor and mgmt control data\n",
+				"paraList":	{
+					"point":	{
+						"":	"Pointer to the Monitor and mgmt control register\n",
+						"":	"0x00 to 0x01: Rsvd2Cpu Enables for 01:C2:80:00:00:0x\n",
+						"":	"0x02 to 0x03: Rsvd2Cpu Enables for 01:C2:80:00:00:2x\n",
+						"":	"0x04 to 0x05: Rsvd2IntCpu Enables for 01:C2:80:00:00:0x\n",
+						"":	"0x06 to 0x07: Rsvd2IntCpu Enables for 01:C2:80:00:00:2x\n",
+						"":	"0x20 to 0x2F: Mirror Destination Port Settings\n",
+						"":	"0x30 to 0x3F: Trap Destination Port Settings\n"
+					}
+				},
+				"example":	{
+					"":	"global getMMC 1\n"
+				}
+			},
+			"setRsvd2CpuEn":	{
+				"help":	"global setRsvd2CpuEn <enBits> : Reserved DA Enables\n",
+				"paraList":	{
+					"enBits":	"bit vector of enabled Reserved Multicast\n"
+				},
+				"example":	{
+					"":	"global setRsvd2CpuEn 1\n"
+				}
+			},
+			"getRsvd2CpuEn":	{
+				"help":	"global getRsvd2CpuEn : Get Reserved DA Enables state\n",
+				"paraList":	{
+				},
+				"example":	{
+					"":	"global getRsvd2CpuEn\n"
+				}
+			},
+			"setMGMTPri":	{
+				"help":	"global setMGMTPri <pri> : Set MGMT Priority(default is 0x7). These bits are used as the priority to use on Rsvd2CPU frames\n",
+				"paraList":	{
+					"pri":	"PRI[2:0], valid value is 0 ~ 7\n"
+				},
+				"example":	{
+					"":	"global setMGMTPri 2\n"
+				}
+			},
+			"getMGMTPri":	{
+				"help":	"global getMGMTPri : Get MGMT Priority. These bits are used as the priority to use on Rsvd2CPU frames\n",
+				"paraList":	{
+				},
+				"example":	{
+					"":	"global getMGMTPri\n"
+				}
+			},
+			"setSMISetup":	{
+				"help":	"global setSMISetup <port> <regAddr> :  Set SMI Setup\n",
+				"paraList":	{
+					"port":	"the logical port number\n",
+					"regAddr":	"SMI PHY Setup\n"
+				},
+				"example":	{
+					"":	"global setSMISetup 1 5\n"
+				}
+			},
+			"getSMISetup":	{
+				"help":	"global getSMISetup <port> : Get SMI Setup\n",
+				"paraList":	{
+					"port":	"the logical port number\n"
+				},
+				"example":	{
+					"":	"global getSMISetup 1\n"
+				}
+			},
+			"dumpGlobal1":	{
+				"help":	"global dumpGlobal1 : Reads all the Global1 registers and print them out\n",
+				"paraList":	{
+				},
+				"example":	{
+					"":	"global dumpGlobal1\n"
+				}
+			},
+			"dumpGlobal2":	{
+				"help":	"global dumpGlobal2 : Reads all the Global2 registers and print them out\n",
+				"paraList":	{
+				},
+				"example":	{
+					"":	"global dumpGlobal2\n"
+				}
+			},
+			"setRMUMode":	{
+				"help":	"global setRMUMode <data> : Sets Remote Management Unit Mode\n",
+				"paraList":	{
+					"0x0":	"Port0 is enable RMU(Remote Management Unit) port for switch\n",
+					"0x1":	"Port1 is enable RMU port for switch\n",
+					"0x2":	"Port9 is enable RMU port for switch\n",
+					"0x3":	"Port10 is enable RMU port for switch\n",
+					"0x6":	"All DSA or EtherType DSA ports can receive RMU frames which are sent to the internal CPU for processing\n",
+					"0x7":	"RMU feature is disabled\n"
+				},
+				"example":	{
+					"":	"global setRMUMode 1\n"
+				}
+			},
+			"getRMUMode":	{
+				"help":	"global getRMUMode : Gets Remote Management Unit Mode\n",
+				"paraList":	{
+				},
+				"example":	{
+					"":	"global getRMUMode\n"
+				}
+			}
+		}
+	},
+	"led":	{
+		"desc":	"Show led commands",
+		"help":	"led help [subcmd]: Display led command options\n",
+		"subcmd":	{
+			"forceOn":	{
+				"help":	"led forceOn <port> <ledNum> : Force the LED On\n",
+				"paraList":	{
+					"port":	"the logical port number\n",
+					"ledNum":	"LED index\n"
+				},
+				"example":	{
+					"":	"led forceOn 1 1\n"
+				}
+			},
+			"forceOff":	{
+				"help":	"led forceOff <port> <ledNum> : Force the LED Off\n",
+				"paraList":	{
+					"port":	"the logical port number\n",
+					"ledNum":	"LED index\n"
+				},
+				"example":	{
+					"":	"led forceOff 1 1\n"
+				}
+			},
+			"setLinkAct":	{
+				"help":	"led setLinkAct <port> <ledNum> : Set the Port LED mode to link/act. That is: off-no link, on-link, blink-activity\n",
+				"paraList":	{
+					"port":	"the logical port number\n",
+					"ledNum":	"LED index\n"
+				},
+				"example":	{
+					"":	"led setLinkAct 1 1\n"
+				}
+			},
+			"setMode":	{
+				"help":	"led setMode <port> <ledNum> <mode> : Set the Port LED mode\n",
+				"paraList":	{
+					"port":	"the logical port number\n",
+					"ledNum":	"LED index\n",
+					"mode":	"LED mode\n"
+				},
+				"example":	{
+					"":	"led setMode 1 1 1\n"
+				}
+			},
+			"getMode":	{
+				"help":	"led getMode <port> <ledNum> : Get the Port LED mode\n",
+				"paraList":	{
+					"port":	"the logical port number\n",
+					"ledNum":	"LED index\n"
+				},
+				"example":	{
+					"":	"led getMode 1 1\n"
+				}
+			},
+			"setBlinkRate":	{
+				"help":	"led setBlinkRate <port> <rate> : Set the Port LED blink rate\n",
+				"paraList":	{
+					"port":	"the logical port number\n",
+					"rate":	{
+							"":	"LED blink rate:\n",
+							"":	"0: LED blink rate is 21 mSec\n",
+							"":	"1: LED blink rate is 42 mSec\n",
+							"":	"2: LED blink rate is 84 mSec\n",
+							"":	"3: LED blink rate is 168 mSec\n",
+							"":	"4: LED blink rate is 336 mSec\n",
+							"":	"5: LED blink rate is 672 mSec\n"
+					}
+				},
+				"example":	{
+					"":	"led setBlinkRate 1 1\n"
+				}
+			},
+			"getBlinkRate":	{
+				"help":	"led getBlinkRate <port> : Get the Port LED blink rate\n",
+				"paraList":	{
+					"port":	"the logical port number\n"
+				},
+				"example":	{
+					"":	"led getBlinkRate 1\n"
+				}
+			},
+			"setPulseStretch":	{
+				"help":	"led setPulseStretch <port> <duration> : Set the Port LED duration\n",
+				"paraList":	{
+					"port":	"the logical port number\n",
+					"duration":	{
+								"":	"LED stretch duration:\n",
+								"":	"0: LED no pulse stretching\n",
+								"":	"1: LED pulse stretch is 21 mSec\n",
+								"":	"2: LED pulse stretch is 42 mSec\n",
+								"":	"3: LED pulse stretch is 84 mSec\n",
+								"":	"4: LED pulse stretch is 168 mSec\n"
+					}
+				},
+				"example":	{
+					"":	"led setPulseStretch 1 1\n"
+				}
+			},
+			"getPulseStretch":	{
+				"help":	"led getPulseStretch <port> : Get the Port LED duration\n",
+				"paraList":	{
+					"port":	"the logical port number\n"
+				},
+				"example":	{
+					"":	"led getPulseStretch 1\n"
+				}
+			},
+			"setSpecialMode":	{
+				"help":	"led setSpecialMode <mode> <portVect> : Set the LED Special Mode\n",
+				"paraList":	{
+					"mode":	{
+							"":	"Special led mode:\n",
+							"":	"0: LED_SPECIAL_MODE_LAN\n",
+							"":	"1: LED_SPECIAL_MODE_WAN\n",
+							"":	"2: LED_SPECIAL_MODE_CPU\n",
+							"":	"3: LED_SPECIAL_MODE_PTP\n"
+					},
+					"portVect":	"Special led bit mask\n"
+				},
+				"example":	{
+					"":	"led setSpecialMode 1 1\n"
+				}
+			},
+			"getSpecialMode":	{
+				"help":	"led getSpecialMode <mode> : Get the LED Special Mode\n",
+				"paraList":	{
+					"mode":	{
+							"":	"Special led mode:\n",
+							"":	"0: LED_SPECIAL_MODE_LAN\n",
+							"":	"1: LED_SPECIAL_MODE_WAN\n",
+							"":	"2: LED_SPECIAL_MODE_CPU\n",
+							"":	"3: LED_SPECIAL_MODE_PTP\n"
+					}
+				},
+				"example":	{
+					"":	"led getSpecialMode 1\n"
+				}
+			},
+			"setCtrl":	{
+				"help":	"led setCtrl <port> <pointer> <data> : Set the Port Pointer LED data\n",
+				"paraList":	{
+					"port":	"the logical port number\n",
+					"pointer":	"LED register pointer\n",
+					"data":	"LED register data\n"
+				},
+				"example":	{
+					"":	"led setCtrl 1 0 2\n"
+				}
+			},
+			"getCtrl":	{
+				"help":	"led getCtrl <port> <pointer> : Get the Port Pointer LED data\n",
+				"paraList":	{
+					"port":	"the logical port number\n",
+					"pointer":	"LED register pointer\n"
+				},
+				"example":	{
+					"":	"led getCtrl 1 0\n"
+				}
+			},
+			"dump":	{
+				"help":	"led dump : Reads all the led registers and print them out\n",
+				"paraList":	{
+				},
+				"example":	{
+					"":	"led dump\n"
+				}
+			}
+		}
+	},
+	"eeprom": {
+		"desc":	"Show eeprom commands",
+		"help":	"eeprom help [subcmd]: Display eeprom command options\n",
+		"subcmd":	{
+			"write": {
+				"help":	"eeprom write <addr> <data> : Write data to EEPROM\n",
+				"paraList":	{
+					"addr":	"Specified start address\n",
+					"data":	"EEPROM data\n"
+				},
+				"example":	{
+					"":	"eeprom write 1 1\n"
+				}
+			},
+			"read":	{
+				"help":	"eeprom read <addr> : Read data from EEPROM\n",
+				"paraList":	{
+					"addr":	"Specified start address\n"
+				},
+				"example":	{
+					"":	"eeprom read 1\n"
+				}
+			}
+		}
+	},
+	"rr":	{
+		"desc":	"rr <devAddr> <regAddr> : Read register",
+		"help":	"rr <devAddr> <regAddr> : Read register\n",
+		"subcmd":	{
+		}
+	},
+	"rw":	{
+		"desc":	"rw <devAddr> <regAddr> <data> : Write register",
+		"help":	"rw <devAddr> <regAddr> <data> : Write register\n",
+		"subcmd":	{
+		}
+	},
+	"fullChipReset":	{
+		"desc":	"Reset switch",
+		"help":	"Reset switch\n",
+		"subcmd":	{
+		}
+	},
+	"debugLevelSet":	{
+		"desc":	"debugLevelSet <Lvl> : Set debug level(0x0: Off, 0x1: Error, 0x2: Info, 0x3: Show all)",
+		"help":	"debugLevelSet <Lvl> : Set debug level(0x0: Off, 0x1: Error, 0x2: Info, 0x3: Show all)\n",
+		"subcmd":	{
+		}
+	},
+	"file":	{
+		"desc":	"file <filename> : Load the command from the file",
+		"help":	"file <filename> : Load the command from the file\n",
+		"subcmd":	{
+		}
+	},
+	"getBus":	{
+		"desc":	"getBus : Get the bus interface, SMI, RMU or SMI multichip",
+		"help":	"getBus : Get the bus interface, SMI, RMU or SMI multichip\n",
+		"subcmd":	{
+		}
+	},
+	"getVersion":	{
+		"desc":	"getVersion : Get the UMSD API and MCLI version",
+		"help":	"getVersion : Get the UMSD API and MCLI version\n",
+		"subcmd":	{
+		}
+	},
+	"unittest":	{
+		"desc":	"unittest   : Run the Unit test cases",
+		"help":	"unittest   : Run the Unit test cases\n",
+		"subcmd":	{
+		}
+	},
+	"sample":	{
+		"desc":	"sample     : Run the sample cases",
+		"help":	"sample     : Run the sample cases\n",
+		"subcmd":	{
+		}
+	},
+	"customized":	{
+		"desc":	"customized : Run customized cases",
+		"help":	"customized : Run customized cases\n",
+		"subcmd":	{
+		}
+	},
+	"umsd-api": {
+		"desc": "Show umsd-api commands",
+		"help": "umsd-api help [subcmd]: Display umsd-api command options\n",
+		"subcmd": {
+			"search": {
+				"help": "umsd-api search <keyWord> : Search API name using key word\n",
+				"paraList": {
+					"keyWord": "the key word for api seaching\n"
+				},
+				"example": {
+					"": "umsd-api search tcam\n"
+				}
+			},
+			"man": {
+				"help": "umsd-api man <apiName> : show detail comments about umsd API\n",
+				"paraList": {
+					"apiName": "Full Name about the umsd API\n"
+				},
+				"example": {
+					"": "umsd-api man msdFdbMacEntryAdd\n"
+				}			
+			}
+		}
+	}
+}

@@ -1,0 +1,15 @@
+diff --git a/sources/app.drivers/ipc/common/ipc_parser.c b/sources/app.drivers/ipc/common/ipc_parser.c
+index 9a9f78d..1ea1808 100644
+--- a/sources/app.drivers/ipc/common/ipc_parser.c
++++ b/sources/app.drivers/ipc/common/ipc_parser.c
+@@ -803,7 +803,9 @@ static void IPC_OpenTask(    const void* pArg)
+ ***************************************************************************************************/
+ void IPC_CreateIPCParserTask(    void)
+ {
+-	int32 IPC_MODE_U = IPC_MODE_0_MBOX;	
++	// 241106 sy.kim
++	// int32 IPC_MODE_U = IPC_MODE_0_MBOX;	
++	int32 IPC_MODE_U = IPC_MODE_0_SHM;
+ 	int32 IPC_MODE_T = IPC_MODE_0_SHM;	
+ 	int32 IPC_MODE_L = IPC_MODE_0_MBOX;
+ 	

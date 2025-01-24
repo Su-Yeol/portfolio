@@ -1,0 +1,3268 @@
+diff --git a/sources/app.sample/app.lpa/master/data_router.c b/sources/app.sample/app.lpa/master/data_router.c
+index ca969cb..e111eed 100644
+--- a/sources/app.sample/app.lpa/master/data_router.c
++++ b/sources/app.sample/app.lpa/master/data_router.c
+@@ -42,8 +42,8 @@
+ */
+ 
+ /**************************************************************************************************
+-*                                           INCLUDE FILES
+-**************************************************************************************************/
++ *                                           INCLUDE FILES
++ **************************************************************************************************/
+ #include <errno.h>
+ #include <string.h>
+ 
+@@ -52,16 +52,25 @@
+ #include "route_cfg.h"
+ #include "ip_control.h"
+ #include "lpa_std.h"
++// 241202 sy.kim
++#include "katech_database.h" 
++#include "katech_can_app.h"
+ 
+ /**************************************************************************************************
+-*                                            DEFINITIONS
+-**************************************************************************************************/
++ *                                            DEFINITIONS
++ **************************************************************************************************/
+ 
+-#define LPA_IPC_WAIT_FLAG   (0x00000001UL)
++#define LPA_IPC_WAIT_FLAG (0x00000001UL)
+ 
++// 241106 sy.kim
++#define TCC_IPC_CMD_AP_TEST                 (0xffu)		//cmd1
++#define TCC_IPC_CMD_AP_SEND					(0x0fffu)   //cmd2
++#define IPC_A65_TEST						(1)
++// 241202 sy.kim
++#define MAX_SPEED 60
+ /**************************************************************************************************
+-*                                          global VARIABLES
+-**************************************************************************************************/
++ *                                          global VARIABLES
++ **************************************************************************************************/
+ /* for TSNC latency */
+ /*
+ uint32 tick_canc_tx;
+@@ -78,16 +87,16 @@ uint32 gTpaTxQueueHandle = 0U;
+ uint32 gLpaTxQueueHandle = 0U;
+ 
+ /**************************************************************************************************
+-*                                          LOCAL VARIABLES
+-**************************************************************************************************/
++ *                                          LOCAL VARIABLES
++ **************************************************************************************************/
+ /*misra_c_2012_rule_8_4_violation:	Object definition does not have a visible prototype*/
+ static uint8 rx_sourcePort;
+ static uint32 rx_extCan_id;
+-static uint8 rx_ide;                  // Extended ID or Normal ID
+-static uint8 rx_fdf;                  // CAN FD or Classic CAN
+-static uint8 rx_rtr;                  // remote frame
++static uint8 rx_ide; // Extended ID or Normal ID
++static uint8 rx_fdf; // CAN FD or Classic CAN
++static uint8 rx_rtr; // remote frame
+ uint16 proc_dataLen = 8u;
+-static uint8 rx_protocol_type;        // CAN or LIN
++static uint8 rx_protocol_type; // CAN or LIN
+ static uint32 rx_timeStamp_us_H;
+ static uint32 rx_timeStamp_us_L;
+ static uint16 rx_timeStamp_ns;
+@@ -109,14 +118,14 @@ static CANCnvtExpandCallback fCANCnvtExpandCB = NULL;
+ static const uint8 CanDlcLen[7U] = {12U, 16U, 20U, 24U, 32U, 48U, 64U};
+ 
+ /* Tx, Rx Task variables */
+-static uint8 rx_frame_type;    // Timestamp or data
++static uint8 rx_frame_type; // Timestamp or data
+ 
+ static uint8 rxRequestBuffer[32];
+ static uint8 rxResponseBuffer[LPA_TO_HOST_SIZE];
+-/*misra_c_2012_rule_2_2_violation:	variable "ipc_rxResponseBuffer" was declared but never referenced*/
+-//static uint8 ipc_rxResponseBuffer[264];
++/*misra_c_2012_rule_2_2_violation:	variable "ipc_rxResponseBuffer" was declared but never referenced*/
++// static uint8 ipc_rxResponseBuffer[264];
+ static TaskHandle_t RX_Task_Handle;
+-static uint8 rx_task_state = 0U;	/* 0:idle, 1: normal operation */
++static uint8 rx_task_state = 0U; /* 0:idle, 1: normal operation */
+ 
+ static uint16 gSN;
+ /* cert_exp37_c_violation:	Calling function "IPC_SendPacket(IPCSvcCh_t, uint16, uint16, uint8 const *, uint16)" with the argument "gM7_N", which has an incompatible type "uint8" instead of "IPCSvcCh_t".*/
+@@ -131,7 +140,7 @@ static uint8 Rx_Data[64];
+ static uint32 LpaRouteMutexId;
+ static uint32 LpaIpcRxEventId;
+ /*cert_exp37_c_violation:	Calling function "frm_findRouteTbl(uint8, uint32, uint8)" with the argument "tbl_cnt", which has an incompatible type "uint32" instead of "uint8".*/
+-/*misra_c_2012_rule_8_4_violation:	Object definition does not have a visible prototype*/
++/*misra_c_2012_rule_8_4_violation:	Object definition does not have a visible prototype*/
+ static uint32 tbl_cnt = 0u;
+ static routeTbl_t route_tbl[ROUTE_NUM];
+ 
+@@ -154,20 +163,72 @@ const tsncTbl_t tsnc_cfg[TSNC_NUM] = {
+ };
+ #endif
+ 
++// 241107 sy.kim
++static uint8 mcu_to_ap_flag = 0;
++static uint16 AP_rxcanId = 0;
++static uint32 CAN_rxcanId = 0;
++static uint8 add = 0U;
++
++// 241202 sy.kim IONIQ5 RX
++static uint8 katech_can_app_mode;
++static uint8 katech_adas_mode = 0; // 자율주행 모드 진입
++
++static uint8 WHL_01_10ms_data[KATECH_APP_BUFF_SIZE][24];
++static uint8 WHL_01_10ms_cnt=0;
++
++static uint8 g_SPASStatus=3;
++
++static uint8 ADAS_CMD_32_50ms[4][32];
++static uint8 ADAS_CMD_32_50ms_cnt=0;
++
++static uint8 TempArray1A0[4][32];
++static uint8 TempArray1A0_ori[4][32];
++static uint8 TempArray1A0_cnt =0;
++
++static uint8 ADAS_CMD_10_20ms_data[4][16];
++static uint8 ADAS_CMD_10_20ms_cnt =0;
++
++static uint8 ADAS_PRK_20_20ms_data[4][24];
++static uint8 ADAS_PRK_20_20ms_cnt =0;
++
++// 241202 sy.kim IONIQ5 TX
++static uint8 i_1A0 = 0;
++static uint8 Msg1A0_Length = 32;
++static uint16 Msg1A0_index = 0;
++static uint16 Msg1A0_CRC = 0xFFFF;
++static uint8 Msg1A0_DataID_H = 0xF9;
++static uint8 Msg1A0_DataID_L = 0xA0;
++
++static uint8 WHL_01_10_TxData[24]={0};
++static uint8 WHL_AlvCnt = 0;
++static uint8 SPASStatus = 3;
++static uint16 WHLCRC16Table = 0;
++static uint16 WHL_CRC = 0xFFFF;
++static uint8 DataID_L_WHL = 0xA0;
++static uint8 DataID_H_WHL = 0xF8;
++
++static uint8 ADAS_PRK_20_TxData[24]={0,};
++static uint8 ADAS_PRK_20_AlvCnt = 0;
++static uint16 i8_index = 0;
++static uint16 crc = 0xFFFF;
++static uint8 DataID_L = 0x65;
++static uint8 DataID_H = 0xF9;
+ /**************************************************************************************************
+-*                                        FUNCTION PROTOTYPES
+-**************************************************************************************************/
+-//Rx API
++ *                                        FUNCTION PROTOTYPES
++ **************************************************************************************************/
++// Rx API
+ static void parse_mm_response(const uint8 *buffer);
+ static void parse_proc_frame(const uint8 *buffer, uint16 data_length);
+ static uint8 parse_status_frame(const uint8 *buffer);
+ 
+-//Tx API
++// Tx API
+ static void ClassicCAN_Send(uint8 PortNum, uint32 CAN_ID, uint8 Data_Len, const uint8 *pData, uint8 ExtEnable);
+ static void CANFD_Send(uint8 PortNum, uint32 CAN_ID, uint8 Data_Len, const uint8 *pData, uint8 ExtEnable);
+ static void LIN_Send(uint8 PortNum, uint32 LIN_ID, uint8 OpMode, uint8 Data_Len, const uint8 *pData);
+ static int32a lengthValidCheck(LPA_FRAME_TYPE type, uint8 data_len);
+ 
++
++
+ #if (IPC_EN == 1u)
+ #if (SIC_BSP_SUPPORT_IPC_DATA_SEND == 1u)
+ static void NP_IpcCbFunc_CM7_0_Msg(uint16 uhwCmd, uint8 *pucData, uint16 uhwLength);
+@@ -188,16 +249,1066 @@ static void NP_IpcCbFunc_CM7_2_IpStat(uint16 uhwCmd, uint8 *pucData, uint16 uhwL
+ static void ipc_receive_show_status_M7(uint16 uhwCmd, uint8 *pucData, uint16 uhwLength);
+ #endif
+ 
+-
+ /* Tx, Rx Task functions */
+-//static void LPA_Rx_Task(void *pArg);
+-//static void LPA_Tx_Task(void *pArg);
++// static void LPA_Rx_Task(void *pArg);
++// static void LPA_Tx_Task(void *pArg);
++
++/**************************************************************************************************
++ *                                        IONIQ5 RX FUNCTIONS
++ **************************************************************************************************/
++/*
++ * MCU RX from CAN0(C-CAN)
++ */
++// can0 - 0x4A
++void RxCAN0_YRS_01_10ms(uint8 *YRS_RxData)
++{
++	DB_IONIQ_RxCAN0_YRS_01_10ms *this_DB_CAN0_YRS_01_10ms;
++
++	this_DB_CAN0_YRS_01_10ms = katech_database_write_addr_get(KATECH_NAME_DB_IONIQ_RxCAN0_YRS_01_10ms);
++
++	this_DB_CAN0_YRS_01_10ms->LatAccel = ((YRS_RxData[10]+(YRS_RxData[11]<<8))*0.000127465)-4.17677312;
++	this_DB_CAN0_YRS_01_10ms->LongAccel = ((YRS_RxData[12]+(YRS_RxData[13]<<8))*0.000127465)-4.17677312;
++	this_DB_CAN0_YRS_01_10ms->YawRate = ((YRS_RxData[8]+(YRS_RxData[9]<<8))*0.005)-163.84;
++
++	katech_database_update(KATECH_NAME_DB_IONIQ_RxCAN0_YRS_01_10ms);
++}
++
++// can0 - 0x65
++void RxCAN0_IEB_01_10ms(uint8 *BrkPedal_RxData)
++{
++	DB_IONIQ_RxCAN0_IEB_01_10ms *_DB_AN0_IEB_01_10ms;
++
++	_DB_AN0_IEB_01_10ms = katech_database_write_addr_get(KATECH_NAME_DB_IONIQ_RxCAN0_IEB_01_10ms);
++
++
++	_DB_AN0_IEB_01_10ms->BrakeAct = BrkPedal_RxData[13]; // Brake SW Pressure State
++	_DB_AN0_IEB_01_10ms->BrakePedalValue = BrkPedal_RxData[14]*0.390625;
++
++	katech_database_update(KATECH_NAME_DB_IONIQ_RxCAN0_IEB_01_10ms);
++}
++
++// can0 - 0xa0
++void RxCAN0_WHL_01_10ms(uint8 *WHL_RxData)
++{
++	uint8 pos;
++
++	DB_IONIQ_RxCAN0_WHL_01_10ms *_DB_CAN0_WHL_01_10ms;
++	_DB_CAN0_WHL_01_10ms = katech_database_write_addr_get(KATECH_NAME_DB_IONIQ_RxCAN0_WHL_01_10ms);
++
++	_DB_CAN0_WHL_01_10ms->WheelSpdFL = (WHL_RxData[8]+((WHL_RxData[9]&0x3F)<<8))*0.03125;
++	_DB_CAN0_WHL_01_10ms->WheelSpdFR = (WHL_RxData[10]+((WHL_RxData[11]&0x3F)<<8))*0.03125;
++	_DB_CAN0_WHL_01_10ms->WheelSpdRL = (WHL_RxData[12]+((WHL_RxData[13]&0x3F)<<8))*0.03125;
++	_DB_CAN0_WHL_01_10ms->WheelSpdRR = (WHL_RxData[14]+((WHL_RxData[15]&0x3F)<<8))*0.03125;
++	_DB_CAN0_WHL_01_10ms->AvgWheelSpeed = ((_DB_CAN0_WHL_01_10ms->WheelSpdFL + _DB_CAN0_WHL_01_10ms->WheelSpdFR + _DB_CAN0_WHL_01_10ms->WheelSpdRL + _DB_CAN0_WHL_01_10ms->WheelSpdRR) / 4) / 3.6;
++	_DB_CAN0_WHL_01_10ms->WheelPulseFL = (WHL_RxData[3])*0.5;
++	_DB_CAN0_WHL_01_10ms->WheelPulseFR = (WHL_RxData[4])*0.5;
++	_DB_CAN0_WHL_01_10ms->WheelPulseRL = (WHL_RxData[5])*0.5;
++	_DB_CAN0_WHL_01_10ms->WheelPulseRR = (WHL_RxData[6])*0.5;
++
++
++	pos = (WHL_01_10ms_cnt+1)%KATECH_APP_BUFF_SIZE;
++	memcpy(WHL_01_10ms_data[pos],WHL_RxData,24);
++
++	katech_database_update(KATECH_NAME_DB_IONIQ_RxCAN0_WHL_01_10ms);
++
++	WHL_01_10ms_cnt=pos;
++}
++
++// can0 - 0x125
++void RxCAN0_SAS_01_10ms(uint8 *SAS_RxData)
++{
++	DB_IONIQ_RxCAN0_SAS_01_10ms *dbaddr;
++	dbaddr = katech_database_write_addr_get(KATECH_NAME_DB_IONIQ_RxCAN0_SAS_01_10ms);
++
++	dbaddr->StrAngle = ((SAS_RxData[3]+(SAS_RxData[4]<<8)))*0.1;
++	if (dbaddr->StrAngle > 3276.7)
++		dbaddr->StrAngle = dbaddr->StrAngle - 6553.5;
++
++	dbaddr->StrSpeed = SAS_RxData[5]*4.0;
++	if(dbaddr->StrSpeed > 1020) //jyhannn
++		dbaddr->StrSpeed = 1020;
++	katech_database_update(KATECH_NAME_DB_IONIQ_RxCAN0_SAS_01_10ms);
++}
++
++// can0 - 0x130
++void RxCAN0_Unknown_0x130(uint8 *Unknown_RxData)
++{
++	DB_IONIQ_RxCAN0_Unknown_0x130 *dbaddr;
++	dbaddr = katech_database_write_addr_get(KATECH_NAME_DB_IONIQ_RxCAN0_Unknown_0x130);
++
++	dbaddr->GearPosition = Unknown_RxData[8];  //P:1  R:2  N:3  D:4
++
++	if (dbaddr->GearPosition == 1)
++		dbaddr->ADCMGearPosition = 1;
++	else if (dbaddr->GearPosition == 2)
++		dbaddr->ADCMGearPosition = 4;
++	else if (dbaddr->GearPosition == 3)
++		dbaddr->ADCMGearPosition = 2;
++	else if (dbaddr->GearPosition == 4)
++		dbaddr->ADCMGearPosition = 3;
++
++	katech_database_update(KATECH_NAME_DB_IONIQ_RxCAN0_Unknown_0x130);
++}
++
++// can0 - 0x175
++void RxCAN0_ESC_03_20ms(uint8 *ESC03_RxData)
++{
++	DB_IONIQ_RxCAN0_ESC_03_20ms *dbaddr;
++	dbaddr = katech_database_write_addr_get(KATECH_NAME_DB_IONIQ_RxCAN0_ESC_03_20ms);
++
++	dbaddr->ParkingBrk = (ESC03_RxData[10]&0xC0)>>6;  //Engaged : 1 DisEngaged : 0
++
++	katech_database_update(KATECH_NAME_DB_IONIQ_RxCAN0_ESC_03_20ms);
++}
++
++// can0 - 0x1AA
++void RxCAN0_CLU_01_20ms(uint8 *CLU_RxData)
++{
++	DB_IONIQ_RxCAN0_CLU_01_20ms *dbaddr;
++	dbaddr = katech_database_write_addr_get(KATECH_NAME_DB_IONIQ_RxCAN0_CLU_01_20ms);
++
++	dbaddr->DisplaySpd = CLU_RxData[8]+((CLU_RxData[9]&0x01)<<8);
++
++	katech_database_update(KATECH_NAME_DB_IONIQ_RxCAN0_CLU_01_20ms);
++}
++
++// can0 - 0x255
++void RxCAN0_CLU_02_100ms(uint8 *CLU2_RxData)
++{
++	DB_IONIQ_RxCAN0_CLU_02_100ms *dbaddr;
++	dbaddr = katech_database_write_addr_get(KATECH_NAME_DB_IONIQ_RxCAN0_CLU_02_100ms);
++
++	dbaddr->FuelLevel = ((CLU2_RxData[13]&0xF0)>>4)+((CLU2_RxData[14]&0x07)<<4);
++	dbaddr->AvgFuelConsum = (((CLU2_RxData[5]&0xC0)>>6)+(CLU2_RxData[6]<<2))*0.1;
++	dbaddr->Odometer = (CLU2_RxData[9]+(CLU2_RxData[10]<<8)+(CLU2_RxData[11]<<16))*0.1;
++	dbaddr->DTE = CLU2_RxData[4]+((CLU2_RxData[5]&0x03)<<8);
++
++	katech_database_update(KATECH_NAME_DB_IONIQ_RxCAN0_CLU_02_100ms);
++}
++
++// can0 - 0x1e5
++void RxCAN0_RR_C_RDR_01_50ms(uint8 *RR_C_RDR_01_50ms)
++{
++	DB_IONIQ_RxCAN0_RR_C_RDR_01_50ms *dbaddr;
++	dbaddr = katech_database_write_addr_get(KATECH_NAME_DB_IONIQ_RxCAN0_RR_C_RDR_01_50ms);
++
++	dbaddr->RadarFusion = (RR_C_RDR_01_50ms[13]&0x18)>>3;
++
++	katech_database_update(KATECH_NAME_DB_IONIQ_RxCAN0_RR_C_RDR_01_50ms);
++}
++
++
++/*
++ * MCU RX from CAN1(E-CAN)
++ */
++// can1 - 0x35
++void RxCAN1_Unknown_0x35(uint8 *Unknown_0x35)
++{
++	DB_IONIQ_RxCAN1_Unknown_0x35 *dbaddr;
++	dbaddr = katech_database_write_addr_get(KATECH_NAME_DB_IONIQ_RxCAN1_Unknown_0x35);
++
++	dbaddr->AccelAct = (Unknown_0x35[5] & 0xFF);
++
++	katech_database_update(KATECH_NAME_DB_IONIQ_RxCAN1_Unknown_0x35);
++}
++
++// can1 - 0xa0
++void RxCAN1_WHL_01_10ms(uint8 *WHL_01_10ms)
++{
++	DB_IONIQ_RxCAN1_WHL_01_10ms *dbaddr;
++	dbaddr = katech_database_write_addr_get(KATECH_NAME_DB_IONIQ_RxCAN1_WHL_01_10ms);
++
++	dbaddr->WHL_SpdFLVal = (WHL_01_10ms[8] +((WHL_01_10ms[9] &0x3F)<<8))*0.03125;
++	dbaddr->WHL_SpdFRVal = (WHL_01_10ms[10]+((WHL_01_10ms[11]&0x3F)<<8))*0.03125;
++	dbaddr->WHL_SpdRLVal = (WHL_01_10ms[12]+((WHL_01_10ms[13]&0x3F)<<8))*0.03125;
++	dbaddr->WHL_SpdRRVal = (WHL_01_10ms[14]+((WHL_01_10ms[15]&0x3F)<<8))*0.03125;
++	dbaddr->Avg_WhlSpd = ((((dbaddr->WHL_SpdFLVal + dbaddr->WHL_SpdFRVal + dbaddr->WHL_SpdRLVal + dbaddr->WHL_SpdRRVal) / 4) * 5) / 18); // km/h to m/s
++
++	katech_database_update(KATECH_NAME_DB_IONIQ_RxCAN1_WHL_01_10ms);
++}
++
++// can1 - 0x175
++void RxCAN1_ESC_03_20ms(uint8 *ESC_03_20ms)
++{
++	DB_IONIQ_RxCAN1_ESC_03_20ms *dbaddr;
++	dbaddr = katech_database_write_addr_get(KATECH_NAME_DB_IONIQ_RxCAN1_ESC_03_20ms);
++
++	dbaddr->PrkBrakeAct = (ESC_03_20ms[10] & 0xC0) >> 6;
++	katech_database_update(KATECH_NAME_DB_IONIQ_RxCAN1_ESC_03_20ms);
++}
++
++// can1 - 0x1AA
++void RxCAN1_CLU_01_20ms(uint8 *CLU_01_20ms)
++{
++
++	DB_IONIQ_RxCAN1_CLU_01_20ms *dbaddr;
++	dbaddr = katech_database_write_addr_get(KATECH_NAME_DB_IONIQ_RxCAN1_CLU_01_20ms);
++
++	dbaddr->CurrentSpeed = CLU_01_20ms[6] + ((CLU_01_20ms[7] & 0x03) << 8); // signal name in E-CAN dbc file is "CLU_DisSpdVal"
++	if((dbaddr->CurrentSpeed % 2) == 1)
++		dbaddr->CurrentSpeed = (dbaddr->CurrentSpeed/2) + 1;
++	else
++		dbaddr->CurrentSpeed = dbaddr->CurrentSpeed/2;
++
++	katech_database_update(KATECH_NAME_DB_IONIQ_RxCAN1_CLU_01_20ms);
++}
++
++// can1 - 0x1B5
++void RxCAN1_CLU_01_20ms2(uint8 *LaneInfoRxData)
++{
++	DB_IONIQ_RxCAN1_CLU_01_20ms2 *dbaddr;
++	dbaddr = katech_database_write_addr_get(KATECH_NAME_DB_IONIQ_RxCAN1_CLU_01_20ms2);
++
++	dbaddr->LaneQualityL = (LaneInfoRxData[3]&0x07);
++	dbaddr->ThisLanePositionL = (((LaneInfoRxData[3]&0xE0)>>5) + (LaneInfoRxData[4]<<3) + ((LaneInfoRxData[5]&0x07)<<11));
++	if (dbaddr->ThisLanePositionL > 8192)
++		dbaddr->ThisLanePositionL = dbaddr->ThisLanePositionL-16384;
++	dbaddr->LanePositionL = dbaddr->ThisLanePositionL * 0.0039625;
++
++	dbaddr->ThisHeadingAngleL = ((LaneInfoRxData[5]&0xF8)>>3)+((LaneInfoRxData[6]&0x1F)<<5);
++	if (dbaddr->ThisHeadingAngleL > 512)
++		dbaddr->ThisHeadingAngleL = dbaddr->ThisHeadingAngleL - 1024;
++	dbaddr->HeadingAngleL =  dbaddr->ThisHeadingAngleL * 0.000976563;
++
++	dbaddr->ThisCurvatureL = LaneInfoRxData[8]+(LaneInfoRxData[9]<<8);
++	if (dbaddr->ThisCurvatureL > 32767)
++		dbaddr->ThisCurvatureL = dbaddr->ThisCurvatureL - 65535;
++	dbaddr->CurvatureL = dbaddr->ThisCurvatureL * 0.0000005;  //실제DBC Factor 0.000001 보다 1/2
++	dbaddr->ThisCurvatureRateL = LaneInfoRxData[10]+(LaneInfoRxData[11]<<8);
++	if (dbaddr->ThisCurvatureRateL > 32767)
++		dbaddr->ThisCurvatureRateL = dbaddr->ThisCurvatureRateL - 65535;
++	dbaddr->CurvatureRateL = dbaddr->ThisCurvatureRateL * 0.0000000020; //실제DBC Factor 0.000000004 보다 1/2
++
++	dbaddr->LaneQualityR = (LaneInfoRxData[12]&0x07);
++	dbaddr->ThisLanePositionR = ((LaneInfoRxData[12]&0xE0)>>5)+(LaneInfoRxData[13]<<3)+((LaneInfoRxData[14]&0x07)<<11);
++	if (dbaddr->ThisLanePositionR > 8192)
++		dbaddr->ThisLanePositionR = dbaddr->ThisLanePositionR-16384;
++	dbaddr->LanePositionR = dbaddr->ThisLanePositionR * 0.0039625;
++	dbaddr->ThisHeadingAngleR = ((LaneInfoRxData[14]&0xF8)>>3)+((LaneInfoRxData[15]&0x1F)<<5);
++	if (dbaddr->ThisHeadingAngleR > 512)
++		dbaddr->ThisHeadingAngleR = dbaddr->ThisHeadingAngleR - 1024;
++	dbaddr->HeadingAngleR =  dbaddr->ThisHeadingAngleR * 0.000976563;
++	dbaddr->ThisCurvatureR = LaneInfoRxData[16]+(LaneInfoRxData[17]<<8);
++	if (dbaddr->ThisCurvatureR > 32767)
++		dbaddr->ThisCurvatureR = dbaddr->ThisCurvatureR - 65535;
++	dbaddr->CurvatureR = dbaddr->ThisCurvatureR * 0.0000005;
++	dbaddr->ThisCurvatureRateR = (LaneInfoRxData[18]+(LaneInfoRxData[19]<<8));
++	if (dbaddr->ThisCurvatureRateR > 32767)
++		dbaddr->ThisCurvatureRateR = dbaddr->ThisCurvatureRateR - 65535;
++	dbaddr->CurvatureRateR = dbaddr->ThisCurvatureRateR * 0.0000000020;
++
++	if ((dbaddr->LanePositionL > -2.0) && (dbaddr->LanePositionL != 0.0) && (dbaddr->LanePositionR < 2.0) && (dbaddr->LanePositionR != 0.0))
++	{
++		dbaddr->LaneWidthEstimation = dbaddr->LanePositionR - dbaddr->LanePositionL;
++	}
++	else if ((dbaddr->LanePositionL < -2.0) || (dbaddr->LanePositionL == 0.0))
++	{
++		dbaddr->LanePositionL = dbaddr->LanePositionR - dbaddr->LaneWidthEstimation;
++	}
++	else if ((dbaddr->LanePositionR > 2.0) || (dbaddr->LanePositionR == 0.0))
++	{
++		dbaddr->LanePositionR = dbaddr->LaneWidthEstimation + dbaddr->LanePositionL;
++	}
++
++	dbaddr->CAMStatus  = 1;
++
++	katech_database_update(KATECH_NAME_DB_IONIQ_RxCAN1_CLU_01_20ms2);
++}
++
++// can1 - 0x1BA
++void RxCAN1_RR_C_RDR_02_50ms(uint8 *RR_C_RDR_02_50ms)
++{
++	DB_IONIQ_RxCAN1_RR_C_RDR_02_50ms *dbaddr;
++	dbaddr = katech_database_write_addr_get(KATECH_NAME_DB_IONIQ_RxCAN1_RR_C_RDR_02_50ms);
++
++	dbaddr->LKALHLnWaringState = (RR_C_RDR_02_50ms[3]&0xC0)>>6;   //1 means Object, 2 means LaneChange in Object
++	dbaddr->LKARHLnWaringState = RR_C_RDR_02_50ms[4]&0x03;        //1 means Object, 2 means LaneChange in Object
++
++	katech_database_update(KATECH_NAME_DB_IONIQ_RxCAN1_RR_C_RDR_02_50ms);
++}
++
++// can1 - 0x1cf
++void RxCAN1_SWRC_03_20ms(uint8 *SWRC_03_20ms)
++{
++	DB_IONIQ_RxCAN1_SWRC_03_20ms *dbaddr;
++	dbaddr = katech_database_write_addr_get(KATECH_NAME_DB_IONIQ_RxCAN1_SWRC_03_20ms);
++
++	dbaddr->SWRC_CrsMainSwSta = (SWRC_03_20ms[2] & 0x18) >> 3;
++	dbaddr->SWRC_PlusMinusSwSta = SWRC_03_20ms[2] & 0x07; // signal name in E-CAN dbc file is "SWRC_CrsSwSta"
++	dbaddr->PlusSW = dbaddr->SWRC_PlusMinusSwSta & 0x01;
++	dbaddr->MinusSW = (dbaddr->SWRC_PlusMinusSwSta & 0x02) >> 1;
++	dbaddr->PauseResumeSW = (dbaddr->SWRC_PlusMinusSwSta & 0x04) >> 2;
++
++	if((dbaddr->SWRC_CrsMainSwSta == 1) && (dbaddr->SCC_OpSta != 1) && (dbaddr->SCC_StayTune == 0)) // to start ACC
++	{
++		dbaddr->SCC_OpSta = 1;
++		dbaddr->SCC_MainOnOffSta = 1;
++		dbaddr->SCC_StayTune = 1;
++
++		if(dbaddr->CurrentSpeed <= 50)
++			dbaddr->SCC_TrgtSpdSetVal = 50; // reset ACC setting speed
++		else
++			dbaddr->SCC_TrgtSpdSetVal = dbaddr->CurrentSpeed;
++
++		dbaddr->SCC_AccelReqVal = 1023; 	// reset previous value to default
++		dbaddr->SCC_AccelReqRawVal = 1023;  // reset previous value to default
++		katech_adas_mode=1; 
++		mcu_printf("##################### Start ADAS Mode #####################\n");
++	}
++	else if ((dbaddr->SWRC_CrsMainSwSta == 1) && (dbaddr->SCC_OpSta == 1) && (dbaddr->SCC_StayTune == 0) || (katech_adas_mode<0)) // to finish ACC
++	{
++		dbaddr->SCC_OpSta = 0;
++		dbaddr->SCC_MainOnOffSta = 0;
++		dbaddr->SCC_StayTune = 1;
++		//SCC_TrgtSpdSetVal = 0;
++		dbaddr->SCC_AccelReqVal = 1023; 	// reset previous value to default
++		dbaddr->SCC_AccelReqRawVal = 1023;  // reset previous value to default
++		katech_adas_mode=0;
++		mcu_printf("##################### Finish ADAS Mode ####################\n");
++	}
++
++	if (dbaddr->SWRC_CrsMainSwSta == 0)
++	{
++		dbaddr->SCC_StayTune = 0;
++	}
++
++	katech_database_update(KATECH_NAME_DB_IONIQ_RxCAN1_SWRC_03_20ms);
++}
++
++// can1 - 0x3c1
++void RxCAN1_MFSW_01_200ms(uint8 *MFSW_01_200ms)
++{
++	DB_IONIQ_RxCAN1_MFSW_01_200ms *dbaddr;
++	dbaddr = katech_database_write_addr_get(KATECH_NAME_DB_IONIQ_RxCAN1_MFSW_01_200ms);
++
++	dbaddr->TurnSigLeft = (MFSW_01_200ms[3]&0xC0)>>6;
++	dbaddr->TurnSigRight = MFSW_01_200ms[4]&0x03;
++
++	if (dbaddr->TurnSigLeft == 1)
++	{
++		dbaddr->LeftTurnFlag = 1;
++		dbaddr->RightTurnFlag = 0;
++	}
++	else if (dbaddr->TurnSigRight == 1)
++	{
++		dbaddr->LeftTurnFlag = 0;
++		dbaddr->RightTurnFlag = 1;
++	}
++	else
++	{
++		dbaddr->LeftTurnFlag = 0;
++		dbaddr->RightTurnFlag = 0;
++	}
++
++	katech_database_update(KATECH_NAME_DB_IONIQ_RxCAN1_MFSW_01_200ms);
++}
++
++
++/*
++ * MCU RX from CAN2(MDPS)
++ */
++// can2 - 0xEA
++void RxCAN2_MDPS_01_10ms(uint8 *MDPS_RxData)
++{
++	DB_IONIQ_RxCAN2_MDPS_01_10ms *dbaddr;
++	dbaddr = katech_database_write_addr_get(KATECH_NAME_DB_IONIQ_RxCAN2_MDPS_01_10ms);
++
++	dbaddr->MDPS_PaModeSta = MDPS_RxData[5]&0x0F;
++
++	katech_database_update(KATECH_NAME_DB_IONIQ_RxCAN2_MDPS_01_10ms);
++}
++
++// can2 - 0x377
++void RxCAN2_Unknown_0x377(uint8 *CMD_RxData)
++{
++	uint8 CMD = 0;
++	uint8 pos = 0;
++	DB_IONIQ_RxCAN2_Unknown_0x377 *dbaddr;
++	dbaddr = katech_database_write_addr_get(KATECH_NAME_DB_IONIQ_RxCAN2_Unknown_0x377);
++
++	CMD = CMD_RxData[4];
++	if(CMD == 0x01) dbaddr->SPASStatus = 3;
++	g_SPASStatus =3;
++}
++
++// can2 - 0x378
++void RxCAN2_Unknown_0x378(uint8 *CMD_RxData)
++{
++	uint8 CMD = 0;
++	uint8 pos = 0;
++	DB_IONIQ_RxCAN2_Unknown_0x377 *dbaddr;
++	dbaddr = katech_database_write_addr_get(KATECH_NAME_DB_IONIQ_RxCAN2_Unknown_0x377);
++
++	CMD = CMD_RxData[5];
++	if(CMD == 0x01) dbaddr->SPASStatus = 4;
++	katech_database_update(KATECH_NAME_DB_IONIQ_RxCAN2_Unknown_0x377);
++}
++
++// can2 - 0x379
++void RxCAN2_Unknown_0x379(uint8 *CMD_RxData)
++{
++	uint8 CMD = 0;
++	uint8 pos = 0;
++	DB_IONIQ_RxCAN2_Unknown_0x377 *dbaddr;
++	dbaddr = katech_database_write_addr_get(KATECH_NAME_DB_IONIQ_RxCAN2_Unknown_0x377);
++
++	CMD = CMD_RxData[6];
++	if(CMD == 0x01) dbaddr->SPASStatus = 1;
++	if(CMD == 0x02) dbaddr->SPASStatus = 2;
++	if(CMD == 0x05) dbaddr->SPASStatus = 5;
++	katech_database_update(KATECH_NAME_DB_IONIQ_RxCAN2_Unknown_0x377);
++}
++
++
++/*
++ * MCU RX from CAN3(DRV)
++ */
++// can3 - 0x1EA
++void RxCAN3_ADAS_CMD_20_20ms(uint8 *data)
++{
++	uint8 i;
++	uint8 this_cnt;
++	this_cnt = ADAS_CMD_32_50ms_cnt%4;
++
++	memcpy(ADAS_CMD_32_50ms[this_cnt],data,32);
++
++	ADAS_CMD_32_50ms_cnt=this_cnt;
++}
++
++// can3 - 0x1A0
++void RxCAN3_ADAS_CMD_32_50ms(uint8 *ADAS_CMD_20_20ms_Temp)
++{
++	char Temp1A0_PushData;
++	uint8 pos2 = 0;
++	DB_IONIQ_RxCAN3_ADAS_CMD_32_50ms *dbaddr;
++	dbaddr = katech_database_write_addr_get(KATECH_NAME_DB_IONIQ_RxCAN3_ADAS_CMD_32_50ms);
++
++	pos2 = TempArray1A0_cnt+1;
++	if(pos2>=4) pos2 =0;
++
++	memcpy(TempArray1A0_ori[pos2],ADAS_CMD_20_20ms_Temp,32);
++
++	TempArray1A0[pos2][3] = ADAS_CMD_20_20ms_Temp[3];
++	TempArray1A0[pos2][4] = ADAS_CMD_20_20ms_Temp[4];
++	TempArray1A0[pos2][5] = ADAS_CMD_20_20ms_Temp[5];
++	TempArray1A0[pos2][6] = ADAS_CMD_20_20ms_Temp[6];
++	TempArray1A0[pos2][7] = ADAS_CMD_20_20ms_Temp[7];
++	TempArray1A0[pos2][9] = ADAS_CMD_20_20ms_Temp[9];
++	TempArray1A0[pos2][10] = ADAS_CMD_20_20ms_Temp[10];
++	TempArray1A0[pos2][11] = ADAS_CMD_20_20ms_Temp[11];
++	dbaddr->SCC_ObjSta = (ADAS_CMD_20_20ms_Temp[13] & 0x70) >> 4;
++	TempArray1A0[pos2][14] = ADAS_CMD_20_20ms_Temp[14];
++	TempArray1A0[pos2][15] = ADAS_CMD_20_20ms_Temp[15];
++	for(Temp1A0_PushData = 21; Temp1A0_PushData < 32; Temp1A0_PushData++)
++	{
++		if(Temp1A0_PushData == 23) // byte23 controls SCC_VehStpReq
++			continue;
++		TempArray1A0[pos2][Temp1A0_PushData] = ADAS_CMD_20_20ms_Temp[Temp1A0_PushData];
++	}
++	dbaddr->FrontSCC_ObjDstVal = ADAS_CMD_20_20ms_Temp[3] + ((ADAS_CMD_20_20ms_Temp[4] & 0x07) << 8);
++	dbaddr->RadarSCC_ObjRelSpdVal = ((ADAS_CMD_20_20ms_Temp[4] & 0xF8) >> 3) + ((ADAS_CMD_20_20ms_Temp[5] & 0x7F) << 5);
++	dbaddr->RadarSCC_ObjRelSpdVal = (dbaddr->RadarSCC_ObjRelSpdVal - 1700) * 0.1;
++
++	dbaddr->SCC_VehStpReq = (ADAS_CMD_20_20ms_Temp[23] & 0x03);
++	dbaddr->RADARStatus = 1;
++	katech_database_update(KATECH_NAME_DB_IONIQ_RxCAN3_ADAS_CMD_32_50ms);
++	TempArray1A0_cnt=pos2;
++}
++
++// can3 - 0x160
++void RxCAN3_ADAS_CMD_10_20ms(uint8 *ADAS_CMD_10_20ms)
++{
++	uint16 CameraFCA_TimetoCllsn = 0;
++	uint8 pos;
++
++	pos = (ADAS_CMD_10_20ms_cnt+1)%4;
++
++	memcpy(ADAS_CMD_10_20ms_data[pos],ADAS_CMD_10_20ms,16);
++	ADAS_CMD_10_20ms_cnt=pos;
++	CameraFCA_TimetoCllsn = (((ADAS_CMD_10_20ms[10]&0x01)<<7) + (ADAS_CMD_10_20ms[9]&0xFE)>>1)*10;   //ms
++}
++
++// can3 - 0x165
++void RxCAN0_ADAS_PRK_20_20ms(uint8 *ADAS_PRK_20_20ms)
++{
++	uint8 pos;
++
++	pos = (ADAS_PRK_20_20ms_cnt+1)%4;
++
++	memcpy(ADAS_PRK_20_20ms_data[pos],ADAS_PRK_20_20ms,24);
++	ADAS_PRK_20_20ms_cnt=pos;
++}
++
++
++void katech_rx_can0(uint32 can_id, uint8 *data) // can0 to m7-np
++{
++	switch(can_id)
++	{
++		case 0x4a:
++			RxCAN0_YRS_01_10ms(data);
++			break;
++		case 0x65:
++			RxCAN0_IEB_01_10ms(data);
++			break;
++		case 0xa0:
++			RxCAN0_WHL_01_10ms(data);
++			break;
++		case 0x125:
++			RxCAN0_SAS_01_10ms(data);
++			break;
++		case 0x130:
++			RxCAN0_Unknown_0x130(data);
++			break;
++		case 0x175:
++			RxCAN0_ESC_03_20ms(data);
++			break;
++		case 0x1AA:
++			RxCAN0_CLU_01_20ms(data);
++			break;
++		case 0x255:
++			RxCAN0_CLU_02_100ms(data);
++			break;
++		case 0x1e5:
++			RxCAN0_RR_C_RDR_01_50ms(data);
++			break;
++		case 0x165:
++			RxCAN0_ADAS_PRK_20_20ms(data);
++			break;
++		case 0x411:
++			break;
++		default:
++			break;
++	}
++}
++
++void katech_rx_can1(uint32 can_id, uint8 *data)
++{
++	switch(can_id)
++	{
++		case 0x35:
++			RxCAN1_Unknown_0x35(data);
++			break;
++		case 0xa0:
++			RxCAN1_WHL_01_10ms(data);
++			break;
++		case 0x175:
++			RxCAN1_ESC_03_20ms(data);
++			break;
++		case 0x1AA:
++			RxCAN1_CLU_01_20ms(data);
++			break;
++		case 0x1B5:
++			RxCAN1_CLU_01_20ms2(data);
++			break;
++		case 0x1BA:
++			RxCAN1_RR_C_RDR_02_50ms(data);
++			break;
++		case 0x1cf:
++			RxCAN1_SWRC_03_20ms(data);
++			break;
++		case 0x3c1:
++			RxCAN1_MFSW_01_200ms(data);
++			break;
++		default:
++			break;
++	}
++}
+ 
++void katech_rx_can2(uint32 can_id, uint8 *data)
++{
++	switch(can_id)
++	{
++		case 0xEA:
++			RxCAN2_MDPS_01_10ms(data);
++			break;
++		case 0x377:
++			RxCAN2_Unknown_0x377(data);
++			break;
++		case 0x378:
++			RxCAN2_Unknown_0x378(data);
++			break;
++		case 0x379:
++			RxCAN2_Unknown_0x379(data);
++			break;
++		default:
++			break;
++	}
++}
++
++void katech_rx_can3(uint32 can_id, uint8 *data)
++{
++	switch(can_id)
++	{
++
++	case 0x160:
++		RxCAN3_ADAS_CMD_10_20ms(data);
++		break;
++	case 0x1A0:
++		RxCAN3_ADAS_CMD_32_50ms(data);
++		break;
++	case 0x1EA:
++		RxCAN3_ADAS_CMD_20_20ms(data);
++		break;
++	default:
++		break;
++	}
++}
+ /**************************************************************************************************
+-*                                             FUNCTIONS
+-**************************************************************************************************/
++ *                                        IONIQ5 TX FUNCTIONS
++ **************************************************************************************************/
++uint16 crc16table[256] = {
++      0x0000, 0x1021, 0x2042, 0x3063, 0x4084, 0x50A5, 0x60C6, 0x70E7, //1
++      0x8108, 0x9129, 0xA14A, 0xB16B, 0xC18C, 0xD1AD, 0xE1CE, 0xF1EF, //2
++      0x1231, 0x0210, 0x3273, 0x2252, 0x52B5, 0x4294, 0x72F7, 0x62D6, //3
++      0x9339, 0x8318, 0xB37B, 0xA35A, 0xD3BD, 0xC39C, 0xF3FF, 0xE3DE, //4
++      0x2462, 0x3443, 0x0420, 0x1401, 0x64E6, 0x74C7, 0x44A4, 0x5485, //5
++      0xA56A, 0xB54B, 0x8528, 0x9509, 0xE5EE, 0xF5CF, 0xC5AC, 0xD58D, //6
++      0x3653, 0x2672, 0x1611, 0x0630, 0x76D7, 0x66F6, 0x5695, 0x46B4, //7
++      0xB75B, 0xA77A, 0x9719, 0x8738, 0xF7DF, 0xE7FE, 0xD79D, 0xC7BC, //8
++      0x48C4, 0x58E5, 0x6886, 0x78A7, 0x0840, 0x1861, 0x2802, 0x3823, //9
++      0xC9CC, 0xD9ED, 0xE98E, 0xF9AF, 0x8948, 0x9969, 0xA90A, 0xB92B, //10
++      0x5AF5, 0x4AD4, 0x7AB7, 0x6A96, 0x1A71, 0x0A50, 0x3A33, 0x2A12, //11
++      0xDBFD, 0xCBDC, 0xFBBF, 0xEB9E, 0x9B79, 0x8B58, 0xBB3B, 0xAB1A, //12
++      0x6CA6, 0x7C87, 0x4CE4, 0x5CC5, 0x2C22, 0x3C03, 0x0C60, 0x1C41, //13
++      0xEDAE, 0xFD8F, 0xCDEC, 0xDDCD, 0xAD2A, 0xBD0B, 0x8D68, 0x9D49, //14
++      0x7E97, 0x6EB6, 0x5ED5, 0x4EF4, 0x3E13, 0x2E32, 0x1E51, 0x0E70, //15
++      0xFF9F, 0xEFBE, 0xDFDD, 0xCFFC, 0xBF1B, 0xAF3A, 0x9F59, 0x8F78, //16
++      0x9188, 0x81A9, 0xB1CA, 0xA1EB, 0xD10C, 0xC12D, 0xF14E, 0xE16F, //17
++      0x1080, 0x00A1, 0x30C2, 0x20E3, 0x5004, 0x4025, 0x7046, 0x6067, //18
++      0x83B9, 0x9398, 0xA3FB, 0xB3DA, 0xC33D, 0xD31C, 0xE37F, 0xF35E, //19
++      0x02B1, 0x1290, 0x22F3, 0x32D2, 0x4235, 0x5214, 0x6277, 0x7256, //20
++      0xB5EA, 0xA5CB, 0x95A8, 0x8589, 0xF56E, 0xE54F, 0xD52C, 0xC50D, //21
++      0x34E2, 0x24C3, 0x14A0, 0x0481, 0x7466, 0x6447, 0x5424, 0x4405, //22
++      0xA7DB, 0xB7FA, 0x8799, 0x97B8, 0xE75F, 0xF77E, 0xC71D, 0xD73C, //23
++      0x26D3, 0x36F2, 0x0691, 0x16B0, 0x6657, 0x7676, 0x4615, 0x5634, //24
++      0xD94C, 0xC96D, 0xF90E, 0xE92F, 0x99C8, 0x89E9, 0xB98A, 0xA9AB, //25
++      0x5844, 0x4865, 0x7806, 0x6827, 0x18C0, 0x08E1, 0x3882, 0x28A3, //26
++      0xCB7D, 0xDB5C, 0xEB3F, 0xFB1E, 0x8BF9, 0x9BD8, 0xABBB, 0xBB9A, //27
++      0x4A75, 0x5A54, 0x6A37, 0x7A16, 0x0AF1, 0x1AD0, 0x2AB3, 0x3A92, //28
++      0xFD2E, 0xED0F, 0xDD6C, 0xCD4D, 0xBDAA, 0xAD8B, 0x9DE8, 0x8DC9, //29
++      0x7C26, 0x6C07, 0x5C64, 0x4C45, 0x3CA2, 0x2C83, 0x1CE0, 0x0CC1, //30
++      0xEF1F, 0xFF3E, 0xCF5D, 0xDF7C, 0xAF9B, 0xBFBA, 0x8FD9, 0x9FF8, //31
++      0x6E17, 0x7E36, 0x4E55, 0x5E74, 0x2E93, 0x3EB2, 0x0ED1, 0x1EF0  //32
++};
++/*
++ * MCU TX to CAN1(E-CAN)
++ */
++// can1 - 0x1A0 (can3 - m7 - can1)
++void TxCAN1_ADAS_CMD_32_50ms(void)
++{
++	uint8 pos;
++
++	uint8 _state;
++	uint8 *TempArray1A0_Ptr;
++	uint8 SCC_TrgtSpdSetVal = 10;
++	uint8 SCC_OpSta = 0;
++	uint8 SCC_MainOnOffSta = 0;
++	uint8 Msg1A0cnt = 0;
++	uint16 SCC_AccelReqVal = 1023; 	// offset = -10.23 / factor = 0.01
++	uint16 SCC_AccelReqRawVal = 1023; // offset = -10.23 / factor = 0.01
++	uint8 SCC_JrkUpp = 25; 			// offset = 0 / factor = 0.1
++	uint8 SCC_JrkLwr = 10; 			// offset = 0 / factor = 0.1
++	uint8 SCC_VehStpReq = 0;
++	double TargetAccel;
++	uint16 AccelCmd;
++	DB_IONIQ_RxCAN1_SWRC_03_20ms *DB_CAN1_SWRC_03_20ms_ptr;
++	DB_IONIQ_RxCAN3_ADAS_CMD_32_50ms *DB_IONIQ_RxCAN3_ADAS_CMD_20_20ms_ptr;
++	DB_IONIQ_RxCAN1_ESC_03_20ms *DB_CAN1_ESC_03_20ms_ptr;
++	DB_IONIQ_RxCAN0_IEB_01_10ms *DB_CAN0_IEB_01_10ms_ptr;
++	DB_IONIQ_RxCAN1_Unknown_0x35 *DB_CAN1_Unknown_0x35_ptr;
++	DB_IONIQ_RxCAN0_WHL_01_10ms *DB_IONIQ_RxCAN0_WHL_01_10ms_ptr;
++	DB_IONIQ_RxCAN0_CLU_01_20ms *DB_IONIQ_RxCAN0_CLU_01_20ms_ptr;
++	KATECH_CONTROL_A2V *interface_db;
++
++	pos = TempArray1A0_cnt;
++
++	// DB_CAN1_SWRC_03_20ms_ptr = katech_database_read_addr_get(KATECH_NAME_DB_IONIQ_RxCAN1_SWRC_03_20ms);
++	// DB_IONIQ_RxCAN3_ADAS_CMD_20_20ms_ptr = katech_database_read_addr_get(KATECH_NAME_DB_IONIQ_RxCAN3_ADAS_CMD_32_50ms);
++	DB_CAN1_ESC_03_20ms_ptr = katech_database_read_addr_get(KATECH_NAME_DB_IONIQ_RxCAN1_ESC_03_20ms);
++	DB_CAN0_IEB_01_10ms_ptr = katech_database_read_addr_get(KATECH_NAME_DB_IONIQ_RxCAN0_IEB_01_10ms);
++	DB_CAN1_Unknown_0x35_ptr = katech_database_read_addr_get(KATECH_NAME_DB_IONIQ_RxCAN1_Unknown_0x35);
++	DB_IONIQ_RxCAN0_WHL_01_10ms_ptr = katech_database_read_addr_get(KATECH_NAME_DB_IONIQ_RxCAN0_WHL_01_10ms);
++	DB_IONIQ_RxCAN0_CLU_01_20ms_ptr = katech_database_read_addr_get(KATECH_NAME_DB_IONIQ_RxCAN0_CLU_01_20ms);
++
++	interface_db = katech_get_addr_vehicle_interface_control();
++	TargetAccel = interface_db->Accel;
++	if(katech_adas_mode==1)
++	{
++		if(TargetAccel>0.9)
++			TargetAccel = 0.9;
++		else if(TargetAccel<-3.43)
++			TargetAccel = -3.43; // 여기서 AEB 걸어줘야함
++		AccelCmd = 1023+(TargetAccel*100);
++		SCC_OpSta = 1;
++		SCC_MainOnOffSta = 1;
++		SCC_JrkUpp = 25;
++		SCC_JrkLwr = 10;
++		SCC_AccelReqVal = AccelCmd;
++		SCC_TrgtSpdSetVal = MAX_SPEED;
++		SCC_VehStpReq = 0;
++
++
++		if((DB_IONIQ_RxCAN0_WHL_01_10ms_ptr->AvgWheelSpeed==0.0)&&(SCC_AccelReqVal<1023))
++		{
++			SCC_VehStpReq=1;
++			SCC_AccelReqVal=1023;
++		}
++		else if(SCC_AccelReqVal>1023)
++		{
++			SCC_VehStpReq=0;
++		}
++
++		if((DB_IONIQ_RxCAN0_CLU_01_20ms_ptr->DisplaySpd>=MAX_SPEED)&&(SCC_AccelReqVal>1023))
++		{
++			SCC_AccelReqVal=1023;
++		}
++	}
++	else
++	{
++		SCC_OpSta = 0;
++		SCC_MainOnOffSta = 0;
++		SCC_JrkUpp = 25;
++		SCC_JrkLwr = 10;
++		SCC_AccelReqVal = 1023; // 0.1m/s^2 1113<->680(0.9m/s^2<->-3.43m/s^2); max(1113), min(680);=
++		SCC_TrgtSpdSetVal = MAX_SPEED;
++		SCC_VehStpReq = 0;
++	}
++	SCC_AccelReqRawVal=SCC_AccelReqVal;
++
++
++	if((DB_CAN1_ESC_03_20ms_ptr->PrkBrakeAct  == 1) || (DB_CAN0_IEB_01_10ms_ptr->BrakeAct > 5) || (DB_CAN1_Unknown_0x35_ptr->AccelAct > 5)||(katech_adas_mode<0))
++	{
++		SCC_OpSta = 0;
++		SCC_MainOnOffSta = 0;
++		SCC_JrkUpp = 25;
++		SCC_JrkLwr = 10;
++		SCC_AccelReqVal = 1023; // 0.1m/s^2 1113<->680(0.9m/s^2<->-3.43m/s^2); max(1113), min(680);
++		SCC_AccelReqRawVal = 1023;
++		SCC_TrgtSpdSetVal = MAX_SPEED;
++		SCC_VehStpReq = 0;
++		katech_adas_mode=0;
++	}
++
++	TempArray1A0_Ptr = TempArray1A0[pos];
++
++	TempArray1A0_Ptr[12] = SCC_TrgtSpdSetVal;
++	TempArray1A0_Ptr[8] = ((SCC_OpSta << 4) + (SCC_MainOnOffSta << 2));
++
++	TempArray1A0_Ptr[2] = Msg1A0cnt; // 0x1A0 Msg AliveCount (0x00 ~ 0xFF)
++	Msg1A0cnt++;
++	if(Msg1A0cnt > 0xFF)
++		Msg1A0cnt = 0;
++
++	TempArray1A0_Ptr[16] = SCC_AccelReqVal & 0xff;
++	TempArray1A0_Ptr[17] = ((SCC_AccelReqRawVal & 0x0f) << 4) + ((SCC_AccelReqVal >> 8) & 0x07);
++	TempArray1A0_Ptr[18] = (SCC_AccelReqRawVal >> 4) & 0x7f;
++	TempArray1A0_Ptr[19] = SCC_JrkUpp;
++	TempArray1A0_Ptr[20] = SCC_JrkLwr;
++	TempArray1A0_Ptr[23] = (SCC_VehStpReq & 0x03);
++
++	for (i_1A0=2; i_1A0 < Msg1A0_Length; i_1A0++)
++	{
++		Msg1A0_index = (uint8)((Msg1A0_CRC >> 8)^TempArray1A0_Ptr[i_1A0]) & 0x00FF;
++		Msg1A0_CRC  = (Msg1A0_CRC <<8)^crc16table[Msg1A0_index];
++	}
++	Msg1A0_CRC = (Msg1A0_CRC<<8)^crc16table[(uint8)((Msg1A0_CRC>>8)^Msg1A0_DataID_L) & 0x00FF];
++	Msg1A0_CRC = (Msg1A0_CRC<<8)^crc16table[(uint8)((Msg1A0_CRC>>8)^Msg1A0_DataID_H) & 0x00FF];
++
++	TempArray1A0_Ptr[0] = Msg1A0_CRC & 0x00FF;
++	TempArray1A0_Ptr[1] = (Msg1A0_CRC & 0xFF00) >> 8;
++
++	frm_lpa_sendFrame(FRAME_TYPE_CANFD_BASE, 2, 0x1a0, 32, TempArray1A0_Ptr);
++	Msg1A0_CRC = 0xFFFF;
++}
++
++//can1 -0x160 (can3 - m7 - can1)
++//AEB
++void TxCAN1_ADAS_CMD_10_20ms(void)
++{
++	uint8 Msg160_DataID_H = 0xF9;
++	uint8 Msg160_DataID_L = 0x60;
++	uint32 Msg160_CRC = 0xFFFF;
++	uint8 Msg160_Length = 16;
++	uint16 Msg160_index = 0;
++	char i_160 = 0;
++
++	uint8 TempArray160[16];
++	static uint8 AliveAEBCnt = 0; // Alive Count
++	uint8 CRCDataHigh = 0;
++	uint8 CRCDataLow = 0;
++	uint8 FCA_WrngLvlSta = 0; // 0 -> 1 -> 2
++	uint8 FCA_SysFlrSta = 0;
++	uint8 FCA_HydrlcBstAsstlSta = 0;
++	uint8 FCA_StbltActvReq = 0;
++	uint8 FCA_DclReqVal = 0; // 0 -> 4[g]
++	uint8 FCA_FullActvReq = 0;
++	uint8 FCA_PartialActvReq = 0; // 0 -> 1
++	uint8 FCA_WrngSndSta = 0; // 0 -> 2
++	uint8 FCA_SnstvtyModRetVal = 2;
++	uint16 FCA_RelVel = 0xFF;     // FF > 117
++	uint8 FCA_TimetoCllsn = 0xFE; // FE > 57
++	uint8 Nmode_FCAOff_Sta = 0;
++	uint8 FCA_Jnctn_OnOffEquipSta = 2;
++	uint8 ADAS_DRV_FCA_Plus_Sta = 0;
++	uint8 FCA_WrngTrgtDis = 0; // 0 -> 5
++	uint8 FCA_OnOffEquipSta = 3;
++	uint8 FCA_VehStpReq = 0;
++	uint8 FCA_PrefillActvReq = 0;
++
++
++	FCA_RelVel = 0x117;
++	FCA_TimetoCllsn = 0x57;
++	FCA_DclReqVal = 90; // 40 = 0.4g, 60 = 0.6g etc
++
++	FCA_WrngLvlSta = 2;
++	FCA_WrngSndSta = 2;
++	FCA_WrngTrgtDis = 5;
++	FCA_PrefillActvReq = 0;
++	// FCA_PartialActvReq = 1;
++	FCA_FullActvReq = 1; // 0.6g 
++	FCA_HydrlcBstAsstlSta = 3;
++	FCA_StbltActvReq = 2;
++	FCA_RelVel = 0xFF;
++	FCA_TimetoCllsn = 0xFE;
++	FCA_DclReqVal = 0;
++	FCA_WrngLvlSta = 0;
++	FCA_WrngSndSta = 0;
++	FCA_WrngTrgtDis = 0;
++	FCA_PartialActvReq = 0;
++	FCA_PrefillActvReq = 0;
++	FCA_HydrlcBstAsstlSta = 0;
++
++	TempArray160[0] = CRCDataHigh; // CRC High byte
++	TempArray160[1] = CRCDataLow;  // CRC Low byte
++	TempArray160[2] = AliveAEBCnt++;    // Alive count
++	TempArray160[3] = (0xC0 & (FCA_WrngLvlSta << 6)) + (0x38 & (FCA_SysFlrSta << 3)) + (0x07 & (FCA_OnOffEquipSta));
++	TempArray160[4] = (0x60 & (FCA_HydrlcBstAsstlSta << 5)) + (0x1C & (FCA_StbltActvReq << 2)) + (0x03 & (FCA_VehStpReq));
++	TempArray160[5] = FCA_DclReqVal;
++	TempArray160[6] = (0x30 & (FCA_FullActvReq << 4)) + (0x0C & (FCA_PartialActvReq << 2)) + (0x03 & (FCA_PrefillActvReq));
++	TempArray160[7] = (0xE0 & (FCA_WrngSndSta << 5)) + (0x07 & (FCA_SnstvtyModRetVal));
++	TempArray160[8] = (0xFF & (FCA_RelVel));
++	TempArray160[9] = (0xFE & (FCA_TimetoCllsn << 1)) + (0x01 & (FCA_RelVel >> 8));
++	TempArray160[10] = (0x18 & (FCA_Jnctn_OnOffEquipSta << 3)) + (0x06 & (Nmode_FCAOff_Sta << 1)) + (0x01 & (FCA_TimetoCllsn >> 7));
++	TempArray160[11] = (0x60 & (ADAS_DRV_FCA_Plus_Sta << 5)) + (0x1F & (FCA_WrngTrgtDis));
++	TempArray160[12] = 0x00;
++	TempArray160[13] = 0x00;
++	TempArray160[14] = 0x00;
++	TempArray160[15] = 0x00;
++
++	for (i_160=2; i_160 < Msg160_Length; i_160++)
++	{
++		Msg160_index = (uint8)((Msg160_CRC >> 8)^(TempArray160[i_160]) & 0x00FF);
++		Msg160_CRC  = (Msg160_CRC <<8)^crc16table[Msg160_index];
++	}
++	Msg160_CRC = (Msg160_CRC<<8)^crc16table[(uint8)((Msg160_CRC>>8)^Msg160_DataID_L) & 0x00FF];
++	Msg160_CRC = (Msg160_CRC<<8)^crc16table[(uint8)((Msg160_CRC>>8)^Msg160_DataID_H) & 0x00FF];
++
++	TempArray160[0] = Msg160_CRC & 0x00FF;
++	TempArray160[1] = (Msg160_CRC & 0xFF00) >> 8;
++
++	frm_lpa_sendFrame(FRAME_TYPE_CANFD_BASE, 2, 0x160, 16, TempArray160);
++
++	Msg160_CRC = 0xFFFF;
++}
++
++// can1 - 0x1ea (can3 - m7 - can1): 경고등 삭제
++void TxCAN1_ADAS_CMD_20_20ms(void)
++{
++	uint8 *ptr = ADAS_CMD_32_50ms[ADAS_CMD_32_50ms_cnt];
++	// 241203 sy.kim
++	// if(katech_can_app_mode==KATECH_CAN_APP_AD_MODE) 
++	// {
++		ptr[3] = 0x08;
++		ptr[4] = 0x00;
++	// }
++
++	frm_lpa_sendFrame(FRAME_TYPE_CANFD_BASE, 2, 0x1EA, 32, ptr);
++}
++
++
++/*
++ * MCU TX to CAN2(MDPS)
++ */
++// can2 - 0xA0 (can0, can1 - m7 - can2)
++void TxCAN2_WHL_01_10ms(void)
++{
++	DB_IONIQ_RxCAN2_Unknown_0x377 *DB_CAN2_Unknown_0x377_ptr;
++
++	DB_CAN2_Unknown_0x377_ptr = katech_database_read_addr_get(KATECH_NAME_DB_IONIQ_RxCAN2_Unknown_0x377);
++	SPASStatus = g_SPASStatus;
++	WHL_01_10_TxData[2] = WHL_AlvCnt;
++	if(WHL_AlvCnt == 0xff)
++		WHL_AlvCnt = 0;
++	WHL_AlvCnt++;
++
++	for(uint8 i=3; i<24; i++)
++	{
++		if(i >= 8 && i <= 15) // 5kph
++		{
++			if(i % 2 == 0)
++			{
++				if(SPASStatus == 4)
++					WHL_01_10_TxData[i] = 0;
++				else if((SPASStatus == 3) || (SPASStatus == 5))
++					WHL_01_10_TxData[i] = 25;
++			}
++			else
++				WHL_01_10_TxData[i] = 0;
++		}
++		else
++			WHL_01_10_TxData[i] = 0;
++	}
++	WHL_01_10_TxData[17] = 0x40;
++	WHL_01_10_TxData[18] = 0x01;
++
++	for (uint8 j=2; j<24; j++)
++	{
++		WHLCRC16Table = (uint8_t)((WHL_CRC>>8)^WHL_01_10_TxData[j]) & 0x00FF;
++		WHL_CRC = (WHL_CRC<<8)^crc16table[WHLCRC16Table];
++	}
++	WHL_CRC = (WHL_CRC<<8)^crc16table[(uint8_t)((WHL_CRC>>8)^DataID_L_WHL) & 0x00FF];
++	WHL_CRC = (WHL_CRC<<8)^crc16table[(uint8_t)((WHL_CRC>>8)^DataID_H_WHL) & 0x00FF];
++
++	WHL_01_10_TxData[0] = WHL_CRC & 0x00FF;
++	WHL_01_10_TxData[1] = (WHL_CRC & 0xFF00) >> 8;
++
++	frm_lpa_sendFrame(FRAME_TYPE_CANFD_BASE, 3, 0xA0, 24, WHL_01_10_TxData);
++
++	WHL_CRC = 0xFFFF;
++}
++
++// can2 - 0x165
++void TxCAN2_ADAS_PRK_20_20ms(void)
++{
++	char k = 0;
++	static uint8 _SPASStatus;
++	static uint8 whl_cnt=0;
++	DB_IONIQ_RxCAN2_Unknown_0x377 *DB_CAN2_Unknown_0x377_ptr;
++	DB_IONIQ_RxCAN2_MDPS_01_10ms *DB1;
++	DB_IONIQ_RxCAN0_SAS_01_10ms *DB2;
++	DB_IONIQ_RxCAN0_SAS_01_10ms *testDB;
++	DB_IONIQ_RxCAN1_SWRC_03_20ms *DB_CAN1_SWRC_03_20ms_ptr;
++	KATECH_CONTROL_A2V *interface_db;
++
++	int16 TargetAngCmd = 0, int16tmp;
++	float RealAng, TargetAng, FloatTmp;
++	static float OldTargetAng=0;
++	static int16 old_TargetAngCmd=0;
++
++	// DB_CAN2_Unknown_0x377_ptr = katech_database_read_addr_get(KATECH_NAME_DB_IONIQ_RxCAN2_Unknown_0x377);
++	DB1=katech_database_read_addr_get(KATECH_NAME_DB_IONIQ_RxCAN2_MDPS_01_10ms);
++	DB2=katech_database_read_addr_get(KATECH_NAME_DB_IONIQ_RxCAN0_SAS_01_10ms);
++	interface_db=katech_get_addr_vehicle_interface_control(); // recv data using ipcf
++	// random value: interface_db = 0;
++	DB_CAN1_SWRC_03_20ms_ptr = katech_database_read_addr_get(KATECH_NAME_DB_IONIQ_RxCAN1_SWRC_03_20ms);
++
++	if(katech_adas_mode == 1)
++	{
++		_SPASStatus = g_SPASStatus;
++
++		if (DB1->MDPS_PaModeSta == 3) _SPASStatus = 4;
++		else if (DB1->MDPS_PaModeSta == 4) _SPASStatus = 5;
++		else if (DB1->MDPS_PaModeSta == 5) _SPASStatus = 5;
++		else if (DB1->MDPS_PaModeSta == 6) _SPASStatus = 2;
++		else _SPASStatus = 3;
++
++		g_SPASStatus = _SPASStatus;
++		TargetAng = interface_db->SteeringAngle;
++		RealAng = DB2->StrAngle;
++
++		if(DB1->MDPS_PaModeSta == 5)
++		{
++			if(whl_cnt<5)
++			{
++				TargetAngCmd=RealAng*10;
++				OldTargetAng=RealAng;
++				whl_cnt++;
++			}
++			else
++			{
++				if(TargetAng>540) TargetAng=540;
++				else if(TargetAng<-540)TargetAng=-540;
++
++				FloatTmp = TargetAng-RealAng;
++				if(FloatTmp>20) FloatTmp=RealAng+30;
++				else if(FloatTmp<-20) FloatTmp=RealAng-30;
++				else  FloatTmp= TargetAng;
++				TargetAngCmd=(int16_t)(FloatTmp*10);
++				OldTargetAng=FloatTmp;
++			}
++		}
++		else if(DB1->MDPS_PaModeSta < 5)
++		{
++			old_TargetAngCmd=RealAng*10;
++			TargetAngCmd=RealAng*10;
++
++		}
++
++		if(DB1->MDPS_PaModeSta > 5)
++		{
++			katech_adas_mode=-1;
++
++		}
++	}
++	else
++	{
++		_SPASStatus = 3;
++		whl_cnt=0;
++		TargetAngCmd=RealAng*10;
++	}
++
++
++	ADAS_PRK_20_TxData[2] = ADAS_PRK_20_AlvCnt;
++	if(ADAS_PRK_20_AlvCnt == 0xff)
++		ADAS_PRK_20_AlvCnt = 0;
++	ADAS_PRK_20_AlvCnt++;
++
++	if(_SPASStatus == 5)
++		ADAS_PRK_20_TxData[3] = 0x4B;
++	else
++		ADAS_PRK_20_TxData[3] = 0x48;
++
++	ADAS_PRK_20_TxData[4] = 0x00;
++	ADAS_PRK_20_TxData[5] = 0x00;
++	ADAS_PRK_20_TxData[6] = 0x00;
++	ADAS_PRK_20_TxData[7] = 0x00;
++	ADAS_PRK_20_TxData[8] = 0x00;
++	ADAS_PRK_20_TxData[9] = 0x00;
++	ADAS_PRK_20_TxData[10] = 0x00;
++	ADAS_PRK_20_TxData[11] = (_SPASStatus << 2)&0x3C;
++	ADAS_PRK_20_TxData[12] = TargetAngCmd & 0xff;
++	ADAS_PRK_20_TxData[13] = TargetAngCmd >> 8;
++	ADAS_PRK_20_TxData[14] = 0x02;
++	ADAS_PRK_20_TxData[15] = 0x00;
++	ADAS_PRK_20_TxData[16] = 0x00;
++	ADAS_PRK_20_TxData[17] = 0x00;
++	ADAS_PRK_20_TxData[18] = 0x00;
++	ADAS_PRK_20_TxData[19] = 0x00;
++	ADAS_PRK_20_TxData[20] = 0x00;
++	ADAS_PRK_20_TxData[21] = 0x00;
++	ADAS_PRK_20_TxData[22] = 0x00;
++	ADAS_PRK_20_TxData[23] = 0x00;
++
++	for (k=2; k<24; k++)
++	{
++		i8_index = (uint8)((crc>>8)^ADAS_PRK_20_TxData[k]) & 0x00FF;
++		crc = (crc<<8)^crc16table[i8_index];
++	}
++	crc = (crc<<8)^crc16table[(uint8)((crc>>8)^DataID_L) & 0x00FF];
++	crc = (crc<<8)^crc16table[(uint8)((crc>>8)^DataID_H) & 0x00FF];
++
++	ADAS_PRK_20_TxData[0] = crc & 0x00FF;
++	ADAS_PRK_20_TxData[1] = (crc & 0xFF00) >> 8;
++
++	frm_lpa_sendFrame(FRAME_TYPE_CANFD_BASE, 3, 0x165, 24, ADAS_PRK_20_TxData);
++
++	crc = 0xFFFF;
++}
++/**************************************************************************************************
++ *                                             FUNCTIONS
++ **************************************************************************************************/
+ /* Rx API */
+-//void LPA_Rx_Init(void)
++// void LPA_Rx_Init(void)
+ //{
+ #if 0
+ 	frm_lpa_rx_setRegCB(print_reg_data_info);
+@@ -229,58 +1340,59 @@ void frm_lpa_rx_setStatusCB(LpaStatusCallback cbFunc)
+ 
+ void frm_tsnc_setCANtoEthCB(CANtoEthCallback cbFunc)
+ {
+-    fCANtoEthCB = cbFunc;
++	fCANtoEthCB = cbFunc;
+ }
+ 
+ void frm_canc_setExpandCB(CANCnvtExpandCallback cbFunc)
+ {
+-    fCANCnvtExpandCB = cbFunc;
++	fCANCnvtExpandCB = cbFunc;
+ }
+ 
+ #if (IPC_EN == 1u)
+ static void LPA_IPC_rxIrq_eventCreate(void)
+ {
+-    (void) SAL_EventCreate(&LpaIpcRxEventId, (const uint8 *) "LPA IPC RxIrq wait flag group", 0);
++	(void)SAL_EventCreate(&LpaIpcRxEventId, (const uint8 *)"LPA IPC RxIrq wait flag group", 0);
+ }
+ 
+ static int32 LPA_IPC_rxIrq_waitEvent(void)
+ {
+-    int32 ret;
+-    SALRetCode_t err;
+-    uint32 retFlag;
++	int32 ret;
++	SALRetCode_t err;
++	uint32 retFlag;
+ 
+-    err = SAL_EventGet(LpaIpcRxEventId, LPA_IPC_WAIT_FLAG, 0UL, ((uint32) SAL_EVENT_OPT_SET_ANY| (uint32) SAL_OPT_BLOCKING), &retFlag);
++	err = SAL_EventGet(LpaIpcRxEventId, LPA_IPC_WAIT_FLAG, 0UL, ((uint32)SAL_EVENT_OPT_SET_ANY | (uint32)SAL_OPT_BLOCKING), &retFlag);
+ 
+-    if((err == SAL_RET_SUCCESS))
+-    {
+-        if (retFlag == 0U)
+-        {
+-            ret = -1; //timeout
+-        }
+-        else
+-        {
+-            ret = 0; //success
+-        }
+-    }
+-    else
+-    {
+-        ret = -1;
+-    }
++	if ((err == SAL_RET_SUCCESS))
++	{
++		if (retFlag == 0U)
++		{
++			ret = -1; // timeout
++		}
++		else
++		{
++			ret = 0; // success
++		}
++	}
++	else
++	{
++		ret = -1;
++	}
+ 
+-    return ret;
++	return ret;
+ }
+ 
+ static void LPA_IPC_rxIrq_clearEvent(void)
+ {
+-    (void) SAL_EventSet(LpaIpcRxEventId, LPA_IPC_WAIT_FLAG, SAL_EVENT_OPT_CLR_ALL);
++	(void)SAL_EventSet(LpaIpcRxEventId, LPA_IPC_WAIT_FLAG, SAL_EVENT_OPT_CLR_ALL);
+ }
+ 
+ static void LPA_IPC_rxIrq_wakeUp(void)
+ {
+-    (void) SAL_EventSet(LpaIpcRxEventId, LPA_IPC_WAIT_FLAG, SAL_EVENT_OPT_FLAG_SET);
++	(void)SAL_EventSet(LpaIpcRxEventId, LPA_IPC_WAIT_FLAG, SAL_EVENT_OPT_FLAG_SET);
+ }
+ #endif
+ 
++
+ static void parse_mm_response(const uint8 *buffer)
+ {
+ 	LPA_REG_DATA reg;
+@@ -288,17 +1400,17 @@ static void parse_mm_response(const uint8 *buffer)
+ 	SAL_MemCopy(&mrs_data, buffer, sizeof(MM_RESPONSE));
+ 	if (mrs_data.type == MM_RESPONSE_TYPE)
+ 	{
+-		reg.addr  = (mrs_data.data.RD_ADDR0 & 0x00FFu) << 8U;
++		reg.addr = (mrs_data.data.RD_ADDR0 & 0x00FFu) << 8U;
+ 		reg.addr |= ((mrs_data.data.RD_ADDR0 & 0xFF00u) >> 8U);
+ 		reg.data[0] = lpa_swap32(mrs_data.data.data0);
+ 		reg.data[1] = lpa_swap32(mrs_data.data.data1);
+ 		reg.data[2] = lpa_swap32(mrs_data.data.data2);
+ 		reg.data[3] = lpa_swap32(mrs_data.data.data3);
+ 
+-        if (fLpaRegCB != NULL)
+-        {
+-            fLpaRegCB(&reg);
+-        }
++		if (fLpaRegCB != NULL)
++		{
++			fLpaRegCB(&reg);
++		}
+ 	}
+ 	else
+ 	{
+@@ -309,16 +1421,16 @@ static void parse_mm_response(const uint8 *buffer)
+ static void parse_proc_frame(const uint8 *buffer, uint16 data_length)
+ {
+ 	uint16 i;
+-    uint8 dst = 0u;
++	uint8 dst = 0u;
+ 	RX_DATA_FRAME data_frame;
+ 	RX_TS_FRAME ts_frame;
+-    CNVT_CAN_DATA cnvt_data;
+-    uint32 route_id;
++	CNVT_CAN_DATA cnvt_data;
++	uint32 route_id;
+ 
+ 	rx_frame_type = buffer[0] & 0x01U;
+ 	rx_sourcePort = ((buffer[0] & 0xFEU) >> 1U) + ((buffer[1] & 0x01U) << 7U);
+ 
+-	rx_timeStamp_ns  = (((uint16)buffer[1] & 0xFEU) >> 1U);
++	rx_timeStamp_ns = (((uint16)buffer[1] & 0xFEU) >> 1U);
+ 	rx_timeStamp_ns |= (((uint16)buffer[2] & 0x01U) << 7U);
+ 	rx_timeStamp_ns *= 10U;
+ 
+@@ -333,31 +1445,31 @@ static void parse_proc_frame(const uint8 *buffer, uint16 data_length)
+ 	rx_timeStamp_us_H |= ((uint32)buffer[9] << 23U);
+ 	rx_timeStamp_us_H |= (((uint32)buffer[10] & 0x01U) << 31U);
+ 
+-	rx_protocol_type = ((buffer[10] & 0x80U) == 0x80U)?1U:0U;
++	rx_protocol_type = ((buffer[10] & 0x80U) == 0x80U) ? 1U : 0U;
+ 
+-	rx_can_id = lpa_u16add((uint16)buffer[11], ((uint16)buffer[12] & 0x07U) << 8U);
++	rx_can_id = lpa_u16add((uint16)buffer[11], ((uint16)buffer[12] & 0x07U) << 8U); // can id
+ 	rx_lin_id = (uint16)buffer[11] & 0x3FU;
+-	rx_extCan_id  = (uint32)buffer[11];
++	rx_extCan_id = (uint32)buffer[11];
+ 	rx_extCan_id |= ((uint32)buffer[12] << 8U);
+ 	rx_extCan_id |= ((uint32)buffer[13] << 16U);
+ 	rx_extCan_id |= (((uint32)buffer[14] & 0x1FU) << 24U);
+ 
+-
+-	rx_fdf = ((buffer[14] & 0x20U) == 0x20U)?1U:0U;
+-	rx_rtr = ((buffer[14] & 0x40U) == 0x40U)?1U:0U;
+-	rx_ide = ((buffer[14] & 0x80U) == 0x80U)?1U:0U;
+-
+-	if (rx_frame_type == DATA_FRAME)
++	rx_fdf = ((buffer[14] & 0x20U) == 0x20U) ? 1U : 0U;
++	rx_rtr = ((buffer[14] & 0x40U) == 0x40U) ? 1U : 0U;
++	rx_ide = ((buffer[14] & 0x80U) == 0x80U) ? 1U : 0U;
++	
++	if (rx_frame_type == DATA_FRAME) // CAN to PROC
+ 	{
+ 		data_frame.port = rx_sourcePort;
+ 		data_frame.proto = rx_protocol_type;
+ 		data_frame.ts_us_high = rx_timeStamp_us_H;
+ 		data_frame.ts_us_low = rx_timeStamp_us_L;
+ 		data_frame.ts_ns = rx_timeStamp_ns;
+-		for(i = 15U; i < data_length; i++)
++
++		for (i = 15U; i < data_length; i++)
+ 		{
+-			data_frame.Data[i-15U] = buffer[i];
+-            Rx_Data[i-15U] = buffer[i];
++			data_frame.Data[i - 15U] = buffer[i];
++			Rx_Data[i - 15U] = buffer[i];
+ 		}
+ 		i = lpa_u16sub(data_length, 15U);
+ 		if (i <= 255U)
+@@ -378,7 +1490,40 @@ static void parse_proc_frame(const uint8 *buffer, uint16 data_length)
+ 					data_frame.ftype = FRAME_TYPE_CANFD_BASE;
+ 				}
+ 				data_frame.ID = rx_can_id;
+-                route_id = data_frame.ID;
++				route_id = data_frame.ID;
++				
++				// 241111 sy.kim
++				// AP_rxcanId = rx_can_id;
++				// if(route_id == 0xA0 || AP_rxcanId == 1)
++				// {
++				// 	mcu_to_ap_flag = 1;
++				// }
++				// 241202 sy.kim
++				if(data_frame.ID == 0x4A || data_frame.ID == 0x65 || data_frame.ID == 0x125 
++				|| data_frame.ID == 0x130 || data_frame.ID == 0x255 || data_frame.ID == 0x1E5)
++				{
++					katech_rx_can0(data_frame.ID, data_frame.Data);
++				}
++				else if(data_frame.ID == 0x35 || data_frame.ID == 0x175 || data_frame.ID == 0x1B5 
++				|| data_frame.ID == 0x1BA || data_frame.ID == 0x1CF || data_frame.ID == 0x3C1 )
++				{
++					katech_rx_can1(data_frame.ID, data_frame.Data);
++				}
++				else if(data_frame.ID == 0xEA || data_frame.ID == 0x377 || data_frame.ID == 0x378
++				|| data_frame.ID == 0x379)
++				{
++					katech_rx_can2(data_frame.ID, data_frame.Data);
++				}
++				else if(data_frame.ID == 0xA0 || data_frame.ID == 0x1AA || data_frame.ID == 0x175)
++				{
++					katech_rx_can0(data_frame.ID, data_frame.Data);
++					katech_rx_can1(data_frame.ID, data_frame.Data);
++				}
++				else if(data_frame.ID == 0x160 || data_frame.ID == 0x1A0 || data_frame.ID == 0x1EA)
++				{
++					katech_rx_can3(data_frame.ID, data_frame.Data);
++				}		
++				mcu_to_ap_flag = 0;
+ 			}
+ 			else
+ 			{
+@@ -388,52 +1533,53 @@ static void parse_proc_frame(const uint8 *buffer, uint16 data_length)
+ 					data_frame.ftype = FRAME_TYPE_CANFD_EXT;
+ 				}
+ 				data_frame.ID = rx_extCan_id;
+-                route_id = (data_frame.ID | 0x80000000U);
++				route_id = (data_frame.ID | 0x80000000U);
+ 			}
+ 
+-            dst = frm_findRouteTbl(data_frame.port, route_id, tbl_cnt);
++			dst = frm_findRouteTbl(data_frame.port, route_id, tbl_cnt);
+ 
+-            if(dst != 0u)
+-            {
+-                cnvt_data.port = rx_sourcePort;
+-                cnvt_data.ide = rx_ide;
+-                cnvt_data.len = proc_dataLen;
+-                SAL_MemCopy(cnvt_data.data, Rx_Data, proc_dataLen);
++			if (dst != 0u)
++			{
++				cnvt_data.port = rx_sourcePort;
++				cnvt_data.ide = rx_ide;
++				cnvt_data.len = proc_dataLen;
++				SAL_MemCopy(cnvt_data.data, Rx_Data, proc_dataLen);
+ 
+-                switch(dst)
+-                {
+-                    case TSNC:
++				switch (dst)
++				{
++				case TSNC:
+ #if (SIC_BSP_SUPPORT_TEST_APP_TPA == 1u)
+-                        cnvt_data.id = rx_extCan_id;
+-                        if ( fCANtoEthCB != NULL)
+-                        {
+-                            fCANtoEthCB(&cnvt_data);
+-                        }
++					// cnvt_data.id = rx_extCan_id;
++					cnvt_data.id = route_id; // 241114 sy.kim
++					if (fCANtoEthCB != NULL)
++					{
++						fCANtoEthCB(&cnvt_data);
++					}
+ #endif
+-                        break;
+-                    case CANC:
+-                        cnvt_data.id = route_id;
+-                        if (fCANCnvtExpandCB != NULL)
+-                        {
+-                            fCANCnvtExpandCB(&cnvt_data);
+-                        }
+-                        break;
++					break;
++				case CANC:
++					cnvt_data.id = route_id;
++					if (fCANCnvtExpandCB != NULL)
++					{
++						fCANCnvtExpandCB(&cnvt_data);
++					}
++					break;
+ #if (IPC_EN == 1) && (SIC_BSP_SUPPORT_IPC_DATA_SEND == 1u)
+-                    case IPC:
+-                    /*misra_c_2012_rule_5_3_violation:	Declaration with identifier "i" hides another declaration.*/
+-                        for(i = 0u; i < IPC_NUM; i++)
+-                        {
+-                            if((ipcTbl[i].src_ch == (rx_sourcePort - 5u)) && (ipcTbl[i].src_id == route_id))
+-                            {
+-                                (void)IPC_SendPacket(ipcTbl[i].dst_core, (uint16)TCC_IPC_CMD_CAN_MSG, (uint16)ipcTbl[i].src_ch, rxResponseBuffer, data_length);
+-                            }
+-                        }
+-                        break;
++				case IPC:
++					/*misra_c_2012_rule_5_3_violation:	Declaration with identifier "i" hides another declaration.*/
++					for (i = 0u; i < IPC_NUM; i++)
++					{
++						if ((ipcTbl[i].src_ch == (rx_sourcePort - 5u)) && (ipcTbl[i].src_id == route_id))
++						{
++							(void)IPC_SendPacket(ipcTbl[i].dst_core, (uint16)TCC_IPC_CMD_CAN_MSG, (uint16)ipcTbl[i].src_ch, rxResponseBuffer, data_length);
++						}
++					}
++					break;
+ #endif
+-                    default:
+-                        break;
+-                }
+-            }
++				default:
++					break;
++				}
++			}
+ 		}
+ 		else
+ 		{
+@@ -442,23 +1588,23 @@ static void parse_proc_frame(const uint8 *buffer, uint16 data_length)
+ 			route_id = data_frame.ID;
+ 			dst = frm_findRouteTbl(data_frame.port, route_id, tbl_cnt);
+ 
+-			if(dst != 0u)
++			if (dst != 0u)
+ 			{
+-				switch(dst)
++				switch (dst)
+ 				{
+ #if (IPC_EN == 1) && (SIC_BSP_SUPPORT_IPC_DATA_SEND == 1u)
+-					case IPC:
+-						for(i = 0u; i < IPC_NUM; i++)
++				case IPC:
++					for (i = 0u; i < IPC_NUM; i++)
++					{
++						if ((ipcTbl[i].src_ch == (rx_sourcePort - 5u)) && (ipcTbl[i].src_id == route_id))
+ 						{
+-							if((ipcTbl[i].src_ch == (rx_sourcePort - 5u)) && (ipcTbl[i].src_id == route_id))
+-							{
+-								(void)IPC_SendPacket(ipcTbl[i].dst_core, (uint16)TCC_IPC_CMD_LIN_MSG, (uint16)ipcTbl[i].src_ch, rxResponseBuffer, data_length);
+-							}
++							(void)IPC_SendPacket(ipcTbl[i].dst_core, (uint16)TCC_IPC_CMD_LIN_MSG, (uint16)ipcTbl[i].src_ch, rxResponseBuffer, data_length);
+ 						}
+-						break;
++					}
++					break;
+ #endif
+-					default:
+-						break;
++				default:
++					break;
+ 				}
+ 			}
+ 		}
+@@ -468,7 +1614,7 @@ static void parse_proc_frame(const uint8 *buffer, uint16 data_length)
+ 			fLpaDataCB(&data_frame);
+ 		}
+ 	}
+-	else
++	else // CAN to CAN
+ 	{
+ 		ts_frame.port = rx_sourcePort;
+ 		ts_frame.ts_us_high = rx_timeStamp_us_H;
+@@ -479,6 +1625,9 @@ static void parse_proc_frame(const uint8 *buffer, uint16 data_length)
+ 		{
+ 			fLpaTsCB(&ts_frame);
+ 		}
++		
++		// 241111 sy.kim
++		mcu_to_ap_flag = 0; 
+ 	}
+ }
+ /*misra_c_2012_rule_8_8_violation:	missing static storage modifier for "parse_status_frame" which has internal linkage*/
+@@ -488,35 +1637,37 @@ static uint8 parse_status_frame(const uint8 *buffer)
+ 	uint32 upper32;
+ 	uint32 lower32;
+ 	uint8 i;
+-	uint8 error_bit=0;
++	uint8 error_bit = 0;
+ 	uint32 count = 0U;
+ 	uint32 v;
+ 	uint32 mask;
+-	uint8 flag[32] = {0,};
++	uint8 flag[32] = {
++		0,
++	};
+ 	RX_STATUS_FRAME st;
+ 
+ 	port = buffer[0];
+-	lower32  = (uint32)buffer[1];
++	lower32 = (uint32)buffer[1];
+ 	lower32 |= ((uint32)buffer[2] << 8);
+ 	lower32 |= ((uint32)buffer[3] << 16);
+ 	lower32 |= ((uint32)buffer[4] << 24);
+-	upper32  = (uint32)buffer[5];
++	upper32 = (uint32)buffer[5];
+ 	upper32 |= ((uint32)buffer[6] << 8);
+ 	upper32 |= ((uint32)buffer[7] << 16);
+ 	upper32 |= ((uint32)buffer[8] << 24);
+ 
+-	/*misra_c_2012_rule_2_2_violation:	Assigning value "0" to "error_bit" here, but that stored value is overwritten before it can be used.*/
+-	//error_bit = 0;
++	/*misra_c_2012_rule_2_2_violation:	Assigning value "0" to "error_bit" here, but that stored value is overwritten before it can be used.*/
++	// error_bit = 0;
+ 	st.error_num = 0u;
+ 	st.port = port;
+-	for(i = 0u; i < 32U; i++)
++	for (i = 0u; i < 32U; i++)
+ 	{
+ 		v = 1UL << i;
+ 		mask = lower32 & v;
+ 		if (mask == v)
+ 		{
+ 			flag[count] = i;
+-            count = lpa_u32add(count, 1U);
++			count = lpa_u32add(count, 1U);
+ 			if (st.error_num <= 3U)
+ 			{
+ 				st.error[st.error_num] = i;
+@@ -524,7 +1675,7 @@ static uint8 parse_status_frame(const uint8 *buffer)
+ 			}
+ 		}
+ 	}
+-	for(i = 0u; i < 32U; i++)
++	for (i = 0u; i < 32U; i++)
+ 	{
+ 		v = 1UL << i;
+ 		mask = upper32 & v;
+@@ -542,9 +1693,10 @@ static uint8 parse_status_frame(const uint8 *buffer)
+ 	}
+ 	error_bit = flag[0];
+ 
+-	for(i = 0u; i < st.error_num; i++)
++	for (i = 0u; i < st.error_num; i++)
+ 	{
+-		if (st.error[i] == 29U) {
++		if (st.error[i] == 29U)
++		{
+ 			error_bit = 29U;
+ 			break;
+ 		}
+@@ -559,12 +1711,6 @@ static uint8 parse_status_frame(const uint8 *buffer)
+ }
+ 
+ 
+-/* Tx API */
+-//void LPA_Tx_Init(void)
+-//{
+-	/**/
+-//}
+-
+ static int32a lengthValidCheck(LPA_FRAME_TYPE type, uint8 data_len)
+ {
+ 	int32a ret = -1;
+@@ -587,7 +1733,8 @@ static int32a lengthValidCheck(LPA_FRAME_TYPE type, uint8 data_len)
+ 		{
+ 			for (i = 0u; i < 7U; i++)
+ 			{
+-				if (data_len == CanDlcLen[i]) {
++				if (data_len == CanDlcLen[i])
++				{
+ 					ret = 0;
+ 					break;
+ 				}
+@@ -616,21 +1763,21 @@ static void ClassicCAN_Send(uint8 PortNum, uint32 CAN_ID, uint8 Data_Len, const
+ {
+ 	LPA_TX_MESSAGE msg;
+ 
+-	if ((pData != NULL) && ( Data_Len <= 8U))
++	if ((pData != NULL) && (Data_Len <= 8U))
+ 	{
+ 		build_CANHeader(msg.MsgData, TIMESTAMP_ON, (uint32)CAN_ID, 0U, ExtEnable, 0U);
+ 
+ 		SAL_MemCopy(&msg.MsgData[LPA_TX_HDR_SIZE], pData, Data_Len);
+ 		msg.size = lpa_u16add(LPA_TX_HDR_SIZE, (uint16)Data_Len);
+ 		msg.MsgID = TX_LPA_CMD_FRAME_SEND;
+-        msg.idt = lpa_u16add((uint16)PortNum, CAN_PORT_MASK);
++		msg.idt = lpa_u16add((uint16)PortNum, CAN_PORT_MASK);
+ 
+ #if (MCAL_TX_CONFIRM_SUPPORT == 1)
+ 		msg.request_core = (uint8)IPC_SVC_CH_MAX;
+ #endif
+ 
+-		(void)SAL_QueuePut(gLpaTxQueueHandle, (void*)&msg, sizeof(LPA_TX_MESSAGE), 0, SAL_OPT_BLOCKING);
+-		mcu_printf("[%s] port=%d, Id=0x%x(ext:%c), size=%d\n", __func__, PortNum, CAN_ID, (ExtEnable==1U)?'Y':'N', Data_Len);
++		(void)SAL_QueuePut(gLpaTxQueueHandle, (void *)&msg, sizeof(LPA_TX_MESSAGE), 0, SAL_OPT_BLOCKING);
++		mcu_printf("[%s] port=%d, Id=0x%x(ext:%c), size=%d\n", __func__, PortNum, CAN_ID, (ExtEnable == 1U) ? 'Y' : 'N', Data_Len);
+ 	}
+ }
+ 
+@@ -638,7 +1785,7 @@ static void CANFD_Send(uint8 PortNum, uint32 CAN_ID, uint8 Data_Len, const uint8
+ {
+ 	LPA_TX_MESSAGE msg;
+ 
+-	if ((pData != NULL) && ( Data_Len <= 64U))
++	if ((pData != NULL) && (Data_Len <= 64U))
+ 	{
+ 		build_CANHeader(msg.MsgData, TIMESTAMP_ON, (uint32)CAN_ID, 1U, ExtEnable, 1U);
+ 
+@@ -651,8 +1798,8 @@ static void CANFD_Send(uint8 PortNum, uint32 CAN_ID, uint8 Data_Len, const uint8
+ 		msg.request_core = (uint8)IPC_SVC_CH_MAX;
+ #endif
+ 
+-		(void)SAL_QueuePut(gLpaTxQueueHandle, (void*)&msg, sizeof(LPA_TX_MESSAGE), 0, SAL_OPT_BLOCKING);
+-		mcu_printf("[%s] port=%d, Id=0x%x(ext:%c), size=%d\n", __func__, PortNum, CAN_ID, (ExtEnable==1U)?'Y':'N', Data_Len);
++		(void)SAL_QueuePut(gLpaTxQueueHandle, (void *)&msg, sizeof(LPA_TX_MESSAGE), 0, SAL_OPT_BLOCKING);
++		// mcu_printf("[%s] port=%d, Id=0x%x(ext:%c), size=%d\n", __func__, PortNum, CAN_ID, (ExtEnable == 1U) ? 'Y' : 'N', Data_Len);
+ 	}
+ }
+ 
+@@ -661,7 +1808,7 @@ static void LIN_Send(uint8 PortNum, uint32 LIN_ID, uint8 OpMode, uint8 Data_Len,
+ 	LPA_TX_MESSAGE msg;
+ 	if ((pData != NULL) && ((Data_Len <= 8U) && (Data_Len > 0U)))
+ 	{
+-	/*cert_exp37_c_violation:    Calling function "build_LINHeader(uint8 *, uint8, uint8, uint8, uint8, uint8)" with the argument "LIN_ID", which has an incompatible type "uint32" instead of "uint8".*/
++		/*cert_exp37_c_violation:    Calling function "build_LINHeader(uint8 *, uint8, uint8, uint8, uint8, uint8)" with the argument "LIN_ID", which has an incompatible type "uint32" instead of "uint8".*/
+ 		build_LINHeader(msg.MsgData, TIMESTAMP_ON, OpMode, 1U, Data_Len, (uint8)LIN_ID);
+ 
+ 		SAL_MemCopy(&msg.MsgData[LPA_TX_HDR_SIZE], pData, Data_Len);
+@@ -673,108 +1820,106 @@ static void LIN_Send(uint8 PortNum, uint32 LIN_ID, uint8 OpMode, uint8 Data_Len,
+ 		msg.request_core = (uint8)IPC_SVC_CH_MAX;
+ #endif
+ 
+-		(void)SAL_QueuePut(gLpaTxQueueHandle, (void*)&msg, sizeof(LPA_TX_MESSAGE), 0, SAL_OPT_BLOCKING);
+-		mcu_printf("[%s] port=%d, Id=0x%x(%cx), size=%d\n", __func__, PortNum, LIN_ID, (OpMode==LIN_TX_OPERATON)?'T':'R', Data_Len);
++		(void)SAL_QueuePut(gLpaTxQueueHandle, (void *)&msg, sizeof(LPA_TX_MESSAGE), 0, SAL_OPT_BLOCKING);
++		mcu_printf("[%s] port=%d, Id=0x%x(%cx), size=%d\n", __func__, PortNum, LIN_ID, (OpMode == LIN_TX_OPERATON) ? 'T' : 'R', Data_Len);
+ 	}
+ }
+ 
+ void frm_cnvt_msg_send(uint8 port_num, uint8 can_type, uint8 is_ext, uint32 id, uint length, const uint8 *data)
+ {
+-    stLPA_REQUEST_t req;
+-    stLPA_RESPONSE_t resp;
++	stLPA_REQUEST_t req;
++	stLPA_RESPONSE_t resp;
+ 	uint8 loop_data;
+ 
+ 	req.buffer = txReqBuff_cnvt;
+ 	resp.buffer = NULL;
+ 
+-    if((port_num != 0u) && (id != 0x0u))
+-    {
+-        if(can_type == 0u) //classic can
+-        {
+-            build_CANHeader(&req.buffer[0], TIMESTAMP_ON, id, can_type, is_ext, 0);
+-
+-            if(length > 8u)
+-            {
+-                mcu_printf( "=== wrong DLC : classic CAN only under 8  ===\n" );
+-                return;
+-            }
+-        }
+-        else if(can_type == 1) //FD can
+-        {
+-            build_CANHeader(&req.buffer[0], TIMESTAMP_ON, id, can_type, is_ext, 1);
+-        }
+-        else
+-        {
+-            mcu_printf( "=== wrong cantype : only '0' or '1'  ===\n" );
+-            return;
+-        }
+-
+-        for(loop_data = 0u; loop_data < length; loop_data++)
+-        {
+-            req.buffer[LPA_TX_HDR_SIZE + loop_data] = data[loop_data];
+-        }
+-
++	if ((port_num != 0u) && (id != 0x0u))
++	{
++		if (can_type == 0u) // classic can
++		{
++			build_CANHeader(&req.buffer[0], TIMESTAMP_ON, id, can_type, is_ext, 0);
+ 
+-        req.idt = lpa_u16add((uint16)port_num, CAN_PORT_MASK);
+-        req.sn = gSN;
+-        gSN = lpa_u16add(gSN, 1U);
+-        req.size = lpa_u16add(LPA_TX_HDR_SIZE, length);
++			if (length > 8u)
++			{
++				mcu_printf("=== wrong DLC : classic CAN only under 8  ===\n");
++				return;
++			}
++		}
++		else if (can_type == 1) // FD can
++		{
++			build_CANHeader(&req.buffer[0], TIMESTAMP_ON, id, can_type, is_ext, 1);
++		}
++		else
++		{
++			mcu_printf("=== wrong cantype : only '0' or '1'  ===\n");
++			return;
++		}
+ 
+-        /*
+-           SAL_GetTickCount(&tick_canc_tx);
+-           mcu_printf("===================================================\n");
+-           mcu_printf("lpa_write = %d lpa_rx = %d\n", tick_canc_tx, tick_lpa_rx);
+-           mcu_printf("%s_%d canc latency = %d (ms)\n",__func__, __LINE__, (tick_canc_tx - tick_lpa_rx));
+-           mcu_printf("===================================================\n");
+-         */
+-        (void)lpa_write(&req, &resp);
+-    }
+-    else
+-    {
+-        // Dont send the CAN message
+-    }
++		for (loop_data = 0u; loop_data < length; loop_data++)
++		{
++			req.buffer[LPA_TX_HDR_SIZE + loop_data] = data[loop_data];
++		}
+ 
++		req.idt = lpa_u16add((uint16)port_num, CAN_PORT_MASK);
++		req.sn = gSN;
++		gSN = lpa_u16add(gSN, 1U);
++		req.size = lpa_u16add(LPA_TX_HDR_SIZE, length);
++
++		/*
++		   SAL_GetTickCount(&tick_canc_tx);
++		   mcu_printf("===================================================\n");
++		   mcu_printf("lpa_write = %d lpa_rx = %d\n", tick_canc_tx, tick_lpa_rx);
++		   mcu_printf("%s_%d canc latency = %d (ms)\n",__func__, __LINE__, (tick_canc_tx - tick_lpa_rx));
++		   mcu_printf("===================================================\n");
++		 */
++		(void)lpa_write(&req, &resp);
++	}
++	else
++	{
++		// Dont send the CAN message
++	}
+ }
+ 
+ void frm_lpa_sendFrame(LPA_FRAME_TYPE ftype, uint8 PortNum, uint32 ID, uint8 DataLen, const uint8 *pData)
+ {
+-	if ((pData != NULL) && (ftype <= FRAME_TYPE_LIN_RX) )
++	if ((pData != NULL) && (ftype <= FRAME_TYPE_LIN_RX))
+ 	{
+ 		if (lengthValidCheck(ftype, DataLen) == 0)
+ 		{
+-			switch(ftype)
++			switch (ftype)
+ 			{
+-				case FRAME_TYPE_CAN_BASE:
+-					ClassicCAN_Send(PortNum, ID, DataLen, pData, 0U);
+-					break;
+-				case FRAME_TYPE_CAN_EXT:
+-					ClassicCAN_Send(PortNum, ID, DataLen, pData, 1U);
+-					break;
+-				case FRAME_TYPE_CANFD_BASE:
+-					CANFD_Send(PortNum, ID, DataLen, pData, 0U);
+-					break;
+-				case FRAME_TYPE_CANFD_EXT:
+-					CANFD_Send(PortNum, ID, DataLen, pData, 1U);
+-					break;
+-				case FRAME_TYPE_LIN_TX:
+-					LIN_Send(PortNum, ID, LIN_TX_OPERATON, DataLen, pData);
+-					break;
+-				case FRAME_TYPE_LIN_RX:
+-					LIN_Send(PortNum, ID, LIN_RX_OPERATON, DataLen, pData);
+-					break;
+-				default:
+-					mcu_printf( "[%s] unkonwn frame type[%d]\n", __func__, ftype);
+-					break;
++			case FRAME_TYPE_CAN_BASE:
++				ClassicCAN_Send(PortNum, ID, DataLen, pData, 0U);
++				break;
++			case FRAME_TYPE_CAN_EXT:
++				ClassicCAN_Send(PortNum, ID, DataLen, pData, 1U);
++				break;
++			case FRAME_TYPE_CANFD_BASE:
++				CANFD_Send(PortNum, ID, DataLen, pData, 0U);
++				break;
++			case FRAME_TYPE_CANFD_EXT:
++				CANFD_Send(PortNum, ID, DataLen, pData, 1U);
++				break;
++			case FRAME_TYPE_LIN_TX:
++				LIN_Send(PortNum, ID, LIN_TX_OPERATON, DataLen, pData);
++				break;
++			case FRAME_TYPE_LIN_RX:
++				LIN_Send(PortNum, ID, LIN_RX_OPERATON, DataLen, pData);
++				break;
++			default:
++				mcu_printf("[%s] unkonwn frame type[%d]\n", __func__, ftype);
++				break;
+ 			}
+ 		}
+ 		else
+ 		{
+-			mcu_printf( "[%s] wrong data length\n", __func__);
++			mcu_printf("[%s] wrong data length\n", __func__);
+ 		}
+ 	}
+ 	else
+ 	{
+-		mcu_printf( "[%s] wrong input parameter.\n", __func__);
++		mcu_printf("[%s] wrong input parameter.\n", __func__);
+ 	}
+ }
+ 
+@@ -782,46 +1927,47 @@ void frm_lpa_sendFrame(LPA_FRAME_TYPE ftype, uint8 PortNum, uint32 ID, uint8 Dat
+ #if (SIC_BSP_SUPPORT_IPC_DATA_SEND == 1u)
+ static void NP_IpcCbFunc_CM7_0_Msg(uint16 uhwCmd, uint8 *pucData, uint16 uhwLength)
+ {
+-    ipc_receive_msg_M7(IPC_CH_CM7_0_LPA, uhwCmd, pucData, uhwLength);
++	ipc_receive_msg_M7(IPC_CH_CM7_0_LPA, uhwCmd, pucData, uhwLength);
+ }
+ 
+ static void NP_IpcCbFunc_CM7_1_Msg(uint16 uhwCmd, uint8 *pucData, uint16 uhwLength)
+ {
+-    ipc_receive_msg_M7(IPC_CH_CM7_1_LPA, uhwCmd, pucData, uhwLength);
++	ipc_receive_msg_M7(IPC_CH_CM7_1_LPA, uhwCmd, pucData, uhwLength);
+ }
+ 
+ static void NP_IpcCbFunc_CM7_2_Msg(uint16 uhwCmd, uint8 *pucData, uint16 uhwLength)
+ {
+-    ipc_receive_msg_M7(IPC_CH_CM7_2_LPA, uhwCmd, pucData, uhwLength);
++	ipc_receive_msg_M7(IPC_CH_CM7_2_LPA, uhwCmd, pucData, uhwLength);
+ }
+ 
+ static void ipc_receive_msg_M7(IPCSvcCh_t tx_core, uint16 uhwCmd, uint8 *pucData, uint16 uhwLength)
+ {
+-	/* misra_c_2012_rule_2_2_violation:	variable "i" was declared but never referenced*/
+-    //uint16 i = 0;
+-    LPA_TX_MESSAGE msg;
+-    uint8 protocol;
++	/* misra_c_2012_rule_2_2_violation:	variable "i" was declared but never referenced*/
++	// uint16 i = 0;
++	LPA_TX_MESSAGE msg;
++	uint8 protocol;
+ 
+-    if (pucData != NULL_PTR)
+-    {
++	if (pucData != NULL_PTR)
++	{
+ 		/*Null-checking "pucData" suggests that it may be null, but it has already been dereferenced on all paths leading to the check*/
+ 		protocol = (pucData[0] & 0x40u) >> 6u;
+ 
+-        SAL_MemCopy(&msg.MsgData[0], pucData, uhwLength);
+-        msg.size = uhwLength;
+-        msg.MsgID = TX_LPA_CMD_FRAME_SEND;
+-        if(protocol == PROTOCOL_CAN)
+-        {
+-            msg.idt = lpa_u16add((uint16)uhwCmd, CAN_PORT_MASK);
+-        }
+-        else if (protocol == PROTOCOL_LIN)
+-        {
+-            msg.idt = lpa_u16add((uint16)uhwCmd, LIN_PORT_MASK);
+-        }
+-        /*misra_c_2012_rule_15_7_violation:	No non-empty terminating "else" statement.*/
+-        else{
+-        /*nop*/
+-        }
++		SAL_MemCopy(&msg.MsgData[0], pucData, uhwLength);
++		msg.size = uhwLength;
++		msg.MsgID = TX_LPA_CMD_FRAME_SEND;
++		if (protocol == PROTOCOL_CAN)
++		{
++			msg.idt = lpa_u16add((uint16)uhwCmd, CAN_PORT_MASK);
++		}
++		else if (protocol == PROTOCOL_LIN)
++		{
++			msg.idt = lpa_u16add((uint16)uhwCmd, LIN_PORT_MASK);
++		}
++		/*misra_c_2012_rule_15_7_violation:	No non-empty terminating "else" statement.*/
++		else
++		{
++			/*nop*/
++		}
+ 
+ #if (MCAL_TX_CONFIRM_SUPPORT == 1)
+ 		msg.request_core = (uint8)tx_core;
+@@ -829,178 +1975,175 @@ static void ipc_receive_msg_M7(IPCSvcCh_t tx_core, uint16 uhwCmd, uint8 *pucData
+ 		msg.port = (uint8)uhwCmd;
+ #endif
+ 
+-
+-        (void)SAL_QueuePut(gLpaTxQueueHandle, (void*)&msg, sizeof(LPA_TX_MESSAGE), 0, SAL_OPT_BLOCKING);
+-    }
+-    else
+-    {
+-        mcu_printf("%s_%d callback to Data empty !!!\n", __func__, __LINE__);
+-    }
++		(void)SAL_QueuePut(gLpaTxQueueHandle, (void *)&msg, sizeof(LPA_TX_MESSAGE), 0, SAL_OPT_BLOCKING);
++	}
++	else
++	{
++		mcu_printf("%s_%d callback to Data empty !!!\n", __func__, __LINE__);
++	}
+ }
+ #endif
+ 
+ static void NP_IpcCbFunc_CM7_0_IpCtrl(uint16 uhwCmd, uint8 *pucData, uint16 uhwLength)
+ {
+-    ipc_receive_ip_ctrl_M7(uhwCmd, pucData, uhwLength);
+-}
+-
+-static void NP_IpcCbFunc_CM7_1_IpCtrl(uint16 uhwCmd, uint8 *pucData, uint16 uhwLength)
+-{
+-    ipc_receive_ip_ctrl_M7(uhwCmd, pucData, uhwLength);
+-}
+-
+-static void NP_IpcCbFunc_CM7_2_IpCtrl(uint16 uhwCmd, uint8 *pucData, uint16 uhwLength)
+-{
+-    ipc_receive_ip_ctrl_M7(uhwCmd, pucData, uhwLength);
++	ipc_receive_ip_ctrl_M7(uhwCmd, pucData, uhwLength);
+ }
+ 
+-static void ipc_receive_ip_ctrl_M7(uint16 uhwCmd, uint8 *pucData, uint16 uhwLength)
+-{
+-    //uint16 i = 0;
+-    /* misra_c_2012_rule_2_2_violation:	variable "msg" was declared but never referenced*/
+-    //LPA_TX_MESSAGE msg;
+-
+-    if (uhwCmd == TCC_IPC_CMD_IP_CTRL_RESET)
+-    {
+-        if (pucData != NULL_PTR)
+-        {
+-            LPA_SW_Reset();
+-        }
+-    }
+-    else if (uhwCmd == TCC_IPC_CMD_IP_CTRL_INITIAL)
+-    {
+-        (void)frm_lpa_write_ccf(Base_Conf[0]);
+-    }
+-    else if (uhwCmd == TCC_IPC_CMD_IP_CTRL_CLK_CAN)
+-    {
+-        if (pucData != NULL_PTR)
+-        {
+-            frm_CAN_speed_config(Base_Conf, pucData[0], pucData[1], pucData[2]);
+-        }
+-    }
+-    else if (uhwCmd == TCC_IPC_CMD_IP_CTRL_TYPE)
+-    {
+-        if (pucData != NULL_PTR)
+-        {
+-            frm_CAN_type_config(Base_Conf, pucData[0], pucData[1]);
+-        }
+-    }
+-    else if (uhwCmd == TCC_IPC_CMD_IP_CTRL_CLK_LIN)
+-    {
+-        frm_LIN_speed_config(Base_Conf, pucData[0], pucData[1]);
+-    }
+-    else if (uhwCmd == TCC_IPC_CMD_IP_CTRL_CKSUM)
+-    {
+-        frm_LIN_checksum_config(Base_Conf, pucData[0], pucData[1], pucData[2]);
+-    }
+-    else if (uhwCmd == TCC_IPC_CMD_IP_CTRL_AUTORX)
+-    {
+-        frm_LIN_checksum_config(Base_Conf, pucData[0], pucData[1], pucData[2]);
+-    }
+-    else if (uhwCmd == TCC_IPC_CMD_IP_CTRL_TRCV_SET_MODE)
+-    {
+-    	frm_lpa_set_trxIC((uint32)pucData[0], (uint32)pucData[1], (uint32)pucData[2], (uint32)pucData[3]);
+-    }
+-    else
+-    {
+-        mcu_printf("%s_%d uhwCmd invalid !!!\n", __func__, __LINE__);
+-    }
+-
++static void NP_IpcCbFunc_CM7_1_IpCtrl(uint16 uhwCmd, uint8 *pucData, uint16 uhwLength)
++{
++	ipc_receive_ip_ctrl_M7(uhwCmd, pucData, uhwLength);
++}
++
++static void NP_IpcCbFunc_CM7_2_IpCtrl(uint16 uhwCmd, uint8 *pucData, uint16 uhwLength)
++{
++	ipc_receive_ip_ctrl_M7(uhwCmd, pucData, uhwLength);
++}
++
++static void ipc_receive_ip_ctrl_M7(uint16 uhwCmd, uint8 *pucData, uint16 uhwLength)
++{
++	// uint16 i = 0;
++	/* misra_c_2012_rule_2_2_violation:	variable "msg" was declared but never referenced*/
++	// LPA_TX_MESSAGE msg;
++
++	if (uhwCmd == TCC_IPC_CMD_IP_CTRL_RESET)
++	{
++		if (pucData != NULL_PTR)
++		{
++			LPA_SW_Reset();
++		}
++	}
++	else if (uhwCmd == TCC_IPC_CMD_IP_CTRL_INITIAL)
++	{
++		(void)frm_lpa_write_ccf(Base_Conf[0]);
++	}
++	else if (uhwCmd == TCC_IPC_CMD_IP_CTRL_CLK_CAN)
++	{
++		if (pucData != NULL_PTR)
++		{
++			frm_CAN_speed_config(Base_Conf, pucData[0], pucData[1], pucData[2]);
++		}
++	}
++	else if (uhwCmd == TCC_IPC_CMD_IP_CTRL_TYPE)
++	{
++		if (pucData != NULL_PTR)
++		{
++			frm_CAN_type_config(Base_Conf, pucData[0], pucData[1]);
++		}
++	}
++	else if (uhwCmd == TCC_IPC_CMD_IP_CTRL_CLK_LIN)
++	{
++		frm_LIN_speed_config(Base_Conf, pucData[0], pucData[1]);
++	}
++	else if (uhwCmd == TCC_IPC_CMD_IP_CTRL_CKSUM)
++	{
++		frm_LIN_checksum_config(Base_Conf, pucData[0], pucData[1], pucData[2]);
++	}
++	else if (uhwCmd == TCC_IPC_CMD_IP_CTRL_AUTORX)
++	{
++		frm_LIN_checksum_config(Base_Conf, pucData[0], pucData[1], pucData[2]);
++	}
++	else if (uhwCmd == TCC_IPC_CMD_IP_CTRL_TRCV_SET_MODE)
++	{
++		frm_lpa_set_trxIC((uint32)pucData[0], (uint32)pucData[1], (uint32)pucData[2], (uint32)pucData[3]);
++	}
++	else
++	{
++		mcu_printf("%s_%d uhwCmd invalid !!!\n", __func__, __LINE__);
++	}
+ }
+ 
+ static void NP_IpcCbFunc_CM7_0_IpStat(uint16 uhwCmd, uint8 *pucData, uint16 uhwLength)
+ {
+-    gM7_N = IPC_CH_CM7_0_LPA;
+-    ipc_receive_show_status_M7(uhwCmd, pucData, uhwLength);
++	gM7_N = IPC_CH_CM7_0_LPA;
++	ipc_receive_show_status_M7(uhwCmd, pucData, uhwLength);
+ }
+ 
+ static void NP_IpcCbFunc_CM7_1_IpStat(uint16 uhwCmd, uint8 *pucData, uint16 uhwLength)
+ {
+-    gM7_N = IPC_CH_CM7_1_LPA;
+-    ipc_receive_show_status_M7(uhwCmd, pucData, uhwLength);
++	gM7_N = IPC_CH_CM7_1_LPA;
++	ipc_receive_show_status_M7(uhwCmd, pucData, uhwLength);
+ }
+ 
+ static void NP_IpcCbFunc_CM7_2_IpStat(uint16 uhwCmd, uint8 *pucData, uint16 uhwLength)
+ {
+-    gM7_N = IPC_CH_CM7_2_LPA;
+-    ipc_receive_show_status_M7(uhwCmd, pucData, uhwLength);
++	gM7_N = IPC_CH_CM7_2_LPA;
++	ipc_receive_show_status_M7(uhwCmd, pucData, uhwLength);
+ }
+ 
+ /* test function, slave call set_slave_ack finished queue processing */
+ static void NP_IpcCbFunc_CM7_1_QueueStat(uint16 uhwCmd, uint8 *pucData, uint16 uhwLength)
+ {
+-    set_slave_ack(1U);
++	set_slave_ack(1U);
+ }
+ 
+ /* Slave call set_slave_ack finished queue processing */
+ void set_slave_ack(uint16 ack)
+ {
+-    slave_ack = ack;
++	slave_ack = ack;
+ }
+ 
+ uint16 get_slave_ack(void)
+ {
+-    return slave_ack;
++	return slave_ack;
+ }
+ 
+ /* master call set_master_ack finished queue processing */
+ void set_master_ack(uint16 ack)
+ {
+-    master_ack = ack;
++	master_ack = ack;
+ }
+ 
+ uint16 get_master_ack(void)
+ {
+-    return master_ack;
++	return master_ack;
+ }
+ 
+ static void LPA_IPC_writeMessage(uint16 uhwCmd, uint8 *pucData, uint16 uhwLength)
+ {
+-    ipc_msg.cmd = uhwCmd;
+-    SAL_MemCopy(&ipc_msg.data, pucData, uhwLength);
+-    ipc_msg.length = uhwLength;
++	ipc_msg.cmd = uhwCmd;
++	SAL_MemCopy(&ipc_msg.data, pucData, uhwLength);
++	ipc_msg.length = uhwLength;
+ }
+ 
+ static void ipc_receive_show_status_M7(uint16 uhwCmd, uint8 *pucData, uint16 uhwLength)
+ {
+-//    SALRetCode_t ret;
+-//    LPA_TX_MESSAGE msg;
+-//    eLPA_MODE_t stat_val;
+-    /*cert_exp37_c_violation: Calling function "frm_lpa_getCanCnt(uint16)" with the argument "input_port", which has an incompatible type "uint32" instead of "uint16".*/
+-    //uint16 input_port;
++	//    SALRetCode_t ret;
++	//    LPA_TX_MESSAGE msg;
++	//    eLPA_MODE_t stat_val;
++	/*cert_exp37_c_violation: Calling function "frm_lpa_getCanCnt(uint16)" with the argument "input_port", which has an incompatible type "uint32" instead of "uint16".*/
++	// uint16 input_port;
+ 
+-    ipc_cnt_flag = 0U;
++	ipc_cnt_flag = 0U;
+ 
+-    LPA_IPC_writeMessage(uhwCmd, pucData, uhwLength);
+-
+-    if(ipc_msg.data != NULL)
+-    {
+-        LPA_IPC_rxIrq_wakeUp();
+-    }
++	LPA_IPC_writeMessage(uhwCmd, pucData, uhwLength);
+ 
++	if (ipc_msg.data != NULL)
++	{
++		LPA_IPC_rxIrq_wakeUp();
++	}
+ }
+ #endif
+ /*misra_c_2012_rule_10_3_violation:	Implicit conversion of "IPC" from essential type "anonymous enum" to different or narrower essential type "unsigned 8-bit int".*/
+ void frm_build_routeTable(uint8 src_ch, uint32 src_id, LPA_DATA_DST type)
+ {
+-    (void) SAL_SemaphoreWait(LpaRouteMutexId, 0, SAL_OPT_BLOCKING);
+-    for(uint32 i = 0; i < tbl_cnt; i++)
+-    {
+-        if((route_tbl[i].src == src_ch) && (route_tbl[i].id == src_id))
+-        {
+-            (void) SAL_SemaphoreRelease(LpaRouteMutexId);
+-            return;
+-        }
+-    }
+-    /*misra_c_2012_rule_14_3_violation:	Controlling expression "tbl_cnt < 256" is invariant.*/
+-    ///if(tbl_cnt < 256) tbl_cnt is alwalys under 256 because of type uint8
+-    //{
+-        route_tbl[tbl_cnt].src = src_ch;
+-        route_tbl[tbl_cnt].id = src_id;
+-        route_tbl[tbl_cnt].dst = type;
+-
+-        tbl_cnt++;
+-    //}
++	(void)SAL_SemaphoreWait(LpaRouteMutexId, 0, SAL_OPT_BLOCKING);
++	for (uint32 i = 0; i < tbl_cnt; i++)
++	{
++		if ((route_tbl[i].src == src_ch) && (route_tbl[i].id == src_id))
++		{
++			(void)SAL_SemaphoreRelease(LpaRouteMutexId);
++			return;
++		}
++	}
++	/*misra_c_2012_rule_14_3_violation:	Controlling expression "tbl_cnt < 256" is invariant.*/
++	/// if(tbl_cnt < 256) tbl_cnt is alwalys under 256 because of type uint8
++	//{
++	route_tbl[tbl_cnt].src = src_ch;
++	route_tbl[tbl_cnt].id = src_id;
++	route_tbl[tbl_cnt].dst = type;
++
++	tbl_cnt++;
++	//}
+ #if 0
+     for(uint8 i = 0; i < tbl_cnt; i++)
+     {
+@@ -1008,57 +2151,74 @@ void frm_build_routeTable(uint8 src_ch, uint32 src_id, LPA_DATA_DST type)
+     }
+ #endif
+ 
+-    (void) SAL_SemaphoreRelease(LpaRouteMutexId);
++	(void)SAL_SemaphoreRelease(LpaRouteMutexId);
+ }
+ 
+ uint8 frm_findRouteTbl(uint8 input_port, uint32 input_id, uint8 index)
+ {
+ 	uint8 ret = 0u;
+ 
+-    for(uint32 i = 0u; i < index; i++)
+-    {
+-    /*misra_c_2012_rule_10_4_violation:	Essential type of the left hand operand "input_port" (unsigned) is not the same as that of the right operand "5"(signed).*/
+-        if((route_tbl[i].src == (input_port - 5u)) && (route_tbl[i].id == input_id))
+-        {
+-            ret = route_tbl[i].dst;
+-        }
+-    }
++	for (uint32 i = 0u; i < index; i++)
++	{	
++		/*misra_c_2012_rule_10_4_violation:	Essential type of the left hand operand "input_port" (unsigned) is not the same as that of the right operand "5"(signed).*/
++		if ((route_tbl[i].src == (input_port - 5u)) && (route_tbl[i].id == input_id))
++		{
++			ret = route_tbl[i].dst;
++		}
++	}
+ 
+ 	/*cert_int02_c_violation: Casting "-1" from "int" to "unsigned char" without checking its value may result in lost or misinterpreted data.*/
+-    //return -1;
+-    return	ret;
++	// return -1;
++	return ret;
+ }
+ 
+ uint8 frm_get_CAN_length(uint8 dlc)
+ {
+-    uint8 len = 0U;
+-
+-    if (dlc <= 8U) {
+-        len = dlc;
+-    } else if (dlc== 9U) {
+-        len = 12U;
+-    } else if (dlc == 10U) {
+-        len = 16U;
+-    } else if (dlc == 11U) {
+-        len = 20U;
+-    } else if (dlc == 12U) {
+-        len = 24U;
+-    } else if (dlc == 13U) {
+-        len = 32U;
+-    } else if (dlc == 14U) {
+-        len = 48U;
+-    } else if (dlc == 15U) {
+-        len = 64U;
+-    } else {
+-    	/**/
+-    }
++	uint8 len = 0U;
++
++	if (dlc <= 8U)
++	{
++		len = dlc;
++	}
++	else if (dlc == 9U)
++	{
++		len = 12U;
++	}
++	else if (dlc == 10U)
++	{
++		len = 16U;
++	}
++	else if (dlc == 11U)
++	{
++		len = 20U;
++	}
++	else if (dlc == 12U)
++	{
++		len = 24U;
++	}
++	else if (dlc == 13U)
++	{
++		len = 32U;
++	}
++	else if (dlc == 14U)
++	{
++		len = 48U;
++	}
++	else if (dlc == 15U)
++	{
++		len = 64U;
++	}
++	else
++	{
++		/**/
++	}
+ 
+-    return len;
++	return len;
+ }
+ 
+ void frm_lpa_write(const stLPA_REQUEST_t *pstRequest, stLPA_RESPONSE_t *pstResponse)
+ {
+-    (void)lpa_write(pstRequest, pstResponse);
++	(void)lpa_write(pstRequest, pstResponse);
+ }
+ void LPA_Tx_readRegRequest(uint16 addr)
+ {
+@@ -1071,17 +2231,17 @@ void LPA_Tx_readRegRequest(uint16 addr)
+ 	msg.idt = 0xFFFF;
+ 	msg.size = 2;
+ 
+-	(void)SAL_QueuePut(gLpaTxQueueHandle, (void*)&msg, sizeof(LPA_TX_MESSAGE), 0, SAL_OPT_BLOCKING);
++	(void)SAL_QueuePut(gLpaTxQueueHandle, (void *)&msg, sizeof(LPA_TX_MESSAGE), 0, SAL_OPT_BLOCKING);
+ }
+ 
+ void frm_lpa_rx_taskNotifyStop(void)
+ {
+-	(void)xTaskNotify( RX_Task_Handle,	(uint32)eLPA_RX_TASK_NOTIFY_STOP, eSetBits );
++	(void)xTaskNotify(RX_Task_Handle, (uint32)eLPA_RX_TASK_NOTIFY_STOP, eSetBits);
+ }
+ 
+ void LPA_Rx_TaskNotifyRestart(void)
+ {
+-	(void)xTaskNotify( RX_Task_Handle,	(uint32)eLPA_RX_TASK_NOTIFY_RESTART, eSetBits );
++	(void)xTaskNotify(RX_Task_Handle, (uint32)eLPA_RX_TASK_NOTIFY_RESTART, eSetBits);
+ }
+ 
+ uint8 frm_lpa_rx_getTaskState(void)
+@@ -1091,9 +2251,9 @@ uint8 frm_lpa_rx_getTaskState(void)
+ 
+ /* Tx, Rx Task Create */
+ /* Rx Task */
+-static void LPA_Rx_Task(void *pArg)
++static void LPA_Rx_Task(void *pArg) // When M7-NP receive CAN data
+ {
+-	( void ) pArg;
++	(void)pArg;
+ 	uint32 ulInterruptStatus;
+ 	stLPA_REQUEST_t req;
+ 	stLPA_RESPONSE_t resp;
+@@ -1112,155 +2272,232 @@ static void LPA_Rx_Task(void *pArg)
+ 	req.buffer = rxRequestBuffer;
+ 	resp.buffer = rxResponseBuffer;
+ 	rx_task_state = 1U;
+-    mcu_printf("\n Master Framework v%d.%d.%d\n",
+-        verInfo.majorVer, verInfo.minorVer, verInfo.patchVer);
+-
+-    while( TRUE ) {
++	mcu_printf("\n Master Framework v%d.%d.%d\n",
++			   verInfo.majorVer, verInfo.minorVer, verInfo.patchVer);
++
++#if 1 
++	/* 241112 sy.kim MCU to AP time test */
++	uint32 temp;
++	volatile uint32 TC32MCNT_Val[250];
++	volatile uint32 TC32Prescale_Val[250];	
++	uint32 TC32EN_Addr = 0x4B400080;
++	
++	temp = SAL_ReadReg(TC32EN_Addr);
++	temp = 0;
++	temp &= (uint32)(0UL);			// System Timer 0 32-Bit Timer Init
++	temp &= (uint32)~(1 << 24);		// Counter Disable
++	temp &= (uint32)~(1 << 29);		// LDM1 = 0
++	temp |= (uint32)(1 << 28);		// LDM0 = 1
++	temp |= (uint32)(1 << 26);		// Oneshot Mode
++	temp |= (uint32)(1 << 25);		// Counter Start from zero (not LOADVAL)
++	//temp |= (uint32)(0x3A980);		// Prescaler Load Value = 240000
++	temp |= (uint32)(0x17);		// Prescaler Load Value = 24
++
++	SAL_WriteReg(temp, TC32EN_Addr);
++	/**************************************/
++
++	////////////////////////////////////////////
++	//// TC32LDV
++	SAL_WriteReg(0xffffffff, 0x4B400084);		// LOADVAL
++
++	////////////////////////////////////////////
++	//// TC32CMP0
++	SAL_WriteReg(0xffffffff, 0x4B400088);		// comparison value
++	if (add > 250)
++	{
++		add = 0;
++	}
++#endif
+ 
+-    	if (gDataIntMode == 1U) {
+-    		wait_time = portMAX_DELAY;
++	while (TRUE)
++	{
++		if (gDataIntMode == 1U)
++		{
++			wait_time = portMAX_DELAY;
+ 			status_flag = 0U;
+ 			data_flag = 0U;
+-    	}
+-    	else {
+-    		wait_time = (TickType_t)0;
++		}
++		else
++		{
++			wait_time = (TickType_t)0;
+ 			status_flag = 1U;
+ 			data_flag = 1U;
+-    	}
++		}
+ 
+-		if (xTaskNotifyWait(0x00UL, NOTI_SIG_ALL, &ulInterruptStatus, wait_time) != pdTRUE) {
++		if (xTaskNotifyWait(0x00UL, NOTI_SIG_ALL, &ulInterruptStatus, wait_time) != pdTRUE)
++		{
+ 			/**/
+ 		}
+-		else {
+-            if ((ulInterruptStatus & (uint32)eLPA_RX_TASK_NOTIFY_DATA_INT) == (uint32)eLPA_RX_TASK_NOTIFY_DATA_INT) {
+-                data_flag = 1U;
+-            }
+-            if ((ulInterruptStatus & (uint32)eLPA_RX_TASK_NOTIFY_STATUS_INT) == (uint32)eLPA_RX_TASK_NOTIFY_STATUS_INT) {
+-                status_flag = 1U;
+-            }
+-            if ((ulInterruptStatus & (uint32)eLPA_RX_TASK_NOTIFY_STOP) == (uint32)eLPA_RX_TASK_NOTIFY_STOP) {
+-                rx_task_state = 0U;
+-                mcu_printf("RX task is a sleep state\n");
+-                continue;
+-            }
+-            if ((ulInterruptStatus & (uint32)eLPA_RX_TASK_NOTIFY_RESTART) == (uint32)eLPA_RX_TASK_NOTIFY_RESTART) {
+-                rx_task_state = 1U;
+-                mcu_printf("RX task is restarted\n");
+-                continue;
+-            }
++		else
++		{
++			if ((ulInterruptStatus & (uint32)eLPA_RX_TASK_NOTIFY_DATA_INT) == (uint32)eLPA_RX_TASK_NOTIFY_DATA_INT)
++			{
++				data_flag = 1U;
++			}
++			if ((ulInterruptStatus & (uint32)eLPA_RX_TASK_NOTIFY_STATUS_INT) == (uint32)eLPA_RX_TASK_NOTIFY_STATUS_INT)
++			{
++				// 241205 sy.kim
++				// status_flag = 1U;
++				/**/
++			}
++			if ((ulInterruptStatus & (uint32)eLPA_RX_TASK_NOTIFY_STOP) == (uint32)eLPA_RX_TASK_NOTIFY_STOP)
++			{
++				rx_task_state = 0U;
++				mcu_printf("RX task is a sleep state\n");
++				continue;
++			}
++			if ((ulInterruptStatus & (uint32)eLPA_RX_TASK_NOTIFY_RESTART) == (uint32)eLPA_RX_TASK_NOTIFY_RESTART)
++			{
++				rx_task_state = 1U;
++				mcu_printf("RX task is restarted\n");
++				continue;
++			}
+ 		}
+ 
+-		if (rx_task_state == 1U) {
+-			if (status_flag == 1U) {
++		if (rx_task_state == 1U)
++		{
++			if (status_flag == 1U)
++			{
+ 				done = 0;
+-	        	do {
++				do
++				{
+ 					req.idt = 0xFFFEu;
+ 					ret = lpa_read(&req, &resp);
+-					if (ret == (int32)eLPA_RET_OK) {
+-						if (resp.ret == (uint16)eLPA_RET_OK) {
+-							if (resp.size > 0U) {
++					if (ret == (int32)eLPA_RET_OK)
++					{
++						if (resp.ret == (uint16)eLPA_RET_OK)
++						{
++							if (resp.size > 0U)
++							{
+ #if (IPC_EN == 1)
+ 								uint16 ipc_cmd1 = TCC_IPC_CMD_CAN_STAS;
+-								if (rxResponseBuffer[0] >= 22U) //port number
++								if (rxResponseBuffer[0] >= 22U) // port number
+ 								{
+ 									ipc_cmd1 = TCC_IPC_CMD_LIN_STAS;
+ 								}
+-                                (void)IPC_SendPacket(IPC_CH_CM7_0_LPA, ipc_cmd1, (uint16)TCC_IPC_CMD_STAS_SEND, &rxResponseBuffer[0], sizeof(rxResponseBuffer));
+-                                (void)IPC_SendPacket(IPC_CH_CM7_1_LPA, ipc_cmd1, (uint16)TCC_IPC_CMD_STAS_SEND, &rxResponseBuffer[0], sizeof(rxResponseBuffer));
+-                                (void)IPC_SendPacket(IPC_CH_CM7_2_LPA, ipc_cmd1, (uint16)TCC_IPC_CMD_STAS_SEND, &rxResponseBuffer[0], sizeof(rxResponseBuffer));
++								(void)IPC_SendPacket(IPC_CH_CM7_0_LPA, ipc_cmd1, (uint16)TCC_IPC_CMD_STAS_SEND, &rxResponseBuffer[0], sizeof(rxResponseBuffer));
++								(void)IPC_SendPacket(IPC_CH_CM7_1_LPA, ipc_cmd1, (uint16)TCC_IPC_CMD_STAS_SEND, &rxResponseBuffer[0], sizeof(rxResponseBuffer));
++								(void)IPC_SendPacket(IPC_CH_CM7_2_LPA, ipc_cmd1, (uint16)TCC_IPC_CMD_STAS_SEND, &rxResponseBuffer[0], sizeof(rxResponseBuffer));
+ #endif
+ 								(void)parse_status_frame(rxResponseBuffer);
+-
+ 							}
+ 						}
+-						else {
++						else
++						{
+ 							done = 1U;
+ 						}
+ 					}
+-					else {
++					else
++					{
+ 						done = 1U;
+ 					}
+-				}while(done == 0U);
+-				/*misra_c_2012_rule_17_7_violation:	The return value of a non-void function "NVIC_IntSrcEn" is unused.*/
+-                (void)NVIC_IntSrcEn(LPA_ERROR_AXI_IRQn);
++				} while (done == 0U);
++				/*misra_c_2012_rule_17_7_violation:	The return value of a non-void function "NVIC_IntSrcEn" is unused.*/
++				(void)NVIC_IntSrcEn(LPA_ERROR_AXI_IRQn);
+ 			}
+ 
+-			if (data_flag == 1U) {
+-	        	done = 0;
+-	        	do {
++			if (data_flag == 1U)
++			{
++				done = 0;
++				do
++				{
+ 					req.idt = 0x0000u;
+ 					ret = lpa_read(&req, &resp);
+-					if (ret == (int32)eLPA_RET_OK) {
+-						if (resp.ret == (uint16)eLPA_RET_OK) {
+-							if (resp.size == 132U) {
++					if (ret == (int32)eLPA_RET_OK)
++					{
++						if (resp.ret == (uint16)eLPA_RET_OK)
++						{
++							if (resp.size == 132U)
++							{
+ #if (IPC_EN == 1)
+-                                if (ipc_cnt_flag == 1U)
+-                                {
+-                                    ipc_cnt++;
+-                                    (void)IPC_SendPacket(gM7_N, (uint16)TCC_IPC_CMD_RESP, (uint16)TCC_IPC_CMD_RESP_CNT, &rxResponseBuffer[0], sizeof(rxResponseBuffer));
+-                                    if(ipc_cnt == 2U)
+-                                    {
+-                                        ipc_cnt = 0U;
+-                                        ipc_cnt_flag = 0U;
+-                                    }
+-                                }
+-                                else
+-                                {
+-                                    parse_mm_response(rxResponseBuffer);
+-                                }
++								if (ipc_cnt_flag == 1U)
++								{
++									ipc_cnt++;
++									(void)IPC_SendPacket(gM7_N, (uint16)TCC_IPC_CMD_RESP, (uint16)TCC_IPC_CMD_RESP_CNT, &rxResponseBuffer[0], sizeof(rxResponseBuffer));
++									if (ipc_cnt == 2U)
++									{
++										ipc_cnt = 0U;
++										ipc_cnt_flag = 0U;
++									}
++								}
++								else
++								{
++									parse_mm_response(rxResponseBuffer);
++								}
+ #else
+-                                parse_mm_response(rxResponseBuffer);
++								parse_mm_response(rxResponseBuffer);
+ #endif
+ 
+-								done = 1U;	//ES version (MM_Response)
++								done = 1U; // ES version (MM_Response)
+ 							}
+-							else if (resp.size > 4U) {
+-                                /* for TSNC latency */
+-                                //SAL_GetTickCount(&tick_lpa_rx);
++							else if (resp.size > 4U)
++							{
++								/* for TSNC latency */
++								// SAL_GetTickCount(&tick_lpa_rx);
+ 								proc_dataLen = lpa_u16sub(resp.size, 4U);
+ 								parse_proc_frame(rxResponseBuffer, proc_dataLen);
++// 241106 sy.kim
++// CAN data가 receive 될 때, M7-NP에서 AP로 Data 송신
++#if (IPC_A65_TEST == 1)
++							if(mcu_to_ap_flag == 1) // 241111 sy.kim
++							{
++								(*((volatile uint32 *)(0x4B400080))) |= (uint32)(1 << 24);		// Counter Enable
++
++								(void)IPC_SendPacket(IPC_CH_CA65_NS_USER, (uint16)TCC_IPC_CMD_AP_TEST, TCC_IPC_CMD_AP_SEND, rxResponseBuffer, proc_dataLen);
++
++								(*((volatile uint32 *)(0x4B400080))) &= (uint32)~(1 << 24); 	// Counter Disable
++								TC32MCNT_Val[add] = SAL_ReadReg(0x4B400094);		// System timer 0, 32Bit Timer Main count
++								TC32Prescale_Val[add] = SAL_ReadReg(0x4B400090);	// System timer 0, 32Bit Timer Prescale count
++								mcu_printf("MCU to AP Execution Time: %d.%03d us\n",TC32MCNT_Val[add],((TC32Prescale_Val[add]*41666667)/1000000)); //QAC
++							}
++							add++;
++#endif
+ 							}
+-							else {
++							else
++							{
+ 								/**/
+ 							}
+ 						}
+-						else {
++						else
++						{
+ 							done = 1U;
+ 						}
+ 					}
+-					else {
++					else
++					{
+ 						done = 1U;
+ 					}
+-				}while(done == 0U);
+-	        }
++				} while (done == 0U);
++			}
+ 		}
+-		else {
+-			( void )SAL_TaskSleep( 10 );
++		else
++		{
++			(void)SAL_TaskSleep(10);
+ 		}
+- 	}
++	}
+ }
+ 
+ void LPA_Rx_CreateAppTasks(void)
+ {
+-    static uint32 uiLPA_RxTaskID;
+-    static uint32 uiLPA_RxTaskStk[LPA_RX_TASK_STK_SIZE];
+-
+-    if(SAL_TaskCreate( &uiLPA_RxTaskID,
+-                   ( const uint8 * ) "RXTask",
+-                   ( SALTaskFunc ) &LPA_Rx_Task,
+-                   ( uint32 * const ) &uiLPA_RxTaskStk[0],
+-                   LPA_RX_TASK_STK_SIZE,
+-                   SAL_PRIO_LPA_RX,
+-                   NULL_PTR )!= SAL_RET_SUCCESS)
+-                   {
+-				   		mcu_printf("%s Fatal!! Task Create Fail. \n", __func__);
+-                   }
++	static uint32 uiLPA_RxTaskID;
++	static uint32 uiLPA_RxTaskStk[LPA_RX_TASK_STK_SIZE];
++
++	if (SAL_TaskCreate(&uiLPA_RxTaskID,
++					   (const uint8 *)"RXTask",
++					   (SALTaskFunc)&LPA_Rx_Task,
++					   (uint32 *const)&uiLPA_RxTaskStk[0],
++					   LPA_RX_TASK_STK_SIZE,
++					   SAL_PRIO_LPA_RX,
++					   NULL_PTR) != SAL_RET_SUCCESS)
++	{
++		mcu_printf("%s Fatal!! Task Create Fail. \n", __func__);
++	}
+ }
+ 
+ /* Tx Task */
+-static void LPA_Tx_Task(void *pArg)
++static void LPA_Tx_Task(void *pArg) // When AP send M7-NP
+ {
+-	( void ) pArg;
++	(void)pArg;
+ 	LPA_TX_MESSAGE msg;
+ 	uint32 copiedSize = 0U;
+ 	uint8 task_exit = 0u;
+@@ -1270,10 +2507,15 @@ static void LPA_Tx_Task(void *pArg)
+ 	req.buffer = txRequestBuffer;
+ 	resp.buffer = NULL;
+ 
++// 241106 sy.kim
++#if (IPC_A65_TEST == 1)
++	IPC_RegisterCbFunc(IPC_CH_CA65_NS_USER, (uint8)TCC_IPC_CMD_AP_TEST, (IPCCallback)&NP_IpcCbFunc_A65_Test, NULL_PTR, NULL_PTR);
++#endif
++
+ 	(void)memset(&msg, 0, sizeof(LPA_TX_MESSAGE));
+ 
+ #if (IPC_EN == 1)
+-    /* CM7 -> NP */
++	/* CM7 -> NP */
+ #if (SIC_BSP_SUPPORT_IPC_DATA_SEND == 1)
+ 	IPC_RegisterCbFunc(IPC_CH_CM7_0_LPA, (uint8)TCC_IPC_CMD_CAN_MSG, (IPCCallback)&NP_IpcCbFunc_CM7_0_Msg, NULL_PTR, NULL_PTR);
+ 	IPC_RegisterCbFunc(IPC_CH_CM7_1_LPA, (uint8)TCC_IPC_CMD_CAN_MSG, (IPCCallback)&NP_IpcCbFunc_CM7_1_Msg, NULL_PTR, NULL_PTR);
+@@ -1282,21 +2524,21 @@ static void LPA_Tx_Task(void *pArg)
+ 	IPC_RegisterCbFunc(IPC_CH_CM7_1_LPA, (uint8)TCC_IPC_CMD_LIN_MSG, (IPCCallback)&NP_IpcCbFunc_CM7_1_Msg, NULL_PTR, NULL_PTR);
+ 	IPC_RegisterCbFunc(IPC_CH_CM7_2_LPA, (uint8)TCC_IPC_CMD_LIN_MSG, (IPCCallback)&NP_IpcCbFunc_CM7_2_Msg, NULL_PTR, NULL_PTR);
+ #endif
+-    IPC_RegisterCbFunc(IPC_CH_CM7_0_LPA, (uint8)TCC_IPC_CMD_IP_CTRL, (IPCCallback)&NP_IpcCbFunc_CM7_0_IpCtrl, NULL_PTR, NULL_PTR);
+-    IPC_RegisterCbFunc(IPC_CH_CM7_1_LPA, (uint8)TCC_IPC_CMD_IP_CTRL, (IPCCallback)&NP_IpcCbFunc_CM7_1_IpCtrl, NULL_PTR, NULL_PTR);
+-    IPC_RegisterCbFunc(IPC_CH_CM7_2_LPA, (uint8)TCC_IPC_CMD_IP_CTRL, (IPCCallback)&NP_IpcCbFunc_CM7_2_IpCtrl, NULL_PTR, NULL_PTR);
+-    IPC_RegisterCbFunc(IPC_CH_CM7_0_LPA, (uint8)TCC_IPC_CMD_IP_STAS, (IPCCallback)&NP_IpcCbFunc_CM7_0_IpStat, NULL_PTR, NULL_PTR);
+-    IPC_RegisterCbFunc(IPC_CH_CM7_1_LPA, (uint8)TCC_IPC_CMD_IP_STAS, (IPCCallback)&NP_IpcCbFunc_CM7_1_IpStat, NULL_PTR, NULL_PTR);
+-    IPC_RegisterCbFunc(IPC_CH_CM7_2_LPA, (uint8)TCC_IPC_CMD_IP_STAS, (IPCCallback)&NP_IpcCbFunc_CM7_2_IpStat, NULL_PTR, NULL_PTR);
+-    /* add ipc callback function for status queue processing */
+-    IPC_RegisterCbFunc(IPC_CH_CM7_1_LPA, (uint8)TCC_IPC_CMD_IP_CTRL, (IPCCallback)&NP_IpcCbFunc_CM7_1_QueueStat, NULL_PTR, NULL_PTR);
++	IPC_RegisterCbFunc(IPC_CH_CM7_0_LPA, (uint8)TCC_IPC_CMD_IP_CTRL, (IPCCallback)&NP_IpcCbFunc_CM7_0_IpCtrl, NULL_PTR, NULL_PTR);
++	IPC_RegisterCbFunc(IPC_CH_CM7_1_LPA, (uint8)TCC_IPC_CMD_IP_CTRL, (IPCCallback)&NP_IpcCbFunc_CM7_1_IpCtrl, NULL_PTR, NULL_PTR);
++	IPC_RegisterCbFunc(IPC_CH_CM7_2_LPA, (uint8)TCC_IPC_CMD_IP_CTRL, (IPCCallback)&NP_IpcCbFunc_CM7_2_IpCtrl, NULL_PTR, NULL_PTR);
++	IPC_RegisterCbFunc(IPC_CH_CM7_0_LPA, (uint8)TCC_IPC_CMD_IP_STAS, (IPCCallback)&NP_IpcCbFunc_CM7_0_IpStat, NULL_PTR, NULL_PTR);
++	IPC_RegisterCbFunc(IPC_CH_CM7_1_LPA, (uint8)TCC_IPC_CMD_IP_STAS, (IPCCallback)&NP_IpcCbFunc_CM7_1_IpStat, NULL_PTR, NULL_PTR);
++	IPC_RegisterCbFunc(IPC_CH_CM7_2_LPA, (uint8)TCC_IPC_CMD_IP_STAS, (IPCCallback)&NP_IpcCbFunc_CM7_2_IpStat, NULL_PTR, NULL_PTR);
++	/* add ipc callback function for status queue processing */
++	IPC_RegisterCbFunc(IPC_CH_CM7_1_LPA, (uint8)TCC_IPC_CMD_IP_CTRL, (IPCCallback)&NP_IpcCbFunc_CM7_1_QueueStat, NULL_PTR, NULL_PTR);
+ 
+ #endif
+ 
+ 	mcu_printf("[%s] task start\n", __func__);
+ 
+-    while( task_exit == 0U )
+-    {
++	while (task_exit == 0U)
++	{
+ #if 0
+         if(isTsncEthSend == TRUE)
+         {
+@@ -1310,38 +2552,38 @@ static void LPA_Tx_Task(void *pArg)
+ 			mcu_printf("[%s] Fatal!! Get TX Queue Fail. \n", __func__);
+ 		}
+ 
+-		switch(msg.MsgID)
++		switch (msg.MsgID)
+ 		{
+-			case TX_LPA_CMD_FRAME_SEND:
+-			case TX_LPA_TSNC_FRAME_SEND:
+-				{
+-					req.idt = msg.idt;
+-					req.sn = gSN;
+-					gSN = lpa_u16add(gSN, 1U);
+-					req.size = msg.size;
+-#if ((IPC_EN == 1u) && \
+-	(SIC_BSP_SUPPORT_IPC_DATA_SEND == 1u) && \
+-	(MCAL_TX_CONFIRM_SUPPORT == 1u))
+-					/*
+-						MCAL - CAN
+-						MCAL requires a match between the request message and the TX_CONFIRM message.
+-						The last buffer contains the buffer_index value of MCAL.
+-					*/
+-					if ((msg.request_core < (uint8)IPC_SVC_CH_MAX) && (msg.proto == PROTOCOL_CAN))
+-					{
+-						req.size = msg.size - 1U;
+-					}
++		case TX_LPA_CMD_FRAME_SEND:
++		case TX_LPA_TSNC_FRAME_SEND:
++		{
++			req.idt = msg.idt;
++			req.sn = gSN;
++			gSN = lpa_u16add(gSN, 1U);
++			req.size = msg.size;
++#if ((IPC_EN == 1u) &&                        \
++	 (SIC_BSP_SUPPORT_IPC_DATA_SEND == 1u) && \
++	 (MCAL_TX_CONFIRM_SUPPORT == 1u))
++			/*
++				MCAL - CAN
++				MCAL requires a match between the request message and the TX_CONFIRM message.
++				The last buffer contains the buffer_index value of MCAL.
++			*/
++			if ((msg.request_core < (uint8)IPC_SVC_CH_MAX) && (msg.proto == PROTOCOL_CAN))
++			{
++				req.size = msg.size - 1U;
++			}
+ #endif
+ 
+-					SAL_MemCopy(&req.buffer[0], msg.MsgData, req.size);
++			SAL_MemCopy(&req.buffer[0], msg.MsgData, req.size);
+ 
+-#if ((IPC_EN == 1u) && \
+-	(SIC_BSP_SUPPORT_IPC_DATA_SEND == 1u) && \
+-	(MCAL_TX_CONFIRM_SUPPORT == 1u))
+-					/* notify that the transmission is completed. */
+-					if ((msg.request_core < (uint8)IPC_SVC_CH_MAX) && (msg.proto == PROTOCOL_CAN))
+-					{
+-						uint8 ucData[3u];
++#if ((IPC_EN == 1u) &&                        \
++	 (SIC_BSP_SUPPORT_IPC_DATA_SEND == 1u) && \
++	 (MCAL_TX_CONFIRM_SUPPORT == 1u))
++			/* notify that the transmission is completed. */
++			if ((msg.request_core < (uint8)IPC_SVC_CH_MAX) && (msg.proto == PROTOCOL_CAN))
++			{
++				uint8 ucData[3u];
+ #if 0
+ 						if (msg.proto == PROTOCOL_LIN)
+ 						{
+@@ -1354,184 +2596,245 @@ static void LPA_Tx_Task(void *pArg)
+ 						}
+ 						else
+ #endif
+-						{
+-							ucData[0u] = msg.port;
+-							ucData[1u] = msg.proto;
+-							ucData[2u] = msg.MsgData[msg.size - 1u];// buffer_index value of MCAL
+-							(void)IPC_SendPacket((IPCSvcCh_t)msg.request_core,
+-												(uint16)TCC_IPC_CMD_MCAL_CAN,
+-												(uint16)TCC_IPC_CMD_MCAL_TX_CONFIRM,
+-												ucData,
+-												3U);
+-						}
+-					}
++				{
++					ucData[0u] = msg.port;
++					ucData[1u] = msg.proto;
++					ucData[2u] = msg.MsgData[msg.size - 1u]; // buffer_index value of MCAL
++					(void)IPC_SendPacket((IPCSvcCh_t)msg.request_core,
++										 (uint16)TCC_IPC_CMD_MCAL_CAN,
++										 (uint16)TCC_IPC_CMD_MCAL_TX_CONFIRM,
++										 ucData,
++										 3U);
++				}
++			}
+ #endif
+ 
+-					(void)lpa_write(&req, &resp);
+-				}
+-				break;
++			(void)lpa_write(&req, &resp);
++		}
++		break;
+ 
+-			case TX_LPA_READ_REG_REQ:
+-				{
+-					req.idt = msg.idt;
+-					req.sn = gSN;
+-					gSN = lpa_u16add(gSN, 1U);
+-					req.size = sizeof(MM_READ);
++		case TX_LPA_READ_REG_REQ:
++		{
++			req.idt = msg.idt;
++			req.sn = gSN;
++			gSN = lpa_u16add(gSN, 1U);
++			req.size = sizeof(MM_READ);
+ 
+-					SAL_MemSet(&mrr_data, 0, sizeof(MM_READ));
++			SAL_MemSet(&mrr_data, 0, sizeof(MM_READ));
+ 
+-					mrr_data.type = MM_READ_TYPE;
+-					mrr_data.addr1 = 0x0700u;
+-					mrr_data.reserved2[1] = 0x4u;
+-					mrr_data.addr2  = msg.MsgData[1];
+-					mrr_data.addr2 |= ((uint16)msg.MsgData[0] << 8u);
++			mrr_data.type = MM_READ_TYPE;
++			mrr_data.addr1 = 0x0700u;
++			mrr_data.reserved2[1] = 0x4u;
++			mrr_data.addr2 = msg.MsgData[1];
++			mrr_data.addr2 |= ((uint16)msg.MsgData[0] << 8u);
+ 
+-					SAL_UtilCrc32((uint8 *)&mrr_data.crc32, (uint8 *)&mrr_data, sizeof(mrr_data) - sizeof(uint32)); //calculate CRC
++			SAL_UtilCrc32((uint8 *)&mrr_data.crc32, (uint8 *)&mrr_data, sizeof(mrr_data) - sizeof(uint32)); // calculate CRC
+ 
+-					SAL_MemCopy(req.buffer, &mrr_data, sizeof(MM_READ));
++			SAL_MemCopy(req.buffer, &mrr_data, sizeof(MM_READ));
+ 
+-					(void)lpa_write(&req, &resp);
+-				}
+-				break;
++			(void)lpa_write(&req, &resp);
++		}
++		break;
+ #if (IPC_EN == 1)
+-            case TX_IPC_RESP_SEND:
+-                    (void)IPC_SendPacket(gM7_N, (uint16)TCC_IPC_CMD_RESP, (uint16)TCC_IPC_CMD_RESP_VAL, msg.MsgData, msg.size);
+-                break;
++		case TX_IPC_RESP_SEND:
++			(void)IPC_SendPacket(gM7_N, (uint16)TCC_IPC_CMD_RESP, (uint16)TCC_IPC_CMD_RESP_VAL, msg.MsgData, msg.size);
++			break;
+ #endif
+-			case TX_LPA_CMD_EXIT:
+-				task_exit = 1U;
+-				break;
+-			default:
+-				/**/
+-				break;
++		case TX_LPA_CMD_EXIT:
++			task_exit = 1U;
++			break;
++		default:
++			/**/
++			break;
+ 		}
+-    }
+-    (void)SAL_QueueDelete(gLpaTxQueueHandle);
++	}
++	(void)SAL_QueueDelete(gLpaTxQueueHandle);
+ }
+ 
+-void LPA_Tx_CreateAppTasks(void)
++// 241106 sy.kim
++#if (IPC_A65_TEST == 1)
++static void NP_IpcCbFunc_A65_Test(uint16 uhwCmd, uint8 *pucData, uint16 uhwLength)
+ {
+-    static uint32 uiLPA_TxTaskID;
+-    static uint32 uiLPA_TxTaskStk[LPA_TX_TASK_STK_SIZE];
+-    static uint8 ucLPA_TxMsgBuffer[LPA_TX_MSG_QUEUE_NUM * sizeof(LPA_TX_MESSAGE)];
+-    (void) SAL_SemaphoreCreate(&LpaRouteMutexId, (const uint8*)"LPA Route Config Mutex", 1UL, SAL_OPT_BLOCKING);
++	// 241106 sy.kim
++	mcu_printf("M7-NP Receive Data from AP\n");
++	LPA_TX_MESSAGE msg;
++	uint8 protocol;
++	if (pucData != NULL_PTR)
++	{
++		/*Null-checking "pucData" suggests that it may be null, but it has already been
++	   dereferenced on all paths leading to the check*/
++		protocol = (pucData[0] & 0x40u) >> 6u;
++		SAL_MemCopy(&msg.MsgData[0], pucData, uhwLength);
++		msg.size = uhwLength;
++		msg.MsgID = TX_LPA_CMD_FRAME_SEND;
++		if (protocol == PROTOCOL_CAN)
++		{
++			msg.idt = lpa_u16add((uint16)uhwCmd, CAN_PORT_MASK);
++		}
++		else if (protocol == PROTOCOL_LIN)
++		{
++			msg.idt = lpa_u16add((uint16)uhwCmd, LIN_PORT_MASK);
++		}
++		/*misra_c_2012_rule_15_7_violation: No non-empty terminating "else" statement.*/
++		else
++		{
++			/*nop*/
++		}
++		msg.proto = protocol;
++		msg.port = (uint8)uhwCmd;
+ 
+-	if(SAL_QueueCreate(	&gLpaTxQueueHandle,
+-						( const uint8 * ) "LpaTxQ",
+-						( void * )ucLPA_TxMsgBuffer,
++		// 241106 sy.kim
++		mcu_printf("**************************************\n");
++		mcu_printf("CAN data Port %d -> ", msg.port);
++
++		// 241111 sy.kim
++		/*
++			Change route from M7-NP to CAN path
++		*/
++		if(msg.port == 1 && AP_rxcanId == 160)
++		{
++			msg.port = 3;
++			msg.idt = lpa_u16add((uint16)msg.port, CAN_PORT_MASK);
++		}
++		
++		mcu_printf("Port %d, RouteID 0x%X, CAN ID 0x%X, Msg len %d\n", msg.port, msg.idt, AP_rxcanId, msg.size);
++		mcu_printf("Data ");
++		for (int i=0; i<msg.size; i++)
++		{
++			mcu_printf("0x%X ", msg.MsgData[i]);
++		}
++		mcu_printf("\n**************************************\n");
++
++		(void)SAL_QueuePut(gLpaTxQueueHandle, (void *)&msg, sizeof(LPA_TX_MESSAGE), 0, SAL_OPT_BLOCKING); // CAN으로 전송
++	}
++	else
++	{
++		mcu_printf("%s_%d callback to Data empty !!!\n", __func__, __LINE__);
++	}
++}
++#endif
++
++void LPA_Tx_CreateAppTasks(void)
++{
++	static uint32 uiLPA_TxTaskID;
++	static uint32 uiLPA_TxTaskStk[LPA_TX_TASK_STK_SIZE];
++	static uint8 ucLPA_TxMsgBuffer[LPA_TX_MSG_QUEUE_NUM * sizeof(LPA_TX_MESSAGE)];
++	(void)SAL_SemaphoreCreate(&LpaRouteMutexId, (const uint8 *)"LPA Route Config Mutex", 1UL, SAL_OPT_BLOCKING);
++
++	if (SAL_QueueCreate(&gLpaTxQueueHandle,
++						(const uint8 *)"LpaTxQ",
++						(void *)ucLPA_TxMsgBuffer,
+ 						LPA_TX_MSG_QUEUE_NUM,
+ 						sizeof(LPA_TX_MESSAGE)) != SAL_RET_SUCCESS)
+-						{
+-					   		mcu_printf("%s Fatal!! TX Queue Create Fail. \n", __func__);
+-						}
+-
+-    if(SAL_TaskCreate( &uiLPA_TxTaskID,
+-                   ( const uint8 * ) "LpaTxTsk",
+-                   ( SALTaskFunc ) &LPA_Tx_Task,
+-                   ( uint32 * const ) &uiLPA_TxTaskStk[0],
+-                   LPA_TX_TASK_STK_SIZE,
+-                   SAL_PRIO_LPA_TX,
+-                   NULL_PTR) != SAL_RET_SUCCESS)
+-                   {
+-				   		mcu_printf("%s Fatal!! Task Create Fail. \n", __func__);
+-                   }
++	{
++		mcu_printf("%s Fatal!! TX Queue Create Fail. \n", __func__);
++	}
+ 
++	if (SAL_TaskCreate(&uiLPA_TxTaskID,
++					   (const uint8 *)"LpaTxTsk",
++					   (SALTaskFunc)&LPA_Tx_Task,
++					   (uint32 *const)&uiLPA_TxTaskStk[0],
++					   LPA_TX_TASK_STK_SIZE,
++					   SAL_PRIO_LPA_TX,
++					   NULL_PTR) != SAL_RET_SUCCESS)
++	{
++		mcu_printf("%s Fatal!! Task Create Fail. \n", __func__);
++	}
+ }
+ 
+ #if (IPC_EN == 1u)
+ static void LPA_IPC_rxTask(void *pArg)
+ {
+-    (void) pArg;
+-    lpaIpcMessage_t msg;
+-    LPA_TX_MESSAGE lpa_tx_msg;
+-    eLPA_MODE_t stat_val;
+-    /*cert_exp37_c_violation: Calling function "frm_lpa_getCanCnt(uint16)" with the argument "input_port", which has an incompatible type "uint32" instead of "uint16".*/
+-    uint16 input_port;
+-    int32 ret;
++	(void)pArg;
++	lpaIpcMessage_t msg;
++	LPA_TX_MESSAGE lpa_tx_msg;
++	eLPA_MODE_t stat_val;
++	/*cert_exp37_c_violation: Calling function "frm_lpa_getCanCnt(uint16)" with the argument "input_port", which has an incompatible type "uint32" instead of "uint16".*/
++	uint16 input_port;
++	int32 ret;
+ 
+-    while(TRUE)
+-    {
+-        LPA_IPC_rxIrq_clearEvent();
+-        LPA_IPC_rxIrq_waitEvent();
++	while (TRUE)
++	{
++		LPA_IPC_rxIrq_clearEvent();
++		LPA_IPC_rxIrq_waitEvent();
+ 
+-        SAL_MemCopy(&msg, &ipc_msg, sizeof(lpaIpcMessage_t));
++		SAL_MemCopy(&msg, &ipc_msg, sizeof(lpaIpcMessage_t));
+ 
+-        if (msg.cmd == TCC_IPC_CMD_IP_STAS_VAL)
+-        {
+-            ret = lpa_getMode(&stat_val);
+-            if(ret != eLPA_RET_DRV_NG_NOT_OPEN)
+-            {
+-                //mcu_printf("%s: ",__FUNCTION__); //QAC
+-
+-                lpa_tx_msg.MsgData[0] = stat_val;
+-                lpa_tx_msg.size = sizeof(stat_val);
+-                lpa_tx_msg.MsgID = TX_IPC_RESP_SEND;
+-                (void)SAL_QueuePut(gLpaTxQueueHandle, (void*)&lpa_tx_msg, sizeof(LPA_TX_MESSAGE), 0, SAL_OPT_BLOCKING);
+-            }
+-        }
+-        else if (msg.cmd == TCC_IPC_CMD_IP_STAS_CNT_CAN)
+-        {
+-            /*cert_err30_c_violation: The variable "errno" must be zero before calling errno-setting function "strtoul".*/
+-            errno = 0u;
+-#if 0  /* strtoul return 0 */
++		if (msg.cmd == TCC_IPC_CMD_IP_STAS_VAL)
++		{
++			ret = lpa_getMode(&stat_val);
++			if (ret != eLPA_RET_DRV_NG_NOT_OPEN)
++			{
++				// mcu_printf("%s: ",__FUNCTION__); //QAC
++
++				lpa_tx_msg.MsgData[0] = stat_val;
++				lpa_tx_msg.size = sizeof(stat_val);
++				lpa_tx_msg.MsgID = TX_IPC_RESP_SEND;
++				(void)SAL_QueuePut(gLpaTxQueueHandle, (void *)&lpa_tx_msg, sizeof(LPA_TX_MESSAGE), 0, SAL_OPT_BLOCKING);
++			}
++		}
++		else if (msg.cmd == TCC_IPC_CMD_IP_STAS_CNT_CAN)
++		{
++			/*cert_err30_c_violation: The variable "errno" must be zero before calling errno-setting function "strtoul".*/
++			errno = 0u;
++#if 0 /* strtoul return 0 */
+             input_port = strtoul((int8 *)msg.data, NULL, 10);
+ #else
+-            input_port = (uint16)((uintptr_t)(msg.data));
++			input_port = (uint16)((uintptr_t)(msg.data));
+ #endif
+-            ipc_cnt_flag = 1U;
+-            if(errno == 0u)
+-            {
+-                (void)frm_lpa_getCanCnt(input_port);
+-            }
+-            else
+-            {
+-                mcu_printf("errno : %d !!!\n", errno, __func__, __LINE__);
+-            }
+-        }
+-        else if (msg.cmd == TCC_IPC_CMD_IP_STAS_CNT_LIN)
+-        {
+-            /*cert_err30_c_violation: The variable "errno" must be zero before calling errno-setting function "strtoul".*/
+-            errno = 0u;
+-#if 0  /* strtoul return 0 */
++			ipc_cnt_flag = 1U;
++			if (errno == 0u)
++			{
++				(void)frm_lpa_getCanCnt(input_port);
++			}
++			else
++			{
++				mcu_printf("errno : %d !!!\n", errno, __func__, __LINE__);
++			}
++		}
++		else if (msg.cmd == TCC_IPC_CMD_IP_STAS_CNT_LIN)
++		{
++			/*cert_err30_c_violation: The variable "errno" must be zero before calling errno-setting function "strtoul".*/
++			errno = 0u;
++#if 0 /* strtoul return 0 */
+             input_port = strtoul((int8 *)msg.data, NULL, 10);
+ #else
+-            input_port = (uint16)((uintptr_t)(msg.data));
++			input_port = (uint16)((uintptr_t)(msg.data));
+ #endif
+-            ipc_cnt_flag = 1U;
+-            if(errno == 0u)
+-            {
+-                (void)frm_lpa_getLinCnt(input_port);
+-            }
+-            else
+-            {
+-                mcu_printf("errno : %d !!!\n", errno, __func__, __LINE__);
+-            }
+-        }
+-        /*misra_c_2012_rule_15_7_violation:	No non-empty terminating "else" statement.*/
+-        else{
+-            /*nop*/
+-        }
+-
+-    }
++			ipc_cnt_flag = 1U;
++			if (errno == 0u)
++			{
++				(void)frm_lpa_getLinCnt(input_port);
++			}
++			else
++			{
++				mcu_printf("errno : %d !!!\n", errno, __func__, __LINE__);
++			}
++		}
++		/*misra_c_2012_rule_15_7_violation:	No non-empty terminating "else" statement.*/
++		else
++		{
++			/*nop*/
++		}
++	}
+ }
+ 
+ void LPA_IPC_RxTaskCreate(void)
+ {
+-    static uint32 uiLPA_IPC_taskID;
+-    static uint32 ipcTaskstk[LPA_IPC_RX_TASK_STK_SIZE];
+-
+-    LPA_IPC_rxIrq_eventCreate();
+-
+-    if(SAL_TaskCreate( &uiLPA_IPC_taskID,
+-                (const uint8 *) "LpaIpcTask",
+-                (SALTaskFunc) &LPA_IPC_rxTask,
+-                (uint32 *const) &ipcTaskstk[0],
+-                LPA_IPC_RX_TASK_STK_SIZE,
+-                SAL_PRIO_LPA_IPC,
+-                NULL_PTR) != SAL_RET_SUCCESS)
+-    {
+-        mcu_printf("%s Fatal!! Task Create Fail. \n", __func__);
+-    }
+-
++	static uint32 uiLPA_IPC_taskID;
++	static uint32 ipcTaskstk[LPA_IPC_RX_TASK_STK_SIZE];
++
++	LPA_IPC_rxIrq_eventCreate();
++
++	if (SAL_TaskCreate(&uiLPA_IPC_taskID,
++					   (const uint8 *)"LpaIpcTask",
++					   (SALTaskFunc)&LPA_IPC_rxTask,
++					   (uint32 *const)&ipcTaskstk[0],
++					   LPA_IPC_RX_TASK_STK_SIZE,
++					   SAL_PRIO_LPA_IPC,
++					   NULL_PTR) != SAL_RET_SUCCESS)
++	{
++		mcu_printf("%s Fatal!! Task Create Fail. \n", __func__);
++	}
+ }
+ #endif

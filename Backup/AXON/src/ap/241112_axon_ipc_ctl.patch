@@ -1,0 +1,13 @@
+diff --git a/drivers/char/axon_ipc/axon_ipc_ctl.c b/drivers/char/axon_ipc/axon_ipc_ctl.c
+index fc5ea4916093..5439565c9838 100644
+--- a/drivers/char/axon_ipc/axon_ipc_ctl.c
++++ b/drivers/char/axon_ipc/axon_ipc_ctl.c
+@@ -779,7 +779,7 @@ static void ipc_receive_writecmd(void *device_info, const struct axon_mbox_data
+ 		}
+ 
+ 		if(strncmp(ipc_dev->name, "axon", 4) == 0) {
+-			(void)pr_info("[INFO]Received channel: %s\n", ipc_dev->name);
++			// (void)pr_info("[INFO]Received channel: %s\n", ipc_dev->name); // 241112 sy.kim
+ 			wake_up_interruptible(&ipc_dev->event_waitq);
+ 		} else {
+ 			ipc_ret = kernel_rcv_rd(ipc_dev->pdev, readBuf, cnt);
