@@ -11,8 +11,8 @@
 
 #include "remote.h"
 
-const std::string LTEIp = "0.0.0.0";
-const int LTEPort = 5001;
+const std::string LTEIp = "223.130.136.21";
+const int LTEPort = 5200;
 
 int main(int argc, const char *argv[])
 {
@@ -114,7 +114,7 @@ void UDPClass::SetSocket(const std::string &ip, const int port)
 
     memset(&Addr, 0x00, sizeof(Addr));
     Addr.sin_family = AF_INET;
-    Addr.sin_addr.s_addr = inet_addr(ip.c_str());
+    Addr.sin_addr.s_addr = INADDR_ANY;//inet_addr(ip.c_str());
     Addr.sin_port = htons(port);
 
     if (bind(sock, (struct sockaddr *)&Addr, sizeof(Addr)) < 0)
