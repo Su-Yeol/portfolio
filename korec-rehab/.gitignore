@@ -1,0 +1,6 @@
+*.o
+*.d
+korec_rehab_cli
+build/
+.vscode/
+.idea/

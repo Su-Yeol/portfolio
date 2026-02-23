@@ -128,3 +128,15 @@ masters-research/experiments/legacy/**
 # korec-rehab: reserved private implementation area
 korec-rehab/include/private/**
 korec-rehab/src/firmware_profiles/private/**
+
+# Relocated structure: keep private-local quarantine out of public upload
+katech-automotive/archive/private-local/
+
+# Relocated structure: keep private implementation out of public upload
+katech-automotive/projects/**/common/src/private/**
+!katech-automotive/projects/**/common/src/private/README.md
+
+# Relocated structure: non-public module configs
+katech-automotive/projects/autonomous-driving-stack/modules/aeb-control/conf/config.ini
+katech-automotive/projects/autonomous-driving-stack/modules/control-module/conf/config.ini
+katech-automotive/projects/autonomous-driving-stack/modules/decision-module/config.ini
