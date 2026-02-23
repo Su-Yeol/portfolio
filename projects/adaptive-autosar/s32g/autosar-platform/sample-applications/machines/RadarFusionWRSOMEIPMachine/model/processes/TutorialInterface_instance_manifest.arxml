@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<AUTOSAR xmlns="http://autosar.org/schema/r4.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://autosar.org/schema/r4.0 AUTOSAR_00052.xsd">
+  <AR-PACKAGES>
+    <AR-PACKAGE>
+      <SHORT-NAME>apd</SHORT-NAME>
+      <AR-PACKAGES>
+        <AR-PACKAGE>
+          <SHORT-NAME>Machines</SHORT-NAME>
+          <AR-PACKAGES>
+            <AR-PACKAGE>
+              <SHORT-NAME>RadarFusionWRSOMEIPMachine</SHORT-NAME>
+              <AR-PACKAGES>
+                <AR-PACKAGE>
+                  <SHORT-NAME>ServiceInstanceToMachineMappings</SHORT-NAME>
+                  <ELEMENTS>
+                    <SOMEIP-SERVICE-INSTANCE-TO-MACHINE-MAPPING>
+                      <SHORT-NAME>TutIfInst1OnRadarFusionWRSOMEIPMachine</SHORT-NAME>
+                      <COMMUNICATION-CONNECTOR-REF DEST="ETHERNET-COMMUNICATION-CONNECTOR">/apd/MachineDesigns/RadarFusionWRSOMEIPMachineDesign/RadarFusionWRSOMEIPConnector</COMMUNICATION-CONNECTOR-REF>
+                      <SERVICE-INSTANCE-REFS>
+                        <SERVICE-INSTANCE-REF DEST="PROVIDED-SOMEIP-SERVICE-INSTANCE">/apd/Machines/RadarFusionWRSOMEIPMachine/ServiceInstances/TutorialInterfaceProvidedSomeipServiceInstance1</SERVICE-INSTANCE-REF>
+                        <SERVICE-INSTANCE-REF DEST="REQUIRED-SOMEIP-SERVICE-INSTANCE">/apd/Machines/RadarFusionWRSOMEIPMachine/ServiceInstances/TutorialInterfaceRequiredSomeipServiceInstance</SERVICE-INSTANCE-REF>
+                      </SERVICE-INSTANCE-REFS>
+                      <UDP-PORT-REF DEST="AP-APPLICATION-ENDPOINT">/apd/MachineDesigns/RadarFusionWRSOMEIPMachineDesign/RadarFusionWRSOMEIPConnector/TriggerApplicationEndpoint</UDP-PORT-REF>
+                    </SOMEIP-SERVICE-INSTANCE-TO-MACHINE-MAPPING>
+                    <SOMEIP-SERVICE-INSTANCE-TO-MACHINE-MAPPING>
+                      <SHORT-NAME>TutIfInst2OnRadarFusionWRSOMEIPMachine</SHORT-NAME>
+                      <COMMUNICATION-CONNECTOR-REF DEST="ETHERNET-COMMUNICATION-CONNECTOR">/apd/MachineDesigns/RadarFusionWRSOMEIPMachineDesign/RadarFusionWRSOMEIPConnector</COMMUNICATION-CONNECTOR-REF>
+                      <SERVICE-INSTANCE-REFS>
+                        <SERVICE-INSTANCE-REF DEST="PROVIDED-SOMEIP-SERVICE-INSTANCE">/apd/Machines/RadarFusionWRSOMEIPMachine/ServiceInstances/TutorialInterfaceProvidedSomeipServiceInstance2</SERVICE-INSTANCE-REF>
+                      </SERVICE-INSTANCE-REFS>
+                      <UDP-PORT-REF DEST="AP-APPLICATION-ENDPOINT">/apd/MachineDesigns/RadarFusionWRSOMEIPMachineDesign/RadarFusionWRSOMEIPConnector/TriggerApplicationEndpointExtended</UDP-PORT-REF>
+                    </SOMEIP-SERVICE-INSTANCE-TO-MACHINE-MAPPING>
+                  </ELEMENTS>
+                </AR-PACKAGE>
+                <AR-PACKAGE>
+                  <SHORT-NAME>ServiceInstances</SHORT-NAME>
+                  <ELEMENTS>
+                    <PROVIDED-SOMEIP-SERVICE-INSTANCE>
+                      <SHORT-NAME>TutorialInterfaceProvidedSomeipServiceInstance1</SHORT-NAME>
+                      <SERVICE-INTERFACE-DEPLOYMENT-REF DEST="SOMEIP-SERVICE-INTERFACE-DEPLOYMENT">/apd/ServiceInterfaceDeployments/TutorialInterfaceSomeipDeployment</SERVICE-INTERFACE-DEPLOYMENT-REF>
+                      <PROVIDED-EVENT-GROUPS>
+                        <SOMEIP-PROVIDED-EVENT-GROUP>
+                          <SHORT-NAME>ProvidedEventGroup</SHORT-NAME>
+                          <EVENT-GROUP-REF DEST="SOMEIP-EVENT-GROUP">/apd/ServiceInterfaceDeployments/TutorialInterfaceSomeipDeployment/TutorialInterfaceEventGroup</EVENT-GROUP-REF>
+                          <MULTICAST-THRESHOLD>0</MULTICAST-THRESHOLD>
+                        </SOMEIP-PROVIDED-EVENT-GROUP>
+                      </PROVIDED-EVENT-GROUPS>
+                      <SD-SERVER-CONFIG-REF DEST="SOMEIP-SD-SERVER-SERVICE-INSTANCE-CONFIG">/apd/SomeipSdTimingConfigs/SomeipSdServerServiceInstanceConfig</SD-SERVER-CONFIG-REF>
+                      <SERVICE-INSTANCE-ID>1</SERVICE-INSTANCE-ID>
+                    </PROVIDED-SOMEIP-SERVICE-INSTANCE>
+                    <PROVIDED-SOMEIP-SERVICE-INSTANCE>
+                      <SHORT-NAME>TutorialInterfaceProvidedSomeipServiceInstance2</SHORT-NAME>
+                      <SERVICE-INTERFACE-DEPLOYMENT-REF DEST="SOMEIP-SERVICE-INTERFACE-DEPLOYMENT">/apd/ServiceInterfaceDeployments/TutorialInterfaceSomeipDeployment</SERVICE-INTERFACE-DEPLOYMENT-REF>
+                      <PROVIDED-EVENT-GROUPS>
+                        <SOMEIP-PROVIDED-EVENT-GROUP>
+                          <SHORT-NAME>ProvidedEventGroup</SHORT-NAME>
+                          <EVENT-GROUP-REF DEST="SOMEIP-EVENT-GROUP">/apd/ServiceInterfaceDeployments/TutorialInterfaceSomeipDeployment/TutorialInterfaceEventGroup</EVENT-GROUP-REF>
+                          <MULTICAST-THRESHOLD>0</MULTICAST-THRESHOLD>
+                        </SOMEIP-PROVIDED-EVENT-GROUP>
+                      </PROVIDED-EVENT-GROUPS>
+                      <SD-SERVER-CONFIG-REF DEST="SOMEIP-SD-SERVER-SERVICE-INSTANCE-CONFIG">/apd/SomeipSdTimingConfigs/SomeipSdServerServiceInstanceConfig</SD-SERVER-CONFIG-REF>
+                      <SERVICE-INSTANCE-ID>2</SERVICE-INSTANCE-ID>
+                    </PROVIDED-SOMEIP-SERVICE-INSTANCE>
+                    <REQUIRED-SOMEIP-SERVICE-INSTANCE>
+                      <SHORT-NAME>TutorialInterfaceRequiredSomeipServiceInstance</SHORT-NAME>
+                      <SERVICE-INTERFACE-DEPLOYMENT-REF DEST="SOMEIP-SERVICE-INTERFACE-DEPLOYMENT">/apd/ServiceInterfaceDeployments/TutorialInterfaceSomeipDeployment</SERVICE-INTERFACE-DEPLOYMENT-REF>
+                      <REQUIRED-EVENT-GROUPS>
+                        <SOMEIP-REQUIRED-EVENT-GROUP>
+                          <SHORT-NAME>RequiredEventGroup</SHORT-NAME>
+                          <EVENT-GROUP-REF DEST="SOMEIP-EVENT-GROUP">/apd/ServiceInterfaceDeployments/TutorialInterfaceSomeipDeployment/TutorialInterfaceEventGroup</EVENT-GROUP-REF>
+                        </SOMEIP-REQUIRED-EVENT-GROUP>
+                      </REQUIRED-EVENT-GROUPS>
+                      <REQUIRED-SERVICE-INSTANCE-ID>ANY</REQUIRED-SERVICE-INSTANCE-ID>
+                      <SD-CLIENT-CONFIG-REF DEST="SOMEIP-SD-CLIENT-SERVICE-INSTANCE-CONFIG">/apd/SomeipSdTimingConfigs/SomeipSdClientServiceInstanceConfig</SD-CLIENT-CONFIG-REF>
+                    </REQUIRED-SOMEIP-SERVICE-INSTANCE>
+                  </ELEMENTS>
+                </AR-PACKAGE>
+              </AR-PACKAGES>
+            </AR-PACKAGE>
+          </AR-PACKAGES>
+        </AR-PACKAGE>
+      </AR-PACKAGES>
+    </AR-PACKAGE>
+  </AR-PACKAGES>
+</AUTOSAR>

@@ -1,0 +1,12 @@
+{
+    "End2EndEventDataIdMappingSet":
+    {
+        "End2EndEventDataIdMapping":
+        {
+            "serviceId": 102,
+            "instanceId": 120,
+            "eventId": 3106,
+            "dataId": 8756
+        }
+    }
+}

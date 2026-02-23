@@ -1,0 +1,207 @@
+// --------------------------------------------------------------------------
+// |              _    _ _______     .----.      _____         _____        |
+// |         /\  | |  | |__   __|  .  ____ .    / ____|  /\   |  __ \       |
+// |        /  \ | |  | |  | |    .  / __ \ .  | (___   /  \  | |__) |      |
+// |       / /\ \| |  | |  | |   .  / / / / v   \___ \ / /\ \ |  _  /       |
+// |      / /__\ \ |__| |  | |   . / /_/ /  .   ____) / /__\ \| | \ \       |
+// |     /________\____/   |_|   ^ \____/  .   |_____/________\_|  \_\      |
+// |                              . _ _  .                                  |
+// --------------------------------------------------------------------------
+//
+// All Rights Reserved.
+// Any use of this source code is subject to a license agreement with the
+// AUTOSAR development cooperation.
+// More information is available at www.autosar.org.
+//
+// Disclaimer
+//
+// This work (specification and/or software implementation) and the material
+// contained in it, as released by AUTOSAR, is for the purpose of information
+// only. AUTOSAR and the companies that have contributed to it shall not be
+// liable for any use of the work.
+//
+// The material contained in this work is protected by copyright and other
+// types of intellectual property rights. The commercial exploitation of the
+// material contained in this work requires a license to such intellectual
+// property rights.
+//
+// This work may be utilized or reproduced without any modification, in any
+// form or by any means, for informational purposes only. For any other
+// purpose, no part of the work may be utilized or reproduced, in any form
+// or by any means, without permission in writing from the publisher.
+//
+// The work has been developed for automotive applications only. It has
+// neither been developed, nor tested for non-automotive applications.
+//
+// The word AUTOSAR and the AUTOSAR logo are registered trademarks.
+// --------------------------------------------------------------------------
+
+///////////////////////////////////////////////////////////////////////
+// Activity specific implementation, skeleton can be generated from the model
+// Discovery of services and sending/receiving of data according
+// to the communication API
+///////////////////////////////////////////////////////////////////////
+
+#include "local_map_provider.h"
+
+#include <stdint.h>
+#include <cstdlib>
+#include <cstring>
+#include <stdexcept>
+#include <thread>
+#include <chrono>
+
+#include "katech/local_map_skeleton.h"
+#include "ara/com/com_error_domain.h"
+#include "ara/core/instance_specifier.h"
+#include "logger.h"
+
+using namespace ara::log;
+using ara::com::ComErrorDomainErrc;
+
+// <<operator implementation for logging custom types
+// similar handler is also available in fusion sources, so for real projects it make sense to
+// have some common place where custom type log-handlers are provided.
+
+namespace katech
+{
+
+std::shared_ptr<katech::local_map::GetMapDataOutput> LocalMap_Provider::getPtrOutput()
+{
+    return output;
+}
+
+void LocalMap_Provider::setCallback(MapDataCallback cb)
+{
+    katech::mCallback = cb;
+}
+
+ara::core::Future<katech::local_map::GetMapDataOutput> LocalMapImp::GetMapData(const std::uint64_t& grid_id, const std::uint64_t& cell_id)
+{
+    if(katech::mCallback != NULL)
+    {
+        katech::mCallback(grid_id, cell_id);
+    }
+    else
+        katech::Log::Info() << "mCallback is NULL";
+
+    decltype(Skeleton::GetMapData(grid_id, cell_id))::PromiseType promise;
+    promise.set_value(std::move(*output));
+    return promise.get_future();
+}
+
+void LocalMapImp::ProcessRequests()
+{
+    while (!m_finished) {
+        std::chrono::time_point<std::chrono::system_clock> deadline
+            = std::chrono::system_clock::now() + std::chrono::milliseconds(500);
+        auto request_finished = ProcessNextMethodCall();
+#if defined(R19_11_1)
+
+        if (request_finished.wait_until(deadline) != ara::core::future_status::kReady) {
+#else
+
+        if (request_finished.wait_until(deadline) != ara::core::future_status::ready) {
+#endif
+            FATAL("Request took too long :S");
+
+        } else {
+            if (!m_finished) {
+                std::this_thread::sleep_until(deadline);
+            }
+        }
+    }
+}
+
+LocalMap_Provider::LocalMap_Provider()
+{
+    DEBUG("object address : %p", static_cast<void*>(this));
+}
+
+LocalMap_Provider::~LocalMap_Provider()
+{
+    delete m_skeleton;
+}
+
+/*Field ServiceFlag*/
+#if defined(R19_11_1)
+ara::core::Future<katech::skeleton::local_map::fields::ServiceFlag::value_type> LocalMap_Provider::getServiceFlag()
+#else
+ara::core::Future<katech::skeleton::fields::ServiceFlag::value_type> LocalMap_Provider::getServiceFlag()
+#endif
+{
+#if defined(R19_11_1)
+    ara::core::Promise<katech::skeleton::local_map::fields::ServiceFlag::value_type> promise;
+#else
+    ara::core::Promise<katech::skeleton::fields::ServiceFlag::value_type> promise;
+#endif
+    VERBOSE("Getting the field ServiceFlag value : %s", m_service_flag);
+    promise.set_value(std::move(m_service_flag));
+    return promise.get_future();
+}
+
+#if defined(R19_11_1)
+ara::core::Future<katech::skeleton::local_map::fields::ServiceFlag::value_type> LocalMap_Provider::setServiceFlag(
+    katech::skeleton::local_map::fields::ServiceFlag::value_type field)
+#else
+ara::core::Future<katech::skeleton::fields::ServiceFlag::value_type> LocalMap_Provider::setServiceFlag(
+    katech::skeleton::fields::ServiceFlag::value_type field)
+#endif
+{
+#if defined(R19_11_1)
+    ara::core::Promise<katech::skeleton::local_map::fields::ServiceFlag::value_type> promise;
+#else
+    ara::core::Promise<katech::skeleton::fields::ServiceFlag::value_type> promise;
+#endif
+    m_service_flag = field;
+    VERBOSE("Setting the field ServiceFlag value to %s", m_service_flag);
+    promise.set_value(std::move(m_service_flag));
+    return promise.get_future();
+}
+
+void LocalMap_Provider::init(std::string instance)
+{
+    katech::Log::Info() << "enter LocalMap_Provider::init()";
+    ara::core::InstanceSpecifier instanceSpec = ara::core::InstanceSpecifier(instance.c_str());
+    INFO("Port In Executable Ref: %s", std::string(instanceSpec.ToString().data()).c_str());
+    m_skeleton = new LocalMapImp(instanceSpec, ara::com::MethodCallProcessingMode::kPoll);
+    // The instance id resolution is not mandatory for service creation (but could be an option)
+    // here it's intended to list ids for the offered service instances
+    auto instanceIDs = ara::com::runtime::ResolveInstanceIDs(instanceSpec);
+
+    for (auto const& instanceId : instanceIDs) {
+        INFO("Service Instance offered: %s", std::string(instanceId.ToString().data()).c_str());
+    }
+
+    // Init cached version of the Update Rate field.
+    m_skeleton->ServiceFlag.Update("On");
+    m_skeleton->OfferService();
+    katech::Log::Info() << "exit LocalMap_Provider::init()";
+}
+
+void LocalMap_Provider::send(local_map_Objects& data)
+{
+    try {
+        auto allocation = m_skeleton->localMapEvent.Allocate();
+        auto l_sampleData = std::move(allocation).Value();
+        *l_sampleData = data;
+        m_skeleton->localMapEvent.Send(std::move(l_sampleData));
+        VERBOSE("sent localMapEvent");
+
+    } catch (const ara::com::Exception& e) {
+        ERROR("Exeception : %s", e.what());
+    }
+}
+
+#if defined(R19_11_1)
+void LocalMap_Provider::update(katech::skeleton::local_map::fields::ServiceFlag::value_type& data)
+#else
+void LocalMap_Provider::update(katech::skeleton::fields::ServiceFlag::value_type& data)
+#endif
+{
+    m_service_flag = data;
+    m_skeleton->ServiceFlag.Update(m_service_flag);
+    VERBOSE("Update ServiceFlag field data %s", m_service_flag);
+}
+
+}  // namespace katech

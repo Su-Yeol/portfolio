@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<AUTOSAR xmlns="http://autosar.org/schema/r4.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://autosar.org/schema/r4.0 AUTOSAR_00052.xsd">
+  <AR-PACKAGES>
+    <AR-PACKAGE>
+      <SHORT-NAME>apd</SHORT-NAME>
+      <AR-PACKAGES>
+        <AR-PACKAGE>
+          <SHORT-NAME>AdaptiveApplicationSwComponentTypes</SHORT-NAME>
+          <ELEMENTS>
+            <ADAPTIVE-APPLICATION-SW-COMPONENT-TYPE>
+              <SHORT-NAME>update_adapter_agl</SHORT-NAME>
+              <PORTS>
+                <P-PORT-PROTOTYPE>
+                  <SHORT-NAME>PackageManagementProvided</SHORT-NAME>
+                  <PROVIDED-INTERFACE-TREF DEST="SERVICE-INTERFACE">/ara/ucm/pkgmgr/portinterfaces/PackageManagement</PROVIDED-INTERFACE-TREF>
+                </P-PORT-PROTOTYPE>
+                <PR-PORT-PROTOTYPE>
+                  <SHORT-NAME>SwClusterDescPRPort</SHORT-NAME>
+                  <PROVIDED-REQUIRED-INTERFACE-TREF DEST="PERSISTENCY-KEY-VALUE-STORAGE-INTERFACE">/apd/PersistencyKeyValueStorageInterfaces/SwClusterDescriptionKVSInterface</PROVIDED-REQUIRED-INTERFACE-TREF>
+                </PR-PORT-PROTOTYPE>
+                <PR-PORT-PROTOTYPE>
+                  <SHORT-NAME>SwPackageTransferStatusPRPort</SHORT-NAME>
+                  <PROVIDED-REQUIRED-INTERFACE-TREF DEST="PERSISTENCY-KEY-VALUE-STORAGE-INTERFACE">/apd/PersistencyKeyValueStorageInterfaces/SwPackageTransferStatus</PROVIDED-REQUIRED-INTERFACE-TREF>
+                </PR-PORT-PROTOTYPE>
+              </PORTS>
+            </ADAPTIVE-APPLICATION-SW-COMPONENT-TYPE>
+          </ELEMENTS>
+        </AR-PACKAGE>
+        <AR-PACKAGE>
+          <SHORT-NAME>Executables</SHORT-NAME>
+          <ELEMENTS>
+            <EXECUTABLE>
+              <SHORT-NAME>update_adapter_agl</SHORT-NAME>
+              <CATEGORY>APPLICATION_LEVEL</CATEGORY>
+              <MINIMUM-TIMER-GRANULARITY>1000.0</MINIMUM-TIMER-GRANULARITY>
+              <ROOT-SW-COMPONENT-PROTOTYPE>
+                <SHORT-NAME>UpdateAdapterAglSwc</SHORT-NAME>
+                <APPLICATION-TYPE-TREF DEST="ADAPTIVE-APPLICATION-SW-COMPONENT-TYPE">/apd/AdaptiveApplicationSwComponentTypes/update_adapter_agl</APPLICATION-TYPE-TREF>
+              </ROOT-SW-COMPONENT-PROTOTYPE>
+              <VERSION>1.0.0</VERSION>
+            </EXECUTABLE>
+          </ELEMENTS>
+        </AR-PACKAGE>
+      </AR-PACKAGES>
+    </AR-PACKAGE>
+  </AR-PACKAGES>
+</AUTOSAR>

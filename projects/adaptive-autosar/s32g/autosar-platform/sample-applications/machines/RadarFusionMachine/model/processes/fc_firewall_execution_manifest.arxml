@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<AUTOSAR xmlns="http://autosar.org/schema/r4.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://autosar.org/schema/r4.0 AUTOSAR_00052.xsd">
+  <AR-PACKAGES>
+    <AR-PACKAGE>
+      <SHORT-NAME>apd</SHORT-NAME>
+      <AR-PACKAGES>
+        <AR-PACKAGE>
+          <SHORT-NAME>Machines</SHORT-NAME>
+          <AR-PACKAGES>
+            <AR-PACKAGE>
+              <SHORT-NAME>RadarFusionMachine</SHORT-NAME>
+              <AR-PACKAGES>
+                <AR-PACKAGE>
+                  <SHORT-NAME>ProcessToMachineMappings</SHORT-NAME>
+                  <ELEMENTS>
+                    <PROCESS-TO-MACHINE-MAPPING-SET>
+                      <SHORT-NAME>fc_firewall</SHORT-NAME>
+                      <PROCESS-TO-MACHINE-MAPPINGS>
+                        <PROCESS-TO-MACHINE-MAPPING>
+                          <SHORT-NAME>fc_firewall</SHORT-NAME>
+                          <MACHINE-REF DEST="MACHINE">/apd/Machines/RadarFusionMachine/RadarFusionMachine</MACHINE-REF>
+                          <PROCESS-REF DEST="PROCESS">/apd/Machines/RadarFusionMachine/Processes/fc_firewall</PROCESS-REF>
+                        </PROCESS-TO-MACHINE-MAPPING>
+                      </PROCESS-TO-MACHINE-MAPPINGS>
+                    </PROCESS-TO-MACHINE-MAPPING-SET>
+                  </ELEMENTS>
+                </AR-PACKAGE>
+                <AR-PACKAGE>
+                  <SHORT-NAME>DltLogChannelToProcessMappings</SHORT-NAME>
+                  <ELEMENTS>
+                    <DLT-APPLICATION-TO-PROCESS-MAPPING>
+                      <SHORT-NAME>fc_firewallDltApplicationToProcessMapping</SHORT-NAME>
+                      <DLT-APPLICATION-REF DEST="DLT-APPLICATION">/apd/Machines/RadarFusionMachine/Dlt/RadarFusionDltEcu/fc_firewall</DLT-APPLICATION-REF>
+                      <PROCESS-REF DEST="PROCESS">/apd/Machines/RadarFusionMachine/Processes/fc_firewall</PROCESS-REF>
+                    </DLT-APPLICATION-TO-PROCESS-MAPPING>
+                    <DLT-LOG-SINK-TO-PORT-PROTOTYPE-MAPPING>
+                      <SHORT-NAME>fc_firewallDltLogSinkToPortPrototypeMapping</SHORT-NAME>
+                      <DLT-CONTEXT-REF DEST="DLT-CONTEXT">/apd/Dlt/DefaultDltContext</DLT-CONTEXT-REF>
+                      <DLT-LOG-SINK-REFS>
+                        <DLT-LOG-SINK-REF DEST="DLT-LOG-SINK">/apd/Machines/RadarFusionMachine/Dlt/ConsoleDltSink</DLT-LOG-SINK-REF>
+                        <DLT-LOG-SINK-REF DEST="DLT-LOG-SINK">/apd/Dlt/RemoteDltSink</DLT-LOG-SINK-REF>
+                        <DLT-LOG-SINK-REF DEST="DLT-LOG-SINK">/apd/Dlt/FCFirewallFileDltSink</DLT-LOG-SINK-REF>
+                      </DLT-LOG-SINK-REFS>
+                      <PROCESS-REF DEST="PROCESS">/apd/Machines/RadarFusionMachine/Processes/fc_firewall</PROCESS-REF>
+                    </DLT-LOG-SINK-TO-PORT-PROTOTYPE-MAPPING>
+                  </ELEMENTS>
+                </AR-PACKAGE>
+                <AR-PACKAGE>
+                  <SHORT-NAME>Processes</SHORT-NAME>
+                  <ELEMENTS>
+                    <PROCESS>
+                      <SHORT-NAME>fc_firewall</SHORT-NAME>
+                      <EXECUTABLE-REFS>
+                        <EXECUTABLE-REF DEST="EXECUTABLE">/apd/Executables/fc_firewall</EXECUTABLE-REF>
+                      </EXECUTABLE-REFS>
+                      <PROCESS-STATE-MACHINE>
+                        <SHORT-NAME>state_machine</SHORT-NAME>
+                        <TYPE-TREF DEST="MODE-DECLARATION-GROUP">/apd/ModeDeclarationGroups/ProcessStateMachine</TYPE-TREF>
+                      </PROCESS-STATE-MACHINE>
+                      <STATE-DEPENDENT-STARTUP-CONFIGS>
+                        <STATE-DEPENDENT-STARTUP-CONFIG>
+                          <FUNCTION-GROUP-STATE-IREFS>
+                            <FUNCTION-GROUP-STATE-IREF>
+                              <CONTEXT-MODE-DECLARATION-GROUP-PROTOTYPE-REF DEST="MODE-DECLARATION-GROUP-PROTOTYPE">/apd/Machines/RadarFusionMachine/FunctionGroupSets/RadarFusionFunctionGroups/MachineFG</CONTEXT-MODE-DECLARATION-GROUP-PROTOTYPE-REF>
+                              <TARGET-MODE-DECLARATION-REF DEST="MODE-DECLARATION">/apd/ModeDeclarationGroups/MachineState/Driving</TARGET-MODE-DECLARATION-REF>
+                            </FUNCTION-GROUP-STATE-IREF>
+                            <FUNCTION-GROUP-STATE-IREF>
+                              <CONTEXT-MODE-DECLARATION-GROUP-PROTOTYPE-REF DEST="MODE-DECLARATION-GROUP-PROTOTYPE">/apd/Machines/RadarFusionMachine/FunctionGroupSets/RadarFusionFunctionGroups/MachineFG</CONTEXT-MODE-DECLARATION-GROUP-PROTOTYPE-REF>
+                              <TARGET-MODE-DECLARATION-REF DEST="MODE-DECLARATION">/apd/ModeDeclarationGroups/MachineState/Parking</TARGET-MODE-DECLARATION-REF>
+                            </FUNCTION-GROUP-STATE-IREF>
+                          </FUNCTION-GROUP-STATE-IREFS>
+                          <RESOURCE-GROUP-REF DEST="RESOURCE-GROUP">/apd/Machines/RadarFusionMachine/RadarFusionMachine/Linux/ResourceGroup1</RESOURCE-GROUP-REF>
+                          <STARTUP-CONFIG-REF DEST="STARTUP-CONFIG">/apd/Machines/RadarFusionMachine/startup_configs/fc_firewall_startup</STARTUP-CONFIG-REF>
+                        </STATE-DEPENDENT-STARTUP-CONFIG>
+                      </STATE-DEPENDENT-STARTUP-CONFIGS>
+                    </PROCESS>
+                  </ELEMENTS>
+                </AR-PACKAGE>
+                <AR-PACKAGE>
+                  <SHORT-NAME>startup_configs</SHORT-NAME>
+                  <ELEMENTS>
+                    <STARTUP-CONFIG>
+                      <SHORT-NAME>fc_firewall_startup</SHORT-NAME>
+                      <SCHEDULING-POLICY>SCHEDULING-POLICY-ROUND-ROBIN</SCHEDULING-POLICY>
+                      <SCHEDULING-PRIORITY>12</SCHEDULING-PRIORITY>
+                      <TERMINATION-BEHAVIOR>PROCESS-IS-NOT-SELF-TERMINATING</TERMINATION-BEHAVIOR>
+                    </STARTUP-CONFIG>
+                  </ELEMENTS>
+                </AR-PACKAGE>
+              </AR-PACKAGES>
+            </AR-PACKAGE>
+          </AR-PACKAGES>
+        </AR-PACKAGE>
+      </AR-PACKAGES>
+    </AR-PACKAGE>
+  </AR-PACKAGES>
+</AUTOSAR>

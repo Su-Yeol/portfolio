@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<AUTOSAR xmlns="http://autosar.org/schema/r4.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://autosar.org/schema/r4.0 AUTOSAR_00052.xsd">
+  <AR-PACKAGES>
+    <AR-PACKAGE>
+      <SHORT-NAME>apd</SHORT-NAME>
+      <AR-PACKAGES>
+        <AR-PACKAGE>
+          <SHORT-NAME>testSuite</SHORT-NAME>
+          <AR-PACKAGES>
+            <AR-PACKAGE>
+              <SHORT-NAME>appDesignPortInterface</SHORT-NAME>
+              <AR-PACKAGES>
+                <AR-PACKAGE>
+                  <SHORT-NAME>cmappsErrors</SHORT-NAME>
+                  <ELEMENTS>
+                    <AP-APPLICATION-ERROR>
+                      <SHORT-NAME>InvalidConfigString</SHORT-NAME>
+                      <DESC>
+                        <L-2 L="EN">Configuration string is invalid.</L-2>
+                      </DESC>
+                      <ERROR-CODE>5</ERROR-CODE>
+                      <ERROR-DOMAIN-REF DEST="AP-APPLICATION-ERROR-DOMAIN">/apd/testSuite/appDesignPortInterface/cmappsErrorsDomains/SpecificErrors</ERROR-DOMAIN-REF>
+                    </AP-APPLICATION-ERROR>
+                    <AP-APPLICATION-ERROR>
+                      <SHORT-NAME>InvalidParameter</SHORT-NAME>
+                      <DESC>
+                        <L-2 L="EN">Parameter is invalid.</L-2>
+                      </DESC>
+                      <ERROR-CODE>6</ERROR-CODE>
+                      <ERROR-DOMAIN-REF DEST="AP-APPLICATION-ERROR-DOMAIN">/apd/testSuite/appDesignPortInterface/cmappsErrorsDomains/SpecificErrors</ERROR-DOMAIN-REF>
+                    </AP-APPLICATION-ERROR>
+                  </ELEMENTS>
+                </AR-PACKAGE>
+                <AR-PACKAGE>
+                  <SHORT-NAME>cmappsErrorsDomains</SHORT-NAME>
+                  <ELEMENTS>
+                    <AP-APPLICATION-ERROR-DOMAIN>
+                      <SHORT-NAME>SpecificErrors</SHORT-NAME>
+                      <NAMESPACES>
+                        <SYMBOL-PROPS>
+                          <SHORT-NAME>apd</SHORT-NAME>
+                          <SYMBOL>apd</SYMBOL>
+                        </SYMBOL-PROPS>
+                        <SYMBOL-PROPS>
+                          <SHORT-NAME>testsuite</SHORT-NAME>
+                          <SYMBOL>testsuite</SYMBOL>
+                        </SYMBOL-PROPS>
+                        <SYMBOL-PROPS>
+                          <SHORT-NAME>cm</SHORT-NAME>
+                          <SYMBOL>cm</SYMBOL>
+                        </SYMBOL-PROPS>
+                      </NAMESPACES>
+                      <VALUE>44</VALUE>
+                    </AP-APPLICATION-ERROR-DOMAIN>
+                  </ELEMENTS>
+                </AR-PACKAGE>
+              </AR-PACKAGES>
+            </AR-PACKAGE>
+          </AR-PACKAGES>
+        </AR-PACKAGE>
+      </AR-PACKAGES>
+    </AR-PACKAGE>
+  </AR-PACKAGES>
+</AUTOSAR>

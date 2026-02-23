@@ -1,0 +1,45 @@
+{
+    "process_name": "Calculator_instance1",
+    "logtrace_process_id": "",
+    "logtrace_process_desc": "",
+    "logtrace_log_modes":
+    [
+    ],
+    "logtrace_default_log_level": "",
+    "logtrace_file_path": "",
+    "executable":
+    {
+        "platform_application": true,
+        "timer_resolution_ns": 1000
+    },
+    "startup_configs":
+    [
+        {
+            "config_name_for_convenience": "Machine: Driving",
+            "depends":
+            [
+                "DiagnosticManager"
+            ],
+            "machine_states":
+            [
+                "Driving"
+            ],
+            "function_group_states":
+            [
+            ],
+            "resource_group": "Resource group DIAG",
+            "scheduling_policy": "Round Robin",
+            "scheduling_priority": 12,
+            "termination_behavior": "PROCESS-IS-NOT-SELF-TERMINATING",
+            "arguments":
+            [
+            ]
+        }
+    ],
+    "service_instance_to_port_prototype_mapping":
+    [
+    ],
+    "persistency_port_prototype_to_key_value_database_mapping":
+    [
+    ]
+}

@@ -1,0 +1,44 @@
+{
+    "process_name": "SeedKeyProvider_instance1",
+    "logtrace_process_id": "",
+    "logtrace_process_desc": "",
+    "logtrace_log_modes":
+    [
+    ],
+    "logtrace_default_log_level": "",
+    "logtrace_file_path": "",
+    "executable":
+    {
+        "platform_application": false,
+        "timer_resolution_ns": 1000
+    },
+    "startup_configs":
+    [
+        {
+            "config_name_for_convenience": "Machine: Parking",
+            "depends":
+            [
+                "DiagnosticManager.Running"
+            ],
+            "machine_states":
+            [
+                "Parking"
+            ],
+            "function_group_states":
+            [
+            ],
+            "resource_group": "Resource group DIAG",
+            "scheduling_policy": "Round Robin",
+            "scheduling_priority": 12,
+            "arguments":
+            [
+            ]
+        }
+    ],
+    "service_instance_to_port_prototype_mapping":
+    [
+    ],
+    "persistency_port_prototype_to_key_value_database_mapping":
+    [
+    ]
+}

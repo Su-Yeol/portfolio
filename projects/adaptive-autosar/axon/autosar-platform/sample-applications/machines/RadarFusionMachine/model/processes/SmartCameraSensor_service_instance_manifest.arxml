@@ -1,0 +1,328 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<AUTOSAR xmlns="http://autosar.org/schema/r4.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://autosar.org/schema/r4.0 AUTOSAR_00052.xsd">
+  <AR-PACKAGES>
+    <AR-PACKAGE>
+      <SHORT-NAME>apd</SHORT-NAME>
+      <AR-PACKAGES>
+        <AR-PACKAGE>
+          <SHORT-NAME>Machines</SHORT-NAME>
+          <AR-PACKAGES>
+            <AR-PACKAGE>
+              <SHORT-NAME>RadarFusionMachine</SHORT-NAME>
+              <AR-PACKAGES>
+                <AR-PACKAGE>
+                  <SHORT-NAME>ServiceInstanceToMachineMappings</SHORT-NAME>
+                  <ELEMENTS>
+                    <SOMEIP-SERVICE-INSTANCE-TO-MACHINE-MAPPING>
+                      <SHORT-NAME>SmartCameraSensor_ProvidedServiceInstance_toMachine</SHORT-NAME>
+                      <COMMUNICATION-CONNECTOR-REF DEST="ETHERNET-COMMUNICATION-CONNECTOR">/apd/MachineDesigns/RadarFusionMachineDesign/RadarFusionConnector</COMMUNICATION-CONNECTOR-REF>
+                      <SERVICE-INSTANCE-REFS>
+                        <SERVICE-INSTANCE-REF DEST="PROVIDED-SOMEIP-SERVICE-INSTANCE">/apd/Machines/RadarFusionMachine/ServiceInstances/SmartCameraSensorProvidedSomeipServiceInstance</SERVICE-INSTANCE-REF>
+                      </SERVICE-INSTANCE-REFS>
+                      <UDP-PORT-REF DEST="AP-APPLICATION-ENDPOINT">/apd/MachineDesigns/RadarFusionMachineDesign/RadarFusionConnector/TriggerApplicationEndpointExtended</UDP-PORT-REF>
+                    </SOMEIP-SERVICE-INSTANCE-TO-MACHINE-MAPPING>
+                    <SOMEIP-SERVICE-INSTANCE-TO-MACHINE-MAPPING>
+                      <SHORT-NAME>SmartCameraSensor_ProvidedServiceInstance2_toMachine</SHORT-NAME>
+                      <COMMUNICATION-CONNECTOR-REF DEST="ETHERNET-COMMUNICATION-CONNECTOR">/apd/MachineDesigns/RadarFusionMachineDesign/RadarFusionConnector</COMMUNICATION-CONNECTOR-REF>
+                      <SERVICE-INSTANCE-REFS>
+                        <SERVICE-INSTANCE-REF DEST="PROVIDED-SOMEIP-SERVICE-INSTANCE">/apd/Machines/RadarFusionMachine/ServiceInstances/SmartCameraSensorProvidedSomeipServiceInstance2</SERVICE-INSTANCE-REF>
+                      </SERVICE-INSTANCE-REFS>
+                      <UDP-PORT-REF DEST="AP-APPLICATION-ENDPOINT">/apd/MachineDesigns/RadarFusionMachineDesign/RadarFusionConnector/TriggerApplicationEndpointExtended</UDP-PORT-REF>
+                    </SOMEIP-SERVICE-INSTANCE-TO-MACHINE-MAPPING>
+                    <SOMEIP-SERVICE-INSTANCE-TO-MACHINE-MAPPING>
+                      <SHORT-NAME>SmartCameraSensor_ProvidedServiceInstance3_toMachine</SHORT-NAME>
+                      <COMMUNICATION-CONNECTOR-REF DEST="ETHERNET-COMMUNICATION-CONNECTOR">/apd/MachineDesigns/RadarFusionMachineDesign/RadarFusionConnector</COMMUNICATION-CONNECTOR-REF>
+                      <SERVICE-INSTANCE-REFS>
+                        <SERVICE-INSTANCE-REF DEST="PROVIDED-SOMEIP-SERVICE-INSTANCE">/apd/Machines/RadarFusionMachine/ServiceInstances/SmartCameraSensorProvidedSomeipServiceInstance3</SERVICE-INSTANCE-REF>
+                      </SERVICE-INSTANCE-REFS>
+                      <UDP-PORT-REF DEST="AP-APPLICATION-ENDPOINT">/apd/MachineDesigns/RadarFusionMachineDesign/RadarFusionConnector/TriggerApplicationEndpointExtended</UDP-PORT-REF>
+                    </SOMEIP-SERVICE-INSTANCE-TO-MACHINE-MAPPING>
+                    <SOMEIP-SERVICE-INSTANCE-TO-MACHINE-MAPPING>
+                      <SHORT-NAME>SmartCameraSensor_ProvidedServiceInstance4_toMachine</SHORT-NAME>
+                      <COMMUNICATION-CONNECTOR-REF DEST="ETHERNET-COMMUNICATION-CONNECTOR">/apd/MachineDesigns/RadarFusionMachineDesign/RadarFusionConnector</COMMUNICATION-CONNECTOR-REF>
+                      <SERVICE-INSTANCE-REFS>
+                        <SERVICE-INSTANCE-REF DEST="PROVIDED-SOMEIP-SERVICE-INSTANCE">/apd/Machines/RadarFusionMachine/ServiceInstances/SmartCameraSensorProvidedSomeipServiceInstance4</SERVICE-INSTANCE-REF>
+                      </SERVICE-INSTANCE-REFS>
+                      <UDP-PORT-REF DEST="AP-APPLICATION-ENDPOINT">/apd/MachineDesigns/RadarFusionMachineDesign/RadarFusionConnector/TriggerApplicationEndpointExtended</UDP-PORT-REF>
+                    </SOMEIP-SERVICE-INSTANCE-TO-MACHINE-MAPPING>
+                    <SOMEIP-SERVICE-INSTANCE-TO-MACHINE-MAPPING>
+                      <SHORT-NAME>SmartCameraSensor_ProvidedServiceInstance5_toMachine</SHORT-NAME>
+                      <COMMUNICATION-CONNECTOR-REF DEST="ETHERNET-COMMUNICATION-CONNECTOR">/apd/MachineDesigns/RadarFusionMachineDesign/RadarFusionConnector</COMMUNICATION-CONNECTOR-REF>
+                      <SERVICE-INSTANCE-REFS>
+                        <SERVICE-INSTANCE-REF DEST="PROVIDED-SOMEIP-SERVICE-INSTANCE">/apd/Machines/RadarFusionMachine/ServiceInstances/SmartCameraSensorProvidedSomeipServiceInstance5</SERVICE-INSTANCE-REF>
+                      </SERVICE-INSTANCE-REFS>
+                      <UDP-PORT-REF DEST="AP-APPLICATION-ENDPOINT">/apd/MachineDesigns/RadarFusionMachineDesign/RadarFusionConnector/TriggerApplicationEndpointExtended</UDP-PORT-REF>
+                    </SOMEIP-SERVICE-INSTANCE-TO-MACHINE-MAPPING>
+                    <SOMEIP-SERVICE-INSTANCE-TO-MACHINE-MAPPING>
+                      <SHORT-NAME>SmartCameraSensor_ProvidedServiceInstance6_toMachine</SHORT-NAME>
+                      <COMMUNICATION-CONNECTOR-REF DEST="ETHERNET-COMMUNICATION-CONNECTOR">/apd/MachineDesigns/RadarFusionMachineDesign/RadarFusionConnector</COMMUNICATION-CONNECTOR-REF>
+                      <SERVICE-INSTANCE-REFS>
+                        <SERVICE-INSTANCE-REF DEST="PROVIDED-SOMEIP-SERVICE-INSTANCE">/apd/Machines/RadarFusionMachine/ServiceInstances/SmartCameraSensorProvidedSomeipServiceInstance6</SERVICE-INSTANCE-REF>
+                      </SERVICE-INSTANCE-REFS>
+                      <UDP-PORT-REF DEST="AP-APPLICATION-ENDPOINT">/apd/MachineDesigns/RadarFusionMachineDesign/RadarFusionConnector/TriggerApplicationEndpointExtended</UDP-PORT-REF>
+                    </SOMEIP-SERVICE-INSTANCE-TO-MACHINE-MAPPING>
+                    <SOMEIP-SERVICE-INSTANCE-TO-MACHINE-MAPPING>
+                      <SHORT-NAME>SmartCameraSensor_ProvidedServiceInstance7_toMachine</SHORT-NAME>
+                      <COMMUNICATION-CONNECTOR-REF DEST="ETHERNET-COMMUNICATION-CONNECTOR">/apd/MachineDesigns/RadarFusionMachineDesign/RadarFusionConnector</COMMUNICATION-CONNECTOR-REF>
+                      <SERVICE-INSTANCE-REFS>
+                        <SERVICE-INSTANCE-REF DEST="PROVIDED-SOMEIP-SERVICE-INSTANCE">/apd/Machines/RadarFusionMachine/ServiceInstances/SmartCameraSensorProvidedSomeipServiceInstance7</SERVICE-INSTANCE-REF>
+                      </SERVICE-INSTANCE-REFS>
+                      <UDP-PORT-REF DEST="AP-APPLICATION-ENDPOINT">/apd/MachineDesigns/RadarFusionMachineDesign/RadarFusionConnector/TriggerApplicationEndpointExtended</UDP-PORT-REF>
+                    </SOMEIP-SERVICE-INSTANCE-TO-MACHINE-MAPPING>
+                    <SOMEIP-SERVICE-INSTANCE-TO-MACHINE-MAPPING>
+                      <SHORT-NAME>SmartCameraSensor_ProvidedServiceInstance8_toMachine</SHORT-NAME>
+                      <COMMUNICATION-CONNECTOR-REF DEST="ETHERNET-COMMUNICATION-CONNECTOR">/apd/MachineDesigns/RadarFusionMachineDesign/RadarFusionConnector</COMMUNICATION-CONNECTOR-REF>
+                      <SERVICE-INSTANCE-REFS>
+                        <SERVICE-INSTANCE-REF DEST="PROVIDED-SOMEIP-SERVICE-INSTANCE">/apd/Machines/RadarFusionMachine/ServiceInstances/SmartCameraSensorProvidedSomeipServiceInstance8</SERVICE-INSTANCE-REF>
+                      </SERVICE-INSTANCE-REFS>
+                      <UDP-PORT-REF DEST="AP-APPLICATION-ENDPOINT">/apd/MachineDesigns/RadarFusionMachineDesign/RadarFusionConnector/TriggerApplicationEndpointExtended</UDP-PORT-REF>
+                    </SOMEIP-SERVICE-INSTANCE-TO-MACHINE-MAPPING>
+                    <SOMEIP-SERVICE-INSTANCE-TO-MACHINE-MAPPING>
+                      <SHORT-NAME>SmartCameraSensor_ProvidedServiceInstance9_toMachine</SHORT-NAME>
+                      <COMMUNICATION-CONNECTOR-REF DEST="ETHERNET-COMMUNICATION-CONNECTOR">/apd/MachineDesigns/RadarFusionMachineDesign/RadarFusionConnector</COMMUNICATION-CONNECTOR-REF>
+                      <SERVICE-INSTANCE-REFS>
+                        <SERVICE-INSTANCE-REF DEST="PROVIDED-SOMEIP-SERVICE-INSTANCE">/apd/Machines/RadarFusionMachine/ServiceInstances/SmartCameraSensorProvidedSomeipServiceInstance9</SERVICE-INSTANCE-REF>
+                      </SERVICE-INSTANCE-REFS>
+                      <UDP-PORT-REF DEST="AP-APPLICATION-ENDPOINT">/apd/MachineDesigns/RadarFusionMachineDesign/RadarFusionConnector/TriggerApplicationEndpointExtended</UDP-PORT-REF>
+                    </SOMEIP-SERVICE-INSTANCE-TO-MACHINE-MAPPING>
+                  </ELEMENTS>
+                </AR-PACKAGE>
+                <AR-PACKAGE>
+                  <SHORT-NAME>ServiceInstances</SHORT-NAME>
+                  <ELEMENTS>
+                    <PROVIDED-SOMEIP-SERVICE-INSTANCE>
+                      <SHORT-NAME>SmartCameraSensorProvidedSomeipServiceInstance</SHORT-NAME>
+                      <E-2-E-EVENT-PROTECTION-PROPSS>
+                        <END-2-END-EVENT-PROTECTION-PROPS>
+                          <SHORT-NAME>End2EndEventProtectionProps</SHORT-NAME>
+                          <DATA-IDS>
+                            <DATA-ID>4321</DATA-ID>
+                            <DATA-ID>4321</DATA-ID>
+                          </DATA-IDS>
+                          <E-2-E-PROFILE-CONFIGURATION-REF DEST="E-2-E-PROFILE-CONFIGURATION">/apd/Machines/RadarFusionMachine/E2E/e2eprofiles/PROFILE_01</E-2-E-PROFILE-CONFIGURATION-REF>
+                          <EVENT-REF DEST="SOMEIP-EVENT-DEPLOYMENT">/apd/ServiceInterfaceDeployments/RoadObjects_Someip/RoadObjectInterface_Someip</EVENT-REF>
+                          <MAX-DATA-LENGTH>4096</MAX-DATA-LENGTH>
+                          <MIN-DATA-LENGTH>1</MIN-DATA-LENGTH>
+                        </END-2-END-EVENT-PROTECTION-PROPS>
+                      </E-2-E-EVENT-PROTECTION-PROPSS>
+                      <SERVICE-INTERFACE-DEPLOYMENT-REF DEST="SOMEIP-SERVICE-INTERFACE-DEPLOYMENT">/apd/ServiceInterfaceDeployments/RoadObjects_Someip</SERVICE-INTERFACE-DEPLOYMENT-REF>
+                      <PROVIDED-EVENT-GROUPS>
+                        <SOMEIP-PROVIDED-EVENT-GROUP>
+                          <SHORT-NAME>RequiredEventgroup1</SHORT-NAME>
+                          <EVENT-GROUP-REF DEST="SOMEIP-EVENT-GROUP">/apd/ServiceInterfaceDeployments/RoadObjects_Someip/SomeipEventgroup1</EVENT-GROUP-REF>
+                          <MULTICAST-THRESHOLD>0</MULTICAST-THRESHOLD>
+                        </SOMEIP-PROVIDED-EVENT-GROUP>
+                      </PROVIDED-EVENT-GROUPS>
+                      <SD-SERVER-CONFIG-REF DEST="SOMEIP-SD-SERVER-SERVICE-INSTANCE-CONFIG">/apd/SomeipSdTimingConfigs/SomeipSdServerServiceInstanceConfig</SD-SERVER-CONFIG-REF>
+                      <SERVICE-INSTANCE-ID>119</SERVICE-INSTANCE-ID>
+                    </PROVIDED-SOMEIP-SERVICE-INSTANCE>
+                    <PROVIDED-SOMEIP-SERVICE-INSTANCE>
+                      <SHORT-NAME>SmartCameraSensorProvidedSomeipServiceInstance2</SHORT-NAME>
+                      <E-2-E-EVENT-PROTECTION-PROPSS>
+                        <END-2-END-EVENT-PROTECTION-PROPS>
+                          <SHORT-NAME>End2EndEventProtectionProps</SHORT-NAME>
+                          <DATA-IDS>
+                            <DATA-ID>4321</DATA-ID>
+                          </DATA-IDS>
+                          <E-2-E-PROFILE-CONFIGURATION-REF DEST="E-2-E-PROFILE-CONFIGURATION">/apd/Machines/RadarFusionMachine/E2E/e2eprofiles/PROFILE_01</E-2-E-PROFILE-CONFIGURATION-REF>
+                          <EVENT-REF DEST="SOMEIP-EVENT-DEPLOYMENT">/apd/ServiceInterfaceDeployments/StaticObjects_Someip/StaticObjectInterface_Someip</EVENT-REF>
+                          <MAX-DATA-LENGTH>4096</MAX-DATA-LENGTH>
+                          <MIN-DATA-LENGTH>1</MIN-DATA-LENGTH>
+                        </END-2-END-EVENT-PROTECTION-PROPS>
+                      </E-2-E-EVENT-PROTECTION-PROPSS>
+                      <SERVICE-INTERFACE-DEPLOYMENT-REF DEST="SOMEIP-SERVICE-INTERFACE-DEPLOYMENT">/apd/ServiceInterfaceDeployments/StaticObjects_Someip</SERVICE-INTERFACE-DEPLOYMENT-REF>
+                      <PROVIDED-EVENT-GROUPS>
+                        <SOMEIP-PROVIDED-EVENT-GROUP>
+                          <SHORT-NAME>RequiredEventgroup1</SHORT-NAME>
+                          <EVENT-GROUP-REF DEST="SOMEIP-EVENT-GROUP">/apd/ServiceInterfaceDeployments/StaticObjects_Someip/SomeipEventgroup1</EVENT-GROUP-REF>
+                          <MULTICAST-THRESHOLD>0</MULTICAST-THRESHOLD>
+                        </SOMEIP-PROVIDED-EVENT-GROUP>
+                      </PROVIDED-EVENT-GROUPS>
+                      <SD-SERVER-CONFIG-REF DEST="SOMEIP-SD-SERVER-SERVICE-INSTANCE-CONFIG">/apd/SomeipSdTimingConfigs/SomeipSdServerServiceInstanceConfig</SD-SERVER-CONFIG-REF>
+                      <SERVICE-INSTANCE-ID>139</SERVICE-INSTANCE-ID>
+                    </PROVIDED-SOMEIP-SERVICE-INSTANCE>
+                    <PROVIDED-SOMEIP-SERVICE-INSTANCE>
+                      <SHORT-NAME>SmartCameraSensorProvidedSomeipServiceInstance3</SHORT-NAME>
+                      <E-2-E-EVENT-PROTECTION-PROPSS>
+                        <END-2-END-EVENT-PROTECTION-PROPS>
+                          <SHORT-NAME>End2EndEventProtectionProps</SHORT-NAME>
+                          <DATA-IDS>
+                            <DATA-ID>4321</DATA-ID>
+                          </DATA-IDS>
+                          <E-2-E-PROFILE-CONFIGURATION-REF DEST="E-2-E-PROFILE-CONFIGURATION">/apd/Machines/RadarFusionMachine/E2E/e2eprofiles/PROFILE_01</E-2-E-PROFILE-CONFIGURATION-REF>
+                          <EVENT-REF DEST="SOMEIP-EVENT-DEPLOYMENT">/apd/ServiceInterfaceDeployments/PotentiallyMovingObjects_Someip/PotentiallyMovingObjectsInterface_Someip</EVENT-REF>
+                          <MAX-DATA-LENGTH>4096</MAX-DATA-LENGTH>
+                          <MIN-DATA-LENGTH>1</MIN-DATA-LENGTH>
+                        </END-2-END-EVENT-PROTECTION-PROPS>
+                      </E-2-E-EVENT-PROTECTION-PROPSS>
+                      <SERVICE-INTERFACE-DEPLOYMENT-REF DEST="SOMEIP-SERVICE-INTERFACE-DEPLOYMENT">/apd/ServiceInterfaceDeployments/PotentiallyMovingObjects_Someip</SERVICE-INTERFACE-DEPLOYMENT-REF>
+                      <PROVIDED-EVENT-GROUPS>
+                        <SOMEIP-PROVIDED-EVENT-GROUP>
+                          <SHORT-NAME>RequiredEventgroup1</SHORT-NAME>
+                          <EVENT-GROUP-REF DEST="SOMEIP-EVENT-GROUP">/apd/ServiceInterfaceDeployments/PotentiallyMovingObjects_Someip/SomeipEventgroup1</EVENT-GROUP-REF>
+                          <MULTICAST-THRESHOLD>0</MULTICAST-THRESHOLD>
+                        </SOMEIP-PROVIDED-EVENT-GROUP>
+                      </PROVIDED-EVENT-GROUPS>
+                      <SD-SERVER-CONFIG-REF DEST="SOMEIP-SD-SERVER-SERVICE-INSTANCE-CONFIG">/apd/SomeipSdTimingConfigs/SomeipSdServerServiceInstanceConfig</SD-SERVER-CONFIG-REF>
+                      <SERVICE-INSTANCE-ID>189</SERVICE-INSTANCE-ID>
+                    </PROVIDED-SOMEIP-SERVICE-INSTANCE>
+                    <PROVIDED-SOMEIP-SERVICE-INSTANCE>
+                      <SHORT-NAME>SmartCameraSensorProvidedSomeipServiceInstance4</SHORT-NAME>
+                      <E-2-E-EVENT-PROTECTION-PROPSS>
+                        <END-2-END-EVENT-PROTECTION-PROPS>
+                          <SHORT-NAME>End2EndEventProtectionProps</SHORT-NAME>
+                          <DATA-IDS>
+                            <DATA-ID>4321</DATA-ID>
+                          </DATA-IDS>
+                          <E-2-E-PROFILE-CONFIGURATION-REF DEST="E-2-E-PROFILE-CONFIGURATION">/apd/Machines/RadarFusionMachine/E2E/e2eprofiles/PROFILE_01</E-2-E-PROFILE-CONFIGURATION-REF>
+                          <EVENT-REF DEST="SOMEIP-EVENT-DEPLOYMENT">/apd/ServiceInterfaceDeployments/CameraFeatures_Someip/CameraFeaturesInterface_Someip</EVENT-REF>
+                          <MAX-DATA-LENGTH>4096</MAX-DATA-LENGTH>
+                          <MIN-DATA-LENGTH>1</MIN-DATA-LENGTH>
+                        </END-2-END-EVENT-PROTECTION-PROPS>
+                      </E-2-E-EVENT-PROTECTION-PROPSS>
+                      <SERVICE-INTERFACE-DEPLOYMENT-REF DEST="SOMEIP-SERVICE-INTERFACE-DEPLOYMENT">/apd/ServiceInterfaceDeployments/CameraFeatures_Someip</SERVICE-INTERFACE-DEPLOYMENT-REF>
+                      <PROVIDED-EVENT-GROUPS>
+                        <SOMEIP-PROVIDED-EVENT-GROUP>
+                          <SHORT-NAME>RequiredEventgroup1</SHORT-NAME>
+                          <EVENT-GROUP-REF DEST="SOMEIP-EVENT-GROUP">/apd/ServiceInterfaceDeployments/CameraFeatures_Someip/SomeipEventgroup1</EVENT-GROUP-REF>
+                          <MULTICAST-THRESHOLD>0</MULTICAST-THRESHOLD>
+                        </SOMEIP-PROVIDED-EVENT-GROUP>
+                      </PROVIDED-EVENT-GROUPS>
+                      <SD-SERVER-CONFIG-REF DEST="SOMEIP-SD-SERVER-SERVICE-INSTANCE-CONFIG">/apd/SomeipSdTimingConfigs/SomeipSdServerServiceInstanceConfig</SD-SERVER-CONFIG-REF>
+                      <SERVICE-INSTANCE-ID>188</SERVICE-INSTANCE-ID>
+                    </PROVIDED-SOMEIP-SERVICE-INSTANCE>
+                    <PROVIDED-SOMEIP-SERVICE-INSTANCE>
+                      <SHORT-NAME>SmartCameraSensorProvidedSomeipServiceInstance5</SHORT-NAME>
+                      <E-2-E-EVENT-PROTECTION-PROPSS>
+                        <END-2-END-EVENT-PROTECTION-PROPS>
+                          <SHORT-NAME>End2EndEventProtectionProps</SHORT-NAME>
+                          <DATA-IDS>
+                            <DATA-ID>4321</DATA-ID>
+                          </DATA-IDS>
+                          <E-2-E-PROFILE-CONFIGURATION-REF DEST="E-2-E-PROFILE-CONFIGURATION">/apd/Machines/RadarFusionMachine/E2E/e2eprofiles/PROFILE_01</E-2-E-PROFILE-CONFIGURATION-REF>
+                          <EVENT-REF DEST="SOMEIP-EVENT-DEPLOYMENT">/apd/ServiceInterfaceDeployments/CameraDetection_Someip/CameraDetectionInterface_Someip</EVENT-REF>
+                          <MAX-DATA-LENGTH>4096</MAX-DATA-LENGTH>
+                          <MIN-DATA-LENGTH>1</MIN-DATA-LENGTH>
+                        </END-2-END-EVENT-PROTECTION-PROPS>
+                      </E-2-E-EVENT-PROTECTION-PROPSS>
+                      <SERVICE-INTERFACE-DEPLOYMENT-REF DEST="SOMEIP-SERVICE-INTERFACE-DEPLOYMENT">/apd/ServiceInterfaceDeployments/CameraDetection_Someip</SERVICE-INTERFACE-DEPLOYMENT-REF>
+                      <PROVIDED-EVENT-GROUPS>
+                        <SOMEIP-PROVIDED-EVENT-GROUP>
+                          <SHORT-NAME>RequiredEventgroup1</SHORT-NAME>
+                          <EVENT-GROUP-REF DEST="SOMEIP-EVENT-GROUP">/apd/ServiceInterfaceDeployments/CameraDetection_Someip/SomeipEventgroup1</EVENT-GROUP-REF>
+                          <MULTICAST-THRESHOLD>0</MULTICAST-THRESHOLD>
+                        </SOMEIP-PROVIDED-EVENT-GROUP>
+                      </PROVIDED-EVENT-GROUPS>
+                      <SD-SERVER-CONFIG-REF DEST="SOMEIP-SD-SERVER-SERVICE-INSTANCE-CONFIG">/apd/SomeipSdTimingConfigs/SomeipSdServerServiceInstanceConfig</SD-SERVER-CONFIG-REF>
+                      <SERVICE-INSTANCE-ID>187</SERVICE-INSTANCE-ID>
+                    </PROVIDED-SOMEIP-SERVICE-INSTANCE>
+                    <PROVIDED-SOMEIP-SERVICE-INSTANCE>
+                      <SHORT-NAME>SmartCameraSensorProvidedSomeipServiceInstance6</SHORT-NAME>
+                      <E-2-E-EVENT-PROTECTION-PROPSS>
+                        <END-2-END-EVENT-PROTECTION-PROPS>
+                          <SHORT-NAME>End2EndEventProtectionProps</SHORT-NAME>
+                          <DATA-IDS>
+                            <DATA-ID>4321</DATA-ID>
+                          </DATA-IDS>
+                          <E-2-E-PROFILE-CONFIGURATION-REF DEST="E-2-E-PROFILE-CONFIGURATION">/apd/Machines/RadarFusionMachine/E2E/e2eprofiles/PROFILE_01</E-2-E-PROFILE-CONFIGURATION-REF>
+                          <EVENT-REF DEST="SOMEIP-EVENT-DEPLOYMENT">/apd/ServiceInterfaceDeployments/UltrasonicDetections_Someip/UltrasonicDetectionsInterface_Someip</EVENT-REF>
+                          <MAX-DATA-LENGTH>4096</MAX-DATA-LENGTH>
+                          <MIN-DATA-LENGTH>1</MIN-DATA-LENGTH>
+                        </END-2-END-EVENT-PROTECTION-PROPS>
+                      </E-2-E-EVENT-PROTECTION-PROPSS>
+                      <SERVICE-INTERFACE-DEPLOYMENT-REF DEST="SOMEIP-SERVICE-INTERFACE-DEPLOYMENT">/apd/ServiceInterfaceDeployments/UltrasonicDetections_Someip</SERVICE-INTERFACE-DEPLOYMENT-REF>
+                      <PROVIDED-EVENT-GROUPS>
+                        <SOMEIP-PROVIDED-EVENT-GROUP>
+                          <SHORT-NAME>RequiredEventgroup1</SHORT-NAME>
+                          <EVENT-GROUP-REF DEST="SOMEIP-EVENT-GROUP">/apd/ServiceInterfaceDeployments/UltrasonicDetections_Someip/SomeipEventgroup1</EVENT-GROUP-REF>
+                          <MULTICAST-THRESHOLD>0</MULTICAST-THRESHOLD>
+                        </SOMEIP-PROVIDED-EVENT-GROUP>
+                      </PROVIDED-EVENT-GROUPS>
+                      <SD-SERVER-CONFIG-REF DEST="SOMEIP-SD-SERVER-SERVICE-INSTANCE-CONFIG">/apd/SomeipSdTimingConfigs/SomeipSdServerServiceInstanceConfig</SD-SERVER-CONFIG-REF>
+                      <SERVICE-INSTANCE-ID>186</SERVICE-INSTANCE-ID>
+                    </PROVIDED-SOMEIP-SERVICE-INSTANCE>
+                    <PROVIDED-SOMEIP-SERVICE-INSTANCE>
+                      <SHORT-NAME>SmartCameraSensorProvidedSomeipServiceInstance7</SHORT-NAME>
+                      <E-2-E-EVENT-PROTECTION-PROPSS>
+                        <END-2-END-EVENT-PROTECTION-PROPS>
+                          <SHORT-NAME>End2EndEventProtectionProps</SHORT-NAME>
+                          <DATA-IDS>
+                            <DATA-ID>4321</DATA-ID>
+                          </DATA-IDS>
+                          <E-2-E-PROFILE-CONFIGURATION-REF DEST="E-2-E-PROFILE-CONFIGURATION">/apd/Machines/RadarFusionMachine/E2E/e2eprofiles/PROFILE_01</E-2-E-PROFILE-CONFIGURATION-REF>
+                          <EVENT-REF DEST="SOMEIP-EVENT-DEPLOYMENT">/apd/ServiceInterfaceDeployments/UltrasonicFeatures_Someip/UltrasonicFeaturesInterface_Someip</EVENT-REF>
+                          <MAX-DATA-LENGTH>4096</MAX-DATA-LENGTH>
+                          <MIN-DATA-LENGTH>1</MIN-DATA-LENGTH>
+                        </END-2-END-EVENT-PROTECTION-PROPS>
+                      </E-2-E-EVENT-PROTECTION-PROPSS>
+                      <SERVICE-INTERFACE-DEPLOYMENT-REF DEST="SOMEIP-SERVICE-INTERFACE-DEPLOYMENT">/apd/ServiceInterfaceDeployments/UltrasonicFeatures_Someip</SERVICE-INTERFACE-DEPLOYMENT-REF>
+                      <PROVIDED-EVENT-GROUPS>
+                        <SOMEIP-PROVIDED-EVENT-GROUP>
+                          <SHORT-NAME>RequiredEventgroup1</SHORT-NAME>
+                          <EVENT-GROUP-REF DEST="SOMEIP-EVENT-GROUP">/apd/ServiceInterfaceDeployments/UltrasonicFeatures_Someip/SomeipEventgroup1</EVENT-GROUP-REF>
+                          <MULTICAST-THRESHOLD>0</MULTICAST-THRESHOLD>
+                        </SOMEIP-PROVIDED-EVENT-GROUP>
+                      </PROVIDED-EVENT-GROUPS>
+                      <SD-SERVER-CONFIG-REF DEST="SOMEIP-SD-SERVER-SERVICE-INSTANCE-CONFIG">/apd/SomeipSdTimingConfigs/SomeipSdServerServiceInstanceConfig</SD-SERVER-CONFIG-REF>
+                      <SERVICE-INSTANCE-ID>185</SERVICE-INSTANCE-ID>
+                    </PROVIDED-SOMEIP-SERVICE-INSTANCE>
+                    <PROVIDED-SOMEIP-SERVICE-INSTANCE>
+                      <SHORT-NAME>SmartCameraSensorProvidedSomeipServiceInstance8</SHORT-NAME>
+                      <E-2-E-EVENT-PROTECTION-PROPSS>
+                        <END-2-END-EVENT-PROTECTION-PROPS>
+                          <SHORT-NAME>End2EndEventProtectionProps</SHORT-NAME>
+                          <DATA-IDS>
+                            <DATA-ID>4321</DATA-ID>
+                          </DATA-IDS>
+                          <E-2-E-PROFILE-CONFIGURATION-REF DEST="E-2-E-PROFILE-CONFIGURATION">/apd/Machines/RadarFusionMachine/E2E/e2eprofiles/PROFILE_01</E-2-E-PROFILE-CONFIGURATION-REF>
+                          <EVENT-REF DEST="SOMEIP-EVENT-DEPLOYMENT">/apd/ServiceInterfaceDeployments/LidarDetections_Someip/LidarDetectionsInterface_Someip</EVENT-REF>
+                          <MAX-DATA-LENGTH>4096</MAX-DATA-LENGTH>
+                          <MIN-DATA-LENGTH>1</MIN-DATA-LENGTH>
+                        </END-2-END-EVENT-PROTECTION-PROPS>
+                      </E-2-E-EVENT-PROTECTION-PROPSS>
+                      <SERVICE-INTERFACE-DEPLOYMENT-REF DEST="SOMEIP-SERVICE-INTERFACE-DEPLOYMENT">/apd/ServiceInterfaceDeployments/LidarDetections_Someip</SERVICE-INTERFACE-DEPLOYMENT-REF>
+                      <PROVIDED-EVENT-GROUPS>
+                        <SOMEIP-PROVIDED-EVENT-GROUP>
+                          <SHORT-NAME>RequiredEventgroup1</SHORT-NAME>
+                          <EVENT-GROUP-REF DEST="SOMEIP-EVENT-GROUP">/apd/ServiceInterfaceDeployments/LidarDetections_Someip/SomeipEventgroup1</EVENT-GROUP-REF>
+                          <MULTICAST-THRESHOLD>0</MULTICAST-THRESHOLD>
+                        </SOMEIP-PROVIDED-EVENT-GROUP>
+                      </PROVIDED-EVENT-GROUPS>
+                      <SD-SERVER-CONFIG-REF DEST="SOMEIP-SD-SERVER-SERVICE-INSTANCE-CONFIG">/apd/SomeipSdTimingConfigs/SomeipSdServerServiceInstanceConfig</SD-SERVER-CONFIG-REF>
+                      <SERVICE-INSTANCE-ID>184</SERVICE-INSTANCE-ID>
+                    </PROVIDED-SOMEIP-SERVICE-INSTANCE>
+                    <PROVIDED-SOMEIP-SERVICE-INSTANCE>
+                      <SHORT-NAME>SmartCameraSensorProvidedSomeipServiceInstance9</SHORT-NAME>
+                      <E-2-E-EVENT-PROTECTION-PROPSS>
+                        <END-2-END-EVENT-PROTECTION-PROPS>
+                          <SHORT-NAME>End2EndEventProtectionProps</SHORT-NAME>
+                          <DATA-IDS>
+                            <DATA-ID>4321</DATA-ID>
+                          </DATA-IDS>
+                          <E-2-E-PROFILE-CONFIGURATION-REF DEST="E-2-E-PROFILE-CONFIGURATION">/apd/Machines/RadarFusionMachine/E2E/e2eprofiles/PROFILE_01</E-2-E-PROFILE-CONFIGURATION-REF>
+                          <EVENT-REF DEST="SOMEIP-EVENT-DEPLOYMENT">/apd/ServiceInterfaceDeployments/RadarDetections_Someip/RadarDetectionsInterface_Someip</EVENT-REF>
+                          <MAX-DATA-LENGTH>4096</MAX-DATA-LENGTH>
+                          <MIN-DATA-LENGTH>1</MIN-DATA-LENGTH>
+                        </END-2-END-EVENT-PROTECTION-PROPS>
+                      </E-2-E-EVENT-PROTECTION-PROPSS>
+                      <SERVICE-INTERFACE-DEPLOYMENT-REF DEST="SOMEIP-SERVICE-INTERFACE-DEPLOYMENT">/apd/ServiceInterfaceDeployments/RadarDetections_Someip</SERVICE-INTERFACE-DEPLOYMENT-REF>
+                      <PROVIDED-EVENT-GROUPS>
+                        <SOMEIP-PROVIDED-EVENT-GROUP>
+                          <SHORT-NAME>RequiredEventgroup1</SHORT-NAME>
+                          <EVENT-GROUP-REF DEST="SOMEIP-EVENT-GROUP">/apd/ServiceInterfaceDeployments/RadarDetections_Someip/SomeipEventgroup1</EVENT-GROUP-REF>
+                          <MULTICAST-THRESHOLD>0</MULTICAST-THRESHOLD>
+                        </SOMEIP-PROVIDED-EVENT-GROUP>
+                      </PROVIDED-EVENT-GROUPS>
+                      <SD-SERVER-CONFIG-REF DEST="SOMEIP-SD-SERVER-SERVICE-INSTANCE-CONFIG">/apd/SomeipSdTimingConfigs/SomeipSdServerServiceInstanceConfig</SD-SERVER-CONFIG-REF>
+                      <SERVICE-INSTANCE-ID>183</SERVICE-INSTANCE-ID>
+                    </PROVIDED-SOMEIP-SERVICE-INSTANCE>
+                  </ELEMENTS>
+                </AR-PACKAGE>
+              </AR-PACKAGES>
+            </AR-PACKAGE>
+          </AR-PACKAGES>
+        </AR-PACKAGE>
+      </AR-PACKAGES>
+    </AR-PACKAGE>
+  </AR-PACKAGES>
+</AUTOSAR>

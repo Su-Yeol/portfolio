@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<AUTOSAR xmlns="http://autosar.org/schema/r4.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://autosar.org/schema/r4.0 AUTOSAR_00052.xsd">
+    <AR-PACKAGES>
+        <AR-PACKAGE>
+            <SHORT-NAME>adcm</SHORT-NAME>
+            <ELEMENTS>
+                <SERVICE-INTERFACE>
+                    <SHORT-NAME>perception_obstacles</SHORT-NAME>
+                    <NAMESPACES>
+                        <SYMBOL-PROPS>
+                            <SHORT-NAME>adcm</SHORT-NAME>
+                            <SYMBOL>adcm</SYMBOL>
+                        </SYMBOL-PROPS>
+                    </NAMESPACES>
+                    <EVENTS>
+                        <VARIABLE-DATA-PROTOTYPE>
+                            <SHORT-NAME>perceptionObstaclesEvent</SHORT-NAME>
+                            <TYPE-TREF DEST="STD-CPP-IMPLEMENTATION-DATA-TYPE">/adcm/events/perception_obstacles_Objects</TYPE-TREF>
+                        </VARIABLE-DATA-PROTOTYPE>
+                    </EVENTS>
+                </SERVICE-INTERFACE>
+            </ELEMENTS>
+            <AR-PACKAGES>
+                <AR-PACKAGE>
+                    <SHORT-NAME>events</SHORT-NAME>
+                    <ELEMENTS>
+                        <STD-CPP-IMPLEMENTATION-DATA-TYPE>
+                            <SHORT-NAME>perception_obstacles_Objects</SHORT-NAME>
+                            <CATEGORY>STRUCTURE</CATEGORY>
+                            <NAMESPACES>
+                                <SYMBOL-PROPS>
+                                    <SHORT-NAME>adcm</SHORT-NAME>
+                                    <SYMBOL>adcm</SYMBOL>
+                                </SYMBOL-PROPS>
+                            </NAMESPACES>
+                            <SUB-ELEMENTS>
+                                <CPP-IMPLEMENTATION-DATA-TYPE-ELEMENT>
+                                    <SHORT-NAME>PerceptionObstacleVector</SHORT-NAME>
+                                    <TYPE-REFERENCE>
+                                        <INPLACE>false</INPLACE>
+                                        <TYPE-REFERENCE-REF DEST="STD-CPP-IMPLEMENTATION-DATA-TYPE">/adcm/events/perception_obstacle_Array</TYPE-REFERENCE-REF>
+                                    </TYPE-REFERENCE>
+                                </CPP-IMPLEMENTATION-DATA-TYPE-ELEMENT>
+
+                                <CPP-IMPLEMENTATION-DATA-TYPE-ELEMENT>
+                                    <SHORT-NAME>Lidar_Status</SHORT-NAME>
+                                    <TYPE-REFERENCE>
+                                        <INPLACE>false</INPLACE>
+                                        <TYPE-REFERENCE-REF DEST="STD-CPP-IMPLEMENTATION-DATA-TYPE">/AUTOSAR/StdTypes/bool</TYPE-REFERENCE-REF>
+                                    </TYPE-REFERENCE>
+                                </CPP-IMPLEMENTATION-DATA-TYPE-ELEMENT>
+                            </SUB-ELEMENTS>
+                            <TYPE-EMITTER>TYPE_EMITTER_ARA</TYPE-EMITTER>
+                        </STD-CPP-IMPLEMENTATION-DATA-TYPE>
+
+
+                        <STD-CPP-IMPLEMENTATION-DATA-TYPE>
+                            <SHORT-NAME>perception_obstacle_Array</SHORT-NAME>
+                            <CATEGORY>VECTOR</CATEGORY>
+                            <TEMPLATE-ARGUMENTS>
+                                <CPP-TEMPLATE-ARGUMENT>
+                                    <TEMPLATE-TYPE-REF DEST="STD-CPP-IMPLEMENTATION-DATA-TYPE">/adcm/events/Perception_obstacles</TEMPLATE-TYPE-REF>
+                                </CPP-TEMPLATE-ARGUMENT>
+                            </TEMPLATE-ARGUMENTS>
+                            <TYPE-EMITTER>TYPE_EMITTER_ARA</TYPE-EMITTER>
+                        </STD-CPP-IMPLEMENTATION-DATA-TYPE>
+
+                        <STD-CPP-IMPLEMENTATION-DATA-TYPE>
+                            <SHORT-NAME>Perception_obstacles</SHORT-NAME>
+                            <CATEGORY>STRUCTURE</CATEGORY>
+                            <NAMESPACES>
+                                <SYMBOL-PROPS>
+                                    <SHORT-NAME>adcm</SHORT-NAME>
+                                    <SYMBOL>adcm</SYMBOL>
+                                </SYMBOL-PROPS>
+                            </NAMESPACES>
+                            <SUB-ELEMENTS>
+                                <CPP-IMPLEMENTATION-DATA-TYPE-ELEMENT>
+                                    <SHORT-NAME>Id</SHORT-NAME>
+                                    <TYPE-REFERENCE>
+                                        <INPLACE>false</INPLACE>
+                                        <TYPE-REFERENCE-REF DEST="STD-CPP-IMPLEMENTATION-DATA-TYPE">/AUTOSAR/StdTypes/uint16_t</TYPE-REFERENCE-REF>
+                                    </TYPE-REFERENCE>
+                                </CPP-IMPLEMENTATION-DATA-TYPE-ELEMENT>
+
+                                <CPP-IMPLEMENTATION-DATA-TYPE-ELEMENT>
+                                    <SHORT-NAME>Type</SHORT-NAME>
+                                    <TYPE-REFERENCE>
+                                        <INPLACE>false</INPLACE>
+                                        <TYPE-REFERENCE-REF DEST="STD-CPP-IMPLEMENTATION-DATA-TYPE">/AUTOSAR/StdTypes/uint8_t</TYPE-REFERENCE-REF>
+                                    </TYPE-REFERENCE>
+                                </CPP-IMPLEMENTATION-DATA-TYPE-ELEMENT>
+
+                                <CPP-IMPLEMENTATION-DATA-TYPE-ELEMENT>
+                                    <SHORT-NAME>Position</SHORT-NAME>
+                                    <TYPE-REFERENCE>
+                                        <INPLACE>false</INPLACE>
+                                        <TYPE-REFERENCE-REF DEST="STD-CPP-IMPLEMENTATION-DATA-TYPE">/adcm/CppImplementationDataTypes/Vector2D_F</TYPE-REFERENCE-REF>
+                                    </TYPE-REFERENCE>
+                                </CPP-IMPLEMENTATION-DATA-TYPE-ELEMENT>
+
+                                <CPP-IMPLEMENTATION-DATA-TYPE-ELEMENT>
+                                    <SHORT-NAME>Length</SHORT-NAME>
+                                    <TYPE-REFERENCE>
+                                        <INPLACE>false</INPLACE>
+                                        <TYPE-REFERENCE-REF DEST="STD-CPP-IMPLEMENTATION-DATA-TYPE">/AUTOSAR/StdTypes/float</TYPE-REFERENCE-REF>
+                                    </TYPE-REFERENCE>
+                                </CPP-IMPLEMENTATION-DATA-TYPE-ELEMENT>
+
+                                <CPP-IMPLEMENTATION-DATA-TYPE-ELEMENT>
+                                    <SHORT-NAME>Width</SHORT-NAME>
+                                    <TYPE-REFERENCE>
+                                        <INPLACE>false</INPLACE>
+                                        <TYPE-REFERENCE-REF DEST="STD-CPP-IMPLEMENTATION-DATA-TYPE">/AUTOSAR/StdTypes/float</TYPE-REFERENCE-REF>
+                                    </TYPE-REFERENCE>
+                                </CPP-IMPLEMENTATION-DATA-TYPE-ELEMENT>
+
+                                <CPP-IMPLEMENTATION-DATA-TYPE-ELEMENT>
+                                    <SHORT-NAME>Timestamp</SHORT-NAME>
+                                    <TYPE-REFERENCE>
+                                        <INPLACE>false</INPLACE>
+                                        <TYPE-REFERENCE-REF DEST="STD-CPP-IMPLEMENTATION-DATA-TYPE">/AUTOSAR/StdTypes/double</TYPE-REFERENCE-REF>
+                                    </TYPE-REFERENCE>
+                                </CPP-IMPLEMENTATION-DATA-TYPE-ELEMENT>
+
+                                <CPP-IMPLEMENTATION-DATA-TYPE-ELEMENT>
+                                    <SHORT-NAME>Velocity_x</SHORT-NAME>
+                                    <TYPE-REFERENCE>
+                                        <INPLACE>false</INPLACE>
+                                        <TYPE-REFERENCE-REF DEST="STD-CPP-IMPLEMENTATION-DATA-TYPE">/AUTOSAR/StdTypes/float</TYPE-REFERENCE-REF>
+                                    </TYPE-REFERENCE>
+                                </CPP-IMPLEMENTATION-DATA-TYPE-ELEMENT>
+
+                                <CPP-IMPLEMENTATION-DATA-TYPE-ELEMENT>
+                                    <SHORT-NAME>Velocity_y</SHORT-NAME>
+                                    <TYPE-REFERENCE>
+                                        <INPLACE>false</INPLACE>
+                                        <TYPE-REFERENCE-REF DEST="STD-CPP-IMPLEMENTATION-DATA-TYPE">/AUTOSAR/StdTypes/float</TYPE-REFERENCE-REF>
+                                    </TYPE-REFERENCE>
+                                </CPP-IMPLEMENTATION-DATA-TYPE-ELEMENT>
+
+                                <CPP-IMPLEMENTATION-DATA-TYPE-ELEMENT>
+                                    <SHORT-NAME>Heading</SHORT-NAME>
+                                    <TYPE-REFERENCE>
+                                        <INPLACE>false</INPLACE>
+                                        <TYPE-REFERENCE-REF DEST="STD-CPP-IMPLEMENTATION-DATA-TYPE">/AUTOSAR/StdTypes/float</TYPE-REFERENCE-REF>
+                                    </TYPE-REFERENCE>
+                                </CPP-IMPLEMENTATION-DATA-TYPE-ELEMENT>
+
+                            </SUB-ELEMENTS>
+                            <TYPE-EMITTER>TYPE_EMITTER_ARA</TYPE-EMITTER>
+                        </STD-CPP-IMPLEMENTATION-DATA-TYPE>
+                    </ELEMENTS>
+                </AR-PACKAGE>
+            </AR-PACKAGES>
+        </AR-PACKAGE>
+    </AR-PACKAGES>
+</AUTOSAR>

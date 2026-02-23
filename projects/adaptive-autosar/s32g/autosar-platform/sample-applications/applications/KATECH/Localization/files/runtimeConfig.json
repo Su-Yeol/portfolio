@@ -1,0 +1,9 @@
+{
+    "global" : {
+        "TEST_MODE":false,
+        "DUMP_LOG":false,
+        "DEVICE_TYPE_USB":true,
+        "__LOG_FILE_SELECT__": "MAP_TYPE = ./etc/kcity_240110.bin , ./etc/gps_log.bin",
+        "LOG_FILE": "./etc/kcity_240110.bin"
+    }
+}

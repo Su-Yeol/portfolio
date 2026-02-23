@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<AUTOSAR xmlns="http://autosar.org/schema/r4.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://autosar.org/schema/r4.0 AUTOSAR_00052.xsd">
+  <AR-PACKAGES>
+    <AR-PACKAGE>
+      <SHORT-NAME>apd</SHORT-NAME>
+      <AR-PACKAGES>
+        <AR-PACKAGE>
+          <SHORT-NAME>Machines</SHORT-NAME>
+          <AR-PACKAGES>
+            <AR-PACKAGE>
+              <SHORT-NAME>testSuiteEcu1Machine</SHORT-NAME>
+              <AR-PACKAGES>
+                <AR-PACKAGE>
+                  <!-- ProcessDesigns -->
+                  <SHORT-NAME>ProcessDesigns</SHORT-NAME>
+                  <ELEMENTS>
+                    <PROCESS-DESIGN>
+                      <SHORT-NAME>STBG_EMOAppSysFGInstance</SHORT-NAME>
+                      <EXECUTABLE-REFS>
+                        <EXECUTABLE-REF DEST="EXECUTABLE">/apd/Executables/STBG_EMOAppSysFG</EXECUTABLE-REF>
+                      </EXECUTABLE-REFS>
+                    </PROCESS-DESIGN>
+                    <PROCESS-DESIGN>
+                      <SHORT-NAME>STBG_EMOAppSysFG1Instance</SHORT-NAME>
+                      <EXECUTABLE-REFS>
+                        <EXECUTABLE-REF DEST="EXECUTABLE">/apd/Executables/STBG_EMOAppSysFG1</EXECUTABLE-REF>
+                      </EXECUTABLE-REFS>
+                    </PROCESS-DESIGN>
+                    <PROCESS-DESIGN>
+                      <SHORT-NAME>STBG_EMOAppSysFG2Instance</SHORT-NAME>
+                      <EXECUTABLE-REFS>
+                        <EXECUTABLE-REF DEST="EXECUTABLE">/apd/Executables/STBG_EMOAppSysFG2</EXECUTABLE-REF>
+                      </EXECUTABLE-REFS>
+                    </PROCESS-DESIGN>
+                  </ELEMENTS>
+                </AR-PACKAGE>
+              </AR-PACKAGES>
+            </AR-PACKAGE>
+          </AR-PACKAGES>
+        </AR-PACKAGE>
+      </AR-PACKAGES>
+    </AR-PACKAGE>
+  </AR-PACKAGES>
+</AUTOSAR>

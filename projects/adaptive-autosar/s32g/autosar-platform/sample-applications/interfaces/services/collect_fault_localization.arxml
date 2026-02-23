@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<AUTOSAR xmlns="http://autosar.org/schema/r4.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://autosar.org/schema/r4.0 AUTOSAR_00052.xsd">
+    <AR-PACKAGES>
+        <AR-PACKAGE>
+            <SHORT-NAME>adcm</SHORT-NAME>
+            <ELEMENTS>
+                <SERVICE-INTERFACE>
+                    <SHORT-NAME>collect_fault_localization</SHORT-NAME>
+                    <NAMESPACES>
+                        <SYMBOL-PROPS>
+                            <SHORT-NAME>adcm</SHORT-NAME>
+                            <SYMBOL>adcm</SYMBOL>
+                        </SYMBOL-PROPS>
+                    </NAMESPACES>
+                    <EVENTS>
+                        <VARIABLE-DATA-PROTOTYPE>
+                            <SHORT-NAME>collectFaultLocalizationEvent</SHORT-NAME>
+                            <TYPE-TREF DEST="STD-CPP-IMPLEMENTATION-DATA-TYPE">/adcm/events/collect_fault_localization_Objects</TYPE-TREF>
+                        </VARIABLE-DATA-PROTOTYPE>
+                    </EVENTS>
+                </SERVICE-INTERFACE>
+            </ELEMENTS>
+            <AR-PACKAGES>
+                <AR-PACKAGE>
+                    <SHORT-NAME>events</SHORT-NAME>
+                    <ELEMENTS>
+                        <STD-CPP-IMPLEMENTATION-DATA-TYPE>
+                          <SHORT-NAME>collect_fault_localization_Objects</SHORT-NAME>
+                          <CATEGORY>STRUCTURE</CATEGORY>
+                          <NAMESPACES>
+                              <SYMBOL-PROPS>
+                                  <SHORT-NAME>adcm</SHORT-NAME>
+                                  <SYMBOL>adcm</SYMBOL>
+                              </SYMBOL-PROPS>
+                          </NAMESPACES>
+                          <SUB-ELEMENTS>
+                              <CPP-IMPLEMENTATION-DATA-TYPE-ELEMENT>
+                                  <SHORT-NAME>AP</SHORT-NAME>
+                                  <TYPE-REFERENCE>
+                                      <INPLACE>false</INPLACE>
+                                      <TYPE-REFERENCE-REF DEST="STD-CPP-IMPLEMENTATION-DATA-TYPE">/AUTOSAR/StdTypes/uint8_t</TYPE-REFERENCE-REF>
+                                  </TYPE-REFERENCE>
+                              </CPP-IMPLEMENTATION-DATA-TYPE-ELEMENT>
+                              <CPP-IMPLEMENTATION-DATA-TYPE-ELEMENT>
+                                  <SHORT-NAME>Fault_Localization</SHORT-NAME>
+                                  <TYPE-REFERENCE>
+                                      <INPLACE>false</INPLACE>
+                                      <TYPE-REFERENCE-REF DEST="STD-CPP-IMPLEMENTATION-DATA-TYPE">/adcm/CppImplementationDataTypes/uint8Vector</TYPE-REFERENCE-REF>
+                                  </TYPE-REFERENCE>
+                              </CPP-IMPLEMENTATION-DATA-TYPE-ELEMENT>
+                          </SUB-ELEMENTS>
+                          <TYPE-EMITTER>TYPE_EMITTER_ARA</TYPE-EMITTER>
+                        </STD-CPP-IMPLEMENTATION-DATA-TYPE>
+                    </ELEMENTS>
+                </AR-PACKAGE>
+            </AR-PACKAGES>
+        </AR-PACKAGE>
+    </AR-PACKAGES>
+</AUTOSAR>
+

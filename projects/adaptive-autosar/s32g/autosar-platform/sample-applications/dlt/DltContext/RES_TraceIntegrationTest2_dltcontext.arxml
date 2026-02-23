@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<AUTOSAR xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://autosar.org/schema/r4.0" xsi:schemaLocation="http://autosar.org/schema/r4.0 AUTOSAR_00052.xsd">
+  <AR-PACKAGES>
+    <AR-PACKAGE>
+      <SHORT-NAME>apd</SHORT-NAME>
+      <AR-PACKAGES>
+        <AR-PACKAGE>
+          <SHORT-NAME>Dlt</SHORT-NAME>
+          <ELEMENTS>
+            <DLT-CONTEXT>
+              <SHORT-NAME>TraceIntegrationTest2_DltContext</SHORT-NAME>
+              <CONTEXT-ID>TIT2_CX</CONTEXT-ID>
+              <DLT-MESSAGES>
+                <DLT-MESSAGE-REF-CONDITIONAL>
+                  <DLT-MESSAGE-REF DEST="DLT-MESSAGE">/apd/TraceIntegrationTest/ModeledMsgs/Test1Msg</DLT-MESSAGE-REF>
+                </DLT-MESSAGE-REF-CONDITIONAL>
+              </DLT-MESSAGES>
+            </DLT-CONTEXT>
+          </ELEMENTS>
+        </AR-PACKAGE>
+      </AR-PACKAGES>
+    </AR-PACKAGE>
+  </AR-PACKAGES>
+</AUTOSAR>

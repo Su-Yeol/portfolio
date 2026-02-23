@@ -1,0 +1,6 @@
+{
+    "xml.catalogs": [
+        "/mnt/native-docker-build/catalog.xml"
+    ],
+    "apdup.svnfolder": "/mnt/svn"
+}

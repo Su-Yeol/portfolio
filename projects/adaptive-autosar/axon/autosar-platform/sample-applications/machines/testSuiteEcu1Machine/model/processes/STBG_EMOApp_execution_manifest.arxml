@@ -1,0 +1,273 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<AUTOSAR xmlns="http://autosar.org/schema/r4.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://autosar.org/schema/r4.0 AUTOSAR_00052.xsd">
+  <AR-PACKAGES>
+    <AR-PACKAGE>
+      <SHORT-NAME>apd</SHORT-NAME>
+      <AR-PACKAGES>
+        <AR-PACKAGE>
+          <!-- Machines -->
+          <SHORT-NAME>Machines</SHORT-NAME>
+          <AR-PACKAGES>
+            <AR-PACKAGE>
+              <!-- testSuiteEcu1Machine -->
+              <SHORT-NAME>testSuiteEcu1Machine</SHORT-NAME>
+              <AR-PACKAGES>
+                <AR-PACKAGE>
+                  <!-- ProcessToMachineMappings -->
+                  <SHORT-NAME>ProcessToMachineMappings</SHORT-NAME>
+                  <ELEMENTS>
+                    <PROCESS-TO-MACHINE-MAPPING-SET>
+                      <SHORT-NAME>STBG_EMOAppSysFGProcessToMachineMapping</SHORT-NAME>
+                      <PROCESS-TO-MACHINE-MAPPINGS>
+                        <PROCESS-TO-MACHINE-MAPPING>
+                          <SHORT-NAME>STBG_EMOAppSysFGSwcInstanceTotestSuiteEcu1Machine</SHORT-NAME>
+                          <MACHINE-REF DEST="MACHINE">/apd/Machines/testSuiteEcu1Machine/testSuiteEcu1Machine</MACHINE-REF>
+                          <PROCESS-REF DEST="PROCESS">/apd/Machines/testSuiteEcu1Machine/Processes/STBG_EMOAppSysFGInstance</PROCESS-REF>
+                        </PROCESS-TO-MACHINE-MAPPING>
+                      </PROCESS-TO-MACHINE-MAPPINGS>
+                    </PROCESS-TO-MACHINE-MAPPING-SET>
+                    <PROCESS-TO-MACHINE-MAPPING-SET>
+                      <SHORT-NAME>STBG_EMOAppSysFG1ProcessToMachineMapping</SHORT-NAME>
+                      <PROCESS-TO-MACHINE-MAPPINGS>
+                        <PROCESS-TO-MACHINE-MAPPING>
+                          <SHORT-NAME>STBG_EMOAppSysFG1SwcInstanceTotestSuiteEcu1Machine</SHORT-NAME>
+                          <MACHINE-REF DEST="MACHINE">/apd/Machines/testSuiteEcu1Machine/testSuiteEcu1Machine</MACHINE-REF>
+                          <PROCESS-REF DEST="PROCESS">/apd/Machines/testSuiteEcu1Machine/Processes/STBG_EMOAppSysFG1Instance</PROCESS-REF>
+                        </PROCESS-TO-MACHINE-MAPPING>
+                      </PROCESS-TO-MACHINE-MAPPINGS>
+                    </PROCESS-TO-MACHINE-MAPPING-SET>
+                    <PROCESS-TO-MACHINE-MAPPING-SET>
+                      <SHORT-NAME>STBG_EMOAppSysFG2ProcessToMachineMapping</SHORT-NAME>
+                      <PROCESS-TO-MACHINE-MAPPINGS>
+                        <PROCESS-TO-MACHINE-MAPPING>
+                          <SHORT-NAME>STBG_EMOAppSysFG2SwcInstanceTotestSuiteEcu1Machine</SHORT-NAME>
+                          <MACHINE-REF DEST="MACHINE">/apd/Machines/testSuiteEcu1Machine/testSuiteEcu1Machine</MACHINE-REF>
+                          <PROCESS-REF DEST="PROCESS">/apd/Machines/testSuiteEcu1Machine/Processes/STBG_EMOAppSysFG2Instance</PROCESS-REF>
+                        </PROCESS-TO-MACHINE-MAPPING>
+                      </PROCESS-TO-MACHINE-MAPPINGS>
+                    </PROCESS-TO-MACHINE-MAPPING-SET>
+                  </ELEMENTS>
+                </AR-PACKAGE>
+                <AR-PACKAGE>
+                  <!-- Processes -->
+                  <SHORT-NAME>Processes</SHORT-NAME>
+                  <ELEMENTS>
+                    <!-- EMOAppSysFG -->
+                    <PROCESS>
+                      <SHORT-NAME>STBG_EMOAppSysFGInstance</SHORT-NAME>
+                      <DESIGN-REF DEST="PROCESS-DESIGN">/apd/Machines/testSuiteEcu1Machine/ProcessDesigns/STBG_EMOAppSysFGInstance</DESIGN-REF>
+                      <EXECUTABLE-REFS>
+                        <EXECUTABLE-REF DEST="EXECUTABLE">/apd/Executables/STBG_EMOAppSysFG</EXECUTABLE-REF>
+                      </EXECUTABLE-REFS>
+                      <PROCESS-STATE-MACHINE>
+                        <SHORT-NAME>state_machine</SHORT-NAME>
+                        <TYPE-TREF DEST="MODE-DECLARATION-GROUP">/apd/ModeDeclarationGroups/ProcessStateMachine</TYPE-TREF>
+                      </PROCESS-STATE-MACHINE>
+                      <STATE-DEPENDENT-STARTUP-CONFIGS>
+                        <STATE-DEPENDENT-STARTUP-CONFIG>
+                          <FUNCTION-GROUP-STATE-IREFS>
+                            <FUNCTION-GROUP-STATE-IREF>
+                              <CONTEXT-MODE-DECLARATION-GROUP-PROTOTYPE-REF DEST="MODE-DECLARATION-GROUP-PROTOTYPE">/apd/Machines/testSuiteEcu1Machine/FunctionGroupSets/testSuiteEcu1FunctionGroups/SystemTestFunctionGroup</CONTEXT-MODE-DECLARATION-GROUP-PROTOTYPE-REF>
+                              <TARGET-MODE-DECLARATION-REF DEST="MODE-DECLARATION">/apd/Machines/testSuiteEcu1Machine/ModeDeclarationGroups/SystemTestFunctionGroup/STC_EMO_00001_Driving</TARGET-MODE-DECLARATION-REF>
+                            </FUNCTION-GROUP-STATE-IREF>
+                            <FUNCTION-GROUP-STATE-IREF>
+                              <CONTEXT-MODE-DECLARATION-GROUP-PROTOTYPE-REF DEST="MODE-DECLARATION-GROUP-PROTOTYPE">/apd/Machines/testSuiteEcu1Machine/FunctionGroupSets/testSuiteEcu1FunctionGroups/SystemTestFunctionGroup</CONTEXT-MODE-DECLARATION-GROUP-PROTOTYPE-REF>
+                              <TARGET-MODE-DECLARATION-REF DEST="MODE-DECLARATION">/apd/Machines/testSuiteEcu1Machine/ModeDeclarationGroups/SystemTestFunctionGroup/STC_EMO_00001_Parking</TARGET-MODE-DECLARATION-REF>
+                            </FUNCTION-GROUP-STATE-IREF>
+                            <FUNCTION-GROUP-STATE-IREF>
+                              <CONTEXT-MODE-DECLARATION-GROUP-PROTOTYPE-REF DEST="MODE-DECLARATION-GROUP-PROTOTYPE">/apd/Machines/testSuiteEcu1Machine/FunctionGroupSets/testSuiteEcu1FunctionGroups/SystemTestFunctionGroup</CONTEXT-MODE-DECLARATION-GROUP-PROTOTYPE-REF>
+                              <TARGET-MODE-DECLARATION-REF DEST="MODE-DECLARATION">/apd/Machines/testSuiteEcu1Machine/ModeDeclarationGroups/SystemTestFunctionGroup/STC_EMO_00001_Shutdown</TARGET-MODE-DECLARATION-REF>
+                            </FUNCTION-GROUP-STATE-IREF>
+                            <FUNCTION-GROUP-STATE-IREF>
+                              <CONTEXT-MODE-DECLARATION-GROUP-PROTOTYPE-REF DEST="MODE-DECLARATION-GROUP-PROTOTYPE">/apd/Machines/testSuiteEcu1Machine/FunctionGroupSets/testSuiteEcu1FunctionGroups/SystemTestFunctionGroup</CONTEXT-MODE-DECLARATION-GROUP-PROTOTYPE-REF>
+                              <TARGET-MODE-DECLARATION-REF DEST="MODE-DECLARATION">/apd/Machines/testSuiteEcu1Machine/ModeDeclarationGroups/SystemTestFunctionGroup/STC_EMO_00001_Startup</TARGET-MODE-DECLARATION-REF>
+                            </FUNCTION-GROUP-STATE-IREF>
+                            <FUNCTION-GROUP-STATE-IREF>
+                              <CONTEXT-MODE-DECLARATION-GROUP-PROTOTYPE-REF DEST="MODE-DECLARATION-GROUP-PROTOTYPE">/apd/Machines/testSuiteEcu1Machine/FunctionGroupSets/testSuiteEcu1FunctionGroups/SystemTestFunctionGroup</CONTEXT-MODE-DECLARATION-GROUP-PROTOTYPE-REF>
+                              <TARGET-MODE-DECLARATION-REF DEST="MODE-DECLARATION">/apd/Machines/testSuiteEcu1Machine/ModeDeclarationGroups/SystemTestFunctionGroup/STC_EMO_00001_Restart</TARGET-MODE-DECLARATION-REF>
+                            </FUNCTION-GROUP-STATE-IREF>
+                            <FUNCTION-GROUP-STATE-IREF>
+                              <CONTEXT-MODE-DECLARATION-GROUP-PROTOTYPE-REF DEST="MODE-DECLARATION-GROUP-PROTOTYPE">/apd/Machines/testSuiteEcu1Machine/FunctionGroupSets/testSuiteEcu1FunctionGroups/SystemTestFunctionGroup</CONTEXT-MODE-DECLARATION-GROUP-PROTOTYPE-REF>
+                              <TARGET-MODE-DECLARATION-REF DEST="MODE-DECLARATION">/apd/Machines/testSuiteEcu1Machine/ModeDeclarationGroups/SystemTestFunctionGroup/STC_EMO_00002_Driving</TARGET-MODE-DECLARATION-REF>
+                            </FUNCTION-GROUP-STATE-IREF>
+                            <FUNCTION-GROUP-STATE-IREF>
+                              <CONTEXT-MODE-DECLARATION-GROUP-PROTOTYPE-REF DEST="MODE-DECLARATION-GROUP-PROTOTYPE">/apd/Machines/testSuiteEcu1Machine/FunctionGroupSets/testSuiteEcu1FunctionGroups/SystemTestFunctionGroup</CONTEXT-MODE-DECLARATION-GROUP-PROTOTYPE-REF>
+                              <TARGET-MODE-DECLARATION-REF DEST="MODE-DECLARATION">/apd/Machines/testSuiteEcu1Machine/ModeDeclarationGroups/SystemTestFunctionGroup/STC_EMO_00002_Parking</TARGET-MODE-DECLARATION-REF>
+                            </FUNCTION-GROUP-STATE-IREF>
+                            <FUNCTION-GROUP-STATE-IREF>
+                              <CONTEXT-MODE-DECLARATION-GROUP-PROTOTYPE-REF DEST="MODE-DECLARATION-GROUP-PROTOTYPE">/apd/Machines/testSuiteEcu1Machine/FunctionGroupSets/testSuiteEcu1FunctionGroups/SystemTestFunctionGroup</CONTEXT-MODE-DECLARATION-GROUP-PROTOTYPE-REF>
+                              <TARGET-MODE-DECLARATION-REF DEST="MODE-DECLARATION">/apd/Machines/testSuiteEcu1Machine/ModeDeclarationGroups/SystemTestFunctionGroup/STC_EMO_00002_Shutdown</TARGET-MODE-DECLARATION-REF>
+                            </FUNCTION-GROUP-STATE-IREF>
+                            <FUNCTION-GROUP-STATE-IREF>
+                              <CONTEXT-MODE-DECLARATION-GROUP-PROTOTYPE-REF DEST="MODE-DECLARATION-GROUP-PROTOTYPE">/apd/Machines/testSuiteEcu1Machine/FunctionGroupSets/testSuiteEcu1FunctionGroups/SystemTestFunctionGroup</CONTEXT-MODE-DECLARATION-GROUP-PROTOTYPE-REF>
+                              <TARGET-MODE-DECLARATION-REF DEST="MODE-DECLARATION">/apd/Machines/testSuiteEcu1Machine/ModeDeclarationGroups/SystemTestFunctionGroup/STC_EMO_00002_Startup</TARGET-MODE-DECLARATION-REF>
+                            </FUNCTION-GROUP-STATE-IREF>
+                            <FUNCTION-GROUP-STATE-IREF>
+                              <CONTEXT-MODE-DECLARATION-GROUP-PROTOTYPE-REF DEST="MODE-DECLARATION-GROUP-PROTOTYPE">/apd/Machines/testSuiteEcu1Machine/FunctionGroupSets/testSuiteEcu1FunctionGroups/SystemTestFunctionGroup</CONTEXT-MODE-DECLARATION-GROUP-PROTOTYPE-REF>
+                              <TARGET-MODE-DECLARATION-REF DEST="MODE-DECLARATION">/apd/Machines/testSuiteEcu1Machine/ModeDeclarationGroups/SystemTestFunctionGroup/STC_EMO_00002_Restart</TARGET-MODE-DECLARATION-REF>
+                            </FUNCTION-GROUP-STATE-IREF>
+                          </FUNCTION-GROUP-STATE-IREFS>
+                          <RESOURCE-GROUP-REF DEST="RESOURCE-GROUP">/apd/Machines/testSuiteEcu1Machine/testSuiteEcu1Machine/Linux/ResourceGroup1</RESOURCE-GROUP-REF>
+                          <STARTUP-CONFIG-REF DEST="STARTUP-CONFIG">/apd/Machines/testSuiteEcu1Machine/StartupConfigSets/STBG_EMOAppSysFGStartup</STARTUP-CONFIG-REF>
+                        </STATE-DEPENDENT-STARTUP-CONFIG>
+                      </STATE-DEPENDENT-STARTUP-CONFIGS>
+                    </PROCESS>
+                    <!-- EMOAppSysFG1 -->
+                    <PROCESS>
+                      <SHORT-NAME>STBG_EMOAppSysFG1Instance</SHORT-NAME>
+                      <DESIGN-REF DEST="PROCESS-DESIGN">/apd/Machines/testSuiteEcu1Machine/ProcessDesigns/STBG_EMOAppSysFG1Instance</DESIGN-REF>
+                      <EXECUTABLE-REFS>
+                        <EXECUTABLE-REF DEST="EXECUTABLE">/apd/Executables/STBG_EMOAppSysFG1</EXECUTABLE-REF>
+                      </EXECUTABLE-REFS>
+                      <PROCESS-STATE-MACHINE>
+                        <SHORT-NAME>state_machine</SHORT-NAME>
+                        <TYPE-TREF DEST="MODE-DECLARATION-GROUP">/apd/ModeDeclarationGroups/ProcessStateMachine</TYPE-TREF>
+                      </PROCESS-STATE-MACHINE>
+                      <STATE-DEPENDENT-STARTUP-CONFIGS>
+                        <STATE-DEPENDENT-STARTUP-CONFIG>
+                          <FUNCTION-GROUP-STATE-IREFS>
+                            <FUNCTION-GROUP-STATE-IREF>
+                              <CONTEXT-MODE-DECLARATION-GROUP-PROTOTYPE-REF DEST="MODE-DECLARATION-GROUP-PROTOTYPE">/apd/Machines/testSuiteEcu1Machine/FunctionGroupSets/testSuiteEcu1FunctionGroups/SystemTestFunctionGroup1</CONTEXT-MODE-DECLARATION-GROUP-PROTOTYPE-REF>
+                              <TARGET-MODE-DECLARATION-REF DEST="MODE-DECLARATION">/apd/Machines/testSuiteEcu1Machine/ModeDeclarationGroups/SystemTestFunctionGroup1/STC_EMO_00002_Running</TARGET-MODE-DECLARATION-REF>
+                            </FUNCTION-GROUP-STATE-IREF>
+                            <FUNCTION-GROUP-STATE-IREF>
+                              <CONTEXT-MODE-DECLARATION-GROUP-PROTOTYPE-REF DEST="MODE-DECLARATION-GROUP-PROTOTYPE">/apd/Machines/testSuiteEcu1Machine/FunctionGroupSets/testSuiteEcu1FunctionGroups/SystemTestFunctionGroup1</CONTEXT-MODE-DECLARATION-GROUP-PROTOTYPE-REF>
+                              <TARGET-MODE-DECLARATION-REF DEST="MODE-DECLARATION">/apd/Machines/testSuiteEcu1Machine/ModeDeclarationGroups/SystemTestFunctionGroup1/STC_EMO_00002_Fallback</TARGET-MODE-DECLARATION-REF>
+                            </FUNCTION-GROUP-STATE-IREF>
+                            <FUNCTION-GROUP-STATE-IREF>
+                              <CONTEXT-MODE-DECLARATION-GROUP-PROTOTYPE-REF DEST="MODE-DECLARATION-GROUP-PROTOTYPE">/apd/Machines/testSuiteEcu1Machine/FunctionGroupSets/testSuiteEcu1FunctionGroups/SystemTestFunctionGroup1</CONTEXT-MODE-DECLARATION-GROUP-PROTOTYPE-REF>
+                              <TARGET-MODE-DECLARATION-REF DEST="MODE-DECLARATION">/apd/Machines/testSuiteEcu1Machine/ModeDeclarationGroups/SystemTestFunctionGroup1/STC_EMO_00002_Diag</TARGET-MODE-DECLARATION-REF>
+                            </FUNCTION-GROUP-STATE-IREF>
+                          </FUNCTION-GROUP-STATE-IREFS>
+                          <RESOURCE-GROUP-REF DEST="RESOURCE-GROUP">/apd/Machines/testSuiteEcu1Machine/testSuiteEcu1Machine/Linux/ResourceGroup1</RESOURCE-GROUP-REF>
+                          <STARTUP-CONFIG-REF DEST="STARTUP-CONFIG">/apd/Machines/testSuiteEcu1Machine/StartupConfigSets/STBG_EMOAppSysFG1Startup</STARTUP-CONFIG-REF>
+                        </STATE-DEPENDENT-STARTUP-CONFIG>
+                      </STATE-DEPENDENT-STARTUP-CONFIGS>
+                    </PROCESS>
+                    <!-- EMOAppSysFG2 -->
+                    <PROCESS>
+                      <SHORT-NAME>STBG_EMOAppSysFG2Instance</SHORT-NAME>
+                      <DESIGN-REF DEST="PROCESS-DESIGN">/apd/Machines/testSuiteEcu1Machine/ProcessDesigns/STBG_EMOAppSysFG2Instance</DESIGN-REF>
+                      <EXECUTABLE-REFS>
+                        <EXECUTABLE-REF DEST="EXECUTABLE">/apd/Executables/STBG_EMOAppSysFG2</EXECUTABLE-REF>
+                      </EXECUTABLE-REFS>
+                      <PROCESS-STATE-MACHINE>
+                        <SHORT-NAME>state_machine</SHORT-NAME>
+                        <TYPE-TREF DEST="MODE-DECLARATION-GROUP">/apd/ModeDeclarationGroups/ProcessStateMachine</TYPE-TREF>
+                      </PROCESS-STATE-MACHINE>
+                      <STATE-DEPENDENT-STARTUP-CONFIGS>
+                        <STATE-DEPENDENT-STARTUP-CONFIG>
+                          <FUNCTION-GROUP-STATE-IREFS>
+                            <FUNCTION-GROUP-STATE-IREF>
+                              <CONTEXT-MODE-DECLARATION-GROUP-PROTOTYPE-REF DEST="MODE-DECLARATION-GROUP-PROTOTYPE">/apd/Machines/testSuiteEcu1Machine/FunctionGroupSets/testSuiteEcu1FunctionGroups/SystemTestFunctionGroup2</CONTEXT-MODE-DECLARATION-GROUP-PROTOTYPE-REF>
+                              <TARGET-MODE-DECLARATION-REF DEST="MODE-DECLARATION">/apd/Machines/testSuiteEcu1Machine/ModeDeclarationGroups/SystemTestFunctionGroup2/STC_EMO_00002_On</TARGET-MODE-DECLARATION-REF>
+                            </FUNCTION-GROUP-STATE-IREF>
+                            <FUNCTION-GROUP-STATE-IREF>
+                              <CONTEXT-MODE-DECLARATION-GROUP-PROTOTYPE-REF DEST="MODE-DECLARATION-GROUP-PROTOTYPE">/apd/Machines/testSuiteEcu1Machine/FunctionGroupSets/testSuiteEcu1FunctionGroups/SystemTestFunctionGroup2</CONTEXT-MODE-DECLARATION-GROUP-PROTOTYPE-REF>
+                              <TARGET-MODE-DECLARATION-REF DEST="MODE-DECLARATION">/apd/Machines/testSuiteEcu1Machine/ModeDeclarationGroups/SystemTestFunctionGroup2/STC_EMO_00002_Activate</TARGET-MODE-DECLARATION-REF>
+                            </FUNCTION-GROUP-STATE-IREF>
+                          </FUNCTION-GROUP-STATE-IREFS>
+                          <RESOURCE-GROUP-REF DEST="RESOURCE-GROUP">/apd/Machines/testSuiteEcu1Machine/testSuiteEcu1Machine/Linux/ResourceGroup1</RESOURCE-GROUP-REF>
+                          <STARTUP-CONFIG-REF DEST="STARTUP-CONFIG">/apd/Machines/testSuiteEcu1Machine/StartupConfigSets/STBG_EMOAppSysFG2Startup</STARTUP-CONFIG-REF>
+                        </STATE-DEPENDENT-STARTUP-CONFIG>
+                      </STATE-DEPENDENT-STARTUP-CONFIGS>
+                    </PROCESS>
+                  </ELEMENTS>
+                </AR-PACKAGE>
+                <AR-PACKAGE>
+                  <!-- StartupConfigSets -->
+                  <SHORT-NAME>StartupConfigSets</SHORT-NAME>
+                  <ELEMENTS>
+                    <STARTUP-CONFIG>
+                      <SHORT-NAME>STBG_EMOAppSysFGStartup</SHORT-NAME>
+                      <ENVIRONMENT-VARIABLES>
+                        <TAG-WITH-OPTIONAL-VALUE>
+                          <KEY>DLT_LOG_MODE</KEY>
+                          <VALUE>3</VALUE>
+                        </TAG-WITH-OPTIONAL-VALUE>
+                      </ENVIRONMENT-VARIABLES>
+                      <SCHEDULING-POLICY>SCHEDULING-POLICY-ROUND-ROBIN</SCHEDULING-POLICY>
+                      <SCHEDULING-PRIORITY>12</SCHEDULING-PRIORITY>
+                      <TERMINATION-BEHAVIOR>PROCESS-IS-NOT-SELF-TERMINATING</TERMINATION-BEHAVIOR>
+                    </STARTUP-CONFIG>
+                    <STARTUP-CONFIG>
+                      <SHORT-NAME>STBG_EMOAppSysFG1Startup</SHORT-NAME>
+                      <ENVIRONMENT-VARIABLES>
+                        <TAG-WITH-OPTIONAL-VALUE>
+                          <KEY>DLT_LOG_MODE</KEY>
+                          <VALUE>3</VALUE>
+                        </TAG-WITH-OPTIONAL-VALUE>
+                      </ENVIRONMENT-VARIABLES>
+                      <SCHEDULING-POLICY>SCHEDULING-POLICY-ROUND-ROBIN</SCHEDULING-POLICY>
+                      <SCHEDULING-PRIORITY>12</SCHEDULING-PRIORITY>
+                      <TERMINATION-BEHAVIOR>PROCESS-IS-NOT-SELF-TERMINATING</TERMINATION-BEHAVIOR>
+                    </STARTUP-CONFIG>
+                    <STARTUP-CONFIG>
+                      <SHORT-NAME>STBG_EMOAppSysFG2Startup</SHORT-NAME>
+                      <ENVIRONMENT-VARIABLES>
+                        <TAG-WITH-OPTIONAL-VALUE>
+                          <KEY>DLT_LOG_MODE</KEY>
+                          <VALUE>3</VALUE>
+                        </TAG-WITH-OPTIONAL-VALUE>
+                      </ENVIRONMENT-VARIABLES>
+                      <SCHEDULING-POLICY>SCHEDULING-POLICY-ROUND-ROBIN</SCHEDULING-POLICY>
+                      <SCHEDULING-PRIORITY>12</SCHEDULING-PRIORITY>
+                      <TERMINATION-BEHAVIOR>PROCESS-IS-NOT-SELF-TERMINATING</TERMINATION-BEHAVIOR>
+                    </STARTUP-CONFIG>
+                  </ELEMENTS>
+                </AR-PACKAGE>
+                <AR-PACKAGE>
+                  <SHORT-NAME>DltApplicationToProcessMappings</SHORT-NAME>
+                  <ELEMENTS>
+                    <DLT-APPLICATION-TO-PROCESS-MAPPING>
+                      <SHORT-NAME>STBG_EMOAppSysFGInstanceDltApplicationToProcessMapping</SHORT-NAME>
+                      <DLT-APPLICATION-REF DEST="DLT-APPLICATION">/apd/Machines/testSuiteEcu1Machine/dlt/testSuiteEcu1MachineDltEcu/STBG_EMOAppSysFGApplication</DLT-APPLICATION-REF>
+                      <PROCESS-REF DEST="PROCESS">/apd/Machines/testSuiteEcu1Machine/Processes/STBG_EMOAppSysFGInstance</PROCESS-REF>
+                    </DLT-APPLICATION-TO-PROCESS-MAPPING>
+                    <DLT-APPLICATION-TO-PROCESS-MAPPING>
+                      <SHORT-NAME>STBG_EMOAppSysFG1InstanceDltApplicationToProcessMapping</SHORT-NAME>
+                      <DLT-APPLICATION-REF DEST="DLT-APPLICATION">/apd/Machines/testSuiteEcu1Machine/dlt/testSuiteEcu1MachineDltEcu/STBG_EMOAppSysFG1Application</DLT-APPLICATION-REF>
+                      <PROCESS-REF DEST="PROCESS">/apd/Machines/testSuiteEcu1Machine/Processes/STBG_EMOAppSysFG1Instance</PROCESS-REF>
+                    </DLT-APPLICATION-TO-PROCESS-MAPPING>
+                    <DLT-APPLICATION-TO-PROCESS-MAPPING>
+                      <SHORT-NAME>STBG_EMOAppSysFG2InstanceDltApplicationToProcessMapping</SHORT-NAME>
+                      <DLT-APPLICATION-REF DEST="DLT-APPLICATION">/apd/Machines/testSuiteEcu1Machine/dlt/testSuiteEcu1MachineDltEcu/STBG_EMOAppSysFG2Application</DLT-APPLICATION-REF>
+                      <PROCESS-REF DEST="PROCESS">/apd/Machines/testSuiteEcu1Machine/Processes/STBG_EMOAppSysFG2Instance</PROCESS-REF>
+                    </DLT-APPLICATION-TO-PROCESS-MAPPING>
+                    <DLT-LOG-SINK-TO-PORT-PROTOTYPE-MAPPING>
+                      <SHORT-NAME>STBG_EMOAppSysFGInstanceDltLogSinkToPortPrototypeMapping</SHORT-NAME>
+                      <DLT-CONTEXT-REF DEST="DLT-CONTEXT">/apd/Dlt/DefaultDltContext</DLT-CONTEXT-REF>
+                      <DLT-LOG-SINK-REFS>
+                        <DLT-LOG-SINK-REF DEST="DLT-LOG-SINK">/apd/Dlt/STBG_EMOAppSysFGFileDltSink</DLT-LOG-SINK-REF>
+                        <DLT-LOG-SINK-REF DEST="DLT-LOG-SINK">/apd/Dlt/RemoteDltSink</DLT-LOG-SINK-REF>
+                      </DLT-LOG-SINK-REFS>
+                      <PROCESS-REF DEST="PROCESS">/apd/Machines/testSuiteEcu1Machine/Processes/STBG_EMOAppSysFGInstance</PROCESS-REF>
+                    </DLT-LOG-SINK-TO-PORT-PROTOTYPE-MAPPING>
+                    <DLT-LOG-SINK-TO-PORT-PROTOTYPE-MAPPING>
+                      <SHORT-NAME>STBG_EMOAppSysFG1InstanceDltLogSinkToPortPrototypeMapping</SHORT-NAME>
+                      <DLT-CONTEXT-REF DEST="DLT-CONTEXT">/apd/Dlt/DefaultDltContext</DLT-CONTEXT-REF>
+                      <DLT-LOG-SINK-REFS>
+                        <DLT-LOG-SINK-REF DEST="DLT-LOG-SINK">/apd/Dlt/STBG_EMOAppSysFG1FileDltSink</DLT-LOG-SINK-REF>
+                        <DLT-LOG-SINK-REF DEST="DLT-LOG-SINK">/apd/Dlt/RemoteDltSink</DLT-LOG-SINK-REF>
+                      </DLT-LOG-SINK-REFS>
+                      <PROCESS-REF DEST="PROCESS">/apd/Machines/testSuiteEcu1Machine/Processes/STBG_EMOAppSysFG1Instance</PROCESS-REF>
+                    </DLT-LOG-SINK-TO-PORT-PROTOTYPE-MAPPING>
+                    <DLT-LOG-SINK-TO-PORT-PROTOTYPE-MAPPING>
+                      <SHORT-NAME>STBG_EMOAppSysFG2InstanceDltLogSinkToPortPrototypeMapping</SHORT-NAME>
+                      <DLT-CONTEXT-REF DEST="DLT-CONTEXT">/apd/Dlt/DefaultDltContext</DLT-CONTEXT-REF>
+                      <DLT-LOG-SINK-REFS>
+                        <DLT-LOG-SINK-REF DEST="DLT-LOG-SINK">/apd/Dlt/STBG_EMOAppSysFG2FileDltSink</DLT-LOG-SINK-REF>
+                        <DLT-LOG-SINK-REF DEST="DLT-LOG-SINK">/apd/Dlt/RemoteDltSink</DLT-LOG-SINK-REF>
+                      </DLT-LOG-SINK-REFS>
+                      <PROCESS-REF DEST="PROCESS">/apd/Machines/testSuiteEcu1Machine/Processes/STBG_EMOAppSysFG2Instance</PROCESS-REF>
+                    </DLT-LOG-SINK-TO-PORT-PROTOTYPE-MAPPING>
+                  </ELEMENTS>
+                </AR-PACKAGE>
+              </AR-PACKAGES>
+            </AR-PACKAGE>
+          </AR-PACKAGES>
+        </AR-PACKAGE>
+      </AR-PACKAGES>
+    </AR-PACKAGE>
+  </AR-PACKAGES>
+</AUTOSAR>

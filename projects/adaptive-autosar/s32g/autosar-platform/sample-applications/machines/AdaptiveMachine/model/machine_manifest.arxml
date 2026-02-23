@@ -1,0 +1,473 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<AUTOSAR xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://autosar.org/schema/r4.0" xsi:schemaLocation="http://autosar.org/schema/r4.0 AUTOSAR_00052.xsd">
+  <AR-PACKAGES>
+    <AR-PACKAGE>
+      <SHORT-NAME>adcm</SHORT-NAME>
+      <AR-PACKAGES>
+        <AR-PACKAGE>
+          <SHORT-NAME>Machines</SHORT-NAME>
+          <AR-PACKAGES>
+            <AR-PACKAGE>
+              <SHORT-NAME>AdaptiveMachine</SHORT-NAME>
+              <ELEMENTS>
+                <MACHINE>
+                  <SHORT-NAME>AdaptiveMachine</SHORT-NAME>
+                  <DEFAULT-APPLICATION-TIMEOUT>
+                    <EXIT-TIMEOUT-VALUE>0.5</EXIT-TIMEOUT-VALUE>
+                  </DEFAULT-APPLICATION-TIMEOUT>
+                  <ENVIRONMENT-VARIABLES>
+                    <TAG-WITH-OPTIONAL-VALUE>
+                      <KEY>DLT_LOG_MODE</KEY>
+                      <VALUE>3</VALUE>
+                    </TAG-WITH-OPTIONAL-VALUE>
+                  </ENVIRONMENT-VARIABLES>
+                  <MACHINE-DESIGN-REF DEST="MACHINE-DESIGN">/adcm/MachineDesigns/AdaptiveMachineDesign</MACHINE-DESIGN-REF>
+                  <MODULE-INSTANTIATIONS>
+                    <LOG-AND-TRACE-INSTANTIATION>
+                      <SHORT-NAME>LogAndTraceInstanciation</SHORT-NAME>
+                      <LOG-SINK-REFS>
+                        <LOG-SINK-REF DEST="DLT-LOG-SINK">/adcm/Machines/AdaptiveMachine/Dlt/ConsoleDltSink</LOG-SINK-REF>
+                      </LOG-SINK-REFS>
+                    </LOG-AND-TRACE-INSTANTIATION>
+                    <OS-MODULE-INSTANTIATION>
+                      <SHORT-NAME>Linux</SHORT-NAME>
+                      <RESOURCE-GROUPS>
+                        <RESOURCE-GROUP>
+                          <SHORT-NAME>ResourceGroupADCM</SHORT-NAME>
+                          <CPU-USAGE>95</CPU-USAGE>
+                          <MEM-USAGE>12000000000</MEM-USAGE>
+                        </RESOURCE-GROUP>
+                      </RESOURCE-GROUPS>
+                    </OS-MODULE-INSTANTIATION>
+                    <UCM-MASTER-MODULE-INSTANTIATION>
+                      <SHORT-NAME>UcmInstance</SHORT-NAME>
+                      <IDENTIFIER>RadarFusionMachineUCM</IDENTIFIER>
+                    </UCM-MASTER-MODULE-INSTANTIATION>
+                  </MODULE-INSTANTIATIONS>
+                  <PROCESSORS>
+                    <PROCESSOR>
+                      <SHORT-NAME>DefaultProcessor</SHORT-NAME>
+                      <CORES>
+                        <PROCESSOR-CORE>
+                          <SHORT-NAME>ProcessorCore0</SHORT-NAME>
+                          <CORE-ID>0</CORE-ID>
+                        </PROCESSOR-CORE>
+                        <PROCESSOR-CORE>
+                          <SHORT-NAME>ProcessorCore1</SHORT-NAME>
+                          <CORE-ID>1</CORE-ID>
+                        </PROCESSOR-CORE>
+                      </CORES>
+                    </PROCESSOR>
+                  </PROCESSORS>
+                </MACHINE>
+              </ELEMENTS>
+              <AR-PACKAGES>
+                <AR-PACKAGE>
+                  <SHORT-NAME>E2E</SHORT-NAME>
+                  <ELEMENTS>
+                    <E-2-E-PROFILE-CONFIGURATION-SET>
+                      <SHORT-NAME>e2eprofiles</SHORT-NAME>
+                      <E-2-E-PROFILE-CONFIGURATIONS>
+                        <E-2-E-PROFILE-CONFIGURATION>
+                          <SHORT-NAME>PROFILE_01</SHORT-NAME>
+                          <MAX-DELTA-COUNTER>1</MAX-DELTA-COUNTER>
+                          <MAX-ERROR-STATE-INIT>0</MAX-ERROR-STATE-INIT>
+                          <MAX-ERROR-STATE-INVALID>0</MAX-ERROR-STATE-INVALID>
+                          <MAX-ERROR-STATE-VALID>0</MAX-ERROR-STATE-VALID>
+                          <MIN-OK-STATE-INIT>1</MIN-OK-STATE-INIT>
+                          <MIN-OK-STATE-INVALID>1</MIN-OK-STATE-INVALID>
+                          <MIN-OK-STATE-VALID>1</MIN-OK-STATE-VALID>
+                          <PROFILE-NAME>PROFILE_01</PROFILE-NAME>
+                          <WINDOW-SIZE-INIT>1</WINDOW-SIZE-INIT>
+                          <WINDOW-SIZE-INVALID>1</WINDOW-SIZE-INVALID>
+                          <WINDOW-SIZE-VALID>1</WINDOW-SIZE-VALID>
+                        </E-2-E-PROFILE-CONFIGURATION>
+                      </E-2-E-PROFILE-CONFIGURATIONS>
+                    </E-2-E-PROFILE-CONFIGURATION-SET>
+                  </ELEMENTS>
+                </AR-PACKAGE>
+                <AR-PACKAGE>
+                  <SHORT-NAME>Dlt</SHORT-NAME>
+                  <ELEMENTS>
+                    <DLT-ECU>
+                      <SHORT-NAME>AdcmDltEcu</SHORT-NAME>
+                      <APPLICATIONS>
+                        <DLT-APPLICATION>
+                          <SHORT-NAME>Control</SHORT-NAME>
+                          <APPLICATION-DESCRIPTION>ADCM Control Application</APPLICATION-DESCRIPTION>
+                          <APPLICATION-ID>CONT</APPLICATION-ID>
+                          <CONTEXTS>
+                            <DLT-CONTEXT-REF-CONDITIONAL>
+                              <DLT-CONTEXT-REF DEST="DLT-CONTEXT">/adcm/Machines/AdaptiveMachine/Dlt/DefaultDltContext</DLT-CONTEXT-REF>
+                            </DLT-CONTEXT-REF-CONDITIONAL>
+                          </CONTEXTS>
+                        </DLT-APPLICATION>
+                        <DLT-APPLICATION>
+                          <SHORT-NAME>Hdmap</SHORT-NAME>
+                          <APPLICATION-DESCRIPTION>ADCM Hdmap Application</APPLICATION-DESCRIPTION>
+                          <APPLICATION-ID>HDMA</APPLICATION-ID>
+                          <CONTEXTS>
+                            <DLT-CONTEXT-REF-CONDITIONAL>
+                              <DLT-CONTEXT-REF DEST="DLT-CONTEXT">/adcm/Machines/AdaptiveMachine/Dlt/DefaultDltContext</DLT-CONTEXT-REF>
+                            </DLT-CONTEXT-REF-CONDITIONAL>
+                          </CONTEXTS>
+                        </DLT-APPLICATION>
+                        <DLT-APPLICATION>
+                          <SHORT-NAME>Hmi</SHORT-NAME>
+                          <APPLICATION-DESCRIPTION>ADCM Hmi Application</APPLICATION-DESCRIPTION>
+                          <APPLICATION-ID>HMI</APPLICATION-ID>
+                          <CONTEXTS>
+                            <DLT-CONTEXT-REF-CONDITIONAL>
+                              <DLT-CONTEXT-REF DEST="DLT-CONTEXT">/adcm/Machines/AdaptiveMachine/Dlt/DefaultDltContext</DLT-CONTEXT-REF>
+                            </DLT-CONTEXT-REF-CONDITIONAL>
+                          </CONTEXTS>
+                        </DLT-APPLICATION>
+                        <DLT-APPLICATION>
+                          <SHORT-NAME>HubNetAP</SHORT-NAME>
+                          <APPLICATION-DESCRIPTION>ADCM HubNetAP Application</APPLICATION-DESCRIPTION>
+                          <APPLICATION-ID>HUBN</APPLICATION-ID>
+                          <CONTEXTS>
+                            <DLT-CONTEXT-REF-CONDITIONAL>
+                              <DLT-CONTEXT-REF DEST="DLT-CONTEXT">/adcm/Machines/AdaptiveMachine/Dlt/DefaultDltContext</DLT-CONTEXT-REF>
+                            </DLT-CONTEXT-REF-CONDITIONAL>
+                          </CONTEXTS>
+                        </DLT-APPLICATION>
+                        <DLT-APPLICATION>
+                          <SHORT-NAME>Localization</SHORT-NAME>
+                          <APPLICATION-DESCRIPTION>ADCM Localization Application</APPLICATION-DESCRIPTION>
+                          <APPLICATION-ID>LOCA</APPLICATION-ID>
+                          <CONTEXTS>
+                            <DLT-CONTEXT-REF-CONDITIONAL>
+                              <DLT-CONTEXT-REF DEST="DLT-CONTEXT">/adcm/Machines/AdaptiveMachine/Dlt/DefaultDltContext</DLT-CONTEXT-REF>
+                            </DLT-CONTEXT-REF-CONDITIONAL>
+                          </CONTEXTS>
+                        </DLT-APPLICATION>
+                        <DLT-APPLICATION>
+                          <SHORT-NAME>Perception_Camera</SHORT-NAME>
+                          <APPLICATION-DESCRIPTION>ADCM Perception_Camera Application</APPLICATION-DESCRIPTION>
+                          <APPLICATION-ID>PERC</APPLICATION-ID>
+                          <CONTEXTS>
+                            <DLT-CONTEXT-REF-CONDITIONAL>
+                              <DLT-CONTEXT-REF DEST="DLT-CONTEXT">/adcm/Machines/AdaptiveMachine/Dlt/DefaultDltContext</DLT-CONTEXT-REF>
+                            </DLT-CONTEXT-REF-CONDITIONAL>
+                          </CONTEXTS>
+                        </DLT-APPLICATION>
+                        <DLT-APPLICATION>
+                          <SHORT-NAME>Perception_Lidar</SHORT-NAME>
+                          <APPLICATION-DESCRIPTION>ADCM Perception_Lidar Application</APPLICATION-DESCRIPTION>
+                          <APPLICATION-ID>PERL</APPLICATION-ID>
+                          <CONTEXTS>
+                            <DLT-CONTEXT-REF-CONDITIONAL>
+                              <DLT-CONTEXT-REF DEST="DLT-CONTEXT">/adcm/Machines/AdaptiveMachine/Dlt/DefaultDltContext</DLT-CONTEXT-REF>
+                            </DLT-CONTEXT-REF-CONDITIONAL>
+                          </CONTEXTS>
+                        </DLT-APPLICATION>
+                        <DLT-APPLICATION>
+                          <SHORT-NAME>Planning</SHORT-NAME>
+                          <APPLICATION-DESCRIPTION>ADCM Planning Application</APPLICATION-DESCRIPTION>
+                          <APPLICATION-ID>PLAN</APPLICATION-ID>
+                          <CONTEXTS>
+                            <DLT-CONTEXT-REF-CONDITIONAL>
+                              <DLT-CONTEXT-REF DEST="DLT-CONTEXT">/adcm/Machines/AdaptiveMachine/Dlt/DefaultDltContext</DLT-CONTEXT-REF>
+                            </DLT-CONTEXT-REF-CONDITIONAL>
+                          </CONTEXTS>
+                        </DLT-APPLICATION>
+                        <DLT-APPLICATION>
+                          <SHORT-NAME>Prediction</SHORT-NAME>
+                          <APPLICATION-DESCRIPTION> ADCM Prediction Application </APPLICATION-DESCRIPTION>
+                          <APPLICATION-ID>PRED</APPLICATION-ID>
+                          <CONTEXTS>
+                            <DLT-CONTEXT-REF-CONDITIONAL>
+                              <DLT-CONTEXT-REF DEST="DLT-CONTEXT">/adcm/Machines/AdaptiveMachine/Dlt/DefaultDltContext</DLT-CONTEXT-REF>
+                            </DLT-CONTEXT-REF-CONDITIONAL>
+                          </CONTEXTS>
+                        </DLT-APPLICATION>
+                        <DLT-APPLICATION>
+                          <SHORT-NAME>Routing</SHORT-NAME>
+                          <APPLICATION-DESCRIPTION> ADCM Routing Application</APPLICATION-DESCRIPTION>
+                          <APPLICATION-ID>ROUT</APPLICATION-ID>
+                          <CONTEXTS>
+                            <DLT-CONTEXT-REF-CONDITIONAL>
+                              <DLT-CONTEXT-REF DEST="DLT-CONTEXT">/adcm/Machines/AdaptiveMachine/Dlt/DefaultDltContext</DLT-CONTEXT-REF>
+                            </DLT-CONTEXT-REF-CONDITIONAL>
+                          </CONTEXTS>
+                        </DLT-APPLICATION>
+                        <DLT-APPLICATION>
+                          <SHORT-NAME>OTA_Client</SHORT-NAME>
+                          <APPLICATION-DESCRIPTION> ADCM OTA Client Application</APPLICATION-DESCRIPTION>
+                          <APPLICATION-ID>OTAC</APPLICATION-ID>
+                          <CONTEXTS>
+                            <DLT-CONTEXT-REF-CONDITIONAL>
+                              <DLT-CONTEXT-REF DEST="DLT-CONTEXT">/adcm/Machines/AdaptiveMachine/Dlt/DefaultDltContext</DLT-CONTEXT-REF>
+                            </DLT-CONTEXT-REF-CONDITIONAL>
+                          </CONTEXTS>
+                        </DLT-APPLICATION>
+                        <DLT-APPLICATION>
+                          <SHORT-NAME>Control_Katech</SHORT-NAME>
+                          <APPLICATION-DESCRIPTION>ADCM Control_Katech Application</APPLICATION-DESCRIPTION>
+                          <APPLICATION-ID>CONK</APPLICATION-ID>
+                          <CONTEXTS>
+                            <DLT-CONTEXT-REF-CONDITIONAL>
+                              <DLT-CONTEXT-REF DEST="DLT-CONTEXT">/adcm/Machines/AdaptiveMachine/Dlt/DefaultDltContext</DLT-CONTEXT-REF>
+                            </DLT-CONTEXT-REF-CONDITIONAL>
+                          </CONTEXTS>
+                        </DLT-APPLICATION>
+                        <DLT-APPLICATION>
+                          <SHORT-NAME>Decision_Katech</SHORT-NAME>
+                          <APPLICATION-DESCRIPTION> ADCM Decision_Katech Application</APPLICATION-DESCRIPTION>
+                          <APPLICATION-ID>ROUT</APPLICATION-ID>
+                          <CONTEXTS>
+                            <DLT-CONTEXT-REF-CONDITIONAL>
+                              <DLT-CONTEXT-REF DEST="DLT-CONTEXT">/adcm/Machines/AdaptiveMachine/Dlt/DefaultDltContext</DLT-CONTEXT-REF>
+                            </DLT-CONTEXT-REF-CONDITIONAL>
+                          </CONTEXTS>
+                        </DLT-APPLICATION>
+                        <DLT-APPLICATION>
+                          <SHORT-NAME>Planning_Katech</SHORT-NAME>
+                          <APPLICATION-DESCRIPTION>ADCM Planning_Katech Application</APPLICATION-DESCRIPTION>
+                          <APPLICATION-ID>PLAK</APPLICATION-ID>
+                          <CONTEXTS>
+                            <DLT-CONTEXT-REF-CONDITIONAL>
+                              <DLT-CONTEXT-REF DEST="DLT-CONTEXT">/adcm/Machines/AdaptiveMachine/Dlt/DefaultDltContext</DLT-CONTEXT-REF>
+                            </DLT-CONTEXT-REF-CONDITIONAL>
+                          </CONTEXTS>
+                        </DLT-APPLICATION>
+                        <DLT-APPLICATION>
+                          <SHORT-NAME>V2X</SHORT-NAME>
+                          <APPLICATION-DESCRIPTION> ADCM V2X Application</APPLICATION-DESCRIPTION>
+                          <APPLICATION-ID>V2X</APPLICATION-ID>
+                          <CONTEXTS>
+                            <DLT-CONTEXT-REF-CONDITIONAL>
+                              <DLT-CONTEXT-REF DEST="DLT-CONTEXT">/adcm/Machines/AdaptiveMachine/Dlt/DefaultDltContext</DLT-CONTEXT-REF>
+                            </DLT-CONTEXT-REF-CONDITIONAL>
+                          </CONTEXTS>
+                        </DLT-APPLICATION>
+                        <DLT-APPLICATION>
+                          <SHORT-NAME>Guardian</SHORT-NAME>
+                          <APPLICATION-DESCRIPTION> ADCM Guardian Application</APPLICATION-DESCRIPTION>
+                          <APPLICATION-ID>GUAR</APPLICATION-ID>
+                          <CONTEXTS>
+                            <DLT-CONTEXT-REF-CONDITIONAL>
+                              <DLT-CONTEXT-REF DEST="DLT-CONTEXT">/adcm/Machines/AdaptiveMachine/Dlt/DefaultDltContext</DLT-CONTEXT-REF>
+                            </DLT-CONTEXT-REF-CONDITIONAL>
+                          </CONTEXTS>
+                        </DLT-APPLICATION>
+                        <DLT-APPLICATION>
+                          <SHORT-NAME>Katech_Bridge</SHORT-NAME>
+                          <APPLICATION-DESCRIPTION>ADCM Katech_Bridge Application</APPLICATION-DESCRIPTION>
+                          <APPLICATION-ID>KABR</APPLICATION-ID>
+                          <CONTEXTS>
+                            <DLT-CONTEXT-REF-CONDITIONAL>
+                              <DLT-CONTEXT-REF DEST="DLT-CONTEXT">/adcm/Machines/AdaptiveMachine/Dlt/DefaultDltContext</DLT-CONTEXT-REF>
+                            </DLT-CONTEXT-REF-CONDITIONAL>
+                          </CONTEXTS>
+                        </DLT-APPLICATION>
+                        <DLT-APPLICATION>
+                          <SHORT-NAME>TimeSyncProviderApplication</SHORT-NAME>
+                          <APPLICATION-DESCRIPTION>ADCM TimeSyncProvider Application</APPLICATION-DESCRIPTION>
+                          <APPLICATION-ID>TSYP</APPLICATION-ID>
+                          <CONTEXTS>
+                            <DLT-CONTEXT-REF-CONDITIONAL>
+                              <DLT-CONTEXT-REF DEST="DLT-CONTEXT">/adcm/Machines/AdaptiveMachine/Dlt/DefaultDltContext</DLT-CONTEXT-REF>
+                            </DLT-CONTEXT-REF-CONDITIONAL>
+                          </CONTEXTS>
+                        </DLT-APPLICATION>
+                        <DLT-APPLICATION>
+                          <SHORT-NAME>TimeSyncConsumerApplication</SHORT-NAME>
+                          <APPLICATION-DESCRIPTION>ADCM TimeSyncConsumer Application</APPLICATION-DESCRIPTION>
+                          <APPLICATION-ID>TSYC</APPLICATION-ID>
+                          <CONTEXTS>
+                            <DLT-CONTEXT-REF-CONDITIONAL>
+                              <DLT-CONTEXT-REF DEST="DLT-CONTEXT">/adcm/Machines/AdaptiveMachine/Dlt/DefaultDltContext</DLT-CONTEXT-REF>
+                            </DLT-CONTEXT-REF-CONDITIONAL>
+                          </CONTEXTS>
+                        </DLT-APPLICATION>
+                      </APPLICATIONS>
+                    </DLT-ECU>
+                    <DLT-CONTEXT>
+                      <SHORT-NAME>DefaultDltContext</SHORT-NAME>
+                    </DLT-CONTEXT>
+                    <DLT-LOG-SINK>
+                      <SHORT-NAME>ConsoleDltSink</SHORT-NAME>
+                      <CATEGORY>DLT_LOGSINK_CONSOLE</CATEGORY>
+                      <BUFFER-OUTPUT>true</BUFFER-OUTPUT>
+                      <DEFAULT-LOG-THRESHOLD>VERBOSE</DEFAULT-LOG-THRESHOLD>
+                    </DLT-LOG-SINK>
+                    <DLT-LOG-SINK>
+                      <SHORT-NAME>RemoteDltSink</SHORT-NAME>
+                      <CATEGORY>DLT_LOGSINK_REMOTE</CATEGORY>
+                      <DEFAULT-LOG-THRESHOLD>VERBOSE</DEFAULT-LOG-THRESHOLD>
+                      <LOG-CHANNEL-ID>1</LOG-CHANNEL-ID>
+                    </DLT-LOG-SINK>
+                    <DLT-LOG-SINK>
+                      <SHORT-NAME>ControlFileDltSink</SHORT-NAME>
+                      <CATEGORY>DLT_LOGSINK_FILE</CATEGORY>
+                      <DEFAULT-LOG-THRESHOLD>VERBOSE</DEFAULT-LOG-THRESHOLD>
+                      <PATH>/var/redirected/Control</PATH>
+                    </DLT-LOG-SINK>
+                    <DLT-LOG-SINK>
+                      <SHORT-NAME>HdmapFileDltSink</SHORT-NAME>
+                      <CATEGORY>DLT_LOGSINK_FILE</CATEGORY>
+                      <DEFAULT-LOG-THRESHOLD>VERBOSE</DEFAULT-LOG-THRESHOLD>
+                      <PATH>/var/redirected/Hdmap</PATH>
+                    </DLT-LOG-SINK>
+                    <DLT-LOG-SINK>
+                      <SHORT-NAME>HmiFileDltSink</SHORT-NAME>
+                      <CATEGORY>DLT_LOGSINK_FILE</CATEGORY>
+                      <DEFAULT-LOG-THRESHOLD>VERBOSE</DEFAULT-LOG-THRESHOLD>
+                      <PATH>/var/redirected/Hmi</PATH>
+                    </DLT-LOG-SINK>
+                    <DLT-LOG-SINK>
+                      <SHORT-NAME>HubNetAPFileDltSink</SHORT-NAME>
+                      <CATEGORY>DLT_LOGSINK_FILE</CATEGORY>
+                      <DEFAULT-LOG-THRESHOLD>VERBOSE</DEFAULT-LOG-THRESHOLD>
+                      <PATH>/var/redirected/HubNetAP</PATH>
+                    </DLT-LOG-SINK>
+                    <DLT-LOG-SINK>
+                      <SHORT-NAME>LocalizationFileDltSink</SHORT-NAME>
+                      <CATEGORY>DLT_LOGSINK_FILE</CATEGORY>
+                      <DEFAULT-LOG-THRESHOLD>VERBOSE</DEFAULT-LOG-THRESHOLD>
+                      <PATH>/var/redirected/Localization</PATH>
+                    </DLT-LOG-SINK>
+                    <DLT-LOG-SINK>
+                      <SHORT-NAME>PerceptionCameraFileDltSink</SHORT-NAME>
+                      <CATEGORY>DLT_LOGSINK_FILE</CATEGORY>
+                      <DEFAULT-LOG-THRESHOLD>VERBOSE</DEFAULT-LOG-THRESHOLD>
+                      <PATH>/var/redirected/Perception_Camera</PATH>
+                    </DLT-LOG-SINK>
+                    <DLT-LOG-SINK>
+                      <SHORT-NAME>PerceptionFileDltSink</SHORT-NAME>
+                      <CATEGORY>DLT_LOGSINK_FILE</CATEGORY>
+                      <DEFAULT-LOG-THRESHOLD>VERBOSE</DEFAULT-LOG-THRESHOLD>
+                      <PATH>/var/redirected/Perception</PATH>
+                    </DLT-LOG-SINK>
+                    <DLT-LOG-SINK>
+                      <SHORT-NAME>PerceptionLidarFileDltSink</SHORT-NAME>
+                      <CATEGORY>DLT_LOGSINK_FILE</CATEGORY>
+                      <DEFAULT-LOG-THRESHOLD>VERBOSE</DEFAULT-LOG-THRESHOLD>
+                      <PATH>/var/redirected/Perception_Lidar</PATH>
+                    </DLT-LOG-SINK>
+                    <DLT-LOG-SINK>
+                      <SHORT-NAME>PlanningFileDltSink</SHORT-NAME>
+                      <CATEGORY>DLT_LOGSINK_FILE</CATEGORY>
+                      <DEFAULT-LOG-THRESHOLD>VERBOSE</DEFAULT-LOG-THRESHOLD>
+                      <PATH>/var/redirected/Planning</PATH>
+                    </DLT-LOG-SINK>
+                    <DLT-LOG-SINK>
+                      <SHORT-NAME>PredictionFileDltSink</SHORT-NAME>
+                      <CATEGORY>DLT_LOGSINK_FILE</CATEGORY>
+                      <DEFAULT-LOG-THRESHOLD>VERBOSE</DEFAULT-LOG-THRESHOLD>
+                      <PATH>/var/redirected/Prediction</PATH>
+                    </DLT-LOG-SINK>
+                    <DLT-LOG-SINK>
+                      <SHORT-NAME>RoutingFileDltSink</SHORT-NAME>
+                      <CATEGORY>DLT_LOGSINK_FILE</CATEGORY>
+                      <DEFAULT-LOG-THRESHOLD>VERBOSE</DEFAULT-LOG-THRESHOLD>
+                      <PATH>/var/redirected/Routing</PATH>
+                    </DLT-LOG-SINK>
+                    <DLT-LOG-SINK>
+                      <SHORT-NAME>OTA_ClientFileDltSink</SHORT-NAME>
+                      <CATEGORY>DLT_LOGSINK_FILE</CATEGORY>
+                      <DEFAULT-LOG-THRESHOLD>VERBOSE</DEFAULT-LOG-THRESHOLD>
+                      <PATH>/var/redirected/OTA_Client</PATH>
+                    </DLT-LOG-SINK>
+                    <DLT-LOG-SINK>
+                      <SHORT-NAME>Control_KatechFileDltSink</SHORT-NAME>
+                      <CATEGORY>DLT_LOGSINK_FILE</CATEGORY>
+                      <DEFAULT-LOG-THRESHOLD>VERBOSE</DEFAULT-LOG-THRESHOLD>
+                      <PATH>/var/redirected/Control_Katech</PATH>
+                    </DLT-LOG-SINK>
+                    <DLT-LOG-SINK>
+                      <SHORT-NAME>Decision_KatechFileDltSink</SHORT-NAME>
+                      <CATEGORY>DLT_LOGSINK_FILE</CATEGORY>
+                      <DEFAULT-LOG-THRESHOLD>VERBOSE</DEFAULT-LOG-THRESHOLD>
+                      <PATH>/var/redirected/Decision_Katech</PATH>
+                    </DLT-LOG-SINK>
+                    <DLT-LOG-SINK>
+                      <SHORT-NAME>Planning_KatechFileDltSink</SHORT-NAME>
+                      <CATEGORY>DLT_LOGSINK_FILE</CATEGORY>
+                      <DEFAULT-LOG-THRESHOLD>VERBOSE</DEFAULT-LOG-THRESHOLD>
+                      <PATH>/var/redirected/Planning_Katech</PATH>
+                    </DLT-LOG-SINK>
+                    <DLT-LOG-SINK>
+                      <SHORT-NAME>V2XFileDltSink</SHORT-NAME>
+                      <CATEGORY>DLT_LOGSINK_FILE</CATEGORY>
+                      <DEFAULT-LOG-THRESHOLD>VERBOSE</DEFAULT-LOG-THRESHOLD>
+                      <PATH>/var/redirected/V2X</PATH>
+                    </DLT-LOG-SINK>
+                    <DLT-LOG-SINK>
+                      <SHORT-NAME>GuardianFileDltSink</SHORT-NAME>
+                      <CATEGORY>DLT_LOGSINK_FILE</CATEGORY>
+                      <DEFAULT-LOG-THRESHOLD>VERBOSE</DEFAULT-LOG-THRESHOLD>
+                      <PATH>/var/redirected/Guardian</PATH>
+                    </DLT-LOG-SINK>
+                    <DLT-LOG-SINK>
+                      <SHORT-NAME>KatechBridgeFileDltSink</SHORT-NAME>
+                      <CATEGORY>DLT_LOGSINK_FILE</CATEGORY>
+                      <DEFAULT-LOG-THRESHOLD>VERBOSE</DEFAULT-LOG-THRESHOLD>
+                      <PATH>/var/redirected/Katech_Bridge</PATH>
+                    </DLT-LOG-SINK>
+                    <DLT-LOG-SINK>
+                      <SHORT-NAME>TimeSyncProviderFileDltSink</SHORT-NAME>
+                      <CATEGORY>DLT_LOGSINK_FILE</CATEGORY>
+                      <DEFAULT-LOG-THRESHOLD>VERBOSE</DEFAULT-LOG-THRESHOLD>
+                      <PATH>/var/redirected/TimeSyncProvider</PATH>
+                    </DLT-LOG-SINK>
+                    <DLT-LOG-SINK>
+                    <SHORT-NAME>TimeSyncConsumerFileDltSink</SHORT-NAME>
+                    <CATEGORY>DLT_LOGSINK_FILE</CATEGORY>
+                    <DEFAULT-LOG-THRESHOLD>VERBOSE</DEFAULT-LOG-THRESHOLD>
+                    <PATH>/var/redirected/TimeSyncConsumer</PATH>
+                    </DLT-LOG-SINK>
+                  </ELEMENTS>
+                </AR-PACKAGE>
+                <AR-PACKAGE>
+                  <SHORT-NAME>FunctionGroupSets</SHORT-NAME>
+                  <ELEMENTS>
+                    <FUNCTION-GROUP-SET>
+                      <SHORT-NAME>AdaptiveFunctionGroups</SHORT-NAME>
+                      <FUNCTION-GROUPS>
+                        <MODE-DECLARATION-GROUP-PROTOTYPE>
+                          <SHORT-NAME>MachineFG</SHORT-NAME>
+                          <TYPE-TREF DEST="MODE-DECLARATION-GROUP">/adcm/ModeDeclarationGroups/MachineState</TYPE-TREF>
+                        </MODE-DECLARATION-GROUP-PROTOTYPE>
+                      </FUNCTION-GROUPS>
+                    </FUNCTION-GROUP-SET>
+                  </ELEMENTS>
+                </AR-PACKAGE>
+                <AR-PACKAGE>
+                  <SHORT-NAME>SoftwareClusters</SHORT-NAME>
+                  <ELEMENTS>
+                    <SOFTWARE-CLUSTER>
+                      <SHORT-NAME>AdaptiveCoreCluster</SHORT-NAME>
+                      <CATEGORY>PLATFORM_CORE</CATEGORY>
+                      <CLAIMED-FUNCTION-GROUP-REFS>
+                        <CLAIMED-FUNCTION-GROUP-REF DEST="MODE-DECLARATION-GROUP-PROTOTYPE">/adcm/Machines/AdaptiveMachine/FunctionGroupSets/AdaptiveFunctionGroups/MachineFG</CLAIMED-FUNCTION-GROUP-REF>
+                      </CLAIMED-FUNCTION-GROUP-REFS>
+                      <CONTAINED-PROCESS-REFS>
+                        <CONTAINED-PROCESS-REF DEST="PROCESS">/adcm/Machines/AdaptiveMachine/Processes/Control</CONTAINED-PROCESS-REF>
+                        <CONTAINED-PROCESS-REF DEST="PROCESS">/adcm/Machines/AdaptiveMachine/Processes/Guardian</CONTAINED-PROCESS-REF>
+                        <CONTAINED-PROCESS-REF DEST="PROCESS">/adcm/Machines/AdaptiveMachine/Processes/Hdmap</CONTAINED-PROCESS-REF>
+                        <CONTAINED-PROCESS-REF DEST="PROCESS">/adcm/Machines/AdaptiveMachine/Processes/Hmi</CONTAINED-PROCESS-REF>
+                        <CONTAINED-PROCESS-REF DEST="PROCESS">/adcm/Machines/AdaptiveMachine/Processes/Katech_Bridge</CONTAINED-PROCESS-REF>
+                        <CONTAINED-PROCESS-REF DEST="PROCESS">/adcm/Machines/AdaptiveMachine/Processes/Localization</CONTAINED-PROCESS-REF>
+                        <CONTAINED-PROCESS-REF DEST="PROCESS">/adcm/Machines/AdaptiveMachine/Processes/Planning</CONTAINED-PROCESS-REF>
+                        <CONTAINED-PROCESS-REF DEST="PROCESS">/adcm/Machines/AdaptiveMachine/Processes/Routing</CONTAINED-PROCESS-REF>
+                        <CONTAINED-PROCESS-REF DEST="PROCESS">/adcm/Machines/AdaptiveMachine/Processes/V2X</CONTAINED-PROCESS-REF>
+                        <CONTAINED-PROCESS-REF DEST="PROCESS">/adcm/Machines/AdaptiveMachine/Processes/TimeSyncProvider</CONTAINED-PROCESS-REF>
+                        <CONTAINED-PROCESS-REF DEST="PROCESS">/adcm/Machines/AdaptiveMachine/Processes/TimeSyncConsumer</CONTAINED-PROCESS-REF>
+                      </CONTAINED-PROCESS-REFS>
+                      <MODULE-INSTANTIATION-REFS>
+                        <MODULE-INSTANTIATION-REF DEST="OS-MODULE-INSTANTIATION">/adcm/Machines/AdaptiveMachine/AdaptiveMachine/Linux</MODULE-INSTANTIATION-REF>
+                      </MODULE-INSTANTIATION-REFS>
+                    </SOFTWARE-CLUSTER>
+                  </ELEMENTS>
+                </AR-PACKAGE>
+              </AR-PACKAGES>
+            </AR-PACKAGE>
+          </AR-PACKAGES>
+        </AR-PACKAGE>
+      </AR-PACKAGES>
+    </AR-PACKAGE>
+  </AR-PACKAGES>
+</AUTOSAR>

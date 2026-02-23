@@ -1,0 +1,9 @@
+{
+    "grants":
+    [
+        {
+            "type": "GrantDemoFC",
+            "DemoFile": "iamTestAppExe/iamTestAppRootSwc/demoFileAccessorSwc/accessDemoFileRPort"
+        }
+    ]
+}

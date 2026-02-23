@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<AUTOSAR xmlns="http://autosar.org/schema/r4.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://autosar.org/schema/r4.0 AUTOSAR_00052.xsd">
+  <AR-PACKAGES>
+    <AR-PACKAGE>
+      <SHORT-NAME>apd</SHORT-NAME>
+      <AR-PACKAGES>
+        <AR-PACKAGE>
+          <SHORT-NAME>VehiclePackages</SHORT-NAME>
+          <ELEMENTS>
+            <VEHICLE-PACKAGE>
+              <SHORT-NAME>CampaignClassic</SHORT-NAME>
+              <DRIVER-NOTIFICATIONS>
+                <VEHICLE-DRIVER-NOTIFICATION>
+                  <APPROVAL-REQUIRED>true</APPROVAL-REQUIRED>
+                  <NOTIFICATION-STATE>TRANSFER</NOTIFICATION-STATE>
+                </VEHICLE-DRIVER-NOTIFICATION>
+                <VEHICLE-DRIVER-NOTIFICATION>
+                  <APPROVAL-REQUIRED>true</APPROVAL-REQUIRED>
+                  <NOTIFICATION-STATE>PROCESS</NOTIFICATION-STATE>
+                </VEHICLE-DRIVER-NOTIFICATION>
+                <VEHICLE-DRIVER-NOTIFICATION>
+                  <APPROVAL-REQUIRED>false</APPROVAL-REQUIRED>
+                  <NOTIFICATION-STATE>ACTIVATE</NOTIFICATION-STATE>
+                </VEHICLE-DRIVER-NOTIFICATION>
+                <VEHICLE-DRIVER-NOTIFICATION>
+                  <APPROVAL-REQUIRED>false</APPROVAL-REQUIRED>
+                  <NOTIFICATION-STATE>ROLL-BACK</NOTIFICATION-STATE>
+                </VEHICLE-DRIVER-NOTIFICATION>
+                <VEHICLE-DRIVER-NOTIFICATION>
+                  <APPROVAL-REQUIRED>false</APPROVAL-REQUIRED>
+                  <NOTIFICATION-STATE>FINISH</NOTIFICATION-STATE>
+                </VEHICLE-DRIVER-NOTIFICATION>
+              </DRIVER-NOTIFICATIONS>
+              <PACKAGER-SIGNATURE-REF DEST="CRYPTO-SERVICE-CERTIFICATE">/apd/CryptoServiceCertificates/integratorCert</PACKAGER-SIGNATURE-REF>
+              <REPOSITORY>https://autosar.org/apdrepo</REPOSITORY>
+              <ROLLOUT-QUALIFICATIONS>
+                <VEHICLE-ROLLOUT-STEP>
+                  <SHORT-NAME>VEHICLE_ROLLOUT_STEP_1</SHORT-NAME>
+                  <SAFETY-CONDITIONS>
+                    <SAFETY-CONDITION>NONE</SAFETY-CONDITION>
+                  </SAFETY-CONDITIONS>
+                  <UCM-PROCESSINGS>
+                    <UCM-STEP>
+                      <SHORT-NAME>FLAD_STEP_1</SHORT-NAME>
+                      <SOFTWARE-PACKAGE-STEPS>
+                        <SOFTWARE-PACKAGE-STEP>
+                          <SHORT-NAME>SWP_STEP_1_1</SHORT-NAME>
+                          <PROCESS-REF DEST="SOFTWARE-PACKAGE">/apd/SoftwarePackages/@CSWPP_NAME@/@CSWPP_NAME@SwpkgInstall</PROCESS-REF>
+                          <TRANSFERS>
+                            <SOFTWARE-PACKAGE-STORING>
+                              <STORING>NONE</STORING>
+                              <TRANSFER-REFS>
+                                <TRANSFER-REF DEST="SOFTWARE-PACKAGE">/apd/SoftwarePackages/@CSWPP_NAME@/@CSWPP_NAME@SwpkgInstall</TRANSFER-REF>
+                              </TRANSFER-REFS>
+                            </SOFTWARE-PACKAGE-STORING>
+                          </TRANSFERS>
+                        </SOFTWARE-PACKAGE-STEP>
+                      </SOFTWARE-PACKAGE-STEPS>
+                      <UCM-REF DEST="UCM-DESCRIPTION">/apd/VehiclePackages/CampaignClassic/Adapter_FLAD</UCM-REF>
+                    </UCM-STEP>
+                  </UCM-PROCESSINGS>
+                </VEHICLE-ROLLOUT-STEP>
+              </ROLLOUT-QUALIFICATIONS>
+              <UCMS>
+                <UCM-DESCRIPTION>
+                  <SHORT-NAME>Adapter_FLAD</SHORT-NAME>
+                  <IDENTIFIER>FLAD</IDENTIFIER>
+                  <UCM-MODULE-INSTANTIATION-REF DEST="UCM-MODULE-INSTANTIATION">TBD</UCM-MODULE-INSTANTIATION-REF>
+                </UCM-DESCRIPTION>
+              </UCMS>
+              <UCM-MASTER-FALLBACK-REFS>
+                <UCM-MASTER-FALLBACK-REF DEST="UCM-DESCRIPTION">TBD</UCM-MASTER-FALLBACK-REF>
+              </UCM-MASTER-FALLBACK-REFS>
+            </VEHICLE-PACKAGE>
+          </ELEMENTS>
+        </AR-PACKAGE>
+      </AR-PACKAGES>
+    </AR-PACKAGE>
+  </AR-PACKAGES>
+</AUTOSAR>

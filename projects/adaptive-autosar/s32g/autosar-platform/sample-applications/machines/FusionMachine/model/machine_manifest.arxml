@@ -1,0 +1,389 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<AUTOSAR xmlns="http://autosar.org/schema/r4.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://autosar.org/schema/r4.0 AUTOSAR_00052.xsd">
+  <AR-PACKAGES>
+    <AR-PACKAGE>
+      <SHORT-NAME>apd</SHORT-NAME>
+      <AR-PACKAGES>
+        <AR-PACKAGE>
+          <SHORT-NAME>Machines</SHORT-NAME>
+          <AR-PACKAGES>
+            <AR-PACKAGE>
+              <SHORT-NAME>FusionMachine</SHORT-NAME>
+              <ELEMENTS>
+                <MACHINE>
+                  <SHORT-NAME>FusionMachine</SHORT-NAME>
+                  <DEFAULT-APPLICATION-TIMEOUT>
+                    <EXIT-TIMEOUT-VALUE>0.1</EXIT-TIMEOUT-VALUE>
+                  </DEFAULT-APPLICATION-TIMEOUT>
+                  <ENVIRONMENT-VARIABLES>
+                    <TAG-WITH-OPTIONAL-VALUE>
+                      <KEY>DLT_LOG_MODE</KEY>
+                      <VALUE>3</VALUE>
+                    </TAG-WITH-OPTIONAL-VALUE>
+                  </ENVIRONMENT-VARIABLES>
+                  <MACHINE-DESIGN-REF DEST="MACHINE-DESIGN">/apd/MachineDesigns/FusionMachineDesign</MACHINE-DESIGN-REF>
+                  <MODULE-INSTANTIATIONS>
+                    <LOG-AND-TRACE-INSTANTIATION>
+                      <SHORT-NAME>LogAndTraceInstanciation</SHORT-NAME>
+                      <LOG-SINK-REFS>
+                        <LOG-SINK-REF DEST="DLT-LOG-SINK">/apd/Machines/FusionMachine/Dlt/ConsoleDltSink</LOG-SINK-REF>
+                      </LOG-SINK-REFS>
+                    </LOG-AND-TRACE-INSTANTIATION>
+                    <OS-MODULE-INSTANTIATION>
+                      <SHORT-NAME>Linux</SHORT-NAME>
+                      <RESOURCE-GROUPS>
+                        <RESOURCE-GROUP>
+                          <SHORT-NAME>ResourceGroup1</SHORT-NAME>
+                          <CPU-USAGE>95</CPU-USAGE>
+                          <MEM-USAGE>2000000000</MEM-USAGE>
+                        </RESOURCE-GROUP>
+                        <RESOURCE-GROUP>
+                          <SHORT-NAME>ResourceGroup2</SHORT-NAME>
+                          <CPU-USAGE>95</CPU-USAGE>
+                          <MEM-USAGE>2000000000</MEM-USAGE>
+                        </RESOURCE-GROUP>
+                        <RESOURCE-GROUP>
+                          <SHORT-NAME>ResourceGroupDB</SHORT-NAME>
+                          <CPU-USAGE>80</CPU-USAGE>
+                          <MEM-USAGE>500000000</MEM-USAGE>
+                        </RESOURCE-GROUP>
+                        <RESOURCE-GROUP>
+                          <SHORT-NAME>ResourceGroupDIAG</SHORT-NAME>
+                          <CPU-USAGE>80</CPU-USAGE>
+                          <MEM-USAGE>500000000</MEM-USAGE>
+                        </RESOURCE-GROUP>
+                        <RESOURCE-GROUP>
+                          <SHORT-NAME>ResourceGroupIAM</SHORT-NAME>
+                          <CPU-USAGE>80</CPU-USAGE>
+                          <MEM-USAGE>500000000</MEM-USAGE>
+                        </RESOURCE-GROUP>
+                        <RESOURCE-GROUP>
+                          <SHORT-NAME>ResourceGroupSM</SHORT-NAME>
+                          <CPU-USAGE>80</CPU-USAGE>
+                          <MEM-USAGE>500000000</MEM-USAGE>
+                        </RESOURCE-GROUP>
+                      </RESOURCE-GROUPS>
+                    </OS-MODULE-INSTANTIATION>
+                    <UCM-SUBORDINATE-MODULE-INSTANTIATION>
+                      <SHORT-NAME>UcmInstance</SHORT-NAME>
+                      <IDENTIFIER>FusionMachineUCM</IDENTIFIER>
+                    </UCM-SUBORDINATE-MODULE-INSTANTIATION>
+                  </MODULE-INSTANTIATIONS>
+                </MACHINE>
+              </ELEMENTS>
+              <AR-PACKAGES>
+                <AR-PACKAGE>
+                  <SHORT-NAME>E2E</SHORT-NAME>
+                  <ELEMENTS>
+                    <E-2-E-PROFILE-CONFIGURATION-SET>
+                      <SHORT-NAME>e2eprofiles</SHORT-NAME>
+                      <E-2-E-PROFILE-CONFIGURATIONS>
+                        <E-2-E-PROFILE-CONFIGURATION>
+                          <SHORT-NAME>PROFILE_01</SHORT-NAME>
+                          <MAX-DELTA-COUNTER>1</MAX-DELTA-COUNTER>
+                          <MAX-ERROR-STATE-INIT>0</MAX-ERROR-STATE-INIT>
+                          <MAX-ERROR-STATE-INVALID>0</MAX-ERROR-STATE-INVALID>
+                          <MAX-ERROR-STATE-VALID>0</MAX-ERROR-STATE-VALID>
+                          <MIN-OK-STATE-INIT>1</MIN-OK-STATE-INIT>
+                          <MIN-OK-STATE-INVALID>1</MIN-OK-STATE-INVALID>
+                          <MIN-OK-STATE-VALID>1</MIN-OK-STATE-VALID>
+                          <PROFILE-NAME>PROFILE_01</PROFILE-NAME>
+                          <WINDOW-SIZE-INIT>1</WINDOW-SIZE-INIT>
+                          <WINDOW-SIZE-INVALID>1</WINDOW-SIZE-INVALID>
+                          <WINDOW-SIZE-VALID>1</WINDOW-SIZE-VALID>
+                        </E-2-E-PROFILE-CONFIGURATION>
+                      </E-2-E-PROFILE-CONFIGURATIONS>
+                    </E-2-E-PROFILE-CONFIGURATION-SET>
+                  </ELEMENTS>
+                </AR-PACKAGE>
+                <AR-PACKAGE>
+                  <SHORT-NAME>Dlt</SHORT-NAME>
+                  <ELEMENTS>
+                    <DLT-ECU>
+                      <SHORT-NAME>FusionMachineDltEcu</SHORT-NAME>
+                      <APPLICATIONS>
+                        <DLT-APPLICATION>
+                          <SHORT-NAME>FusionLogApplication</SHORT-NAME>
+                          <APPLICATION-DESCRIPTION>example app. fusion</APPLICATION-DESCRIPTION>
+                          <APPLICATION-ID>EXFU</APPLICATION-ID>
+                          <CONTEXTS>
+                            <DLT-CONTEXT-REF-CONDITIONAL>
+                              <DLT-CONTEXT-REF DEST="DLT-CONTEXT">/apd/Dlt/DefaultDltContext</DLT-CONTEXT-REF>
+                            </DLT-CONTEXT-REF-CONDITIONAL>
+                          </CONTEXTS>
+                        </DLT-APPLICATION>
+                        <DLT-APPLICATION>
+                          <SHORT-NAME>ara_tsync_daemon_LogApplication</SHORT-NAME>
+                          <APPLICATION-DESCRIPTION>Time Sync Daemon Platform Application</APPLICATION-DESCRIPTION>
+                          <APPLICATION-ID>TSYD</APPLICATION-ID>
+                          <CONTEXTS>
+                            <DLT-CONTEXT-REF-CONDITIONAL>
+                              <DLT-CONTEXT-REF DEST="DLT-CONTEXT">/apd/Dlt/DefaultDltContext</DLT-CONTEXT-REF>
+                            </DLT-CONTEXT-REF-CONDITIONAL>
+                          </CONTEXTS>
+                        </DLT-APPLICATION>
+                        <DLT-APPLICATION>
+                          <SHORT-NAME>TimeSyncConsumerLogApplication</SHORT-NAME>
+                          <APPLICATION-DESCRIPTION>Time Sync Consumer Application</APPLICATION-DESCRIPTION>
+                          <APPLICATION-ID>TSYC</APPLICATION-ID>
+                          <CONTEXTS>
+                            <DLT-CONTEXT-REF-CONDITIONAL>
+                              <DLT-CONTEXT-REF DEST="DLT-CONTEXT">/apd/Dlt/DefaultDltContext</DLT-CONTEXT-REF>
+                            </DLT-CONTEXT-REF-CONDITIONAL>
+                          </CONTEXTS>
+                        </DLT-APPLICATION>
+                        <DLT-APPLICATION>
+                          <SHORT-NAME>TlvDemoReceiverApplication</SHORT-NAME>
+                          <APPLICATION-DESCRIPTION>TLV Demo Receiver Application</APPLICATION-DESCRIPTION>
+                          <APPLICATION-ID>TSYC</APPLICATION-ID>
+                          <CONTEXTS>
+                            <DLT-CONTEXT-REF-CONDITIONAL>
+                              <DLT-CONTEXT-REF DEST="DLT-CONTEXT">/apd/Dlt/DefaultDltContext</DLT-CONTEXT-REF>
+                            </DLT-CONTEXT-REF-CONDITIONAL>
+                          </CONTEXTS>
+                        </DLT-APPLICATION>
+                        <DLT-APPLICATION>
+                          <SHORT-NAME>StateManagerLogApplication</SHORT-NAME>
+                          <APPLICATION-DESCRIPTION>State Manager</APPLICATION-DESCRIPTION>
+                          <APPLICATION-ID>STMR</APPLICATION-ID>
+                          <CONTEXTS>
+                            <DLT-CONTEXT-REF-CONDITIONAL>
+                              <DLT-CONTEXT-REF DEST="DLT-CONTEXT">/apd/Dlt/DefaultDltContext</DLT-CONTEXT-REF>
+                            </DLT-CONTEXT-REF-CONDITIONAL>
+                          </CONTEXTS>
+                        </DLT-APPLICATION>
+                        <DLT-APPLICATION>
+                          <SHORT-NAME>EmoSampleApplication</SHORT-NAME>
+                          <APPLICATION-DESCRIPTION>Emo Sample Application</APPLICATION-DESCRIPTION>
+                          <APPLICATION-ID>EMAP</APPLICATION-ID>
+                          <CONTEXTS>
+                            <DLT-CONTEXT-REF-CONDITIONAL>
+                              <DLT-CONTEXT-REF DEST="DLT-CONTEXT">/apd/Dlt/DefaultDltContext</DLT-CONTEXT-REF>
+                            </DLT-CONTEXT-REF-CONDITIONAL>
+                          </CONTEXTS>
+                        </DLT-APPLICATION>
+                        <DLT-APPLICATION>
+                          <SHORT-NAME>shmMasterLogApplication</SHORT-NAME>
+                          <APPLICATION-DESCRIPTION>shm Master Sample Application</APPLICATION-DESCRIPTION>
+                          <APPLICATION-ID>SHMS</APPLICATION-ID>
+                          <CONTEXTS>
+                            <DLT-CONTEXT-REF-CONDITIONAL>
+                              <DLT-CONTEXT-REF DEST="DLT-CONTEXT">/apd/Dlt/DefaultDltContext</DLT-CONTEXT-REF>
+                            </DLT-CONTEXT-REF-CONDITIONAL>
+                          </CONTEXTS>
+                        </DLT-APPLICATION>
+                        <DLT-APPLICATION>
+                          <SHORT-NAME>FlashingAdapterApplication</SHORT-NAME>
+                          <APPLICATION-DESCRIPTION>Flashing Adapter</APPLICATION-DESCRIPTION>
+                          <APPLICATION-ID>FLAD</APPLICATION-ID>
+                          <CONTEXTS>
+                            <DLT-CONTEXT-REF-CONDITIONAL>
+                              <DLT-CONTEXT-REF DEST="DLT-CONTEXT">/apd/Dlt/DefaultDltContext</DLT-CONTEXT-REF>
+                            </DLT-CONTEXT-REF-CONDITIONAL>
+                          </CONTEXTS>
+                        </DLT-APPLICATION>
+                        <DLT-APPLICATION>
+                          <SHORT-NAME>VehicleStateManagerIfApplication</SHORT-NAME>
+                          <APPLICATION-DESCRIPTION>example app. vehicle state manager interface</APPLICATION-DESCRIPTION>
+                          <APPLICATION-ID>VSMI</APPLICATION-ID>
+                          <CONTEXTS>
+                            <DLT-CONTEXT-REF-CONDITIONAL>
+                              <DLT-CONTEXT-REF DEST="DLT-CONTEXT">/apd/Dlt/DefaultDltContext</DLT-CONTEXT-REF>
+                            </DLT-CONTEXT-REF-CONDITIONAL>
+                          </CONTEXTS>
+                        </DLT-APPLICATION>
+                        <DLT-APPLICATION>
+                          <SHORT-NAME>OtaClientApplication</SHORT-NAME>
+                          <APPLICATION-DESCRIPTION>example app. ota</APPLICATION-DESCRIPTION>
+                          <APPLICATION-ID>EXOTA</APPLICATION-ID>
+                          <CONTEXTS>
+                            <DLT-CONTEXT-REF-CONDITIONAL>
+                              <DLT-CONTEXT-REF DEST="DLT-CONTEXT">/apd/Dlt/DefaultDltContext</DLT-CONTEXT-REF>
+                            </DLT-CONTEXT-REF-CONDITIONAL>
+                          </CONTEXTS>
+                        </DLT-APPLICATION>
+                        <DLT-APPLICATION>
+                          <SHORT-NAME>PkgmgrApplication</SHORT-NAME>
+                          <APPLICATION-DESCRIPTION>UCM SAMPLE</APPLICATION-DESCRIPTION>
+                          <APPLICATION-ID>UCMS</APPLICATION-ID>
+                          <CONTEXTS>
+                            <DLT-CONTEXT-REF-CONDITIONAL>
+                              <DLT-CONTEXT-REF DEST="DLT-CONTEXT">/apd/Dlt/DefaultDltContext</DLT-CONTEXT-REF>
+                            </DLT-CONTEXT-REF-CONDITIONAL>
+                          </CONTEXTS>
+                        </DLT-APPLICATION>
+                        <DLT-APPLICATION>
+                          <SHORT-NAME>PackageManager</SHORT-NAME>
+                          <APPLICATION-DESCRIPTION>UCM</APPLICATION-DESCRIPTION>
+                          <APPLICATION-ID>UCM</APPLICATION-ID>
+                          <CONTEXTS>
+                            <DLT-CONTEXT-REF-CONDITIONAL>
+                              <DLT-CONTEXT-REF DEST="DLT-CONTEXT">/apd/Dlt/DefaultDltContext</DLT-CONTEXT-REF>
+                            </DLT-CONTEXT-REF-CONDITIONAL>
+                          </CONTEXTS>
+                        </DLT-APPLICATION>
+                        <DLT-APPLICATION>
+                          <SHORT-NAME>VehiclePackageManager</SHORT-NAME>
+                          <APPLICATION-DESCRIPTION>UCMM</APPLICATION-DESCRIPTION>
+                          <APPLICATION-ID>UCM Master</APPLICATION-ID>
+                          <CONTEXTS>
+                            <DLT-CONTEXT-REF-CONDITIONAL>
+                              <DLT-CONTEXT-REF DEST="DLT-CONTEXT">/apd/Dlt/DefaultDltContext</DLT-CONTEXT-REF>
+                            </DLT-CONTEXT-REF-CONDITIONAL>
+                          </CONTEXTS>
+                        </DLT-APPLICATION>
+                        <DLT-APPLICATION>
+                          <SHORT-NAME>UpdatableApplication</SHORT-NAME>
+                          <APPLICATION-DESCRIPTION>Updatable App</APPLICATION-DESCRIPTION>
+                          <APPLICATION-ID>UAPP</APPLICATION-ID>
+                          <CONTEXTS>
+                            <DLT-CONTEXT-REF-CONDITIONAL>
+                              <DLT-CONTEXT-REF DEST="DLT-CONTEXT">/apd/Dlt/DefaultDltContext</DLT-CONTEXT-REF>
+                            </DLT-CONTEXT-REF-CONDITIONAL>
+                          </CONTEXTS>
+                        </DLT-APPLICATION>
+                        <DLT-APPLICATION>
+                          <SHORT-NAME>TransferPerformanceCheckApplication</SHORT-NAME>
+                          <APPLICATION-DESCRIPTION>Transfer Performance Test</APPLICATION-DESCRIPTION>
+                          <APPLICATION-ID>EXTPT</APPLICATION-ID>
+                          <CONTEXTS>
+                            <DLT-CONTEXT-REF-CONDITIONAL>
+                              <DLT-CONTEXT-REF DEST="DLT-CONTEXT">/apd/Dlt/DefaultDltContext</DLT-CONTEXT-REF>
+                            </DLT-CONTEXT-REF-CONDITIONAL>
+                          </CONTEXTS>
+                        </DLT-APPLICATION>
+                        <DLT-APPLICATION>
+                          <SHORT-NAME>Controller</SHORT-NAME>
+                          <APPLICATION-DESCRIPTION>example app. picar controller</APPLICATION-DESCRIPTION>
+                          <APPLICATION-ID>PIC</APPLICATION-ID>
+                          <CONTEXTS>
+                            <DLT-CONTEXT-REF-CONDITIONAL>
+                              <DLT-CONTEXT-REF DEST="DLT-CONTEXT">/apd/Dlt/DefaultDltContext</DLT-CONTEXT-REF>
+                            </DLT-CONTEXT-REF-CONDITIONAL>
+                          </CONTEXTS>
+                        </DLT-APPLICATION>
+                      </APPLICATIONS>
+                    </DLT-ECU>
+                    <DLT-LOG-SINK>
+                      <SHORT-NAME>ConsoleDltSink</SHORT-NAME>
+                      <CATEGORY>DLT_LOGSINK_CONSOLE</CATEGORY>
+                      <BUFFER-OUTPUT>true</BUFFER-OUTPUT>
+                      <DEFAULT-LOG-THRESHOLD>VERBOSE</DEFAULT-LOG-THRESHOLD>
+                    </DLT-LOG-SINK>
+                  </ELEMENTS>
+                </AR-PACKAGE>
+                <AR-PACKAGE>
+                  <SHORT-NAME>FunctionGroupSets</SHORT-NAME>
+                  <ELEMENTS>
+                    <FUNCTION-GROUP-SET>
+                      <SHORT-NAME>FusionFunctionGroups</SHORT-NAME>
+                      <FUNCTION-GROUPS>
+                        <MODE-DECLARATION-GROUP-PROTOTYPE>
+                          <SHORT-NAME>MachineFG</SHORT-NAME>
+                          <TYPE-TREF DEST="MODE-DECLARATION-GROUP">/apd/ModeDeclarationGroups/MachineState</TYPE-TREF>
+                        </MODE-DECLARATION-GROUP-PROTOTYPE>
+                        <MODE-DECLARATION-GROUP-PROTOTYPE>
+                          <SHORT-NAME>Lane_Change_Assistance</SHORT-NAME>
+                          <TYPE-TREF DEST="MODE-DECLARATION-GROUP">/apd/ModeDeclarationGroups/Lane_Change_Assistance</TYPE-TREF>
+                        </MODE-DECLARATION-GROUP-PROTOTYPE>
+                        <MODE-DECLARATION-GROUP-PROTOTYPE>
+                          <SHORT-NAME>Pedestrian_Protection</SHORT-NAME>
+                          <TYPE-TREF DEST="MODE-DECLARATION-GROUP">/apd/ModeDeclarationGroups/Pedestrian_Protection</TYPE-TREF>
+                        </MODE-DECLARATION-GROUP-PROTOTYPE>
+                        <MODE-DECLARATION-GROUP-PROTOTYPE>
+                          <SHORT-NAME>UpdatableApplicationFG</SHORT-NAME>
+                          <TYPE-TREF DEST="MODE-DECLARATION-GROUP">/apd/ModeDeclarationGroups/UpdatableApplicationFG</TYPE-TREF>
+                        </MODE-DECLARATION-GROUP-PROTOTYPE>
+                      </FUNCTION-GROUPS>
+                    </FUNCTION-GROUP-SET>
+                  </ELEMENTS>
+                </AR-PACKAGE>
+                <AR-PACKAGE>
+                  <SHORT-NAME>SoftwareClusters</SHORT-NAME>
+                  <ELEMENTS>
+                    <SOFTWARE-CLUSTER>
+                      <SHORT-NAME>FusionCoreCluster</SHORT-NAME>
+                      <CATEGORY>PLATFORM_CORE</CATEGORY>
+                      <CLAIMED-FUNCTION-GROUP-REFS>
+                        <CLAIMED-FUNCTION-GROUP-REF DEST="MODE-DECLARATION-GROUP-PROTOTYPE">/apd/Machines/FusionMachine/FunctionGroupSets/FusionFunctionGroups/MachineFG</CLAIMED-FUNCTION-GROUP-REF>
+                        <CLAIMED-FUNCTION-GROUP-REF DEST="MODE-DECLARATION-GROUP-PROTOTYPE">/apd/Machines/FusionMachine/FunctionGroupSets/FusionFunctionGroups/Lane_Change_Assistance</CLAIMED-FUNCTION-GROUP-REF>
+                        <CLAIMED-FUNCTION-GROUP-REF DEST="MODE-DECLARATION-GROUP-PROTOTYPE">/apd/Machines/FusionMachine/FunctionGroupSets/FusionFunctionGroups/Pedestrian_Protection</CLAIMED-FUNCTION-GROUP-REF>
+                        <CLAIMED-FUNCTION-GROUP-REF DEST="MODE-DECLARATION-GROUP-PROTOTYPE">/apd/Machines/FusionMachine/FunctionGroupSets/FusionFunctionGroups/UpdatableApplicationFG</CLAIMED-FUNCTION-GROUP-REF>
+                        <CLAIMED-FUNCTION-GROUP-REF DEST="MODE-DECLARATION-GROUP-PROTOTYPE">/ara/apd/function_group_sets/DevelopmentFunctionGroups/UpdatableApplicationFG</CLAIMED-FUNCTION-GROUP-REF>
+                      </CLAIMED-FUNCTION-GROUP-REFS>
+                      <CONTAINED-PROCESS-REFS>
+                        <CONTAINED-PROCESS-REF DEST="PROCESS">/apd/Machines/FusionMachine/Processes/ara_tsync_daemon</CONTAINED-PROCESS-REF>
+                        <CONTAINED-PROCESS-REF DEST="PROCESS">/apd/Machines/FusionMachine/Processes/controller</CONTAINED-PROCESS-REF>
+                        <CONTAINED-PROCESS-REF DEST="PROCESS">/apd/Machines/FusionMachine/Processes/EmoSampleApplication</CONTAINED-PROCESS-REF>
+                        <CONTAINED-PROCESS-REF DEST="PROCESS">/apd/Machines/FusionMachine/Processes/flashing_adapter</CONTAINED-PROCESS-REF>
+                        <CONTAINED-PROCESS-REF DEST="PROCESS">/apd/Machines/FusionMachine/Processes/fusion</CONTAINED-PROCESS-REF>
+                        <CONTAINED-PROCESS-REF DEST="PROCESS">/apd/Machines/FusionMachine/Processes/ota_client</CONTAINED-PROCESS-REF>
+                        <CONTAINED-PROCESS-REF DEST="PROCESS">/apd/Machines/FusionMachine/Processes/PersistencyDemo</CONTAINED-PROCESS-REF>
+                        <CONTAINED-PROCESS-REF DEST="PROCESS">/apd/Machines/FusionMachine/Processes/PersistencyRedundancyDemo</CONTAINED-PROCESS-REF>
+                        <CONTAINED-PROCESS-REF DEST="PROCESS">/apd/Machines/FusionMachine/Processes/StateManager</CONTAINED-PROCESS-REF>
+                        <CONTAINED-PROCESS-REF DEST="PROCESS">/apd/Machines/FusionMachine/Processes/TimeSyncConsumer</CONTAINED-PROCESS-REF>
+                        <CONTAINED-PROCESS-REF DEST="PROCESS">/apd/Machines/FusionMachine/Processes/shmMaster</CONTAINED-PROCESS-REF>
+                        <CONTAINED-PROCESS-REF DEST="PROCESS">/apd/Machines/FusionMachine/Processes/transfer_performance_check</CONTAINED-PROCESS-REF>
+                        <CONTAINED-PROCESS-REF DEST="PROCESS">/apd/Machines/FusionMachine/Processes/UpdatableApp</CONTAINED-PROCESS-REF>
+                        <CONTAINED-PROCESS-REF DEST="PROCESS">/apd/Machines/FusionMachine/Processes/vehicle_state_manager_application</CONTAINED-PROCESS-REF>
+                      </CONTAINED-PROCESS-REFS>
+                      <MODULE-INSTANTIATION-REFS>
+                        <MODULE-INSTANTIATION-REF DEST="OS-MODULE-INSTANTIATION">/apd/Machines/FusionMachine/FusionMachine/Linux</MODULE-INSTANTIATION-REF>
+                      </MODULE-INSTANTIATION-REFS>
+                    </SOFTWARE-CLUSTER>
+                  </ELEMENTS>
+                </AR-PACKAGE>
+              </AR-PACKAGES>
+            </AR-PACKAGE>
+          </AR-PACKAGES>
+        </AR-PACKAGE>
+      </AR-PACKAGES>
+    </AR-PACKAGE>
+    <!-- These are stub elements to generate specific parts of the machine manifest that are referenced by existing apps directly. -->
+    <!-- As soon as the applications are migrated, these stubs can be removed again. -->
+    <AR-PACKAGE>
+      <SHORT-NAME>ara</SHORT-NAME>
+      <AR-PACKAGES>
+        <AR-PACKAGE>
+          <SHORT-NAME>apd</SHORT-NAME>
+          <AR-PACKAGES>
+            <AR-PACKAGE>
+              <SHORT-NAME>function_group_modes</SHORT-NAME>
+              <ELEMENTS>
+                <MODE-DECLARATION-GROUP>
+                  <SHORT-NAME>UpdatableApplicationFG</SHORT-NAME>
+                  <INITIAL-MODE-REF DEST="MODE-DECLARATION">/ara/apd/function_group_modes/UpdatableApplicationFG/Off</INITIAL-MODE-REF>
+                  <MODE-DECLARATIONS>
+                    <MODE-DECLARATION>
+                      <SHORT-NAME>Off</SHORT-NAME>
+                    </MODE-DECLARATION>
+                    <MODE-DECLARATION>
+                      <SHORT-NAME>Running</SHORT-NAME>
+                    </MODE-DECLARATION>
+                    <MODE-DECLARATION>
+                      <SHORT-NAME>Verify</SHORT-NAME>
+                    </MODE-DECLARATION>
+                  </MODE-DECLARATIONS>
+                </MODE-DECLARATION-GROUP>
+              </ELEMENTS>
+            </AR-PACKAGE>
+            <AR-PACKAGE>
+              <SHORT-NAME>function_group_sets</SHORT-NAME>
+              <ELEMENTS>
+                <FUNCTION-GROUP-SET>
+                  <SHORT-NAME>DevelopmentFunctionGroups</SHORT-NAME>
+                  <FUNCTION-GROUPS>
+                    <MODE-DECLARATION-GROUP-PROTOTYPE>
+                      <SHORT-NAME>UpdatableApplicationFG</SHORT-NAME>
+                      <TYPE-TREF DEST="MODE-DECLARATION-GROUP">/ara/apd/function_group_modes/UpdatableApplicationFG</TYPE-TREF>
+                    </MODE-DECLARATION-GROUP-PROTOTYPE>
+                  </FUNCTION-GROUPS>
+                </FUNCTION-GROUP-SET>
+              </ELEMENTS>
+            </AR-PACKAGE>
+          </AR-PACKAGES>
+        </AR-PACKAGE>
+      </AR-PACKAGES>
+    </AR-PACKAGE>
+  </AR-PACKAGES>
+</AUTOSAR>

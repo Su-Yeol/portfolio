@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<AUTOSAR xmlns="http://autosar.org/schema/r4.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://autosar.org/schema/r4.0 AUTOSAR_00052.xsd">
+    <AR-PACKAGES>
+        <AR-PACKAGE>
+            <SHORT-NAME>katech</SHORT-NAME>
+            <AR-PACKAGES>
+                <AR-PACKAGE>
+                    <SHORT-NAME>deployment</SHORT-NAME>
+                    <ELEMENTS>
+                        <SOMEIP-SERVICE-INTERFACE-DEPLOYMENT UUID="1935d3b7-f8a1-4f3c-95f0-b13e41ee9114">
+                            <SHORT-NAME>someip_smart_cruise_control</SHORT-NAME>
+                            <EVENT-DEPLOYMENTS>
+                                <SOMEIP-EVENT-DEPLOYMENT>
+                                    <SHORT-NAME>SomeipEventSmartCruiseControl</SHORT-NAME>
+                                    <EVENT-REF DEST="VARIABLE-DATA-PROTOTYPE">/katech/smart_cruise_control/smartCruiseControlEvent</EVENT-REF>
+                                    <EVENT-ID>1</EVENT-ID>
+                                    <TRANSPORT-PROTOCOL>UDP</TRANSPORT-PROTOCOL>
+                                </SOMEIP-EVENT-DEPLOYMENT>
+                            </EVENT-DEPLOYMENTS>
+                            <SERVICE-INTERFACE-REF DEST="SERVICE-INTERFACE">/katech/smart_cruise_control</SERVICE-INTERFACE-REF>
+                            <EVENT-GROUPS>
+                                <SOMEIP-EVENT-GROUP>
+                                    <SHORT-NAME>SomeipEventgroup1</SHORT-NAME>
+                                    <EVENT-GROUP-ID>1</EVENT-GROUP-ID>
+                                    <EVENT-REFS>
+                                        <EVENT-REF DEST="SOMEIP-EVENT-DEPLOYMENT">/katech/deployment/someip_smart_cruise_control/SomeipEventSmartCruiseControl</EVENT-REF>
+                                    </EVENT-REFS>
+                                </SOMEIP-EVENT-GROUP>
+                            </EVENT-GROUPS>
+                            <SERVICE-INTERFACE-ID>34001</SERVICE-INTERFACE-ID>
+                            <SERVICE-INTERFACE-VERSION>
+                                <MAJOR-VERSION>1</MAJOR-VERSION>
+                                <MINOR-VERSION>0</MINOR-VERSION>
+                            </SERVICE-INTERFACE-VERSION>
+                        </SOMEIP-SERVICE-INTERFACE-DEPLOYMENT>
+                    </ELEMENTS>
+                </AR-PACKAGE>
+            </AR-PACKAGES>
+        </AR-PACKAGE>
+    </AR-PACKAGES>
+</AUTOSAR>

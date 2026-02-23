@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<AUTOSAR xmlns="http://autosar.org/schema/r4.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://autosar.org/schema/r4.0 AUTOSAR_00052.xsd">
+  <AR-PACKAGES>
+    <AR-PACKAGE>
+      <SHORT-NAME>apd</SHORT-NAME>
+      <AR-PACKAGES>
+        <AR-PACKAGE>
+          <SHORT-NAME>Machines</SHORT-NAME>
+          <AR-PACKAGES>
+            <AR-PACKAGE>
+              <SHORT-NAME>RadarFusionMachine</SHORT-NAME>
+              <AR-PACKAGES>
+                <AR-PACKAGE>
+                  <SHORT-NAME>ServiceInstanceToMachineMappings</SHORT-NAME>
+                  <ELEMENTS>
+                    <SOMEIP-SERVICE-INSTANCE-TO-MACHINE-MAPPING>
+                      <SHORT-NAME>UpdateAdapterAglPackageManagementInstanceToMachineMapping</SHORT-NAME>
+                      <COMMUNICATION-CONNECTOR-REF DEST="ETHERNET-COMMUNICATION-CONNECTOR">/apd/MachineDesigns/RadarFusionMachineDesign/RadarFusionConnector</COMMUNICATION-CONNECTOR-REF>
+                      <SERVICE-INSTANCE-REFS>
+                        <SERVICE-INSTANCE-REF DEST="PROVIDED-SOMEIP-SERVICE-INSTANCE">/apd/Machines/RadarFusionMachine/ServiceInstances/UpdateAdapterAglSomeIpPackageManagementInstance</SERVICE-INSTANCE-REF>
+                      </SERVICE-INSTANCE-REFS>
+                      <TCP-PORT-REF DEST="AP-APPLICATION-ENDPOINT">/apd/MachineDesigns/RadarFusionMachineDesign/RadarFusionConnector/UpdateAdapterAglApplicationEndpoint</TCP-PORT-REF>
+                    </SOMEIP-SERVICE-INSTANCE-TO-MACHINE-MAPPING>
+                  </ELEMENTS>
+                </AR-PACKAGE>
+                <AR-PACKAGE>
+                  <SHORT-NAME>ServiceInstances</SHORT-NAME>
+                  <ELEMENTS>
+                    <PROVIDED-SOMEIP-SERVICE-INSTANCE>
+                      <SHORT-NAME>UpdateAdapterAglSomeIpPackageManagementInstance</SHORT-NAME>
+                      <SERVICE-INTERFACE-DEPLOYMENT-REF DEST="SOMEIP-SERVICE-INTERFACE-DEPLOYMENT">/ara/apd/ucm/deployment/PackageManagementSomeIp</SERVICE-INTERFACE-DEPLOYMENT-REF>
+                      <PROVIDED-EVENT-GROUPS>
+                        <SOMEIP-PROVIDED-EVENT-GROUP>
+                          <SHORT-NAME>CurrentStatus_provided_eventgroup</SHORT-NAME>
+                          <EVENT-GROUP-REF DEST="SOMEIP-EVENT-GROUP">/ara/apd/ucm/deployment/PackageManagementSomeIp/CurrentStatus_eventgroup</EVENT-GROUP-REF>
+                          <MULTICAST-THRESHOLD>0</MULTICAST-THRESHOLD>
+                        </SOMEIP-PROVIDED-EVENT-GROUP>
+                      </PROVIDED-EVENT-GROUPS>
+                      <SD-SERVER-CONFIG-REF DEST="SOMEIP-SD-SERVER-SERVICE-INSTANCE-CONFIG">/apd/SomeipSdTimingConfigs/SomeipSdServerServiceInstanceConfig</SD-SERVER-CONFIG-REF>
+                      <SERVICE-INSTANCE-ID>814</SERVICE-INSTANCE-ID>
+                    </PROVIDED-SOMEIP-SERVICE-INSTANCE>
+                  </ELEMENTS>
+                </AR-PACKAGE>
+              </AR-PACKAGES>
+            </AR-PACKAGE>
+          </AR-PACKAGES>
+        </AR-PACKAGE>
+      </AR-PACKAGES>
+    </AR-PACKAGE>
+  </AR-PACKAGES>
+</AUTOSAR>

@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<AUTOSAR xmlns="http://autosar.org/schema/r4.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://autosar.org/schema/r4.0 AUTOSAR_00052.xsd">
+  <AR-PACKAGES>
+    <AR-PACKAGE>
+      <SHORT-NAME>apd</SHORT-NAME>
+      <AR-PACKAGES>
+        <AR-PACKAGE>
+          <SHORT-NAME>Machines</SHORT-NAME>
+          <AR-PACKAGES>
+            <AR-PACKAGE>
+              <SHORT-NAME>RadarFusionWRSOMEIPMachine</SHORT-NAME>
+              <AR-PACKAGES>
+                <AR-PACKAGE>
+                  <SHORT-NAME>ServiceInstanceToMachineMappings</SHORT-NAME>
+                  <ELEMENTS>
+                    <SOMEIP-SERVICE-INSTANCE-TO-MACHINE-MAPPING>
+                      <SHORT-NAME>radar_RequiredServiceInstance_toMachine</SHORT-NAME>
+                      <COMMUNICATION-CONNECTOR-REF DEST="ETHERNET-COMMUNICATION-CONNECTOR">/apd/MachineDesigns/RadarFusionWRSOMEIPMachineDesign/RadarFusionWRSOMEIPConnector</COMMUNICATION-CONNECTOR-REF>
+                      <SERVICE-INSTANCE-REFS>
+                        <SERVICE-INSTANCE-REF DEST="REQUIRED-SOMEIP-SERVICE-INSTANCE">/apd/Machines/RadarFusionWRSOMEIPMachine/ServiceInstances/RadarRequiredSomeipServiceInstance</SERVICE-INSTANCE-REF>
+                      </SERVICE-INSTANCE-REFS>
+                      <UDP-PORT-REF DEST="AP-APPLICATION-ENDPOINT">/apd/MachineDesigns/RadarFusionWRSOMEIPMachineDesign/RadarFusionWRSOMEIPConnector/TriggerApplicationEndpoint</UDP-PORT-REF>
+                    </SOMEIP-SERVICE-INSTANCE-TO-MACHINE-MAPPING>
+                  </ELEMENTS>
+                </AR-PACKAGE>
+                <AR-PACKAGE>
+                  <SHORT-NAME>ServiceInstances</SHORT-NAME>
+                  <ELEMENTS>
+                    <REQUIRED-SOMEIP-SERVICE-INSTANCE>
+                      <SHORT-NAME>RadarRequiredSomeipServiceInstance</SHORT-NAME>
+                      <E-2-E-EVENT-PROTECTION-PROPSS>
+                        <END-2-END-EVENT-PROTECTION-PROPS>
+                          <SHORT-NAME>End2EndEventProtectionProps</SHORT-NAME>
+                          <DATA-IDS>
+                            <DATA-ID>4321</DATA-ID>
+                          </DATA-IDS>
+                          <E-2-E-PROFILE-CONFIGURATION-REF DEST="E-2-E-PROFILE-CONFIGURATION">/apd/Machines/RadarFusionWRSOMEIPMachine/E2E/e2eprofiles/PROFILE_01</E-2-E-PROFILE-CONFIGURATION-REF>
+                          <EVENT-REF DEST="SOMEIP-EVENT-DEPLOYMENT">/apd/ServiceInterfaceDeployments/Radar_Someip/Brake_Someip</EVENT-REF>
+                          <MAX-DATA-LENGTH>4096</MAX-DATA-LENGTH>
+                          <MIN-DATA-LENGTH>1</MIN-DATA-LENGTH>
+                        </END-2-END-EVENT-PROTECTION-PROPS>
+                        <END-2-END-EVENT-PROTECTION-PROPS>
+                          <SHORT-NAME>End2EndEventProtectionProps</SHORT-NAME>
+                          <DATA-IDS>
+                            <DATA-ID>4321</DATA-ID>
+                            <DATA-ID>4321</DATA-ID>
+                          </DATA-IDS>
+                          <E-2-E-PROFILE-CONFIGURATION-REF DEST="E-2-E-PROFILE-CONFIGURATION">/apd/Machines/RadarFusionWRSOMEIPMachine/E2E/e2eprofiles/PROFILE_01</E-2-E-PROFILE-CONFIGURATION-REF>
+                          <EVENT-REF DEST="SOMEIP-EVENT-DEPLOYMENT">/apd/ServiceInterfaceDeployments/Radar_Someip/ParkingBrake_Someip</EVENT-REF>
+                          <MAX-DATA-LENGTH>4096</MAX-DATA-LENGTH>
+                          <MIN-DATA-LENGTH>1</MIN-DATA-LENGTH>
+                        </END-2-END-EVENT-PROTECTION-PROPS>
+                      </E-2-E-EVENT-PROTECTION-PROPSS>
+                      <SERVICE-INTERFACE-DEPLOYMENT-REF DEST="SOMEIP-SERVICE-INTERFACE-DEPLOYMENT">/apd/ServiceInterfaceDeployments/Radar_Someip</SERVICE-INTERFACE-DEPLOYMENT-REF>
+                      <REQUIRED-EVENT-GROUPS>
+                        <SOMEIP-REQUIRED-EVENT-GROUP>
+                          <SHORT-NAME>RequiredEventgroup1</SHORT-NAME>
+                          <EVENT-GROUP-REF DEST="SOMEIP-EVENT-GROUP">/apd/ServiceInterfaceDeployments/Radar_Someip/SomeipEventgroup1</EVENT-GROUP-REF>
+                        </SOMEIP-REQUIRED-EVENT-GROUP>
+                        <SOMEIP-REQUIRED-EVENT-GROUP>
+                          <SHORT-NAME>RequiredEventgroup2</SHORT-NAME>
+                          <EVENT-GROUP-REF DEST="SOMEIP-EVENT-GROUP">/apd/ServiceInterfaceDeployments/Radar_Someip/SomeipEventgroup2</EVENT-GROUP-REF>
+                        </SOMEIP-REQUIRED-EVENT-GROUP>
+                      </REQUIRED-EVENT-GROUPS>
+                      <REQUIRED-MINOR-VERSION>0</REQUIRED-MINOR-VERSION>
+                      <REQUIRED-SERVICE-INSTANCE-ID>19</REQUIRED-SERVICE-INSTANCE-ID>
+                      <SD-CLIENT-CONFIG-REF DEST="SOMEIP-SD-CLIENT-SERVICE-INSTANCE-CONFIG">/apd/SomeipSdTimingConfigs/SomeipSdClientServiceInstanceConfig</SD-CLIENT-CONFIG-REF>
+                      <VERSION-DRIVEN-FIND-BEHAVIOR>MINIMUM-MINOR-VERSION</VERSION-DRIVEN-FIND-BEHAVIOR>
+                    </REQUIRED-SOMEIP-SERVICE-INSTANCE>
+                  </ELEMENTS>
+                </AR-PACKAGE>
+              </AR-PACKAGES>
+            </AR-PACKAGE>
+          </AR-PACKAGES>
+        </AR-PACKAGE>
+      </AR-PACKAGES>
+    </AR-PACKAGE>
+  </AR-PACKAGES>
+</AUTOSAR>

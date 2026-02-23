@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<AUTOSAR xmlns="http://autosar.org/schema/r4.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://autosar.org/schema/r4.0 AUTOSAR_00052.xsd">
+  <AR-PACKAGES>
+    <AR-PACKAGE>
+      <SHORT-NAME>apd</SHORT-NAME>
+      <AR-PACKAGES>
+        <AR-PACKAGE>
+          <SHORT-NAME>Machines</SHORT-NAME>
+          <AR-PACKAGES>
+            <AR-PACKAGE>
+              <SHORT-NAME>testSuiteEcu2Machine</SHORT-NAME>
+              <AR-PACKAGES>
+                <AR-PACKAGE>
+                  <SHORT-NAME>ServiceInstanceToMachineMappings</SHORT-NAME>
+                  <ELEMENTS>
+                    <DDS-SERVICE-INSTANCE-TO-MACHINE-MAPPING>
+                      <SHORT-NAME>DDSService2RequiredServiceInstanceToEcu2Machine</SHORT-NAME>
+                      <COMMUNICATION-CONNECTOR-REF DEST="ETHERNET-COMMUNICATION-CONNECTOR">/apd/MachineDesigns/testSuiteEcu2MachineDesign/CommunicationConnector1</COMMUNICATION-CONNECTOR-REF>
+                      <SERVICE-INSTANCE-REFS>
+                        <SERVICE-INSTANCE-REF DEST="DDS-REQUIRED-SERVICE-INSTANCE">/apd/Machines/testSuiteEcu2Machine/ServiceInstances/ST_DDSApp03Service2RequiredDdsServiceInstance</SERVICE-INSTANCE-REF>
+                        <SERVICE-INSTANCE-REF DEST="DDS-REQUIRED-SERVICE-INSTANCE">/apd/Machines/testSuiteEcu2Machine/ServiceInstances/ST_DDSApp03Service3RequiredDdsServiceInstance</SERVICE-INSTANCE-REF>
+                        <SERVICE-INSTANCE-REF DEST="DDS-REQUIRED-SERVICE-INSTANCE">/apd/Machines/testSuiteEcu2Machine/ServiceInstances/ST_DDSApp03Service5RequiredDdsServiceInstance</SERVICE-INSTANCE-REF>
+                      </SERVICE-INSTANCE-REFS>
+                    </DDS-SERVICE-INSTANCE-TO-MACHINE-MAPPING>
+                  </ELEMENTS>
+                </AR-PACKAGE>
+                <AR-PACKAGE>
+                  <SHORT-NAME>ServiceInstances</SHORT-NAME>
+                  <ELEMENTS>
+                    <DDS-REQUIRED-SERVICE-INSTANCE>
+                      <SHORT-NAME>ST_DDSApp03Service2RequiredDdsServiceInstance</SHORT-NAME>
+                      <SERVICE-INTERFACE-DEPLOYMENT-REF DEST="DDS-SERVICE-INTERFACE-DEPLOYMENT">/apd/ServiceInterfaceDeployments/DDSService2_Dds</SERVICE-INTERFACE-DEPLOYMENT-REF>
+                      <QOS-PROFILE>default</QOS-PROFILE>
+                      <DOMAIN-ID>40</DOMAIN-ID>
+                      <EVENT-QOS-PROPSS>
+                        <DDS-EVENT-QOS-PROPS>
+                          <QOS-PROFILE>default</QOS-PROFILE>
+                          <EVENT-REF DEST="SERVICE-EVENT-DEPLOYMENT">/apd/ServiceInterfaceDeployments/DDSService2_Dds/DdsEventC</EVENT-REF>
+                        </DDS-EVENT-QOS-PROPS>
+                      </EVENT-QOS-PROPSS>
+                      <REQUIRED-SERVICE-INSTANCE-ID>30</REQUIRED-SERVICE-INSTANCE-ID>
+                    </DDS-REQUIRED-SERVICE-INSTANCE>
+                    <DDS-REQUIRED-SERVICE-INSTANCE>
+                      <SHORT-NAME>ST_DDSApp03Service3RequiredDdsServiceInstance</SHORT-NAME>
+                      <SERVICE-INTERFACE-DEPLOYMENT-REF DEST="DDS-SERVICE-INTERFACE-DEPLOYMENT">/apd/ServiceInterfaceDeployments/DDSService3_Dds</SERVICE-INTERFACE-DEPLOYMENT-REF>
+                      <QOS-PROFILE>default</QOS-PROFILE>
+                      <DOMAIN-ID>41</DOMAIN-ID>
+                      <FIELD-NOTIFIER-QOS-PROPSS>
+                        <DDS-FIELD-QOS-PROPS>
+                          <QOS-PROFILE>default</QOS-PROFILE>
+                          <FIELD-REF DEST="SERVICE-FIELD-DEPLOYMENT">/apd/ServiceInterfaceDeployments/DDSService3_Dds/FieldA_Dds</FIELD-REF>
+                        </DDS-FIELD-QOS-PROPS>
+                      </FIELD-NOTIFIER-QOS-PROPSS>
+                      <REQUIRED-SERVICE-INSTANCE-ID>31</REQUIRED-SERVICE-INSTANCE-ID>
+                    </DDS-REQUIRED-SERVICE-INSTANCE>
+                    <DDS-REQUIRED-SERVICE-INSTANCE>
+                      <SHORT-NAME>ST_DDSApp03Service5RequiredDdsServiceInstance</SHORT-NAME>
+                      <SERVICE-INTERFACE-DEPLOYMENT-REF DEST="DDS-SERVICE-INTERFACE-DEPLOYMENT">/apd/ServiceInterfaceDeployments/DDSService5_Dds</SERVICE-INTERFACE-DEPLOYMENT-REF>
+                      <QOS-PROFILE>default</QOS-PROFILE>
+                      <DOMAIN-ID>38</DOMAIN-ID>
+                      <REQUIRED-SERVICE-INSTANCE-ID>33</REQUIRED-SERVICE-INSTANCE-ID>
+                    </DDS-REQUIRED-SERVICE-INSTANCE>
+                  </ELEMENTS>
+                </AR-PACKAGE>
+              </AR-PACKAGES>
+            </AR-PACKAGE>
+          </AR-PACKAGES>
+        </AR-PACKAGE>
+      </AR-PACKAGES>
+    </AR-PACKAGE>
+  </AR-PACKAGES>
+</AUTOSAR>

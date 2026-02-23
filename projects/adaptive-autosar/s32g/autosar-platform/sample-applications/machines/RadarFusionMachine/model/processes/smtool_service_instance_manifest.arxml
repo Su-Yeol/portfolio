@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<AUTOSAR xmlns="http://autosar.org/schema/r4.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://autosar.org/schema/r4.0 AUTOSAR_00052.xsd">
+  <AR-PACKAGES>
+    <AR-PACKAGE>
+      <SHORT-NAME>apd</SHORT-NAME>
+      <AR-PACKAGES>
+        <AR-PACKAGE>
+          <SHORT-NAME>Machines</SHORT-NAME>
+          <AR-PACKAGES>
+            <AR-PACKAGE>
+              <SHORT-NAME>RadarFusionMachine</SHORT-NAME>
+              <AR-PACKAGES>
+                <AR-PACKAGE>
+                  <SHORT-NAME>ServiceInstanceToMachineMappings</SHORT-NAME>
+                  <ELEMENTS>
+                    <SOMEIP-SERVICE-INSTANCE-TO-MACHINE-MAPPING>
+                      <SHORT-NAME>TriggerIn_RequiredServiceInstance_toMachine</SHORT-NAME>
+                      <COMMUNICATION-CONNECTOR-REF DEST="ETHERNET-COMMUNICATION-CONNECTOR">/apd/MachineDesigns/RadarFusionMachineDesign/RadarFusionConnector</COMMUNICATION-CONNECTOR-REF>
+                      <SERVICE-INSTANCE-REFS>
+                        <SERVICE-INSTANCE-REF DEST="REQUIRED-SOMEIP-SERVICE-INSTANCE">/apd/Machines/RadarFusionMachine/ServiceInstances/TriggerIn_RequiredSomeipServiceInstance</SERVICE-INSTANCE-REF>
+                      </SERVICE-INSTANCE-REFS>
+                      <UDP-PORT-REF DEST="AP-APPLICATION-ENDPOINT">/apd/MachineDesigns/RadarFusionMachineDesign/RadarFusionConnector/TriggerApplicationEndpoint</UDP-PORT-REF>
+                    </SOMEIP-SERVICE-INSTANCE-TO-MACHINE-MAPPING>
+                    <SOMEIP-SERVICE-INSTANCE-TO-MACHINE-MAPPING>
+                      <SHORT-NAME>TriggerOut_RequiredServiceInstance2_toMachine</SHORT-NAME>
+                      <COMMUNICATION-CONNECTOR-REF DEST="ETHERNET-COMMUNICATION-CONNECTOR">/apd/MachineDesigns/RadarFusionMachineDesign/RadarFusionConnector</COMMUNICATION-CONNECTOR-REF>
+                      <SERVICE-INSTANCE-REFS>
+                        <SERVICE-INSTANCE-REF DEST="REQUIRED-SOMEIP-SERVICE-INSTANCE">/apd/Machines/RadarFusionMachine/ServiceInstances/TriggerOut_RequiredSomeipServiceInstance</SERVICE-INSTANCE-REF>
+                      </SERVICE-INSTANCE-REFS>
+                      <UDP-PORT-REF DEST="AP-APPLICATION-ENDPOINT">/apd/MachineDesigns/RadarFusionMachineDesign/RadarFusionConnector/TriggerApplicationEndpoint</UDP-PORT-REF>
+                    </SOMEIP-SERVICE-INSTANCE-TO-MACHINE-MAPPING>
+                  </ELEMENTS>
+                </AR-PACKAGE>
+                <AR-PACKAGE>
+                  <SHORT-NAME>ServiceInstances</SHORT-NAME>
+                  <ELEMENTS>
+                    <REQUIRED-SOMEIP-SERVICE-INSTANCE>
+                      <SHORT-NAME>TriggerIn_RequiredSomeipServiceInstance</SHORT-NAME>
+                      <SERVICE-INTERFACE-DEPLOYMENT-REF DEST="SOMEIP-SERVICE-INTERFACE-DEPLOYMENT">/apd/ServiceInterfaceDeployments/TriggerIn_Someip</SERVICE-INTERFACE-DEPLOYMENT-REF>
+                      <REQUIRED-MINOR-VERSION>0</REQUIRED-MINOR-VERSION>
+                      <REQUIRED-SERVICE-INSTANCE-ID>49</REQUIRED-SERVICE-INSTANCE-ID>
+                      <SD-CLIENT-CONFIG-REF DEST="SOMEIP-SD-CLIENT-SERVICE-INSTANCE-CONFIG">/apd/SomeipSdTimingConfigs/SomeipSdClientServiceInstanceConfig</SD-CLIENT-CONFIG-REF>
+                      <VERSION-DRIVEN-FIND-BEHAVIOR>MINIMUM-MINOR-VERSION</VERSION-DRIVEN-FIND-BEHAVIOR>
+                    </REQUIRED-SOMEIP-SERVICE-INSTANCE>
+                    <REQUIRED-SOMEIP-SERVICE-INSTANCE>
+                      <SHORT-NAME>TriggerOut_RequiredSomeipServiceInstance</SHORT-NAME>
+                      <SERVICE-INTERFACE-DEPLOYMENT-REF DEST="SOMEIP-SERVICE-INTERFACE-DEPLOYMENT">/apd/ServiceInterfaceDeployments/TriggerOut_Someip</SERVICE-INTERFACE-DEPLOYMENT-REF>
+                      <REQUIRED-MINOR-VERSION>0</REQUIRED-MINOR-VERSION>
+                      <REQUIRED-SERVICE-INSTANCE-ID>668</REQUIRED-SERVICE-INSTANCE-ID>
+                      <SD-CLIENT-CONFIG-REF DEST="SOMEIP-SD-CLIENT-SERVICE-INSTANCE-CONFIG">/apd/SomeipSdTimingConfigs/SomeipSdClientServiceInstanceConfig</SD-CLIENT-CONFIG-REF>
+                      <VERSION-DRIVEN-FIND-BEHAVIOR>MINIMUM-MINOR-VERSION</VERSION-DRIVEN-FIND-BEHAVIOR>
+                    </REQUIRED-SOMEIP-SERVICE-INSTANCE>
+                  </ELEMENTS>
+                </AR-PACKAGE>
+              </AR-PACKAGES>
+            </AR-PACKAGE>
+          </AR-PACKAGES>
+        </AR-PACKAGE>
+      </AR-PACKAGES>
+    </AR-PACKAGE>
+  </AR-PACKAGES>
+</AUTOSAR>

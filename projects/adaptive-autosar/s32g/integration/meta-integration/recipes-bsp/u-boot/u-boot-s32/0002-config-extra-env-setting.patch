@@ -1,0 +1,39 @@
+From 6cdbb7f5bfce81bd3faabe31337bd1fe9dff5fda Mon Sep 17 00:00:00 2001
+From: SuYeol-Kim <ksy8136612@gmail.com>
+Date: Mon, 8 Sep 2025 10:32:01 +0900
+Subject: [PATCH] config extra env setting
+
+---
+ include/configs/s32g.h | 16 +++++++++++++++-
+ 1 file changed, 15 insertions(+), 1 deletion(-)
+
+diff --git a/include/configs/s32g.h b/include/configs/s32g.h
+index fcdf8e0128..25abc5818b 100644
+--- a/include/configs/s32g.h
++++ b/include/configs/s32g.h
+@@ -7,7 +7,21 @@
+ 
+ #include <configs/s32-cc.h>
+ 
+-#define CONFIG_EXTRA_ENV_SETTINGS S32CC_ENV_SETTINGS
++#define CONFIG_EXTRA_ENV_SETTINGS S32CC_ENV_SETTINGS \
++        "skip_scmi_reset_agent=1\0" \
++        "llce_rm_m7can=for i in 0 1 2 3 4 5 6 7 8 9 10 12 13 14 15; do " \
++        "fdt rm /soc/llce@43a00000/llce_can${i}; done\0" \
++        "llce_en_mhif=fdt set /soc/llce@43a00000/llce_mb@43a00000 nxp,multi-hif\0" \
++        "bootcmd=" \
++        "scmi_clk gate llce 1; " \
++        "dcache off; mw.q 0x34000000 0x0 0x100000; dcache on; " \
++        "if fatload mmc 0:1 0x80000000 M7_image.bin; then " \
++        "cp.q 0x80000000 0x34300000 0x60000; " \
++        "fi; " \
++        "startm7 0x34401000; " \
++        "run loadimage; run loadfdt; " \
++        "run llce_rm_m7can; run llce_en_mhif; " \
++        "run mmcboot; \0"
+ 
+ /* Ethernet */
+ #define CONFIG_SYS_RX_ETH_BUFFER	256
+-- 
+2.34.1
+

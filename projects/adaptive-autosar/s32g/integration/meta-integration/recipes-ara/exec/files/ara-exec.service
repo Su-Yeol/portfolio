@@ -1,0 +1,18 @@
+[Unit]
+Description=ARA Execution Manager
+After=network.target
+Wants=network.target
+
+[Service]
+Type=simple
+ExecStart=/usr/sbin/execution-manager --foreground
+Restart=on-failure
+RestartSec=2s
+
+TimeoutStartSec=20
+StandardOutput=journal
+StandardError=journal
+
+
+[Install]
+WantedBy=multi-user.target

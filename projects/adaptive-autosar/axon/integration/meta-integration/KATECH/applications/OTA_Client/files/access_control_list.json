@@ -1,0 +1,9 @@
+{
+    "grants":
+    [
+        {
+            "type": "GrantDemoFC",
+            "DemoFile": "ara/apd/OTA_Client/software_components/OTA/VehiclePackageManagementRPort"
+        }
+    ]
+}

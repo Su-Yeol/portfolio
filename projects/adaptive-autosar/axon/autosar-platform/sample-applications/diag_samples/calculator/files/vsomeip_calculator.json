@@ -1,0 +1,35 @@
+{
+    "logging":
+    {
+        "dlt": "false",
+        "console": "false",
+        "file":
+        {
+            "path": "/var/log/vsomeip.log",
+            "enable": "false"
+        },
+        "level": "debug"
+    },
+    "unicast": "192.168.56.101",
+    "applications":
+    [
+    ],
+    "routing": "routingmanagerd",
+    "services":
+    [
+    ],
+    "service-discovery":
+    {
+        "enable": "true",
+        "repetitions_max": "3",
+        "repetitions_base_delay": "200",
+        "initial_delay_min": "10",
+        "cyclic_offer_delay": "2000",
+        "multicast": "224.244.224.245",
+        "request_response_delay": "1500",
+        "initial_delay_max": "100",
+        "ttl": "3",
+        "protocol": "udp",
+        "port": "30490"
+    }
+}

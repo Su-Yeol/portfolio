@@ -1,8 +1,0 @@
-module KatechSensorModule
-{
-  @final
-  struct SensorData
-  {
-    sequence<octet> payload;
-  };
-};

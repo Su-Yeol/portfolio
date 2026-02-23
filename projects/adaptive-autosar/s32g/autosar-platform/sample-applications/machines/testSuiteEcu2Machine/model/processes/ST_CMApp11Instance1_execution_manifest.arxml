@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<AUTOSAR xmlns="http://autosar.org/schema/r4.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://autosar.org/schema/r4.0 AUTOSAR_00052.xsd">
+  <AR-PACKAGES>
+    <AR-PACKAGE>
+      <SHORT-NAME>apd</SHORT-NAME>
+      <AR-PACKAGES>
+        <AR-PACKAGE>
+          <SHORT-NAME>Machines</SHORT-NAME>
+          <AR-PACKAGES>
+            <AR-PACKAGE>
+              <SHORT-NAME>testSuiteEcu2Machine</SHORT-NAME>
+              <AR-PACKAGES>
+                <AR-PACKAGE>
+                  <!-- ProcessToMachineMappings -->
+                  <SHORT-NAME>ProcessToMachineMappings</SHORT-NAME>
+                  <ELEMENTS>
+                    <PROCESS-TO-MACHINE-MAPPING-SET>
+                      <SHORT-NAME>CMApp11ProcessToMachineMapping</SHORT-NAME>
+                      <PROCESS-TO-MACHINE-MAPPINGS>
+                        <PROCESS-TO-MACHINE-MAPPING>
+                          <SHORT-NAME>CMApp11SwcInstance1TotestSuiteEcu2Machine</SHORT-NAME>
+                          <MACHINE-REF DEST="MACHINE">/apd/Machines/testSuiteEcu2Machine/testSuiteEcu2Machine</MACHINE-REF>
+                          <PROCESS-REF DEST="PROCESS">/apd/Machines/testSuiteEcu2Machine/Processes/ST_CMApp11Instance1</PROCESS-REF>
+                        </PROCESS-TO-MACHINE-MAPPING>
+                      </PROCESS-TO-MACHINE-MAPPINGS>
+                    </PROCESS-TO-MACHINE-MAPPING-SET>
+                  </ELEMENTS>
+                </AR-PACKAGE>
+                <AR-PACKAGE>
+                  <!-- Processes -->
+                  <SHORT-NAME>Processes</SHORT-NAME>
+                  <ELEMENTS>
+                    <PROCESS>
+                      <!-- ST_CMApp11Instance1 -->
+                      <SHORT-NAME>ST_CMApp11Instance1</SHORT-NAME>
+                      <DESIGN-REF DEST="PROCESS-DESIGN">/apd/Machines/testSuiteEcu2Machine/ProcessDesigns/ST_CMApp11Instance1</DESIGN-REF>
+                      <EXECUTABLE-REFS>
+                        <EXECUTABLE-REF DEST="EXECUTABLE">/apd/Executables/ST_CMApp11</EXECUTABLE-REF>
+                      </EXECUTABLE-REFS>
+                      <PROCESS-STATE-MACHINE>
+                        <SHORT-NAME>state_machine</SHORT-NAME>
+                        <TYPE-TREF DEST="MODE-DECLARATION-GROUP">/apd/ModeDeclarationGroups/ProcessStateMachine</TYPE-TREF>
+                      </PROCESS-STATE-MACHINE>
+                      <STATE-DEPENDENT-STARTUP-CONFIGS>
+                        <STATE-DEPENDENT-STARTUP-CONFIG>
+                          <FUNCTION-GROUP-STATE-IREFS>
+                            <FUNCTION-GROUP-STATE-IREF>
+                              <CONTEXT-MODE-DECLARATION-GROUP-PROTOTYPE-REF DEST="MODE-DECLARATION-GROUP-PROTOTYPE">/apd/Machines/testSuiteEcu2Machine/FunctionGroupSets/testSuiteEcu2FunctionGroups/SystemTestFunctionGroup</CONTEXT-MODE-DECLARATION-GROUP-PROTOTYPE-REF>
+                              <TARGET-MODE-DECLARATION-REF DEST="MODE-DECLARATION">/apd/Machines/testSuiteEcu2Machine/ModeDeclarationGroups/SystemTestFunctionGroup/STS_CM_00003</TARGET-MODE-DECLARATION-REF>
+                            </FUNCTION-GROUP-STATE-IREF>
+                          </FUNCTION-GROUP-STATE-IREFS>
+                          <RESOURCE-GROUP-REF DEST="RESOURCE-GROUP">/apd/Machines/testSuiteEcu2Machine/testSuiteEcu2Machine/Linux/ResourceGroup1</RESOURCE-GROUP-REF>
+                          <STARTUP-CONFIG-REF DEST="STARTUP-CONFIG">/apd/Machines/testSuiteEcu2Machine/StartupConfigSets/ST_CMApp11Startup</STARTUP-CONFIG-REF>
+                        </STATE-DEPENDENT-STARTUP-CONFIG>
+                      </STATE-DEPENDENT-STARTUP-CONFIGS>
+                    </PROCESS>
+                  </ELEMENTS>
+                </AR-PACKAGE>
+                <AR-PACKAGE>
+                  <!-- ServiceInstanceToPortPrototypeMappings -->
+                  <SHORT-NAME>ServiceInstanceToPortPrototypeMappings</SHORT-NAME>
+                  <ELEMENTS>
+                    <SERVICE-INSTANCE-TO-PORT-PROTOTYPE-MAPPING>
+                      <!-- CMApp11CMService5RequiredServiceInstanceToPort -->
+                      <SHORT-NAME>CMApp11CMService5RequiredServiceInstanceToPort</SHORT-NAME>
+                      <PORT-PROTOTYPE-IREF>
+                        <TARGET-PORT-PROTOTYPE-REF DEST="R-PORT-PROTOTYPE">/apd/AdaptiveApplicationSwComponentTypes/ST_CMApp11/CMApp11Service5Rport</TARGET-PORT-PROTOTYPE-REF>
+                      </PORT-PROTOTYPE-IREF>
+                      <PROCESS-REF DEST="PROCESS">/apd/Machines/testSuiteEcu2Machine/Processes/ST_CMApp11Instance1</PROCESS-REF>
+                      <SERVICE-INSTANCE-REF DEST="REQUIRED-SOMEIP-SERVICE-INSTANCE">/apd/Machines/testSuiteEcu2Machine/ServiceInstances/ST_CMApp11CMService5RequiredSomeipServiceInstance</SERVICE-INSTANCE-REF>
+                    </SERVICE-INSTANCE-TO-PORT-PROTOTYPE-MAPPING>
+                    <SERVICE-INSTANCE-TO-PORT-PROTOTYPE-MAPPING>
+                      <SHORT-NAME>DataIdentifierPPortToCMApp11</SHORT-NAME>
+                      <PORT-PROTOTYPE-IREF>
+                        <TARGET-PORT-PROTOTYPE-REF DEST="P-PORT-PROTOTYPE">/apd/AdaptiveApplicationSwComponentTypes/ST_CMApp11/DataIdentifierPport</TARGET-PORT-PROTOTYPE-REF>
+                      </PORT-PROTOTYPE-IREF>
+                      <PROCESS-REF DEST="PROCESS">/apd/Machines/testSuiteEcu2Machine/Processes/ST_CMApp11Instance1</PROCESS-REF>
+                      <SERVICE-INSTANCE-REF DEST="PROVIDED-SOMEIP-SERVICE-INSTANCE">/apd/Machines/testSuiteEcu2Machine/ServiceInstances/ST_CMApp11DiagDataIdentifierProvidedSomeipServiceInstance</SERVICE-INSTANCE-REF>
+                    </SERVICE-INSTANCE-TO-PORT-PROTOTYPE-MAPPING>
+                    <SERVICE-INSTANCE-TO-PORT-PROTOTYPE-MAPPING>
+                      <!-- DiagRoutinePPortToCMApp11 -->
+                      <SHORT-NAME>DiagRoutinePPortToCMApp11</SHORT-NAME>
+                      <PORT-PROTOTYPE-IREF>
+                        <TARGET-PORT-PROTOTYPE-REF DEST="P-PORT-PROTOTYPE">/apd/AdaptiveApplicationSwComponentTypes/ST_CMApp11/DiagRoutineServicePport</TARGET-PORT-PROTOTYPE-REF>
+                      </PORT-PROTOTYPE-IREF>
+                      <PROCESS-REF DEST="PROCESS">/apd/Machines/testSuiteEcu2Machine/Processes/ST_CMApp11Instance1</PROCESS-REF>
+                      <SERVICE-INSTANCE-REF DEST="PROVIDED-SOMEIP-SERVICE-INSTANCE">/apd/Machines/testSuiteEcu2Machine/ServiceInstances/ST_CMApp11DiagRoutineProvidedSomeipServiceInstance</SERVICE-INSTANCE-REF>
+                    </SERVICE-INSTANCE-TO-PORT-PROTOTYPE-MAPPING>
+                  </ELEMENTS>
+                </AR-PACKAGE>
+                <AR-PACKAGE>
+                  <!-- StartupConfigSets -->
+                  <SHORT-NAME>StartupConfigSets</SHORT-NAME>
+                  <ELEMENTS>
+                    <STARTUP-CONFIG>
+                      <SHORT-NAME>ST_CMApp11Startup</SHORT-NAME>
+                      <ENVIRONMENT-VARIABLES>
+                        <TAG-WITH-OPTIONAL-VALUE>
+                          <KEY>VSOMEIP_CONFIGURATION</KEY>
+                          <VALUE>/opt/CMApp11/etc/vsomeip.json</VALUE>
+                        </TAG-WITH-OPTIONAL-VALUE>
+                        <TAG-WITH-OPTIONAL-VALUE>
+                          <KEY>DLT_LOG_MODE</KEY>
+                          <VALUE>3</VALUE>
+                        </TAG-WITH-OPTIONAL-VALUE>
+                      </ENVIRONMENT-VARIABLES>
+                      <SCHEDULING-POLICY>SCHEDULING-POLICY-ROUND-ROBIN</SCHEDULING-POLICY>
+                      <SCHEDULING-PRIORITY>12</SCHEDULING-PRIORITY>
+                    </STARTUP-CONFIG>
+                  </ELEMENTS>
+                </AR-PACKAGE>
+                <AR-PACKAGE>
+                  <SHORT-NAME>DltLogChannelToProcessMappings</SHORT-NAME>
+                  <ELEMENTS>
+                    <DLT-APPLICATION-TO-PROCESS-MAPPING>
+                      <SHORT-NAME>ST_CMApp11Instance1DltApplicationToProcessMapping</SHORT-NAME>
+                      <DLT-APPLICATION-REF DEST="DLT-APPLICATION">/apd/Machines/testSuiteEcu2Machine/dlt/testSuiteEcu2MachineDltEcu/CMApp11Application</DLT-APPLICATION-REF>
+                      <PROCESS-REF DEST="PROCESS">/apd/Machines/testSuiteEcu2Machine/Processes/ST_CMApp11Instance1</PROCESS-REF>
+                    </DLT-APPLICATION-TO-PROCESS-MAPPING>
+                    <DLT-LOG-SINK-TO-PORT-PROTOTYPE-MAPPING>
+                      <SHORT-NAME>ST_CMApp11Instance1DltLogSinkToPortPrototypeMapping</SHORT-NAME>
+                      <DLT-CONTEXT-REF DEST="DLT-CONTEXT">/apd/Dlt/DefaultDltContext</DLT-CONTEXT-REF>
+                      <DLT-LOG-SINK-REFS>
+                        <DLT-LOG-SINK-REF DEST="DLT-LOG-SINK">/apd/Dlt/CMApp11FileDltSink</DLT-LOG-SINK-REF>
+                        <DLT-LOG-SINK-REF DEST="DLT-LOG-SINK">/apd/Machines/testSuiteEcu2Machine/dlt/ConsoleDltSink</DLT-LOG-SINK-REF>
+                        <DLT-LOG-SINK-REF DEST="DLT-LOG-SINK">/apd/Dlt/RemoteDltSink</DLT-LOG-SINK-REF>
+                      </DLT-LOG-SINK-REFS>
+                      <PROCESS-REF DEST="PROCESS">/apd/Machines/testSuiteEcu2Machine/Processes/ST_CMApp11Instance1</PROCESS-REF>
+                    </DLT-LOG-SINK-TO-PORT-PROTOTYPE-MAPPING>
+                  </ELEMENTS>
+                </AR-PACKAGE>
+              </AR-PACKAGES>
+            </AR-PACKAGE>
+          </AR-PACKAGES>
+        </AR-PACKAGE>
+      </AR-PACKAGES>
+    </AR-PACKAGE>
+  </AR-PACKAGES>
+</AUTOSAR>

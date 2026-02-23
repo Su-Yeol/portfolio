@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<AUTOSAR xmlns="http://autosar.org/schema/r4.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://autosar.org/schema/r4.0 AUTOSAR_00052.xsd">
+    <AR-PACKAGES>
+        <AR-PACKAGE>
+            <SHORT-NAME>katech</SHORT-NAME>
+            <ELEMENTS>
+                <SERVICE-INTERFACE>
+                    <SHORT-NAME>vehicle_location</SHORT-NAME>
+                    <NAMESPACES>
+                        <SYMBOL-PROPS>
+                            <SHORT-NAME>katech</SHORT-NAME>
+                            <SYMBOL>katech</SYMBOL>
+                        </SYMBOL-PROPS>
+                    </NAMESPACES>
+                    <EVENTS>
+                        <VARIABLE-DATA-PROTOTYPE>
+                            <SHORT-NAME>vehicleLocationEvent</SHORT-NAME>
+                            <TYPE-TREF DEST="STD-CPP-IMPLEMENTATION-DATA-TYPE">/katech/events/vehicle_location_Objects</TYPE-TREF>
+                        </VARIABLE-DATA-PROTOTYPE>
+                    </EVENTS>
+                </SERVICE-INTERFACE>
+            </ELEMENTS>
+            <AR-PACKAGES>
+                <AR-PACKAGE>
+                    <SHORT-NAME>events</SHORT-NAME>
+                    <ELEMENTS>
+                        <STD-CPP-IMPLEMENTATION-DATA-TYPE>
+                            <SHORT-NAME>vehicle_location_Objects</SHORT-NAME>
+                            <CATEGORY>STRUCTURE</CATEGORY>
+                            <NAMESPACES>
+                                <SYMBOL-PROPS>
+                                    <SHORT-NAME>katech</SHORT-NAME>
+                                    <SYMBOL>katech</SYMBOL>
+                                </SYMBOL-PROPS>
+                            </NAMESPACES>
+                            <SUB-ELEMENTS>
+                                <CPP-IMPLEMENTATION-DATA-TYPE-ELEMENT>
+                                    <SHORT-NAME>MeasurementTime</SHORT-NAME>
+                                    <TYPE-REFERENCE>
+                                        <INPLACE>false</INPLACE>
+                                        <TYPE-REFERENCE-REF DEST="STD-CPP-IMPLEMENTATION-DATA-TYPE">/AUTOSAR/StdTypes/float</TYPE-REFERENCE-REF>
+                                    </TYPE-REFERENCE>
+                                </CPP-IMPLEMENTATION-DATA-TYPE-ELEMENT>
+                                <CPP-IMPLEMENTATION-DATA-TYPE-ELEMENT>
+                                    <SHORT-NAME>CurrentLane_id</SHORT-NAME>
+                                    <TYPE-REFERENCE>
+                                        <INPLACE>false</INPLACE>
+                                        <TYPE-REFERENCE-REF DEST="STD-CPP-IMPLEMENTATION-DATA-TYPE">/AUTOSAR/StdTypes/int64_t</TYPE-REFERENCE-REF>
+                                    </TYPE-REFERENCE>
+                                </CPP-IMPLEMENTATION-DATA-TYPE-ELEMENT>
+                                <CPP-IMPLEMENTATION-DATA-TYPE-ELEMENT>
+                                    <SHORT-NAME>PositionX</SHORT-NAME>
+                                    <TYPE-REFERENCE>
+                                        <INPLACE>false</INPLACE>
+                                        <TYPE-REFERENCE-REF DEST="STD-CPP-IMPLEMENTATION-DATA-TYPE">/AUTOSAR/StdTypes/double</TYPE-REFERENCE-REF>
+                                    </TYPE-REFERENCE>
+                                </CPP-IMPLEMENTATION-DATA-TYPE-ELEMENT>
+                                <CPP-IMPLEMENTATION-DATA-TYPE-ELEMENT>
+                                    <SHORT-NAME>PositionY</SHORT-NAME>
+                                    <TYPE-REFERENCE>
+                                        <INPLACE>false</INPLACE>
+                                        <TYPE-REFERENCE-REF DEST="STD-CPP-IMPLEMENTATION-DATA-TYPE">/AUTOSAR/StdTypes/double</TYPE-REFERENCE-REF>
+                                    </TYPE-REFERENCE>
+                                </CPP-IMPLEMENTATION-DATA-TYPE-ELEMENT>
+                                <CPP-IMPLEMENTATION-DATA-TYPE-ELEMENT>
+                                    <SHORT-NAME>PositionZ</SHORT-NAME>
+                                    <TYPE-REFERENCE>
+                                        <INPLACE>false</INPLACE>
+                                        <TYPE-REFERENCE-REF DEST="STD-CPP-IMPLEMENTATION-DATA-TYPE">/AUTOSAR/StdTypes/double</TYPE-REFERENCE-REF>
+                                    </TYPE-REFERENCE>
+                                </CPP-IMPLEMENTATION-DATA-TYPE-ELEMENT>
+                                <CPP-IMPLEMENTATION-DATA-TYPE-ELEMENT>
+                                    <SHORT-NAME>GNSS</SHORT-NAME>
+                                    <TYPE-REFERENCE>
+                                        <INPLACE>false</INPLACE>
+                                        <TYPE-REFERENCE-REF DEST="STD-CPP-IMPLEMENTATION-DATA-TYPE">/katech/events/GNSSStruct</TYPE-REFERENCE-REF>
+                                    </TYPE-REFERENCE>
+                                </CPP-IMPLEMENTATION-DATA-TYPE-ELEMENT>
+                                <CPP-IMPLEMENTATION-DATA-TYPE-ELEMENT>
+                                    <SHORT-NAME>IMU</SHORT-NAME>
+                                    <TYPE-REFERENCE>
+                                        <INPLACE>false</INPLACE>
+                                        <TYPE-REFERENCE-REF DEST="STD-CPP-IMPLEMENTATION-DATA-TYPE">/katech/events/IMUStruct</TYPE-REFERENCE-REF>
+                                    </TYPE-REFERENCE>
+                                </CPP-IMPLEMENTATION-DATA-TYPE-ELEMENT>
+                                <CPP-IMPLEMENTATION-DATA-TYPE-ELEMENT>
+                                    <SHORT-NAME>GridID</SHORT-NAME>
+                                    <TYPE-REFERENCE>
+                                        <INPLACE>false</INPLACE>
+                                        <TYPE-REFERENCE-REF DEST="STD-CPP-IMPLEMENTATION-DATA-TYPE">/AUTOSAR/StdTypes/uint64_t</TYPE-REFERENCE-REF>
+                                    </TYPE-REFERENCE>
+                                </CPP-IMPLEMENTATION-DATA-TYPE-ELEMENT>
+                                <CPP-IMPLEMENTATION-DATA-TYPE-ELEMENT>
+                                    <SHORT-NAME>CellID</SHORT-NAME>
+                                    <TYPE-REFERENCE>
+                                        <INPLACE>false</INPLACE>
+                                        <TYPE-REFERENCE-REF DEST="STD-CPP-IMPLEMENTATION-DATA-TYPE">/AUTOSAR/StdTypes/uint64_t</TYPE-REFERENCE-REF>
+                                    </TYPE-REFERENCE>
+                                </CPP-IMPLEMENTATION-DATA-TYPE-ELEMENT>
+                                <CPP-IMPLEMENTATION-DATA-TYPE-ELEMENT>
+                                    <SHORT-NAME>Accuracy</SHORT-NAME>
+                                    <TYPE-REFERENCE>
+                                        <INPLACE>false</INPLACE>
+                                        <TYPE-REFERENCE-REF DEST="STD-CPP-IMPLEMENTATION-DATA-TYPE">/AUTOSAR/StdTypes/double</TYPE-REFERENCE-REF>
+                                    </TYPE-REFERENCE>
+                                </CPP-IMPLEMENTATION-DATA-TYPE-ELEMENT>
+                                <CPP-IMPLEMENTATION-DATA-TYPE-ELEMENT>
+                                    <SHORT-NAME>Fix_type</SHORT-NAME>
+                                    <TYPE-REFERENCE>
+                                        <INPLACE>false</INPLACE>
+                                        <TYPE-REFERENCE-REF DEST="STD-CPP-IMPLEMENTATION-DATA-TYPE">/AUTOSAR/StdTypes/uint8_t</TYPE-REFERENCE-REF>
+                                    </TYPE-REFERENCE>
+                                </CPP-IMPLEMENTATION-DATA-TYPE-ELEMENT>
+                                <CPP-IMPLEMENTATION-DATA-TYPE-ELEMENT>
+                                    <SHORT-NAME>GPS_Status</SHORT-NAME>
+                                    <TYPE-REFERENCE>
+                                        <INPLACE>false</INPLACE>
+                                        <TYPE-REFERENCE-REF DEST="STD-CPP-IMPLEMENTATION-DATA-TYPE">/AUTOSAR/StdTypes/bool</TYPE-REFERENCE-REF>
+                                    </TYPE-REFERENCE>
+                                </CPP-IMPLEMENTATION-DATA-TYPE-ELEMENT>
+                            </SUB-ELEMENTS>
+                            <TYPE-EMITTER>TYPE_EMITTER_ARA</TYPE-EMITTER>
+                        </STD-CPP-IMPLEMENTATION-DATA-TYPE>
+
+                        <STD-CPP-IMPLEMENTATION-DATA-TYPE>
+                            <SHORT-NAME>GNSSStruct</SHORT-NAME>
+                            <CATEGORY>STRUCTURE</CATEGORY>
+                            <NAMESPACES>
+                                <SYMBOL-PROPS>
+                                    <SHORT-NAME>katech</SHORT-NAME>
+                                    <SYMBOL>katech</SYMBOL>
+                                </SYMBOL-PROPS>
+                            </NAMESPACES>
+                            <SUB-ELEMENTS>
+                                <CPP-IMPLEMENTATION-DATA-TYPE-ELEMENT>
+                                    <SHORT-NAME>Heading</SHORT-NAME>
+                                    <TYPE-REFERENCE>
+                                        <INPLACE>false</INPLACE>
+                                        <TYPE-REFERENCE-REF DEST="STD-CPP-IMPLEMENTATION-DATA-TYPE">/AUTOSAR/StdTypes/double</TYPE-REFERENCE-REF>
+                                    </TYPE-REFERENCE>
+                                </CPP-IMPLEMENTATION-DATA-TYPE-ELEMENT>
+
+                                <CPP-IMPLEMENTATION-DATA-TYPE-ELEMENT>
+                                    <SHORT-NAME>Speed</SHORT-NAME>
+                                    <TYPE-REFERENCE>
+                                        <INPLACE>false</INPLACE>
+                                        <TYPE-REFERENCE-REF DEST="STD-CPP-IMPLEMENTATION-DATA-TYPE">/AUTOSAR/StdTypes/double</TYPE-REFERENCE-REF>
+                                    </TYPE-REFERENCE>
+                                </CPP-IMPLEMENTATION-DATA-TYPE-ELEMENT>
+                            </SUB-ELEMENTS>
+                            <TYPE-EMITTER>TYPE_EMITTER_ARA</TYPE-EMITTER>
+                        </STD-CPP-IMPLEMENTATION-DATA-TYPE>
+
+                        <STD-CPP-IMPLEMENTATION-DATA-TYPE>
+                          <SHORT-NAME>IMUStruct</SHORT-NAME>
+                          <CATEGORY>STRUCTURE</CATEGORY>
+                          <NAMESPACES>
+                            <SYMBOL-PROPS>
+                              <SHORT-NAME>katech</SHORT-NAME>
+                              <SYMBOL>katech</SYMBOL>
+                            </SYMBOL-PROPS>
+                          </NAMESPACES>
+                          <SUB-ELEMENTS>
+                            <CPP-IMPLEMENTATION-DATA-TYPE-ELEMENT>
+                              <SHORT-NAME>Roll</SHORT-NAME>
+                              <TYPE-REFERENCE>
+                                <INPLACE>false</INPLACE>
+                                <TYPE-REFERENCE-REF DEST="STD-CPP-IMPLEMENTATION-DATA-TYPE">/AUTOSAR/StdTypes/double</TYPE-REFERENCE-REF>
+                              </TYPE-REFERENCE>
+                            </CPP-IMPLEMENTATION-DATA-TYPE-ELEMENT>
+                            <CPP-IMPLEMENTATION-DATA-TYPE-ELEMENT>
+                              <SHORT-NAME>Pitch</SHORT-NAME>
+                              <TYPE-REFERENCE>
+                                <INPLACE>false</INPLACE>
+                                <TYPE-REFERENCE-REF DEST="STD-CPP-IMPLEMENTATION-DATA-TYPE">/AUTOSAR/StdTypes/double</TYPE-REFERENCE-REF>
+                              </TYPE-REFERENCE>
+                            </CPP-IMPLEMENTATION-DATA-TYPE-ELEMENT>
+                            <CPP-IMPLEMENTATION-DATA-TYPE-ELEMENT>
+                              <SHORT-NAME>Yaw</SHORT-NAME>
+                              <TYPE-REFERENCE>
+                                <INPLACE>false</INPLACE>
+                                <TYPE-REFERENCE-REF DEST="STD-CPP-IMPLEMENTATION-DATA-TYPE">/AUTOSAR/StdTypes/double</TYPE-REFERENCE-REF>
+                              </TYPE-REFERENCE>
+                            </CPP-IMPLEMENTATION-DATA-TYPE-ELEMENT>
+                            <CPP-IMPLEMENTATION-DATA-TYPE-ELEMENT>
+                              <SHORT-NAME>Linear_acceleration</SHORT-NAME>
+                              <TYPE-REFERENCE>
+                                <INPLACE>false</INPLACE>
+                                <TYPE-REFERENCE-REF DEST="STD-CPP-IMPLEMENTATION-DATA-TYPE">/AUTOSAR/StdTypes/double</TYPE-REFERENCE-REF>
+                              </TYPE-REFERENCE>
+                            </CPP-IMPLEMENTATION-DATA-TYPE-ELEMENT>
+                            <CPP-IMPLEMENTATION-DATA-TYPE-ELEMENT>
+                              <SHORT-NAME>Angular_velocity</SHORT-NAME>
+                              <TYPE-REFERENCE>
+                                <INPLACE>false</INPLACE>
+                                <TYPE-REFERENCE-REF DEST="STD-CPP-IMPLEMENTATION-DATA-TYPE">/AUTOSAR/StdTypes/double</TYPE-REFERENCE-REF>
+                              </TYPE-REFERENCE>
+                            </CPP-IMPLEMENTATION-DATA-TYPE-ELEMENT>
+                          </SUB-ELEMENTS>
+                          <TYPE-EMITTER>TYPE_EMITTER_ARA</TYPE-EMITTER>
+                        </STD-CPP-IMPLEMENTATION-DATA-TYPE>
+                    </ELEMENTS>
+                </AR-PACKAGE>
+            </AR-PACKAGES>
+        </AR-PACKAGE>
+    </AR-PACKAGES>
+</AUTOSAR>

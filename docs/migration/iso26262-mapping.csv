@@ -1,0 +1,6 @@
+old_path,new_path,reason
+platforms/axon/adaptive-platform,projects/adaptive-autosar/axon/autosar-platform,"AXON autosar platform moved under adaptive-autosar project"
+platforms/axon/integration,projects/adaptive-autosar/axon/integration,"AXON integration moved under adaptive-autosar project"
+platforms/s32g/source/adaptive-platform-24-11,projects/adaptive-autosar/s32g/autosar-platform,"S32G autosar platform grouped under adaptive-autosar project"
+platforms/s32g/source/s32g-integration,projects/adaptive-autosar/s32g/integration,"S32G integration grouped under adaptive-autosar project"
+projects/adaptive-autosar-platform,projects/adaptive-autosar/common-sample,"existing adaptive autosar sample merged into adaptive-autosar project"

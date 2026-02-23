@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<AUTOSAR xmlns="http://autosar.org/schema/r4.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://autosar.org/schema/r4.0 AUTOSAR_00052.xsd">
+  <AR-PACKAGES>
+    <AR-PACKAGE>
+      <SHORT-NAME>apd</SHORT-NAME>
+      <AR-PACKAGES>
+        <AR-PACKAGE>
+          <SHORT-NAME>Machines</SHORT-NAME>
+          <AR-PACKAGES>
+            <AR-PACKAGE>
+              <SHORT-NAME>FusionMachine</SHORT-NAME>
+              <AR-PACKAGES>
+                <AR-PACKAGE>
+                  <SHORT-NAME>ProcessToMachineMappings</SHORT-NAME>
+                  <ELEMENTS>
+                    <PROCESS-TO-MACHINE-MAPPING-SET>
+                      <SHORT-NAME>transfer_performance_check</SHORT-NAME>
+                      <PROCESS-TO-MACHINE-MAPPINGS>
+                        <PROCESS-TO-MACHINE-MAPPING>
+                          <SHORT-NAME>transfer_performance_check</SHORT-NAME>
+                          <MACHINE-REF DEST="MACHINE">/apd/Machines/FusionMachine/FusionMachine</MACHINE-REF>
+                          <PROCESS-REF DEST="PROCESS">/apd/Machines/FusionMachine/Processes/transfer_performance_check</PROCESS-REF>
+                        </PROCESS-TO-MACHINE-MAPPING>
+                      </PROCESS-TO-MACHINE-MAPPINGS>
+                    </PROCESS-TO-MACHINE-MAPPING-SET>
+                  </ELEMENTS>
+                </AR-PACKAGE>
+                <AR-PACKAGE>
+                  <SHORT-NAME>DltLogChannelToProcessMappings</SHORT-NAME>
+                  <ELEMENTS>
+                    <DLT-APPLICATION-TO-PROCESS-MAPPING>
+                      <SHORT-NAME>transfer_performance_checkDltApplicationToProcessMapping</SHORT-NAME>
+                      <DLT-APPLICATION-REF DEST="DLT-APPLICATION">/apd/Machines/FusionMachine/Dlt/FusionMachineDltEcu/TransferPerformanceCheckApplication</DLT-APPLICATION-REF>
+                      <PROCESS-REF DEST="PROCESS">/apd/Machines/FusionMachine/Processes/transfer_performance_check</PROCESS-REF>
+                    </DLT-APPLICATION-TO-PROCESS-MAPPING>
+                    <DLT-LOG-SINK-TO-PORT-PROTOTYPE-MAPPING>
+                      <SHORT-NAME>transfer_performance_checkDltLogSinkToPortPrototypeMapping</SHORT-NAME>
+                      <DLT-CONTEXT-REF DEST="DLT-CONTEXT">/apd/Dlt/DefaultDltContext</DLT-CONTEXT-REF>
+                      <DLT-LOG-SINK-REFS>
+                        <DLT-LOG-SINK-REF DEST="DLT-LOG-SINK">/apd/Machines/FusionMachine/Dlt/ConsoleDltSink</DLT-LOG-SINK-REF>
+                        <DLT-LOG-SINK-REF DEST="DLT-LOG-SINK">/apd/Dlt/RemoteDltSink</DLT-LOG-SINK-REF>
+                        <DLT-LOG-SINK-REF DEST="DLT-LOG-SINK">/apd/Dlt/TransferPerformanceCheckFileDltSink</DLT-LOG-SINK-REF>
+                      </DLT-LOG-SINK-REFS>
+                      <PROCESS-REF DEST="PROCESS">/apd/Machines/FusionMachine/Processes/transfer_performance_check</PROCESS-REF>
+                    </DLT-LOG-SINK-TO-PORT-PROTOTYPE-MAPPING>
+                  </ELEMENTS>
+                </AR-PACKAGE>
+                <AR-PACKAGE>
+                  <SHORT-NAME>Processes</SHORT-NAME>
+                  <ELEMENTS>
+                    <PROCESS>
+                      <SHORT-NAME>transfer_performance_check</SHORT-NAME>
+                      <EXECUTABLE-REFS>
+                        <EXECUTABLE-REF DEST="EXECUTABLE">/apd/Executables/transfer_performance_check</EXECUTABLE-REF>
+                      </EXECUTABLE-REFS>
+                      <PROCESS-STATE-MACHINE>
+                        <SHORT-NAME>state_machine</SHORT-NAME>
+                        <TYPE-TREF DEST="MODE-DECLARATION-GROUP">/apd/ModeDeclarationGroups/ProcessStateMachine</TYPE-TREF>
+                      </PROCESS-STATE-MACHINE>
+                    </PROCESS>
+                  </ELEMENTS>
+                </AR-PACKAGE>
+                <AR-PACKAGE>
+                  <SHORT-NAME>ServiceInstanceToPortPrototypeMappings</SHORT-NAME>
+                  <ELEMENTS>
+                    <SERVICE-INSTANCE-TO-PORT-PROTOTYPE-MAPPING>
+                      <SHORT-NAME>RequiredPackageManagementInstanceToPortMappingForTransferPerformanceCheck</SHORT-NAME>
+                      <PORT-PROTOTYPE-IREF>
+                        <TARGET-PORT-PROTOTYPE-REF DEST="R-PORT-PROTOTYPE">/apd/AdaptiveApplicationSwComponentTypes/transfer_performance_check/PackageManagementRPort</TARGET-PORT-PROTOTYPE-REF>
+                      </PORT-PROTOTYPE-IREF>
+                      <PROCESS-REF DEST="PROCESS">/apd/Machines/FusionMachine/Processes/transfer_performance_check</PROCESS-REF>
+                      <SERVICE-INSTANCE-REF DEST="REQUIRED-SOMEIP-SERVICE-INSTANCE">/apd/Machines/FusionMachine/ServiceInstances/RequiredSomeIpPackageManagementInstanceTPC</SERVICE-INSTANCE-REF>
+                    </SERVICE-INSTANCE-TO-PORT-PROTOTYPE-MAPPING>
+                  </ELEMENTS>
+                </AR-PACKAGE>
+                <AR-PACKAGE>
+                  <SHORT-NAME>StartupConfigSets</SHORT-NAME>
+                  <ELEMENTS>
+                    <STARTUP-CONFIG>
+                      <SHORT-NAME>transfer_performance_check_startup</SHORT-NAME>
+                      <PROCESS-ARGUMENTS>
+                        <PROCESS-ARGUMENT>
+                          <ARGUMENT>--block-size</ARGUMENT>
+                        </PROCESS-ARGUMENT>
+                        <PROCESS-ARGUMENT>
+                          <ARGUMENT>1048576</ARGUMENT>
+                        </PROCESS-ARGUMENT>
+                        <PROCESS-ARGUMENT>
+                          <ARGUMENT>--total-size</ARGUMENT>
+                        </PROCESS-ARGUMENT>
+                        <PROCESS-ARGUMENT>
+                          <ARGUMENT>2097152</ARGUMENT>
+                        </PROCESS-ARGUMENT>
+                        <PROCESS-ARGUMENT>
+                          <ARGUMENT>--timeout</ARGUMENT>
+                        </PROCESS-ARGUMENT>
+                        <PROCESS-ARGUMENT>
+                          <ARGUMENT>9001</ARGUMENT>
+                        </PROCESS-ARGUMENT>
+                      </PROCESS-ARGUMENTS>
+                      <SCHEDULING-POLICY>SCHEDULING-POLICY-ROUND-ROBIN</SCHEDULING-POLICY>
+                      <SCHEDULING-PRIORITY>12</SCHEDULING-PRIORITY>
+                      <TERMINATION-BEHAVIOR>PROCESS-IS-SELF-TERMINATING</TERMINATION-BEHAVIOR>
+                    </STARTUP-CONFIG>
+                  </ELEMENTS>
+                </AR-PACKAGE>
+              </AR-PACKAGES>
+            </AR-PACKAGE>
+          </AR-PACKAGES>
+        </AR-PACKAGE>
+      </AR-PACKAGES>
+    </AR-PACKAGE>
+  </AR-PACKAGES>
+</AUTOSAR>

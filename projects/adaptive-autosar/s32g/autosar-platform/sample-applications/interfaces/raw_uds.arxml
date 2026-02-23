@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<AUTOSAR xmlns="http://autosar.org/schema/r4.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://autosar.org/schema/r4.0 AUTOSAR_00052.xsd">
+  <AR-PACKAGES>
+    <AR-PACKAGE>
+      <SHORT-NAME>apd</SHORT-NAME>
+      <AR-PACKAGES>
+        <AR-PACKAGE>
+          <SHORT-NAME>ServiceInterfaces</SHORT-NAME>
+          <ELEMENTS>
+            <SERVICE-INTERFACE>
+              <SHORT-NAME>RawUDS</SHORT-NAME>
+              <NAMESPACES>
+                <SYMBOL-PROPS>
+                  <SHORT-NAME>ara</SHORT-NAME>
+                  <SYMBOL>ara</SYMBOL>
+                </SYMBOL-PROPS>
+                <SYMBOL-PROPS>
+                  <SHORT-NAME>diag</SHORT-NAME>
+                  <SYMBOL>diag</SYMBOL>
+                </SYMBOL-PROPS>
+              </NAMESPACES>
+              <METHODS>
+                <CLIENT-SERVER-OPERATION>
+                  <SHORT-NAME>HandleMessage</SHORT-NAME>
+                  <ARGUMENTS>
+                    <ARGUMENT-DATA-PROTOTYPE>
+                      <SHORT-NAME>diagResponse</SHORT-NAME>
+                      <TYPE-TREF DEST="STD-CPP-IMPLEMENTATION-DATA-TYPE">/apd/CppImplementationDataTypes/ByteArray</TYPE-TREF>
+                      <DIRECTION>OUT</DIRECTION>
+                    </ARGUMENT-DATA-PROTOTYPE>
+                    <ARGUMENT-DATA-PROTOTYPE>
+                      <SHORT-NAME>sendResponse</SHORT-NAME>
+                      <TYPE-TREF DEST="STD-CPP-IMPLEMENTATION-DATA-TYPE">/AUTOSAR/StdTypes/bool</TYPE-TREF>
+                      <DIRECTION>OUT</DIRECTION>
+                    </ARGUMENT-DATA-PROTOTYPE>
+                    <ARGUMENT-DATA-PROTOTYPE>
+                      <SHORT-NAME>diagRequest</SHORT-NAME>
+                      <TYPE-TREF DEST="STD-CPP-IMPLEMENTATION-DATA-TYPE">/apd/CppImplementationDataTypes/ByteArray</TYPE-TREF>
+                      <DIRECTION>IN</DIRECTION>
+                    </ARGUMENT-DATA-PROTOTYPE>
+                    <ARGUMENT-DATA-PROTOTYPE>
+                      <SHORT-NAME>SID</SHORT-NAME>
+                      <TYPE-TREF DEST="STD-CPP-IMPLEMENTATION-DATA-TYPE">/AUTOSAR/StdTypes/int8_t</TYPE-TREF>
+                      <DIRECTION>IN</DIRECTION>
+                    </ARGUMENT-DATA-PROTOTYPE>
+                  </ARGUMENTS>
+                  <POSSIBLE-AP-ERROR-REFS>
+                    <POSSIBLE-AP-ERROR-REF DEST="AP-APPLICATION-ERROR">/apd/ApplicationErrors/GeneralReject</POSSIBLE-AP-ERROR-REF>
+                    <POSSIBLE-AP-ERROR-REF DEST="AP-APPLICATION-ERROR">/apd/ApplicationErrors/ServiceNotSupported</POSSIBLE-AP-ERROR-REF>
+                    <POSSIBLE-AP-ERROR-REF DEST="AP-APPLICATION-ERROR">/apd/ApplicationErrors/SubfunctionNotSupported</POSSIBLE-AP-ERROR-REF>
+                    <POSSIBLE-AP-ERROR-REF DEST="AP-APPLICATION-ERROR">/apd/ApplicationErrors/IncorrectMessageLengthOrInvalidFormat</POSSIBLE-AP-ERROR-REF>
+                    <POSSIBLE-AP-ERROR-REF DEST="AP-APPLICATION-ERROR">/apd/ApplicationErrors/ResponseTooLong</POSSIBLE-AP-ERROR-REF>
+                    <POSSIBLE-AP-ERROR-REF DEST="AP-APPLICATION-ERROR">/apd/ApplicationErrors/BusyRepeatRequest</POSSIBLE-AP-ERROR-REF>
+                    <POSSIBLE-AP-ERROR-REF DEST="AP-APPLICATION-ERROR">/apd/ApplicationErrors/ConditionsNotCorrect</POSSIBLE-AP-ERROR-REF>
+                    <POSSIBLE-AP-ERROR-REF DEST="AP-APPLICATION-ERROR">/apd/ApplicationErrors/RequestSequenceError</POSSIBLE-AP-ERROR-REF>
+                    <POSSIBLE-AP-ERROR-REF DEST="AP-APPLICATION-ERROR">/apd/ApplicationErrors/NoResponseFromSubnetComponent</POSSIBLE-AP-ERROR-REF>
+                    <POSSIBLE-AP-ERROR-REF DEST="AP-APPLICATION-ERROR">/apd/ApplicationErrors/FailurePreventsExecutionOfRequestedAction</POSSIBLE-AP-ERROR-REF>
+                    <POSSIBLE-AP-ERROR-REF DEST="AP-APPLICATION-ERROR">/apd/ApplicationErrors/RequestOutOfRange</POSSIBLE-AP-ERROR-REF>
+                    <POSSIBLE-AP-ERROR-REF DEST="AP-APPLICATION-ERROR">/apd/ApplicationErrors/SecurityAccessDenied</POSSIBLE-AP-ERROR-REF>
+                    <!--<POSSIBLE-AP-ERROR-REF DEST="AP-APPLICATION-ERROR">/apd/ApplicationErrors/InvalidKey</POSSIBLE-AP-ERROR-REF>-->
+                    <POSSIBLE-AP-ERROR-REF DEST="AP-APPLICATION-ERROR">/apd/ApplicationErrors/ExceedNumberOfAttempts</POSSIBLE-AP-ERROR-REF>
+                    <POSSIBLE-AP-ERROR-REF DEST="AP-APPLICATION-ERROR">/apd/ApplicationErrors/RequiredTimeDelayNotExpired</POSSIBLE-AP-ERROR-REF>
+                    <!--<POSSIBLE-AP-ERROR-REF DEST="AP-APPLICATION-ERROR">/apd/ApplicationErrors/ReservedByExtendedDataLinkSecurityDocument</POSSIBLE-AP-ERROR-REF>-->
+                    <POSSIBLE-AP-ERROR-REF DEST="AP-APPLICATION-ERROR">/apd/ApplicationErrors/UploadDownloadNotAccepted</POSSIBLE-AP-ERROR-REF>
+                    <POSSIBLE-AP-ERROR-REF DEST="AP-APPLICATION-ERROR">/apd/ApplicationErrors/TransferDataSuspended</POSSIBLE-AP-ERROR-REF>
+                    <POSSIBLE-AP-ERROR-REF DEST="AP-APPLICATION-ERROR">/apd/ApplicationErrors/WrongBlockSequenceCounter</POSSIBLE-AP-ERROR-REF>
+                    <POSSIBLE-AP-ERROR-REF DEST="AP-APPLICATION-ERROR">/apd/ApplicationErrors/RequestCorrectlyReceivedResponsePending</POSSIBLE-AP-ERROR-REF>
+                    <POSSIBLE-AP-ERROR-REF DEST="AP-APPLICATION-ERROR">/apd/ApplicationErrors/SubfunctionNotSupportedInActiveSession</POSSIBLE-AP-ERROR-REF>
+                    <POSSIBLE-AP-ERROR-REF DEST="AP-APPLICATION-ERROR">/apd/ApplicationErrors/ServiceNotSupportedInActiveSession</POSSIBLE-AP-ERROR-REF>
+                  </POSSIBLE-AP-ERROR-REFS>
+                </CLIENT-SERVER-OPERATION>
+              </METHODS>
+            </SERVICE-INTERFACE>
+          </ELEMENTS>
+        </AR-PACKAGE>
+      </AR-PACKAGES>
+    </AR-PACKAGE>
+  </AR-PACKAGES>
+</AUTOSAR>

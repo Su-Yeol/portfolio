@@ -1,0 +1,7 @@
+mkdir -p /var/redirected
+make clean_ucm_data
+pgrep dlt-daemon || /usr/bin/dlt-daemon > /var/redirected/ara_dlt_daemon 2>&1 &
+sleep 1
+pgrep -f routingmanagerd || VSOMEIP_CONFIGURATION=/etc/machine_artifacts/vsomeip.json /usr/bin/routingmanagerd > /var/redirected/ara_someip_routing_daemon 2>&1 &
+sleep 1
+execution-manager &

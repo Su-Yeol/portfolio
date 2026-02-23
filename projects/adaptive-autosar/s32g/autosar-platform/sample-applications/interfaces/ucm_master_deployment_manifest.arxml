@@ -1,0 +1,388 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<AUTOSAR xmlns="http://autosar.org/schema/r4.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://autosar.org/schema/r4.0 AUTOSAR_00052.xsd">
+  <AR-PACKAGES>
+    <AR-PACKAGE>
+      <SHORT-NAME>ara</SHORT-NAME>
+      <AR-PACKAGES>
+        <AR-PACKAGE>
+          <SHORT-NAME>apd</SHORT-NAME>
+          <AR-PACKAGES>
+            <AR-PACKAGE>
+              <SHORT-NAME>ucm_master</SHORT-NAME>
+              <AR-PACKAGES>
+                <AR-PACKAGE>
+                  <SHORT-NAME>deployment</SHORT-NAME>
+                  <ELEMENTS>
+                    <SOMEIP-SERVICE-INTERFACE-DEPLOYMENT>
+                      <SHORT-NAME>VehicleDriverApplicationInterfaceSomeIp</SHORT-NAME>
+                      <FIELD-DEPLOYMENTS>
+                        <SOMEIP-FIELD-DEPLOYMENT>
+                          <SHORT-NAME>ApprovalRequired</SHORT-NAME>
+                          <FIELD-REF DEST="FIELD">/ara/ucm/pkgmgr/portinterfaces/VehicleDriverApplicationInterface/ApprovalRequired</FIELD-REF>
+                          <GET>
+                            <SHORT-NAME>ApprovalRequired_getter</SHORT-NAME>
+                            <METHOD-ID>32101</METHOD-ID>
+                            <TRANSPORT-PROTOCOL>TCP</TRANSPORT-PROTOCOL>
+                          </GET>
+                          <NOTIFIER>
+                            <SHORT-NAME>ApprovalRequired_notifier</SHORT-NAME>
+                            <EVENT-ID>9534</EVENT-ID>
+                            <TRANSPORT-PROTOCOL>TCP</TRANSPORT-PROTOCOL>
+                          </NOTIFIER>
+                        </SOMEIP-FIELD-DEPLOYMENT>
+                        <SOMEIP-FIELD-DEPLOYMENT>
+                          <SHORT-NAME>CampaignState</SHORT-NAME>
+                          <FIELD-REF DEST="FIELD">/ara/ucm/pkgmgr/portinterfaces/VehicleDriverApplicationInterface/CampaignState</FIELD-REF>
+                          <GET>
+                            <SHORT-NAME>CampaignState_getter</SHORT-NAME>
+                            <METHOD-ID>32102</METHOD-ID>
+                            <TRANSPORT-PROTOCOL>TCP</TRANSPORT-PROTOCOL>
+                          </GET>
+                          <NOTIFIER>
+                            <SHORT-NAME>CampaignState_notifier</SHORT-NAME>
+                            <EVENT-ID>9535</EVENT-ID>
+                            <TRANSPORT-PROTOCOL>TCP</TRANSPORT-PROTOCOL>
+                          </NOTIFIER>
+                        </SOMEIP-FIELD-DEPLOYMENT>
+                        <SOMEIP-FIELD-DEPLOYMENT>
+                          <SHORT-NAME>VehicleConditionCollection</SHORT-NAME>
+                          <FIELD-REF DEST="FIELD">/ara/ucm/pkgmgr/portinterfaces/VehicleDriverApplicationInterface/VehicleConditionCollection</FIELD-REF>
+                          <GET>
+                            <SHORT-NAME>VehicleConditionCollection_getter</SHORT-NAME>
+                            <METHOD-ID>32103</METHOD-ID>
+                            <TRANSPORT-PROTOCOL>UDP</TRANSPORT-PROTOCOL>
+                          </GET>
+                          <NOTIFIER>
+                            <SHORT-NAME>VehicleConditionCollection_notifier</SHORT-NAME>
+                            <EVENT-ID>9536</EVENT-ID>
+                            <TRANSPORT-PROTOCOL>UDP</TRANSPORT-PROTOCOL>
+                          </NOTIFIER>
+                        </SOMEIP-FIELD-DEPLOYMENT>
+                      </FIELD-DEPLOYMENTS>
+                      <METHOD-DEPLOYMENTS>
+                        <SOMEIP-METHOD-DEPLOYMENT>
+                          <SHORT-NAME>AllowCampaign</SHORT-NAME>
+                          <METHOD-REF DEST="CLIENT-SERVER-OPERATION">/ara/ucm/pkgmgr/portinterfaces/VehicleDriverApplicationInterface/AllowCampaign</METHOD-REF>
+                          <METHOD-ID>32001</METHOD-ID>
+                          <TRANSPORT-PROTOCOL>TCP</TRANSPORT-PROTOCOL>
+                        </SOMEIP-METHOD-DEPLOYMENT>
+                        <SOMEIP-METHOD-DEPLOYMENT>
+                          <SHORT-NAME>CancelCampaign</SHORT-NAME>
+                          <METHOD-REF DEST="CLIENT-SERVER-OPERATION">/ara/ucm/pkgmgr/portinterfaces/VehicleDriverApplicationInterface/CancelCampaign</METHOD-REF>
+                          <METHOD-ID>32002</METHOD-ID>
+                          <TRANSPORT-PROTOCOL>TCP</TRANSPORT-PROTOCOL>
+                        </SOMEIP-METHOD-DEPLOYMENT>
+                        <SOMEIP-METHOD-DEPLOYMENT>
+                          <SHORT-NAME>DriverApproval</SHORT-NAME>
+                          <METHOD-REF DEST="CLIENT-SERVER-OPERATION">/ara/ucm/pkgmgr/portinterfaces/VehicleDriverApplicationInterface/DriverApproval</METHOD-REF>
+                          <METHOD-ID>32003</METHOD-ID>
+                          <TRANSPORT-PROTOCOL>TCP</TRANSPORT-PROTOCOL>
+                        </SOMEIP-METHOD-DEPLOYMENT>
+                        <SOMEIP-METHOD-DEPLOYMENT>
+                          <SHORT-NAME>GetCampaignHistory</SHORT-NAME>
+                          <METHOD-REF DEST="CLIENT-SERVER-OPERATION">/ara/ucm/pkgmgr/portinterfaces/VehicleDriverApplicationInterface/GetCampaignHistory</METHOD-REF>
+                          <METHOD-ID>32004</METHOD-ID>
+                          <TRANSPORT-PROTOCOL>TCP</TRANSPORT-PROTOCOL>
+                        </SOMEIP-METHOD-DEPLOYMENT>
+                        <SOMEIP-METHOD-DEPLOYMENT>
+                          <SHORT-NAME>GetSwClusterInfo</SHORT-NAME>
+                          <METHOD-REF DEST="CLIENT-SERVER-OPERATION">/ara/ucm/pkgmgr/portinterfaces/VehicleDriverApplicationInterface/GetSwClusterInfo</METHOD-REF>
+                          <METHOD-ID>32005</METHOD-ID>
+                          <TRANSPORT-PROTOCOL>TCP</TRANSPORT-PROTOCOL>
+                        </SOMEIP-METHOD-DEPLOYMENT>
+                        <SOMEIP-METHOD-DEPLOYMENT>
+                          <SHORT-NAME>GetSwPackageDescription</SHORT-NAME>
+                          <METHOD-REF DEST="CLIENT-SERVER-OPERATION">/ara/ucm/pkgmgr/portinterfaces/VehicleDriverApplicationInterface/GetSwPackageDescription</METHOD-REF>
+                          <METHOD-ID>32006</METHOD-ID>
+                          <TRANSPORT-PROTOCOL>TCP</TRANSPORT-PROTOCOL>
+                        </SOMEIP-METHOD-DEPLOYMENT>
+                        <SOMEIP-METHOD-DEPLOYMENT>
+                          <SHORT-NAME>GetVehiclePackageDescription</SHORT-NAME>
+                          <METHOD-REF DEST="CLIENT-SERVER-OPERATION">/ara/ucm/pkgmgr/portinterfaces/VehicleDriverApplicationInterface/GetVehiclePackageDescription</METHOD-REF>
+                          <METHOD-ID>32011</METHOD-ID>
+                          <TRANSPORT-PROTOCOL>TCP</TRANSPORT-PROTOCOL>
+                        </SOMEIP-METHOD-DEPLOYMENT>
+                        <SOMEIP-METHOD-DEPLOYMENT>
+                          <SHORT-NAME>GetSwProcessProgress</SHORT-NAME>
+                          <METHOD-REF DEST="CLIENT-SERVER-OPERATION">/ara/ucm/pkgmgr/portinterfaces/VehicleDriverApplicationInterface/GetSwProcessProgress</METHOD-REF>
+                          <METHOD-ID>32007</METHOD-ID>
+                          <TRANSPORT-PROTOCOL>TCP</TRANSPORT-PROTOCOL>
+                        </SOMEIP-METHOD-DEPLOYMENT>
+                        <SOMEIP-METHOD-DEPLOYMENT>
+                          <SHORT-NAME>GetSwTransferToUCMProgress</SHORT-NAME>
+                          <METHOD-REF DEST="CLIENT-SERVER-OPERATION">/ara/ucm/pkgmgr/portinterfaces/VehicleDriverApplicationInterface/GetSwTransferToUCMProgress</METHOD-REF>
+                          <METHOD-ID>32008</METHOD-ID>
+                          <TRANSPORT-PROTOCOL>UDP</TRANSPORT-PROTOCOL>
+                        </SOMEIP-METHOD-DEPLOYMENT>
+                        <SOMEIP-METHOD-DEPLOYMENT>
+                          <SHORT-NAME>ReportUnsupportedSafetyConditions</SHORT-NAME>
+                          <METHOD-REF DEST="CLIENT-SERVER-OPERATION">/ara/ucm/pkgmgr/portinterfaces/VehicleDriverApplicationInterface/ReportUnsupportedSafetyConditions</METHOD-REF>
+                          <METHOD-ID>32009</METHOD-ID>
+                          <TRANSPORT-PROTOCOL>UDP</TRANSPORT-PROTOCOL>
+                        </SOMEIP-METHOD-DEPLOYMENT>
+                        <SOMEIP-METHOD-DEPLOYMENT>
+                          <SHORT-NAME>GetSwTransferToUCMMasterProgress</SHORT-NAME>
+                          <METHOD-REF DEST="CLIENT-SERVER-OPERATION">/ara/ucm/pkgmgr/portinterfaces/VehicleDriverApplicationInterface/GetSwTransferToUCMMasterProgress</METHOD-REF>
+                          <METHOD-ID>32010</METHOD-ID>
+                          <TRANSPORT-PROTOCOL>UDP</TRANSPORT-PROTOCOL>
+                        </SOMEIP-METHOD-DEPLOYMENT>
+                      </METHOD-DEPLOYMENTS>
+                      <SERVICE-INTERFACE-REF DEST="SERVICE-INTERFACE">/ara/ucm/pkgmgr/portinterfaces/VehicleDriverApplicationInterface</SERVICE-INTERFACE-REF>
+                      <EVENT-GROUPS>
+                        <SOMEIP-EVENT-GROUP>
+                          <SHORT-NAME>ApprovalRequired_eventgroup</SHORT-NAME>
+                          <EVENT-GROUP-ID>55001</EVENT-GROUP-ID>
+                          <EVENT-REFS>
+                            <EVENT-REF DEST="SOMEIP-EVENT-DEPLOYMENT">/ara/apd/ucm_master/deployment/VehicleDriverApplicationInterfaceSomeIp/ApprovalRequired/ApprovalRequired_notifier</EVENT-REF>
+                          </EVENT-REFS>
+                        </SOMEIP-EVENT-GROUP>
+                        <SOMEIP-EVENT-GROUP>
+                          <SHORT-NAME>CampaignState_eventgroup</SHORT-NAME>
+                          <EVENT-GROUP-ID>55002</EVENT-GROUP-ID>
+                          <EVENT-REFS>
+                            <EVENT-REF DEST="SOMEIP-EVENT-DEPLOYMENT">/ara/apd/ucm_master/deployment/VehicleDriverApplicationInterfaceSomeIp/CampaignState/CampaignState_notifier</EVENT-REF>
+                          </EVENT-REFS>
+                        </SOMEIP-EVENT-GROUP>
+                        <SOMEIP-EVENT-GROUP>
+                          <SHORT-NAME>VehicleConditionCollection_eventgroup</SHORT-NAME>
+                          <EVENT-GROUP-ID>55003</EVENT-GROUP-ID>
+                          <EVENT-REFS>
+                            <EVENT-REF DEST="SOMEIP-EVENT-DEPLOYMENT">/ara/apd/ucm_master/deployment/VehicleDriverApplicationInterfaceSomeIp/VehicleConditionCollection/VehicleConditionCollection_notifier</EVENT-REF>
+                          </EVENT-REFS>
+                        </SOMEIP-EVENT-GROUP>
+                      </EVENT-GROUPS>
+                      <SERVICE-INTERFACE-ID>740</SERVICE-INTERFACE-ID>
+                      <SERVICE-INTERFACE-VERSION>
+                        <MAJOR-VERSION>1</MAJOR-VERSION>
+                        <MINOR-VERSION>0</MINOR-VERSION>
+                      </SERVICE-INTERFACE-VERSION>
+                    </SOMEIP-SERVICE-INTERFACE-DEPLOYMENT>
+                    <SOMEIP-SERVICE-INTERFACE-DEPLOYMENT>
+                      <SHORT-NAME>VehiclePackageManagementSomeIp</SHORT-NAME>
+                      <FIELD-DEPLOYMENTS>
+                        <SOMEIP-FIELD-DEPLOYMENT>
+                          <SHORT-NAME>RequestedPackage</SHORT-NAME>
+                          <FIELD-REF DEST="FIELD">/ara/ucm/pkgmgr/portinterfaces/VehiclePackageManagement/RequestedPackage</FIELD-REF>
+                          <GET>
+                            <SHORT-NAME>RequestedPackage_getter</SHORT-NAME>
+                            <METHOD-ID>31006</METHOD-ID>
+                            <TRANSPORT-PROTOCOL>TCP</TRANSPORT-PROTOCOL>
+                          </GET>
+                          <NOTIFIER>
+                            <SHORT-NAME>RequestedPackage_notifier</SHORT-NAME>
+                            <EVENT-ID>9433</EVENT-ID>
+                            <TRANSPORT-PROTOCOL>TCP</TRANSPORT-PROTOCOL>
+                          </NOTIFIER>
+                        </SOMEIP-FIELD-DEPLOYMENT>
+                        <SOMEIP-FIELD-DEPLOYMENT>
+                          <SHORT-NAME>TransferState</SHORT-NAME>
+                          <FIELD-REF DEST="FIELD">/ara/ucm/pkgmgr/portinterfaces/VehiclePackageManagement/TransferState</FIELD-REF>
+                          <GET>
+                            <SHORT-NAME>TransferState_getter</SHORT-NAME>
+                            <METHOD-ID>31005</METHOD-ID>
+                            <TRANSPORT-PROTOCOL>TCP</TRANSPORT-PROTOCOL>
+                          </GET>
+                          <NOTIFIER>
+                            <SHORT-NAME>TransferState_notifier</SHORT-NAME>
+                            <EVENT-ID>9432</EVENT-ID>
+                            <TRANSPORT-PROTOCOL>TCP</TRANSPORT-PROTOCOL>
+                          </NOTIFIER>
+                        </SOMEIP-FIELD-DEPLOYMENT>
+                        <SOMEIP-FIELD-DEPLOYMENT>
+                          <SHORT-NAME>VehicleConditionCollection</SHORT-NAME>
+                          <FIELD-REF DEST="FIELD">/ara/ucm/pkgmgr/portinterfaces/VehiclePackageManagement/VehicleConditionCollection</FIELD-REF>
+                          <GET>
+                            <SHORT-NAME>VehicleConditionCollection_getter</SHORT-NAME>
+                            <METHOD-ID>31008</METHOD-ID>
+                            <TRANSPORT-PROTOCOL>UDP</TRANSPORT-PROTOCOL>
+                          </GET>
+                          <NOTIFIER>
+                            <SHORT-NAME>VehicleConditionCollection_notifier</SHORT-NAME>
+                            <EVENT-ID>9435</EVENT-ID>
+                            <TRANSPORT-PROTOCOL>UDP</TRANSPORT-PROTOCOL>
+                          </NOTIFIER>
+                        </SOMEIP-FIELD-DEPLOYMENT>
+                      </FIELD-DEPLOYMENTS>
+                      <METHOD-DEPLOYMENTS>
+                        <SOMEIP-METHOD-DEPLOYMENT>
+                          <SHORT-NAME>AllowCampaign</SHORT-NAME>
+                          <METHOD-REF DEST="CLIENT-SERVER-OPERATION">/ara/ucm/pkgmgr/portinterfaces/VehiclePackageManagement/AllowCampaign</METHOD-REF>
+                          <METHOD-ID>31100</METHOD-ID>
+                          <TRANSPORT-PROTOCOL>TCP</TRANSPORT-PROTOCOL>
+                        </SOMEIP-METHOD-DEPLOYMENT>
+                        <SOMEIP-METHOD-DEPLOYMENT>
+                          <SHORT-NAME>CancelCampaign</SHORT-NAME>
+                          <METHOD-REF DEST="CLIENT-SERVER-OPERATION">/ara/ucm/pkgmgr/portinterfaces/VehiclePackageManagement/CancelCampaign</METHOD-REF>
+                          <METHOD-ID>31109</METHOD-ID>
+                          <TRANSPORT-PROTOCOL>TCP</TRANSPORT-PROTOCOL>
+                        </SOMEIP-METHOD-DEPLOYMENT>
+                        <SOMEIP-METHOD-DEPLOYMENT>
+                          <SHORT-NAME>DeleteTransfer</SHORT-NAME>
+                          <METHOD-REF DEST="CLIENT-SERVER-OPERATION">/ara/ucm/pkgmgr/portinterfaces/VehiclePackageManagement/DeleteTransfer</METHOD-REF>
+                          <METHOD-ID>31111</METHOD-ID>
+                          <TRANSPORT-PROTOCOL>TCP</TRANSPORT-PROTOCOL>
+                        </SOMEIP-METHOD-DEPLOYMENT>
+                        <SOMEIP-METHOD-DEPLOYMENT>
+                          <SHORT-NAME>GetCampaignHistory</SHORT-NAME>
+                          <METHOD-REF DEST="CLIENT-SERVER-OPERATION">/ara/ucm/pkgmgr/portinterfaces/VehiclePackageManagement/GetCampaignHistory</METHOD-REF>
+                          <METHOD-ID>31110</METHOD-ID>
+                          <TRANSPORT-PROTOCOL>TCP</TRANSPORT-PROTOCOL>
+                        </SOMEIP-METHOD-DEPLOYMENT>
+                        <SOMEIP-METHOD-DEPLOYMENT>
+                          <SHORT-NAME>GetSwClusterInfo</SHORT-NAME>
+                          <METHOD-REF DEST="CLIENT-SERVER-OPERATION">/ara/ucm/pkgmgr/portinterfaces/VehiclePackageManagement/GetSwClusterInfo</METHOD-REF>
+                          <METHOD-ID>31102</METHOD-ID>
+                          <TRANSPORT-PROTOCOL>TCP</TRANSPORT-PROTOCOL>
+                        </SOMEIP-METHOD-DEPLOYMENT>
+                        <SOMEIP-METHOD-DEPLOYMENT>
+                          <SHORT-NAME>GetSwPackages</SHORT-NAME>
+                          <METHOD-REF DEST="CLIENT-SERVER-OPERATION">/ara/ucm/pkgmgr/portinterfaces/VehiclePackageManagement/GetSwPackages</METHOD-REF>
+                          <METHOD-ID>31112</METHOD-ID>
+                          <TRANSPORT-PROTOCOL>TCP</TRANSPORT-PROTOCOL>
+                        </SOMEIP-METHOD-DEPLOYMENT>
+                        <SOMEIP-METHOD-DEPLOYMENT>
+                          <SHORT-NAME>GetVehicleUCMInfo</SHORT-NAME>
+                          <METHOD-REF DEST="CLIENT-SERVER-OPERATION">/ara/ucm/pkgmgr/portinterfaces/VehiclePackageManagement/GetVehicleUCMInfo</METHOD-REF>
+                          <METHOD-ID>31113</METHOD-ID>
+                          <TRANSPORT-PROTOCOL>TCP</TRANSPORT-PROTOCOL>
+                        </SOMEIP-METHOD-DEPLOYMENT>
+                        <SOMEIP-METHOD-DEPLOYMENT>
+                          <SHORT-NAME>SwPackageInventory</SHORT-NAME>
+                          <METHOD-REF DEST="CLIENT-SERVER-OPERATION">/ara/ucm/pkgmgr/portinterfaces/VehiclePackageManagement/SwPackageInventory</METHOD-REF>
+                          <METHOD-ID>31101</METHOD-ID>
+                          <TRANSPORT-PROTOCOL>TCP</TRANSPORT-PROTOCOL>
+                        </SOMEIP-METHOD-DEPLOYMENT>
+                        <SOMEIP-METHOD-DEPLOYMENT>
+                          <SHORT-NAME>TransferData</SHORT-NAME>
+                          <METHOD-REF DEST="CLIENT-SERVER-OPERATION">/ara/ucm/pkgmgr/portinterfaces/VehiclePackageManagement/TransferData</METHOD-REF>
+                          <METHOD-ID>31105</METHOD-ID>
+                          <TRANSPORT-PROTOCOL>TCP</TRANSPORT-PROTOCOL>
+                        </SOMEIP-METHOD-DEPLOYMENT>
+                        <SOMEIP-METHOD-DEPLOYMENT>
+                          <SHORT-NAME>TransferExit</SHORT-NAME>
+                          <METHOD-REF DEST="CLIENT-SERVER-OPERATION">/ara/ucm/pkgmgr/portinterfaces/VehiclePackageManagement/TransferExit</METHOD-REF>
+                          <METHOD-ID>31106</METHOD-ID>
+                          <TRANSPORT-PROTOCOL>TCP</TRANSPORT-PROTOCOL>
+                        </SOMEIP-METHOD-DEPLOYMENT>
+                        <SOMEIP-METHOD-DEPLOYMENT>
+                          <SHORT-NAME>TransferStart</SHORT-NAME>
+                          <METHOD-REF DEST="CLIENT-SERVER-OPERATION">/ara/ucm/pkgmgr/portinterfaces/VehiclePackageManagement/TransferStart</METHOD-REF>
+                          <METHOD-ID>31103</METHOD-ID>
+                          <TRANSPORT-PROTOCOL>TCP</TRANSPORT-PROTOCOL>
+                        </SOMEIP-METHOD-DEPLOYMENT>
+                        <SOMEIP-METHOD-DEPLOYMENT>
+                          <SHORT-NAME>TransferVehiclePackage</SHORT-NAME>
+                          <METHOD-REF DEST="CLIENT-SERVER-OPERATION">/ara/ucm/pkgmgr/portinterfaces/VehiclePackageManagement/TransferVehiclePackage</METHOD-REF>
+                          <METHOD-ID>31104</METHOD-ID>
+                          <TRANSPORT-PROTOCOL>TCP</TRANSPORT-PROTOCOL>
+                        </SOMEIP-METHOD-DEPLOYMENT>
+                      </METHOD-DEPLOYMENTS>
+                      <SERVICE-INTERFACE-REF DEST="SERVICE-INTERFACE">/ara/ucm/pkgmgr/portinterfaces/VehiclePackageManagement</SERVICE-INTERFACE-REF>
+                      <EVENT-GROUPS>
+                        <SOMEIP-EVENT-GROUP>
+                          <SHORT-NAME>RequestedPackage_eventgroup</SHORT-NAME>
+                          <EVENT-GROUP-ID>45401</EVENT-GROUP-ID>
+                          <EVENT-REFS>
+                            <EVENT-REF DEST="SOMEIP-EVENT-DEPLOYMENT">/ara/apd/ucm_master/deployment/VehiclePackageManagementSomeIp/RequestedPackage/RequestedPackage_notifier</EVENT-REF>
+                          </EVENT-REFS>
+                        </SOMEIP-EVENT-GROUP>
+                        <SOMEIP-EVENT-GROUP>
+                          <SHORT-NAME>TransferState_eventgroup</SHORT-NAME>
+                          <EVENT-GROUP-ID>45403</EVENT-GROUP-ID>
+                          <EVENT-REFS>
+                            <EVENT-REF DEST="SOMEIP-EVENT-DEPLOYMENT">/ara/apd/ucm_master/deployment/VehiclePackageManagementSomeIp/TransferState/TransferState_notifier</EVENT-REF>
+                          </EVENT-REFS>
+                        </SOMEIP-EVENT-GROUP>
+                        <SOMEIP-EVENT-GROUP>
+                          <SHORT-NAME>VehicleConditionCollection_eventgroup</SHORT-NAME>
+                          <EVENT-GROUP-ID>45404</EVENT-GROUP-ID>
+                          <EVENT-REFS>
+                            <EVENT-REF DEST="SOMEIP-EVENT-DEPLOYMENT">/ara/apd/ucm_master/deployment/VehiclePackageManagementSomeIp/VehicleConditionCollection/VehicleConditionCollection_notifier</EVENT-REF>
+                          </EVENT-REFS>
+                        </SOMEIP-EVENT-GROUP>
+                      </EVENT-GROUPS>
+                      <SERVICE-INTERFACE-ID>730</SERVICE-INTERFACE-ID>
+                      <SERVICE-INTERFACE-VERSION>
+                        <MAJOR-VERSION>1</MAJOR-VERSION>
+                        <MINOR-VERSION>0</MINOR-VERSION>
+                      </SERVICE-INTERFACE-VERSION>
+                    </SOMEIP-SERVICE-INTERFACE-DEPLOYMENT>
+                    <SOMEIP-SERVICE-INTERFACE-DEPLOYMENT>
+                      <SHORT-NAME>VehicleStateManagerInterfaceSomeIp</SHORT-NAME>
+                      <FIELD-DEPLOYMENTS>
+                        <SOMEIP-FIELD-DEPLOYMENT>
+                          <SHORT-NAME>VehicleConditionCollection</SHORT-NAME>
+                          <FIELD-REF DEST="FIELD">/ara/ucm/pkgmgr/portinterfaces/VehicleStateManagerInterface/VehicleConditionCollection</FIELD-REF>
+                          <GET>
+                            <SHORT-NAME>VehicleConditionCollection_getter</SHORT-NAME>
+                            <METHOD-ID>30101</METHOD-ID>
+                            <TRANSPORT-PROTOCOL>UDP</TRANSPORT-PROTOCOL>
+                          </GET>
+                          <NOTIFIER>
+                            <SHORT-NAME>VehicleConditionCollection_notifier</SHORT-NAME>
+                            <EVENT-ID>9631</EVENT-ID>
+                            <TRANSPORT-PROTOCOL>UDP</TRANSPORT-PROTOCOL>
+                          </NOTIFIER>
+                        </SOMEIP-FIELD-DEPLOYMENT>
+                        <SOMEIP-FIELD-DEPLOYMENT>
+                          <SHORT-NAME>CampaignState</SHORT-NAME>
+                          <FIELD-REF DEST="FIELD">/ara/ucm/pkgmgr/portinterfaces/VehicleStateManagerInterface/CampaignState</FIELD-REF>
+                          <GET>
+                            <SHORT-NAME>CampaignState_getter</SHORT-NAME>
+                            <METHOD-ID>30102</METHOD-ID>
+                            <TRANSPORT-PROTOCOL>TCP</TRANSPORT-PROTOCOL>
+                          </GET>
+                          <NOTIFIER>
+                            <SHORT-NAME>CampaignState_notifier</SHORT-NAME>
+                            <EVENT-ID>9632</EVENT-ID>
+                            <TRANSPORT-PROTOCOL>TCP</TRANSPORT-PROTOCOL>
+                          </NOTIFIER>
+                        </SOMEIP-FIELD-DEPLOYMENT>
+                      </FIELD-DEPLOYMENTS>
+                      <METHOD-DEPLOYMENTS>
+                        <SOMEIP-METHOD-DEPLOYMENT>
+                          <SHORT-NAME>PublishSafetyState</SHORT-NAME>
+                          <METHOD-REF DEST="CLIENT-SERVER-OPERATION">/ara/ucm/pkgmgr/portinterfaces/VehicleStateManagerInterface/PublishSafetyState</METHOD-REF>
+                          <METHOD-ID>30001</METHOD-ID>
+                          <TRANSPORT-PROTOCOL>TCP</TRANSPORT-PROTOCOL>
+                        </SOMEIP-METHOD-DEPLOYMENT>
+                        <SOMEIP-METHOD-DEPLOYMENT>
+                          <SHORT-NAME>VehicleCheck</SHORT-NAME>
+                          <METHOD-REF DEST="CLIENT-SERVER-OPERATION">/ara/ucm/pkgmgr/portinterfaces/VehicleStateManagerInterface/VehicleCheck</METHOD-REF>
+                          <METHOD-ID>30002</METHOD-ID>
+                          <TRANSPORT-PROTOCOL>TCP</TRANSPORT-PROTOCOL>
+                        </SOMEIP-METHOD-DEPLOYMENT>
+                      </METHOD-DEPLOYMENTS>
+                      <SERVICE-INTERFACE-REF DEST="SERVICE-INTERFACE">/ara/ucm/pkgmgr/portinterfaces/VehicleStateManagerInterface</SERVICE-INTERFACE-REF>
+                      <EVENT-GROUPS>
+                        <SOMEIP-EVENT-GROUP>
+                          <SHORT-NAME>VehicleConditionCollection_eventgroup</SHORT-NAME>
+                          <EVENT-GROUP-ID>65001</EVENT-GROUP-ID>
+                          <EVENT-REFS>
+                            <EVENT-REF DEST="SOMEIP-EVENT-DEPLOYMENT">/ara/apd/ucm_master/deployment/VehicleStateManagerInterfaceSomeIp/VehicleConditionCollection/VehicleConditionCollection_notifier</EVENT-REF>
+                          </EVENT-REFS>
+                        </SOMEIP-EVENT-GROUP>
+                        <SOMEIP-EVENT-GROUP>
+                          <SHORT-NAME>CampaignState_eventgroup</SHORT-NAME>
+                          <EVENT-GROUP-ID>65002</EVENT-GROUP-ID>
+                          <EVENT-REFS>
+                            <EVENT-REF DEST="SOMEIP-EVENT-DEPLOYMENT">/ara/apd/ucm_master/deployment/VehicleStateManagerInterfaceSomeIp/CampaignState/CampaignState_notifier</EVENT-REF>
+                          </EVENT-REFS>
+                        </SOMEIP-EVENT-GROUP>
+                      </EVENT-GROUPS>
+                      <SERVICE-INTERFACE-ID>750</SERVICE-INTERFACE-ID>
+                      <SERVICE-INTERFACE-VERSION>
+                        <MAJOR-VERSION>1</MAJOR-VERSION>
+                        <MINOR-VERSION>0</MINOR-VERSION>
+                      </SERVICE-INTERFACE-VERSION>
+                    </SOMEIP-SERVICE-INTERFACE-DEPLOYMENT>
+                  </ELEMENTS>
+                </AR-PACKAGE>
+              </AR-PACKAGES>
+            </AR-PACKAGE>
+          </AR-PACKAGES>
+        </AR-PACKAGE>
+      </AR-PACKAGES>
+    </AR-PACKAGE>
+  </AR-PACKAGES>
+</AUTOSAR>

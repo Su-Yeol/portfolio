@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<AUTOSAR xmlns="http://autosar.org/schema/r4.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://autosar.org/schema/r4.0 AUTOSAR_00052.xsd">
+  <AR-PACKAGES>
+    <AR-PACKAGE>
+      <SHORT-NAME>ara</SHORT-NAME>
+      <AR-PACKAGES>
+        <AR-PACKAGE>
+          <SHORT-NAME>diag</SHORT-NAME>
+          <ELEMENTS>
+            <ADAPTIVE-APPLICATION-SW-COMPONENT-TYPE>
+              <SHORT-NAME>crossfuncreqs_swc</SHORT-NAME>
+              <PORTS>
+                <R-PORT-PROTOTYPE>
+                  <SHORT-NAME>DiagnosticEvent</SHORT-NAME>
+                  <REQUIRED-INTERFACE-TREF DEST="SERVICE-INTERFACE">/ara/diag/DiagnosticManager/DiagnosticEvent</REQUIRED-INTERFACE-TREF>
+                </R-PORT-PROTOTYPE>
+              </PORTS>
+            </ADAPTIVE-APPLICATION-SW-COMPONENT-TYPE>
+            <EXECUTABLE>
+              <SHORT-NAME>crossfuncreqs_exe</SHORT-NAME>
+              <ROOT-SW-COMPONENT-PROTOTYPE>
+                <SHORT-NAME>crossfuncreqs_component</SHORT-NAME>
+                <APPLICATION-TYPE-TREF DEST="ADAPTIVE-APPLICATION-SW-COMPONENT-TYPE">/ara/diag/crossfuncreqs_swc</APPLICATION-TYPE-TREF>
+              </ROOT-SW-COMPONENT-PROTOTYPE>
+            </EXECUTABLE>
+            <PROCESS>
+              <SHORT-NAME>crossfuncreqs</SHORT-NAME>
+              <DESIGN-REF DEST="PROCESS-DESIGN">/ara/diag/crossfuncreqs_design</DESIGN-REF>
+              <EXECUTABLE-REFS>
+                <EXECUTABLE-REF DEST="EXECUTABLE">/ara/diag/crossfuncreqs_exe</EXECUTABLE-REF>
+              </EXECUTABLE-REFS>
+            </PROCESS>
+            <PROCESS-DESIGN>
+              <SHORT-NAME>crossfuncreqs_design</SHORT-NAME>
+              <EXECUTABLE-REFS>
+                <EXECUTABLE-REF DEST="EXECUTABLE">/ara/diag/crossfuncreqs_exe</EXECUTABLE-REF>
+              </EXECUTABLE-REFS>
+            </PROCESS-DESIGN>
+            <PROCESS-TO-MACHINE-MAPPING-SET>
+              <SHORT-NAME>CrossFuncReqsMachineMappings</SHORT-NAME>
+              <PROCESS-TO-MACHINE-MAPPINGS>
+                <PROCESS-TO-MACHINE-MAPPING>
+                  <SHORT-NAME>CrossFuncReqsMapping</SHORT-NAME>
+                  <MACHINE-REF DEST="MACHINE">/ara/diag/applications/dmMachine</MACHINE-REF>
+                  <PROCESS-REF DEST="PROCESS">/ara/diag/crossfuncreqs</PROCESS-REF>
+                </PROCESS-TO-MACHINE-MAPPING>
+              </PROCESS-TO-MACHINE-MAPPINGS>
+            </PROCESS-TO-MACHINE-MAPPING-SET>
+            <REQUIRED-SOMEIP-SERVICE-INSTANCE>
+              <SHORT-NAME>CrossFuncReqs_DiagnosticEventRequiredServiceInstance</SHORT-NAME>
+              <SERVICE-INTERFACE-DEPLOYMENT-REF DEST="SOMEIP-SERVICE-INTERFACE-DEPLOYMENT">/ara/diag/applications/deployment/DiagnosticEvent_Someip</SERVICE-INTERFACE-DEPLOYMENT-REF>
+              <REQUIRED-SERVICE-INSTANCE-ID>ANY</REQUIRED-SERVICE-INSTANCE-ID>
+            </REQUIRED-SOMEIP-SERVICE-INSTANCE>
+            <SERVICE-INSTANCE-TO-PORT-PROTOTYPE-MAPPING>
+              <SHORT-NAME>CrossFuncReqs_DiagnosticEventRequiredServiceInstance_toPort</SHORT-NAME>
+              <PORT-PROTOTYPE-IREF>
+                <TARGET-PORT-PROTOTYPE-REF DEST="R-PORT-PROTOTYPE">/ara/diag/crossfuncreqs_swc/DiagnosticEvent</TARGET-PORT-PROTOTYPE-REF>
+              </PORT-PROTOTYPE-IREF>
+              <PROCESS-REF DEST="PROCESS">/ara/diag/crossfuncreqs</PROCESS-REF>
+              <SERVICE-INSTANCE-REF DEST="REQUIRED-SOMEIP-SERVICE-INSTANCE">/ara/diag/CrossFuncReqs_DiagnosticEventRequiredServiceInstance</SERVICE-INSTANCE-REF>
+            </SERVICE-INSTANCE-TO-PORT-PROTOTYPE-MAPPING>
+            <SOMEIP-SERVICE-INSTANCE-TO-MACHINE-MAPPING>
+              <SHORT-NAME>CrossFuncReqs_DiagnosticEventRequiredServiceInstance_toMachine</SHORT-NAME>
+              <COMMUNICATION-CONNECTOR-REF DEST="ETHERNET-COMMUNICATION-CONNECTOR">/ara/diag/applications/dmMachineDesign/myCommunicationConnector</COMMUNICATION-CONNECTOR-REF>
+              <SERVICE-INSTANCE-REFS>
+                <SERVICE-INSTANCE-REF DEST="REQUIRED-SOMEIP-SERVICE-INSTANCE">/ara/diag/CrossFuncReqs_DiagnosticEventRequiredServiceInstance</SERVICE-INSTANCE-REF>
+              </SERVICE-INSTANCE-REFS>
+              <TCP-PORT-REF DEST="AP-APPLICATION-ENDPOINT">/ara/diag/applications/dmMachineDesign/myCommunicationConnector/ApApplicationEndpoint8</TCP-PORT-REF>
+            </SOMEIP-SERVICE-INSTANCE-TO-MACHINE-MAPPING>
+          </ELEMENTS>
+        </AR-PACKAGE>
+      </AR-PACKAGES>
+    </AR-PACKAGE>
+  </AR-PACKAGES>
+</AUTOSAR>

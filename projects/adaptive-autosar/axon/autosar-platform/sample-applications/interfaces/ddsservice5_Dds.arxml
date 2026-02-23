@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<AUTOSAR xmlns="http://autosar.org/schema/r4.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://autosar.org/schema/r4.0 AUTOSAR_00052.xsd">
+  <AR-PACKAGES>
+    <AR-PACKAGE>
+      <SHORT-NAME>apd</SHORT-NAME>
+      <AR-PACKAGES>
+        <AR-PACKAGE>
+          <SHORT-NAME>ServiceInterfaceDeployments</SHORT-NAME>
+          <ELEMENTS>
+            <DDS-SERVICE-INTERFACE-DEPLOYMENT>
+              <SHORT-NAME>DDSService5_Dds</SHORT-NAME>
+              <SERVICE-INTERFACE-REF DEST="SERVICE-INTERFACE">/apd/ServiceInterfaces/ddsservice5</SERVICE-INTERFACE-REF>
+              <METHOD-REPLY-TOPIC-NAME>DdsTopicRadarMethodCReply</METHOD-REPLY-TOPIC-NAME>
+              <METHOD-REQUEST-TOPIC-NAME>DdsTopicRadarMethodDRequest</METHOD-REQUEST-TOPIC-NAME>
+              <SERVICE-INTERFACE-ID>ddsservice5</SERVICE-INTERFACE-ID>
+              <TRANSPORT-PROTOCOLS>
+                <TRANSPORT-PROTOCOL>UDP</TRANSPORT-PROTOCOL>
+              </TRANSPORT-PROTOCOLS>
+            </DDS-SERVICE-INTERFACE-DEPLOYMENT>
+          </ELEMENTS>
+        </AR-PACKAGE>
+      </AR-PACKAGES>
+    </AR-PACKAGE>
+  </AR-PACKAGES>
+</AUTOSAR>

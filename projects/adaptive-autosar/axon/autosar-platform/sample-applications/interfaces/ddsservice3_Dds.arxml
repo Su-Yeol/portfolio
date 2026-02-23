@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<AUTOSAR xmlns="http://autosar.org/schema/r4.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://autosar.org/schema/r4.0 AUTOSAR_00052.xsd">
+  <AR-PACKAGES>
+    <AR-PACKAGE>
+      <SHORT-NAME>apd</SHORT-NAME>
+      <AR-PACKAGES>
+        <AR-PACKAGE>
+          <SHORT-NAME>ServiceInterfaceDeployments</SHORT-NAME>
+          <ELEMENTS>
+            <DDS-SERVICE-INTERFACE-DEPLOYMENT>
+              <SHORT-NAME>DDSService3_Dds</SHORT-NAME>
+              <FIELD-DEPLOYMENTS>
+                <DDS-FIELD-DEPLOYMENT>
+                  <SHORT-NAME>FieldA_Dds</SHORT-NAME>
+                  <FIELD-REF DEST="FIELD">/apd/ServiceInterfaces/ddsservice3/FieldA</FIELD-REF>
+                  <NOTIFIER>
+                    <SHORT-NAME>notifier</SHORT-NAME>
+                    <TOPIC-NAME>DdsTopicFieldANotifier</TOPIC-NAME>
+                    <TRANSPORT-PROTOCOLS>
+                      <TRANSPORT-PROTOCOL>UDP</TRANSPORT-PROTOCOL>
+                    </TRANSPORT-PROTOCOLS>
+                  </NOTIFIER>
+                </DDS-FIELD-DEPLOYMENT>
+              </FIELD-DEPLOYMENTS>
+              <SERVICE-INTERFACE-REF DEST="SERVICE-INTERFACE">/apd/ServiceInterfaces/ddsservice3</SERVICE-INTERFACE-REF>
+              <FIELD-REPLY-TOPIC-NAME>DdsTopicFieldAReply</FIELD-REPLY-TOPIC-NAME>
+              <FIELD-REQUEST-TOPIC-NAME>DdsTopicFieldARequest</FIELD-REQUEST-TOPIC-NAME>
+              <SERVICE-INTERFACE-ID>ddsservice3</SERVICE-INTERFACE-ID>
+              <TRANSPORT-PROTOCOLS>
+                <TRANSPORT-PROTOCOL>UDP</TRANSPORT-PROTOCOL>
+              </TRANSPORT-PROTOCOLS>
+            </DDS-SERVICE-INTERFACE-DEPLOYMENT>
+          </ELEMENTS>
+        </AR-PACKAGE>
+      </AR-PACKAGES>
+    </AR-PACKAGE>
+  </AR-PACKAGES>
+</AUTOSAR>

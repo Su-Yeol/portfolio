@@ -1,0 +1,68 @@
+## Convention for test builds within the repository (perhaps using the SDK)
+BUILD/
+build*/
+
+# bitbake links
+oe-logs
+oe-workdir
+
+# Python Artifacts
+*.pyc
+__pycache__/
+
+# Visual Studio Code artifacts
+.vscode
+*.code-workspace
+
+# Eclipse related artifacts
+.settings/
+.project
+.cproject
+.pydevproject
+
+# Qt Creator related artifacts
+CMakeLists.txt.user
+
+# Common compiler artifacts
+*.so
+*.a
+*.o
+*.out
+
+# Common backup filename extensions
+*~
+*.bak
+*.cbk
+
+# Other binary files not typically committed to git
+*.gz
+*.tar
+*.tgz
+*.bz2
+
+# CMake artifacts
+CMakeCache.txt
+CMakeFiles/
+cmake-build-*/
+
+__pycache__
+.idea
+
+# Ignore the virtualenv
+.venv/**
+*.pyc
+
+# py.test
+.pytest_cache/
+
+# mypy type checking
+.mypy_cache/
+
+# setup.py
+*.egg-info/
+
+*.dlt
+*.xz
+itm_result*
+log*
+itm/itm_freerun_testcases.json

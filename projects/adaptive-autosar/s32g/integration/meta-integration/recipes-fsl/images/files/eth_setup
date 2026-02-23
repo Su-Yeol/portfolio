@@ -1,0 +1,11 @@
+#!/bin/sh
+
+ifconfig eth0 192.168.1.99 netmask 255.255.255.0
+
+sed -i "s/local/192.168.1.99/g" /etc/vsomeip.json
+
+# Add routing table for VCU and someip
+route add 192.168.1.5 pfe0
+route add 224.244.224.245 eth0
+
+exit 0

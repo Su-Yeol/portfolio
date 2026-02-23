@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<AUTOSAR xmlns="http://autosar.org/schema/r4.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://autosar.org/schema/r4.0 AUTOSAR_00052.xsd">
+    <AR-PACKAGES>
+        <AR-PACKAGE>
+            <SHORT-NAME>katech</SHORT-NAME>
+            <ELEMENTS>
+                <SERVICE-INTERFACE>
+                    <SHORT-NAME>routing_search</SHORT-NAME>
+                    <NAMESPACES>
+                        <SYMBOL-PROPS>
+                            <SHORT-NAME>katech</SHORT-NAME>
+                            <SYMBOL>katech</SYMBOL>
+                        </SYMBOL-PROPS>
+                    </NAMESPACES>
+                    <EVENTS>
+                        <VARIABLE-DATA-PROTOTYPE>
+                            <SHORT-NAME>routingSearchEvent</SHORT-NAME>
+                            <TYPE-TREF DEST="STD-CPP-IMPLEMENTATION-DATA-TYPE">/katech/events/routing_search_Objects</TYPE-TREF>
+                        </VARIABLE-DATA-PROTOTYPE>
+                    </EVENTS>
+                </SERVICE-INTERFACE>
+            </ELEMENTS>
+            <AR-PACKAGES>
+                <AR-PACKAGE>
+                    <SHORT-NAME>events</SHORT-NAME>
+                    <ELEMENTS>
+                        <STD-CPP-IMPLEMENTATION-DATA-TYPE>
+                            <SHORT-NAME>routing_search_Objects</SHORT-NAME>
+                            <CATEGORY>STRUCTURE</CATEGORY>
+                            <NAMESPACES>
+                                <SYMBOL-PROPS>
+                                    <SHORT-NAME>katech</SHORT-NAME>
+                                    <SYMBOL>katech</SYMBOL>
+                                </SYMBOL-PROPS>
+                            </NAMESPACES>
+                            <SUB-ELEMENTS>
+                                <CPP-IMPLEMENTATION-DATA-TYPE-ELEMENT>
+                                    <SHORT-NAME>preset</SHORT-NAME>
+                                    <TYPE-REFERENCE>
+                                        <INPLACE>false</INPLACE>
+                                        <TYPE-REFERENCE-REF DEST="STD-CPP-IMPLEMENTATION-DATA-TYPE">/AUTOSAR/StdTypes/uint8_t</TYPE-REFERENCE-REF>
+                                    </TYPE-REFERENCE>
+                                </CPP-IMPLEMENTATION-DATA-TYPE-ELEMENT>
+
+                                <CPP-IMPLEMENTATION-DATA-TYPE-ELEMENT>
+                                    <SHORT-NAME>StartPoint</SHORT-NAME>
+                                    <TYPE-REFERENCE>
+                                        <INPLACE>false</INPLACE>
+                                        <TYPE-REFERENCE-REF DEST="STD-CPP-IMPLEMENTATION-DATA-TYPE">/katech/CppImplementationDataTypes/PointStruct</TYPE-REFERENCE-REF>
+                                    </TYPE-REFERENCE>
+                                </CPP-IMPLEMENTATION-DATA-TYPE-ELEMENT>
+
+                                <CPP-IMPLEMENTATION-DATA-TYPE-ELEMENT>
+                                    <SHORT-NAME>EndPoint</SHORT-NAME>
+                                    <TYPE-REFERENCE>
+                                        <INPLACE>false</INPLACE>
+                                        <TYPE-REFERENCE-REF DEST="STD-CPP-IMPLEMENTATION-DATA-TYPE">/katech/CppImplementationDataTypes/PointStruct</TYPE-REFERENCE-REF>
+                                    </TYPE-REFERENCE>
+                                </CPP-IMPLEMENTATION-DATA-TYPE-ELEMENT>
+
+                                <CPP-IMPLEMENTATION-DATA-TYPE-ELEMENT>
+                                    <SHORT-NAME>StopPoint</SHORT-NAME>
+                                    <TYPE-REFERENCE>
+                                        <INPLACE>false</INPLACE>
+                                        <TYPE-REFERENCE-REF DEST="STD-CPP-IMPLEMENTATION-DATA-TYPE">/katech/CppImplementationDataTypes/StopPointVector</TYPE-REFERENCE-REF>
+                                    </TYPE-REFERENCE>
+                                </CPP-IMPLEMENTATION-DATA-TYPE-ELEMENT>
+                            </SUB-ELEMENTS>
+                            <TYPE-EMITTER>TYPE_EMITTER_ARA</TYPE-EMITTER>
+                        </STD-CPP-IMPLEMENTATION-DATA-TYPE>
+                    </ELEMENTS>
+                </AR-PACKAGE>
+            </AR-PACKAGES>
+        </AR-PACKAGE>
+    </AR-PACKAGES>
+</AUTOSAR>

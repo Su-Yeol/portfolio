@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<AUTOSAR xmlns="http://autosar.org/schema/r4.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://autosar.org/schema/r4.0 AUTOSAR_00052.xsd">
+    <AR-PACKAGES>
+        <AR-PACKAGE>
+            <SHORT-NAME>katech</SHORT-NAME>
+            <ELEMENTS>
+                <SERVICE-INTERFACE>
+                    <SHORT-NAME>local_map</SHORT-NAME>
+                    <NAMESPACES>
+                        <SYMBOL-PROPS>
+                            <SHORT-NAME>katech</SHORT-NAME>
+                            <SYMBOL>katech</SYMBOL>
+                        </SYMBOL-PROPS>
+                    </NAMESPACES>
+                    <EVENTS>
+                        <VARIABLE-DATA-PROTOTYPE>
+                            <SHORT-NAME>localMapEvent</SHORT-NAME>
+                            <TYPE-TREF DEST="STD-CPP-IMPLEMENTATION-DATA-TYPE">/katech/events/local_map_Objects</TYPE-TREF>
+                        </VARIABLE-DATA-PROTOTYPE>
+                    </EVENTS>
+                    <FIELDS>
+                        <FIELD>
+                            <SHORT-NAME>ServiceFlag</SHORT-NAME>
+                            <TYPE-TREF DEST="STD-CPP-IMPLEMENTATION-DATA-TYPE">/katech/CppImplementationDataTypes/String</TYPE-TREF>
+                            <HAS-GETTER>true</HAS-GETTER>
+                            <HAS-NOTIFIER>true</HAS-NOTIFIER>
+                            <HAS-SETTER>true</HAS-SETTER>
+                        </FIELD>
+                    </FIELDS>
+                    <METHODS>
+                        <CLIENT-SERVER-OPERATION>
+                            <SHORT-NAME>GetMapData</SHORT-NAME>
+                            <ARGUMENTS>
+                                <ARGUMENT-DATA-PROTOTYPE>
+                                    <SHORT-NAME>grid_id</SHORT-NAME>
+                                    <TYPE-TREF DEST="STD-CPP-IMPLEMENTATION-DATA-TYPE">/AUTOSAR/StdTypes/uint64_t</TYPE-TREF>
+                                    <DIRECTION>IN</DIRECTION>
+                                </ARGUMENT-DATA-PROTOTYPE>
+                                <ARGUMENT-DATA-PROTOTYPE>
+                                    <SHORT-NAME>cell_id</SHORT-NAME>
+                                    <TYPE-TREF DEST="STD-CPP-IMPLEMENTATION-DATA-TYPE">/AUTOSAR/StdTypes/uint64_t</TYPE-TREF>
+                                    <DIRECTION>IN</DIRECTION>
+                                </ARGUMENT-DATA-PROTOTYPE>
+                                <ARGUMENT-DATA-PROTOTYPE>
+                                    <SHORT-NAME>map_data</SHORT-NAME>
+                                    <TYPE-TREF DEST="STD-CPP-IMPLEMENTATION-DATA-TYPE">/katech/events/local_map_Objects</TYPE-TREF>
+                                    <DIRECTION>OUT</DIRECTION>
+                                </ARGUMENT-DATA-PROTOTYPE>
+                            </ARGUMENTS>
+                        </CLIENT-SERVER-OPERATION>
+                    </METHODS>
+                </SERVICE-INTERFACE>
+            </ELEMENTS>
+            <AR-PACKAGES>
+                <AR-PACKAGE>
+                    <SHORT-NAME>events</SHORT-NAME>
+                    <ELEMENTS>
+                        <STD-CPP-IMPLEMENTATION-DATA-TYPE>
+                            <SHORT-NAME>local_map_Objects</SHORT-NAME>
+                            <CATEGORY>STRUCTURE</CATEGORY>
+                            <NAMESPACES>
+                                <SYMBOL-PROPS>
+                                    <SHORT-NAME>katech</SHORT-NAME>
+                                    <SYMBOL>katech</SYMBOL>
+                                </SYMBOL-PROPS>
+                            </NAMESPACES>
+                            <SUB-ELEMENTS>
+                                <CPP-IMPLEMENTATION-DATA-TYPE-ELEMENT>
+                                    <SHORT-NAME>GridID</SHORT-NAME>
+                                    <TYPE-REFERENCE>
+                                        <INPLACE>false</INPLACE>
+                                        <TYPE-REFERENCE-REF DEST="STD-CPP-IMPLEMENTATION-DATA-TYPE">/AUTOSAR/StdTypes/uint64_t</TYPE-REFERENCE-REF>
+                                    </TYPE-REFERENCE>
+                                </CPP-IMPLEMENTATION-DATA-TYPE-ELEMENT>
+                                <CPP-IMPLEMENTATION-DATA-TYPE-ELEMENT>
+                                    <SHORT-NAME>CellID</SHORT-NAME>
+                                    <TYPE-REFERENCE>
+                                        <INPLACE>false</INPLACE>
+                                        <TYPE-REFERENCE-REF DEST="STD-CPP-IMPLEMENTATION-DATA-TYPE">/AUTOSAR/StdTypes/uint64_t</TYPE-REFERENCE-REF>
+                                    </TYPE-REFERENCE>
+                                </CPP-IMPLEMENTATION-DATA-TYPE-ELEMENT>
+                                <CPP-IMPLEMENTATION-DATA-TYPE-ELEMENT>
+                                    <SHORT-NAME>Roads</SHORT-NAME>
+                                    <TYPE-REFERENCE>
+                                        <INPLACE>false</INPLACE>
+                                        <TYPE-REFERENCE-REF DEST="STD-CPP-IMPLEMENTATION-DATA-TYPE">/katech/CppImplementationDataTypes/RoadVector</TYPE-REFERENCE-REF>
+                                    </TYPE-REFERENCE>
+                                </CPP-IMPLEMENTATION-DATA-TYPE-ELEMENT>
+                                <CPP-IMPLEMENTATION-DATA-TYPE-ELEMENT>
+                                    <SHORT-NAME>Junctions</SHORT-NAME>
+                                    <TYPE-REFERENCE>
+                                        <INPLACE>false</INPLACE>
+                                        <TYPE-REFERENCE-REF DEST="STD-CPP-IMPLEMENTATION-DATA-TYPE">/katech/CppImplementationDataTypes/JunctionVector</TYPE-REFERENCE-REF>
+                                    </TYPE-REFERENCE>
+                                </CPP-IMPLEMENTATION-DATA-TYPE-ELEMENT>
+                                <CPP-IMPLEMENTATION-DATA-TYPE-ELEMENT>
+                                    <SHORT-NAME>StopLines</SHORT-NAME>
+                                    <TYPE-REFERENCE>
+                                        <INPLACE>false</INPLACE>
+                                        <TYPE-REFERENCE-REF DEST="STD-CPP-IMPLEMENTATION-DATA-TYPE">/katech/CppImplementationDataTypes/StopLineVector</TYPE-REFERENCE-REF>
+                                    </TYPE-REFERENCE>
+                                </CPP-IMPLEMENTATION-DATA-TYPE-ELEMENT>
+                                <CPP-IMPLEMENTATION-DATA-TYPE-ELEMENT>
+                                    <SHORT-NAME>Borders</SHORT-NAME>
+                                    <TYPE-REFERENCE>
+                                        <INPLACE>false</INPLACE>
+                                        <TYPE-REFERENCE-REF DEST="STD-CPP-IMPLEMENTATION-DATA-TYPE">/katech/CppImplementationDataTypes/BorderVector</TYPE-REFERENCE-REF>
+                                    </TYPE-REFERENCE>
+                                </CPP-IMPLEMENTATION-DATA-TYPE-ELEMENT>
+                                <CPP-IMPLEMENTATION-DATA-TYPE-ELEMENT>
+                                    <SHORT-NAME>ParkingLots</SHORT-NAME>
+                                    <TYPE-REFERENCE>
+                                        <INPLACE>false</INPLACE>
+                                        <TYPE-REFERENCE-REF DEST="STD-CPP-IMPLEMENTATION-DATA-TYPE">/katech/CppImplementationDataTypes/ParkingLotVector</TYPE-REFERENCE-REF>
+                                    </TYPE-REFERENCE>
+                                </CPP-IMPLEMENTATION-DATA-TYPE-ELEMENT>
+                                <CPP-IMPLEMENTATION-DATA-TYPE-ELEMENT>
+                                    <SHORT-NAME>CrossWalks</SHORT-NAME>
+                                    <TYPE-REFERENCE>
+                                        <INPLACE>false</INPLACE>
+                                        <TYPE-REFERENCE-REF DEST="STD-CPP-IMPLEMENTATION-DATA-TYPE">/katech/CppImplementationDataTypes/CrossWalkVector</TYPE-REFERENCE-REF>
+                                    </TYPE-REFERENCE>
+                                </CPP-IMPLEMENTATION-DATA-TYPE-ELEMENT>
+                            </SUB-ELEMENTS>
+                            <TYPE-EMITTER>TYPE_EMITTER_ARA</TYPE-EMITTER>
+                        </STD-CPP-IMPLEMENTATION-DATA-TYPE>
+                    </ELEMENTS>
+                </AR-PACKAGE>
+            </AR-PACKAGES>
+        </AR-PACKAGE>
+    </AR-PACKAGES>
+</AUTOSAR>

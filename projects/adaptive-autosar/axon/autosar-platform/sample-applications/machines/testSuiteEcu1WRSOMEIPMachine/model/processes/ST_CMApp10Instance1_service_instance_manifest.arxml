@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<AUTOSAR xmlns="http://autosar.org/schema/r4.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://autosar.org/schema/r4.0 AUTOSAR_00052.xsd">
+  <AR-PACKAGES>
+    <AR-PACKAGE>
+      <SHORT-NAME>apd</SHORT-NAME>
+      <AR-PACKAGES>
+        <AR-PACKAGE>
+          <SHORT-NAME>Machines</SHORT-NAME>
+          <AR-PACKAGES>
+            <AR-PACKAGE>
+              <SHORT-NAME>testSuiteEcu1WRSOMEIPMachine</SHORT-NAME>
+              <AR-PACKAGES>
+                <AR-PACKAGE>
+                  <!-- ServiceInstanceToMachineMappings -->
+                  <SHORT-NAME>ServiceInstanceToMachineMappings</SHORT-NAME>
+                  <ELEMENTS>
+                    <SOMEIP-SERVICE-INSTANCE-TO-MACHINE-MAPPING>
+                      <SHORT-NAME>CmService5RequiredServiceInstanceToEcu1Machine</SHORT-NAME>
+                      <COMMUNICATION-CONNECTOR-REF DEST="ETHERNET-COMMUNICATION-CONNECTOR">/apd/MachineDesigns/testSuiteEcu1WRSOMEIPMachineDesign/CommunicationWRSOMEIPConnector1</COMMUNICATION-CONNECTOR-REF>
+                      <SERVICE-INSTANCE-REFS>
+                        <SERVICE-INSTANCE-REF DEST="REQUIRED-SOMEIP-SERVICE-INSTANCE">/apd/Machines/testSuiteEcu1WRSOMEIPMachine/ServiceInstances/ST_CMApp10CMService5RequiredSomeipServiceInstance</SERVICE-INSTANCE-REF>
+                      </SERVICE-INSTANCE-REFS>
+                      <UDP-PORT-REF DEST="AP-APPLICATION-ENDPOINT">/apd/MachineDesigns/testSuiteEcu1WRSOMEIPMachineDesign/CommunicationWRSOMEIPConnector1/CmService5ApplicationEndpoint</UDP-PORT-REF>
+                    </SOMEIP-SERVICE-INSTANCE-TO-MACHINE-MAPPING>
+                    <SOMEIP-SERVICE-INSTANCE-TO-MACHINE-MAPPING>
+                      <SHORT-NAME>CMApp10DiagDataIdentifierProvidedServiceInstanceToEcu1Machine</SHORT-NAME>
+                      <COMMUNICATION-CONNECTOR-REF DEST="ETHERNET-COMMUNICATION-CONNECTOR">/apd/MachineDesigns/testSuiteEcu1WRSOMEIPMachineDesign/CommunicationWRSOMEIPConnector1</COMMUNICATION-CONNECTOR-REF>
+                      <SERVICE-INSTANCE-REFS>
+                        <SERVICE-INSTANCE-REF DEST="PROVIDED-SOMEIP-SERVICE-INSTANCE">/apd/Machines/testSuiteEcu1WRSOMEIPMachine/ServiceInstances/ST_CMApp10DiagDataIdentifierProvidedSomeipServiceInstance</SERVICE-INSTANCE-REF>
+                      </SERVICE-INSTANCE-REFS>
+                      <UDP-PORT-REF DEST="AP-APPLICATION-ENDPOINT">/apd/MachineDesigns/testSuiteEcu1WRSOMEIPMachineDesign/CommunicationWRSOMEIPConnector1/CMApp10DiagDataIdentifierApplicationEndpoint</UDP-PORT-REF>
+                    </SOMEIP-SERVICE-INSTANCE-TO-MACHINE-MAPPING>
+                    <SOMEIP-SERVICE-INSTANCE-TO-MACHINE-MAPPING>
+                      <!-- CMApp10DiagRoutineProvidedServiceInstanceToEcu2Machine -->
+                      <SHORT-NAME>CMApp10DiagRoutineProvidedServiceInstanceToEcu1Machine</SHORT-NAME>
+                      <COMMUNICATION-CONNECTOR-REF DEST="ETHERNET-COMMUNICATION-CONNECTOR">/apd/MachineDesigns/testSuiteEcu1WRSOMEIPMachineDesign/CommunicationWRSOMEIPConnector1</COMMUNICATION-CONNECTOR-REF>
+                      <SERVICE-INSTANCE-REFS>
+                        <SERVICE-INSTANCE-REF DEST="PROVIDED-SOMEIP-SERVICE-INSTANCE">/apd/Machines/testSuiteEcu1WRSOMEIPMachine/ServiceInstances/ST_CMApp10DiagRoutineProvidedSomeipServiceInstance</SERVICE-INSTANCE-REF>
+                      </SERVICE-INSTANCE-REFS>
+                      <UDP-PORT-REF DEST="AP-APPLICATION-ENDPOINT">/apd/MachineDesigns/testSuiteEcu1WRSOMEIPMachineDesign/CommunicationWRSOMEIPConnector1/ST_CMApp10DiagRoutineApplicationEndpoint</UDP-PORT-REF>
+                    </SOMEIP-SERVICE-INSTANCE-TO-MACHINE-MAPPING>
+                  </ELEMENTS>
+                </AR-PACKAGE>
+                <AR-PACKAGE>
+                  <!-- ServiceInstances -->
+                  <SHORT-NAME>ServiceInstances</SHORT-NAME>
+                  <ELEMENTS>
+                    <REQUIRED-SOMEIP-SERVICE-INSTANCE>
+                      <SHORT-NAME>ST_CMApp10CMService5RequiredSomeipServiceInstance</SHORT-NAME>
+                      <SERVICE-INTERFACE-DEPLOYMENT-REF DEST="SOMEIP-SERVICE-INTERFACE-DEPLOYMENT">/apd/ServiceInterfaceDeployments/CMService5_Someip</SERVICE-INTERFACE-DEPLOYMENT-REF>
+                      <REQUIRED-SERVICE-INSTANCE-ID>25</REQUIRED-SERVICE-INSTANCE-ID>
+                      <SD-CLIENT-CONFIG-REF DEST="SOMEIP-SD-CLIENT-SERVICE-INSTANCE-CONFIG">/apd/SomeipSdTimingConfigs/SomeipSdClientServiceInstanceConfig</SD-CLIENT-CONFIG-REF>
+                    </REQUIRED-SOMEIP-SERVICE-INSTANCE>
+                    <PROVIDED-SOMEIP-SERVICE-INSTANCE>
+                      <SHORT-NAME>ST_CMApp10DiagDataIdentifierProvidedSomeipServiceInstance</SHORT-NAME>
+                      <SERVICE-INTERFACE-DEPLOYMENT-REF DEST="SOMEIP-SERVICE-INTERFACE-DEPLOYMENT">/apd/ServiceInterfaceDeployments/DataIdentifier_Someip</SERVICE-INTERFACE-DEPLOYMENT-REF>
+                      <SD-SERVER-CONFIG-REF DEST="SOMEIP-SD-SERVER-SERVICE-INSTANCE-CONFIG">/apd/SomeipSdTimingConfigs/SomeipSdServerServiceInstanceConfig</SD-SERVER-CONFIG-REF>
+                      <SERVICE-INSTANCE-ID>1003</SERVICE-INSTANCE-ID>
+                    </PROVIDED-SOMEIP-SERVICE-INSTANCE>
+                    <PROVIDED-SOMEIP-SERVICE-INSTANCE>
+                      <!-- ST_CMApp10DiagRoutineProvidedSomeipServiceInstance -->
+                      <SHORT-NAME>ST_CMApp10DiagRoutineProvidedSomeipServiceInstance</SHORT-NAME>
+                      <SERVICE-INTERFACE-DEPLOYMENT-REF DEST="SOMEIP-SERVICE-INTERFACE-DEPLOYMENT">/apd/ServiceInterfaceDeployments/RoutineService_Someip</SERVICE-INTERFACE-DEPLOYMENT-REF>
+                      <SD-SERVER-CONFIG-REF DEST="SOMEIP-SD-SERVER-SERVICE-INSTANCE-CONFIG">/apd/SomeipSdTimingConfigs/SomeipSdServerServiceInstanceConfig</SD-SERVER-CONFIG-REF>
+                      <SERVICE-INSTANCE-ID>1731</SERVICE-INSTANCE-ID>
+                    </PROVIDED-SOMEIP-SERVICE-INSTANCE>
+                  </ELEMENTS>
+                </AR-PACKAGE>
+              </AR-PACKAGES>
+            </AR-PACKAGE>
+          </AR-PACKAGES>
+        </AR-PACKAGE>
+      </AR-PACKAGES>
+    </AR-PACKAGE>
+  </AR-PACKAGES>
+</AUTOSAR>

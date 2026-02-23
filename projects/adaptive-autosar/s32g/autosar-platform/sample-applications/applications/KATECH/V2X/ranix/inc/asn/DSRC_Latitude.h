@@ -1,0 +1,44 @@
+/*
+ * From ASN.1 module "DSRC"
+ */
+
+#ifndef	_DSRC_Latitude_H_
+#define	_DSRC_Latitude_H_
+
+
+#include "asn_application.h"
+
+/* Including external dependencies */
+#include "NativeInteger.h"
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+/* DSRC_Latitude */
+typedef long	 DSRC_Latitude_t;
+
+/* Implementation */
+extern asn_per_constraints_t asn_PER_type_DSRC_Latitude_constr_1;
+extern asn_TYPE_descriptor_t asn_DEF_DSRC_Latitude;
+asn_struct_free_f DSRC_Latitude_free;
+asn_struct_print_f DSRC_Latitude_print;
+asn_constr_check_f DSRC_Latitude_constraint;
+ber_type_decoder_f DSRC_Latitude_decode_ber;
+der_type_encoder_f DSRC_Latitude_encode_der;
+xer_type_decoder_f DSRC_Latitude_decode_xer;
+xer_type_encoder_f DSRC_Latitude_encode_xer;
+jer_type_encoder_f DSRC_Latitude_encode_jer;
+oer_type_decoder_f DSRC_Latitude_decode_oer;
+oer_type_encoder_f DSRC_Latitude_encode_oer;
+per_type_decoder_f DSRC_Latitude_decode_uper;
+per_type_encoder_f DSRC_Latitude_encode_uper;
+per_type_decoder_f DSRC_Latitude_decode_aper;
+per_type_encoder_f DSRC_Latitude_encode_aper;
+
+#ifdef __cplusplus
+}
+#endif
+
+#endif	/* _DSRC_Latitude_H_ */
+#include "asn_internal.h"

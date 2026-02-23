@@ -1,0 +1,48 @@
+{
+    "Configurations":
+    [
+        {
+            "Identifier": "OTA_REST_CLIENT_HAWKBIT",
+            "Type": "client",
+            "BindingId": "21"
+        },
+        {
+            "Identifier": "OTA_REST_CLIENT_UPDATE_CLIENT",
+            "Type": "client",
+            "BindingId": "22"
+        }
+    ],
+    "Bindings":
+    [
+        {
+            "Identifier": "21",
+            "Type": "client",
+            "TransportProtocol": "http",
+            "Authorization":
+            {
+                "Address": "127.0.0.1",
+                "Port": 5000
+            },
+            "Proxy":
+            {
+                "Address": "127.0.0.1",
+                "Port": 7000
+            }
+        },
+        {
+            "Identifier": "22",
+            "Type": "client",
+            "TransportProtocol": "http",
+            "Authorization":
+            {
+                "Address": "192.168.7.37",
+                "Port": 9876
+            },
+            "Proxy":
+            {
+                "Address": "127.0.0.1",
+                "Port": 7000
+            }
+        }
+    ]
+}

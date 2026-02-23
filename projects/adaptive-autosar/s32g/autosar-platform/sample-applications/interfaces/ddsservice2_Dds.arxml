@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<AUTOSAR xmlns="http://autosar.org/schema/r4.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://autosar.org/schema/r4.0 AUTOSAR_00052.xsd">
+  <AR-PACKAGES>
+    <AR-PACKAGE>
+      <SHORT-NAME>apd</SHORT-NAME>
+      <AR-PACKAGES>
+        <AR-PACKAGE>
+          <SHORT-NAME>ServiceInterfaceDeployments</SHORT-NAME>
+          <ELEMENTS>
+            <DDS-SERVICE-INTERFACE-DEPLOYMENT>
+              <SHORT-NAME>DDSService2_Dds</SHORT-NAME>
+              <EVENT-DEPLOYMENTS>
+                <DDS-EVENT-DEPLOYMENT>
+                  <SHORT-NAME>DdsEventC</SHORT-NAME>
+                  <EVENT-REF DEST="VARIABLE-DATA-PROTOTYPE">/apd/ServiceInterfaces/ddsservice2/EventC</EVENT-REF>
+                  <TOPIC-NAME>DdsTopicEventC</TOPIC-NAME>
+                  <TRANSPORT-PROTOCOLS>
+                    <TRANSPORT-PROTOCOL>UDP</TRANSPORT-PROTOCOL>
+                  </TRANSPORT-PROTOCOLS>
+                </DDS-EVENT-DEPLOYMENT>
+              </EVENT-DEPLOYMENTS>
+              <SERVICE-INTERFACE-REF DEST="SERVICE-INTERFACE">/apd/ServiceInterfaces/ddsservice2</SERVICE-INTERFACE-REF>
+              <SERVICE-INTERFACE-ID>ddsservice2</SERVICE-INTERFACE-ID>
+              <TRANSPORT-PROTOCOLS>
+                <TRANSPORT-PROTOCOL>UDP</TRANSPORT-PROTOCOL>
+              </TRANSPORT-PROTOCOLS>
+            </DDS-SERVICE-INTERFACE-DEPLOYMENT>
+          </ELEMENTS>
+        </AR-PACKAGE>
+      </AR-PACKAGES>
+    </AR-PACKAGE>
+  </AR-PACKAGES>
+</AUTOSAR>

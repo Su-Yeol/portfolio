@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<AUTOSAR xmlns="http://autosar.org/schema/r4.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://autosar.org/schema/r4.0 AUTOSAR_00052.xsd">
+    <AR-PACKAGES>
+        <AR-PACKAGE>
+            <SHORT-NAME>katech</SHORT-NAME>
+            <AR-PACKAGES>
+                <AR-PACKAGE>
+                    <SHORT-NAME>deployment</SHORT-NAME>
+                    <ELEMENTS>
+                        <SOMEIP-SERVICE-INTERFACE-DEPLOYMENT UUID="1935d3b7-f8a1-4f3c-95f0-b13e41ee9106">
+                            <SHORT-NAME>someip_local_map</SHORT-NAME>
+                            <EVENT-DEPLOYMENTS>
+                                <SOMEIP-EVENT-DEPLOYMENT>
+                                    <SHORT-NAME>SomeipEventlocalMap</SHORT-NAME>
+                                    <EVENT-REF DEST="VARIABLE-DATA-PROTOTYPE">/katech/local_map/localMapEvent</EVENT-REF>
+                                    <EVENT-ID>1</EVENT-ID>
+                                    <TRANSPORT-PROTOCOL>UDP</TRANSPORT-PROTOCOL>
+                                </SOMEIP-EVENT-DEPLOYMENT>
+                            </EVENT-DEPLOYMENTS>
+                            <FIELD-DEPLOYMENTS>
+                                <SOMEIP-FIELD-DEPLOYMENT>
+                                    <SHORT-NAME>ServiceFlag_SomeIp</SHORT-NAME>
+                                    <FIELD-REF DEST="FIELD">/katech/local_map/ServiceFlag</FIELD-REF>
+                                    <GET>
+                                        <SHORT-NAME>getter</SHORT-NAME>
+                                        <METHOD-ID>3007</METHOD-ID>
+                                        <TRANSPORT-PROTOCOL>UDP</TRANSPORT-PROTOCOL>
+                                    </GET>
+                                    <NOTIFIER>
+                                        <SHORT-NAME>notifier</SHORT-NAME>
+                                        <EVENT-ID>3008</EVENT-ID>
+                                        <TRANSPORT-PROTOCOL>UDP</TRANSPORT-PROTOCOL>
+                                    </NOTIFIER>
+                                    <SET>
+                                        <SHORT-NAME>setter</SHORT-NAME>
+                                        <METHOD-ID>3009</METHOD-ID>
+                                        <TRANSPORT-PROTOCOL>UDP</TRANSPORT-PROTOCOL>
+                                    </SET>
+                                </SOMEIP-FIELD-DEPLOYMENT>
+                            </FIELD-DEPLOYMENTS>
+                            <METHOD-DEPLOYMENTS>
+                                <SOMEIP-METHOD-DEPLOYMENT>
+                                    <SHORT-NAME>GetMapDataSomeipMethod</SHORT-NAME>
+                                    <METHOD-REF DEST="CLIENT-SERVER-OPERATION">/katech/local_map/GetMapData</METHOD-REF>
+                                    <METHOD-ID>32000</METHOD-ID>
+                                    <TRANSPORT-PROTOCOL>UDP</TRANSPORT-PROTOCOL>
+                                </SOMEIP-METHOD-DEPLOYMENT>
+                            </METHOD-DEPLOYMENTS>
+                            <SERVICE-INTERFACE-REF DEST="SERVICE-INTERFACE">/katech/local_map</SERVICE-INTERFACE-REF>
+                            <EVENT-GROUPS>
+                                <SOMEIP-EVENT-GROUP>
+                                    <SHORT-NAME>SomeipEventgroup1</SHORT-NAME>
+                                    <EVENT-GROUP-ID>1</EVENT-GROUP-ID>
+                                    <EVENT-REFS>
+                                        <EVENT-REF DEST="SOMEIP-EVENT-DEPLOYMENT">/katech/deployment/someip_local_map/SomeipEventlocalMap</EVENT-REF>
+                                    </EVENT-REFS>
+                                </SOMEIP-EVENT-GROUP>
+                                <SOMEIP-EVENT-GROUP>
+                                    <SHORT-NAME>SomeipEventgroup2</SHORT-NAME>
+                                    <EVENT-GROUP-ID>2</EVENT-GROUP-ID>
+                                    <EVENT-REFS>
+                                        <EVENT-REF DEST="SOMEIP-EVENT-DEPLOYMENT">/katech/deployment/someip_local_map/ServiceFlag_SomeIp/notifier</EVENT-REF>
+                                    </EVENT-REFS>
+                                </SOMEIP-EVENT-GROUP>
+                            </EVENT-GROUPS>
+                            <SERVICE-INTERFACE-ID>8001</SERVICE-INTERFACE-ID>
+                            <SERVICE-INTERFACE-VERSION>
+                                <MAJOR-VERSION>1</MAJOR-VERSION>
+                                <MINOR-VERSION>0</MINOR-VERSION>
+                            </SERVICE-INTERFACE-VERSION>
+                        </SOMEIP-SERVICE-INTERFACE-DEPLOYMENT>
+                    </ELEMENTS>
+                </AR-PACKAGE>
+            </AR-PACKAGES>
+        </AR-PACKAGE>
+    </AR-PACKAGES>
+</AUTOSAR>

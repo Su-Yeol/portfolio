@@ -1,0 +1,59 @@
+_smtool_completions()
+{
+    local cur prev
+    MACHINE_CONFIG="/tmp/apd/etc/system/machine_manifest.json"
+    COMPREPLY=()
+    cur="${COMP_WORDS[COMP_CWORD]}"
+    prev="${COMP_WORDS[COMP_CWORD-1]}"
+    case $prev in
+        smtool)
+            COMPREPLY=($(compgen -W "setstate getstate getfgs setfgs" $cur))
+            return
+            ;;
+        getfgs)
+            COMPREPLY=($(compgen -W "-v"))
+            return
+            ;;
+        setstate)
+            MODES=$(jq -r .states[].name ${MACHINE_CONFIG} 2> /dev/null)
+            COMPREPLY=($(compgen -W "-g ${MODES}" $cur))
+            return
+            ;;
+        getstate)
+            COMPREPLY=($(compgen -W "-g"))
+            return
+            ;;
+        '-g')
+            FGROUPS=$(jq -r .function_groups[].name ${MACHINE_CONFIG} 2> /dev/null)
+            COMPREPLY=($(compgen -W "${FGROUPS}" $cur))
+            return
+            ;;
+        '-v')
+            COMPREPLY=()
+            return
+            ;;
+    esac
+    if [ ${#COMP_WORDS[@]} -ge 4 ] && \
+        [ ${#COMP_WORDS[@]} -le 5 ] && \
+        [ ${COMP_WORDS[1]} = "setstate" ] && \
+        [ ${COMP_WORDS[2]} == "-g" ]; then
+        FMODES=$(jq ".function_groups[] | select(.name==\"${COMP_WORDS[3]}\").states[].name" ${MACHINE_CONFIG} 2> /dev/null)
+        COMPREPLY=($(compgen -W "${FMODES}" $cur))
+    fi
+}
+
+_execution_manager_completions() {
+    local cur prev words cword
+    _init_completion -n = || return
+    case $cur in 
+        ARA_ROOT=*)
+            cur=${cur#*=}
+            _filedir -d
+            return;;
+    esac
+    COMPREPLY=($(compgen -W "ARA_ROOT" -S '=' -- "$cur"))
+    [[ ${COMPREPLY-} == *= ]] && compopt -o nospace
+}
+
+complete -F _smtool_completions smtool
+complete -F _execution_manager_completions execution-manager

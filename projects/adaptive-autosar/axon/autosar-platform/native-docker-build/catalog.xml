@@ -1,0 +1,5 @@
+<catalog xmlns="urn:oasis:names:tc:entity:xmlns:xml:catalog">
+  <uri
+      name="http://autosar.org/schema/r4.0"
+      uri="/mnt/ara-api/apd/ara-gen/generator/parser/schema/AUTOSAR_00052.xsd" /> 
+</catalog>

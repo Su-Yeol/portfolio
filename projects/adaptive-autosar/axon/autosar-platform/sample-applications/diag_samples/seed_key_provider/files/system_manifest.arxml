@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<AUTOSAR xmlns="http://autosar.org/schema/r4.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://autosar.org/schema/r4.0 AUTOSAR_00052.xsd">
+  <AR-PACKAGES>
+    <!-- Service-specific -->
+    <!-- Instance description -->
+    <AR-PACKAGE>
+      <SHORT-NAME>apd</SHORT-NAME>
+      <AR-PACKAGES>
+        <AR-PACKAGE>
+          <SHORT-NAME>diag</SHORT-NAME>
+          <AR-PACKAGES>
+            <AR-PACKAGE>
+              <SHORT-NAME>timing</SHORT-NAME>
+              <ELEMENTS>
+                <SOMEIP-SD-SERVER-SERVICE-INSTANCE-CONFIG>
+                  <SHORT-NAME>SecurityAccess_SomeipServerServiceInstanceConfig</SHORT-NAME>
+                  <INITIAL-OFFER-BEHAVIOR>
+                    <INITIAL-DELAY-MAX-VALUE>0.1</INITIAL-DELAY-MAX-VALUE>
+                    <INITIAL-DELAY-MIN-VALUE>0.01</INITIAL-DELAY-MIN-VALUE>
+                    <INITIAL-REPETITIONS-BASE-DELAY>0.2</INITIAL-REPETITIONS-BASE-DELAY>
+                    <INITIAL-REPETITIONS-MAX>3</INITIAL-REPETITIONS-MAX>
+                  </INITIAL-OFFER-BEHAVIOR>
+                  <OFFER-CYCLIC-DELAY>2.0</OFFER-CYCLIC-DELAY>
+                  <REQUEST-RESPONSE-DELAY>
+                    <MAX-VALUE>1.5</MAX-VALUE>
+                    <MIN-VALUE>1.5</MIN-VALUE>
+                  </REQUEST-RESPONSE-DELAY>
+                  <SERVICE-OFFER-TIME-TO-LIVE>3</SERVICE-OFFER-TIME-TO-LIVE>
+                </SOMEIP-SD-SERVER-SERVICE-INSTANCE-CONFIG>
+              </ELEMENTS>
+            </AR-PACKAGE>
+            <AR-PACKAGE>
+              <SHORT-NAME>instance</SHORT-NAME>
+              <ELEMENTS>
+                <PROVIDED-SOMEIP-SERVICE-INSTANCE>
+                  <SHORT-NAME>SecurityAccess_SWC1_SecLevel1</SHORT-NAME>
+                  <SERVICE-INTERFACE-DEPLOYMENT-REF DEST="SOMEIP-SERVICE-INTERFACE-DEPLOYMENT">/ara/diag/deployment/SecurityAccess_Someip</SERVICE-INTERFACE-DEPLOYMENT-REF>
+                  <!-- Multicast-related. Should not be needed for local services, but required by current generator -->
+                  <SD-SERVER-CONFIG-REF DEST="SOMEIP-SD-SERVER-SERVICE-INSTANCE-CONFIG">/apd/diag/timing/SecurityAccess_SomeipServerServiceInstanceConfig</SD-SERVER-CONFIG-REF>
+                  <SERVICE-INSTANCE-ID>11</SERVICE-INSTANCE-ID>
+                </PROVIDED-SOMEIP-SERVICE-INSTANCE>
+                <PROVIDED-SOMEIP-SERVICE-INSTANCE>
+                  <SHORT-NAME>SecurityAccess_SWC1_SecLevel2</SHORT-NAME>
+                  <SERVICE-INTERFACE-DEPLOYMENT-REF DEST="SOMEIP-SERVICE-INTERFACE-DEPLOYMENT">/ara/diag/deployment/SecurityAccess_Someip</SERVICE-INTERFACE-DEPLOYMENT-REF>
+                  <!-- Multicast-related. Should not be needed for local services, but required by current generator -->
+                  <SD-SERVER-CONFIG-REF DEST="SOMEIP-SD-SERVER-SERVICE-INSTANCE-CONFIG">/apd/diag/timing/SecurityAccess_SomeipServerServiceInstanceConfig</SD-SERVER-CONFIG-REF>
+                  <SERVICE-INSTANCE-ID>12</SERVICE-INSTANCE-ID>
+                </PROVIDED-SOMEIP-SERVICE-INSTANCE>
+              </ELEMENTS>
+            </AR-PACKAGE>
+            <AR-PACKAGE>
+              <!-- Instance mapping (to network interface and p-port) -->
+              <SHORT-NAME>mapping</SHORT-NAME>
+              <ELEMENTS>
+                <!-- To network interface / network port -->
+                <!-- SoftwareCluster#1 DiagnosticSecurityLevel#1 -->
+                <SOMEIP-SERVICE-INSTANCE-TO-MACHINE-MAPPING>
+                  <SHORT-NAME>seedKey_toMachine11</SHORT-NAME>
+                  <COMMUNICATION-CONNECTOR-REF DEST="ETHERNET-COMMUNICATION-CONNECTOR">/ara/diag/applications/dmMachineDesign/myCommunicationConnector</COMMUNICATION-CONNECTOR-REF>
+                  <SERVICE-INSTANCE-REFS>
+                    <SERVICE-INSTANCE-REF DEST="PROVIDED-SOMEIP-SERVICE-INSTANCE">/apd/diag/instance/SecurityAccess_SWC1_SecLevel1</SERVICE-INSTANCE-REF>
+                  </SERVICE-INSTANCE-REFS>
+                  <!-- 0x27 = 39, instance 01 (UDP-PORT3901) -->
+                </SOMEIP-SERVICE-INSTANCE-TO-MACHINE-MAPPING>
+                <!-- SoftwareCluster#1 DiagnosticSecurityLevel#2 -->
+                <SOMEIP-SERVICE-INSTANCE-TO-MACHINE-MAPPING>
+                  <SHORT-NAME>seedKey_toMachine12</SHORT-NAME>
+                  <COMMUNICATION-CONNECTOR-REF DEST="ETHERNET-COMMUNICATION-CONNECTOR">/ara/diag/applications/dmMachineDesign/myCommunicationConnector</COMMUNICATION-CONNECTOR-REF>
+                  <SERVICE-INSTANCE-REFS>
+                    <SERVICE-INSTANCE-REF DEST="PROVIDED-SOMEIP-SERVICE-INSTANCE">/apd/diag/instance/SecurityAccess_SWC1_SecLevel2</SERVICE-INSTANCE-REF>
+                  </SERVICE-INSTANCE-REFS>
+                  <!-- 0x27 = 39, instance 02 (UDP-PORT 3902) -->
+                </SOMEIP-SERVICE-INSTANCE-TO-MACHINE-MAPPING>
+                <!-- Instance mapping (to p-port) -->
+                <SERVICE-INSTANCE-TO-PORT-PROTOTYPE-MAPPING>
+                  <SHORT-NAME>seedKey1_toPort</SHORT-NAME>
+                  <PORT-PROTOTYPE-IREF>
+                    <TARGET-PORT-PROTOTYPE-REF DEST="P-PORT-PROTOTYPE">/apd/diag/SeedKeyProvider/port</TARGET-PORT-PROTOTYPE-REF>
+                  </PORT-PROTOTYPE-IREF>
+                  <PROCESS-REF DEST="PROCESS">/apd/diag/SeedKey_instance</PROCESS-REF>
+                  <SERVICE-INSTANCE-REF DEST="PROVIDED-SOMEIP-SERVICE-INSTANCE">/apd/diag/instance/SecurityAccess_SWC1_SecLevel1</SERVICE-INSTANCE-REF>
+                </SERVICE-INSTANCE-TO-PORT-PROTOTYPE-MAPPING>
+                <SERVICE-INSTANCE-TO-PORT-PROTOTYPE-MAPPING>
+                  <SHORT-NAME>seedKey2_toPort</SHORT-NAME>
+                  <PORT-PROTOTYPE-IREF>
+                    <TARGET-PORT-PROTOTYPE-REF DEST="P-PORT-PROTOTYPE">/apd/diag/SeedKeyProvider/port</TARGET-PORT-PROTOTYPE-REF>
+                  </PORT-PROTOTYPE-IREF>
+                  <PROCESS-REF DEST="PROCESS">/apd/diag/SeedKey_instance</PROCESS-REF>
+                  <SERVICE-INSTANCE-REF DEST="PROVIDED-SOMEIP-SERVICE-INSTANCE">/apd/diag/instance/SecurityAccess_SWC1_SecLevel2</SERVICE-INSTANCE-REF>
+                </SERVICE-INSTANCE-TO-PORT-PROTOTYPE-MAPPING>
+              </ELEMENTS>
+            </AR-PACKAGE>
+          </AR-PACKAGES>
+        </AR-PACKAGE>
+      </AR-PACKAGES>
+    </AR-PACKAGE>
+  </AR-PACKAGES>
+</AUTOSAR>

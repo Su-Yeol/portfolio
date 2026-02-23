@@ -1,0 +1,6 @@
+struct Message {
+    long id;
+    string contents;
+};
+#pragma DCPS_DATA_TYPE "Message"
+#pragma DCPS_DATA_KEY "Message id"

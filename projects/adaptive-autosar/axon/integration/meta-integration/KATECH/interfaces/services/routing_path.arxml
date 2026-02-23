@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<AUTOSAR xmlns="http://autosar.org/schema/r4.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://autosar.org/schema/r4.0 AUTOSAR_00052.xsd">
+    <AR-PACKAGES>
+        <AR-PACKAGE>
+            <SHORT-NAME>katech</SHORT-NAME>
+            <ELEMENTS>        
+                <SERVICE-INTERFACE>
+                    <SHORT-NAME>routing_path</SHORT-NAME>
+                    <NAMESPACES>
+                        <SYMBOL-PROPS>
+                            <SHORT-NAME>katech</SHORT-NAME>
+                            <SYMBOL>katech</SYMBOL>
+                        </SYMBOL-PROPS>
+                    </NAMESPACES>
+                    <EVENTS>
+                        <VARIABLE-DATA-PROTOTYPE>
+                            <SHORT-NAME>routingPathEvent</SHORT-NAME>
+                            <TYPE-TREF DEST="STD-CPP-IMPLEMENTATION-DATA-TYPE">/katech/events/routing_path_Objects</TYPE-TREF>
+                        </VARIABLE-DATA-PROTOTYPE>
+                    </EVENTS>
+                </SERVICE-INTERFACE>
+            </ELEMENTS>
+            <AR-PACKAGES>
+                <AR-PACKAGE>
+                    <SHORT-NAME>events</SHORT-NAME>
+                    <ELEMENTS>
+                        <STD-CPP-IMPLEMENTATION-DATA-TYPE>
+                            <SHORT-NAME>routing_path_Objects</SHORT-NAME>
+                            <CATEGORY>STRUCTURE</CATEGORY>
+                            <NAMESPACES>
+                                <SYMBOL-PROPS>
+                                    <SHORT-NAME>katech</SHORT-NAME>
+                                    <SYMBOL>katech</SYMBOL>
+                                </SYMBOL-PROPS>
+                            </NAMESPACES>
+                            <SUB-ELEMENTS>
+                                <CPP-IMPLEMENTATION-DATA-TYPE-ELEMENT>
+                                    <SHORT-NAME>Roadsegment</SHORT-NAME>
+                                    <TYPE-REFERENCE>
+                                        <INPLACE>false</INPLACE>
+                                        <TYPE-REFERENCE-REF DEST="STD-CPP-IMPLEMENTATION-DATA-TYPE">/katech/events/structure_Roadsegment</TYPE-REFERENCE-REF>
+                                    </TYPE-REFERENCE>
+                                </CPP-IMPLEMENTATION-DATA-TYPE-ELEMENT>
+                                <CPP-IMPLEMENTATION-DATA-TYPE-ELEMENT>
+                                    <SHORT-NAME>Distance</SHORT-NAME>
+                                    <TYPE-REFERENCE>
+                                        <INPLACE>false</INPLACE>
+                                        <TYPE-REFERENCE-REF DEST="STD-CPP-IMPLEMENTATION-DATA-TYPE">/AUTOSAR/StdTypes/double</TYPE-REFERENCE-REF>
+                                    </TYPE-REFERENCE>
+                                </CPP-IMPLEMENTATION-DATA-TYPE-ELEMENT>
+                                <CPP-IMPLEMENTATION-DATA-TYPE-ELEMENT>
+                                    <SHORT-NAME>Map_version</SHORT-NAME>
+                                    <TYPE-REFERENCE>
+                                        <INPLACE>false</INPLACE>
+                                        <TYPE-REFERENCE-REF DEST="STD-CPP-IMPLEMENTATION-DATA-TYPE">/katech/events/vector_byte</TYPE-REFERENCE-REF>
+                                    </TYPE-REFERENCE>
+                                </CPP-IMPLEMENTATION-DATA-TYPE-ELEMENT>
+                            </SUB-ELEMENTS>
+                            <TYPE-EMITTER>TYPE_EMITTER_ARA</TYPE-EMITTER>
+                        </STD-CPP-IMPLEMENTATION-DATA-TYPE>
+                        <STD-CPP-IMPLEMENTATION-DATA-TYPE>
+                            <SHORT-NAME>structure_Roadsegment</SHORT-NAME>
+                            <CATEGORY>STRUCTURE</CATEGORY>
+                            <NAMESPACES>
+                                <SYMBOL-PROPS>
+                                    <SHORT-NAME>katech</SHORT-NAME>
+                                    <SYMBOL>katech</SYMBOL>
+                                </SYMBOL-PROPS>
+                            </NAMESPACES>
+                            <SUB-ELEMENTS>
+                                <CPP-IMPLEMENTATION-DATA-TYPE-ELEMENT>
+                                    <SHORT-NAME>ID</SHORT-NAME>
+                                    <TYPE-REFERENCE>
+                                        <INPLACE>false</INPLACE>
+                                        <TYPE-REFERENCE-REF DEST="STD-CPP-IMPLEMENTATION-DATA-TYPE">/katech/CppImplementationDataTypes/String</TYPE-REFERENCE-REF>
+                                    </TYPE-REFERENCE>
+                                </CPP-IMPLEMENTATION-DATA-TYPE-ELEMENT>
+
+                                <CPP-IMPLEMENTATION-DATA-TYPE-ELEMENT>
+                                    <SHORT-NAME>Passage</SHORT-NAME>
+                                    <TYPE-REFERENCE>
+                                        <INPLACE>false</INPLACE>
+                                        <TYPE-REFERENCE-REF DEST="STD-CPP-IMPLEMENTATION-DATA-TYPE">/katech/events/structure_Passage</TYPE-REFERENCE-REF>
+                                    </TYPE-REFERENCE>
+                                </CPP-IMPLEMENTATION-DATA-TYPE-ELEMENT>
+
+                            </SUB-ELEMENTS>
+                            <TYPE-EMITTER>TYPE_EMITTER_ARA</TYPE-EMITTER>
+                        </STD-CPP-IMPLEMENTATION-DATA-TYPE>
+                        <STD-CPP-IMPLEMENTATION-DATA-TYPE>
+                            <SHORT-NAME>structure_Passage</SHORT-NAME>
+                            <CATEGORY>STRUCTURE</CATEGORY>
+                            <NAMESPACES>
+                                <SYMBOL-PROPS>
+                                    <SHORT-NAME>katech</SHORT-NAME>
+                                    <SYMBOL>katech</SYMBOL>
+                                </SYMBOL-PROPS>
+                            </NAMESPACES>
+                            <SUB-ELEMENTS>
+                                <CPP-IMPLEMENTATION-DATA-TYPE-ELEMENT>
+                                    <SHORT-NAME>LaneSegment</SHORT-NAME>
+                                    <TYPE-REFERENCE>
+                                        <INPLACE>false</INPLACE>
+                                        <TYPE-REFERENCE-REF DEST="STD-CPP-IMPLEMENTATION-DATA-TYPE">/katech/events/structure_LaneSegment</TYPE-REFERENCE-REF>
+                                    </TYPE-REFERENCE>
+                                </CPP-IMPLEMENTATION-DATA-TYPE-ELEMENT>
+
+                                <CPP-IMPLEMENTATION-DATA-TYPE-ELEMENT>
+                                    <SHORT-NAME>ChangeLaneType</SHORT-NAME>
+                                    <TYPE-REFERENCE>
+                                        <INPLACE>false</INPLACE>
+                                        <TYPE-REFERENCE-REF DEST="STD-CPP-IMPLEMENTATION-DATA-TYPE">/AUTOSAR/StdTypes/int16_t</TYPE-REFERENCE-REF>
+                                    </TYPE-REFERENCE>
+                                </CPP-IMPLEMENTATION-DATA-TYPE-ELEMENT>
+
+                                <CPP-IMPLEMENTATION-DATA-TYPE-ELEMENT>
+                                    <SHORT-NAME>CanExit</SHORT-NAME>
+                                    <TYPE-REFERENCE>
+                                        <INPLACE>false</INPLACE>
+                                        <TYPE-REFERENCE-REF DEST="STD-CPP-IMPLEMENTATION-DATA-TYPE">/AUTOSAR/StdTypes/bool</TYPE-REFERENCE-REF>
+                                    </TYPE-REFERENCE>
+                                </CPP-IMPLEMENTATION-DATA-TYPE-ELEMENT>
+
+                            </SUB-ELEMENTS>
+                            <TYPE-EMITTER>TYPE_EMITTER_ARA</TYPE-EMITTER>
+                        </STD-CPP-IMPLEMENTATION-DATA-TYPE>
+                        <STD-CPP-IMPLEMENTATION-DATA-TYPE>
+                            <SHORT-NAME>structure_LaneSegment</SHORT-NAME>
+                            <CATEGORY>STRUCTURE</CATEGORY>
+                            <NAMESPACES>
+                                <SYMBOL-PROPS>
+                                    <SHORT-NAME>katech</SHORT-NAME>
+                                    <SYMBOL>katech</SYMBOL>
+                                </SYMBOL-PROPS>
+                            </NAMESPACES>
+                            <SUB-ELEMENTS>
+                                <CPP-IMPLEMENTATION-DATA-TYPE-ELEMENT>
+                                    <SHORT-NAME>Id</SHORT-NAME>
+                                    <TYPE-REFERENCE>
+                                        <INPLACE>false</INPLACE>
+                                        <TYPE-REFERENCE-REF DEST="STD-CPP-IMPLEMENTATION-DATA-TYPE">/katech/CppImplementationDataTypes/String</TYPE-REFERENCE-REF>
+                                    </TYPE-REFERENCE>
+                                </CPP-IMPLEMENTATION-DATA-TYPE-ELEMENT>
+
+                                <CPP-IMPLEMENTATION-DATA-TYPE-ELEMENT>
+                                    <SHORT-NAME>Start_s</SHORT-NAME>
+                                    <TYPE-REFERENCE>
+                                        <INPLACE>false</INPLACE>
+                                        <TYPE-REFERENCE-REF DEST="STD-CPP-IMPLEMENTATION-DATA-TYPE">/AUTOSAR/StdTypes/double</TYPE-REFERENCE-REF>
+                                    </TYPE-REFERENCE>
+                                </CPP-IMPLEMENTATION-DATA-TYPE-ELEMENT>
+
+                                <CPP-IMPLEMENTATION-DATA-TYPE-ELEMENT>
+                                    <SHORT-NAME>End_s</SHORT-NAME>
+                                    <TYPE-REFERENCE>
+                                        <INPLACE>false</INPLACE>
+                                        <TYPE-REFERENCE-REF DEST="STD-CPP-IMPLEMENTATION-DATA-TYPE">/AUTOSAR/StdTypes/double</TYPE-REFERENCE-REF>
+                                    </TYPE-REFERENCE>
+                                </CPP-IMPLEMENTATION-DATA-TYPE-ELEMENT>
+
+                            </SUB-ELEMENTS>
+                            <TYPE-EMITTER>TYPE_EMITTER_ARA</TYPE-EMITTER>
+                        </STD-CPP-IMPLEMENTATION-DATA-TYPE>
+                        <STD-CPP-IMPLEMENTATION-DATA-TYPE>
+                            <SHORT-NAME>vector_byte</SHORT-NAME>
+                            <CATEGORY>VECTOR</CATEGORY>
+                            <TEMPLATE-ARGUMENTS>
+                                <CPP-TEMPLATE-ARGUMENT>
+                                    <TEMPLATE-TYPE-REF DEST="STD-CPP-IMPLEMENTATION-DATA-TYPE">/AUTOSAR/StdTypes/uint8_t</TEMPLATE-TYPE-REF>
+                                </CPP-TEMPLATE-ARGUMENT>
+                            </TEMPLATE-ARGUMENTS>
+                            <TYPE-EMITTER>TYPE_EMITTER_ARA</TYPE-EMITTER>
+                        </STD-CPP-IMPLEMENTATION-DATA-TYPE>
+                    </ELEMENTS>
+                </AR-PACKAGE>
+            </AR-PACKAGES>
+        </AR-PACKAGE>
+    </AR-PACKAGES>
+</AUTOSAR>

@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<AUTOSAR xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://autosar.org/schema/r4.0" xsi:schemaLocation="http://autosar.org/schema/r4.0 AUTOSAR_00052.xsd">
+  <AR-PACKAGES>
+    <AR-PACKAGE>
+      <SHORT-NAME>apd</SHORT-NAME>
+      <AR-PACKAGES>
+        <AR-PACKAGE>
+          <SHORT-NAME>Machines</SHORT-NAME>
+          <AR-PACKAGES>
+            <AR-PACKAGE>
+              <SHORT-NAME>RadarFusionWRSOMEIPMachine</SHORT-NAME>
+              <AR-PACKAGES>
+                <AR-PACKAGE>
+                  <SHORT-NAME>ProcessToMachineMappings</SHORT-NAME>
+                  <ELEMENTS>
+                    <PROCESS-TO-MACHINE-MAPPING-SET>
+                      <SHORT-NAME>RES_TraceIntegrationTest</SHORT-NAME>
+                      <PROCESS-TO-MACHINE-MAPPINGS>
+                        <PROCESS-TO-MACHINE-MAPPING>
+                          <SHORT-NAME>RES_TraceIntegrationTest</SHORT-NAME>
+                          <MACHINE-REF DEST="MACHINE">/apd/Machines/RadarFusionWRSOMEIPMachine/RadarFusionWRSOMEIPMachine</MACHINE-REF>
+                          <PROCESS-REF DEST="PROCESS">/apd/Machines/RadarFusionWRSOMEIPMachine/Processes/RES_TraceIntegrationTest</PROCESS-REF>
+                        </PROCESS-TO-MACHINE-MAPPING>
+                      </PROCESS-TO-MACHINE-MAPPINGS>
+                    </PROCESS-TO-MACHINE-MAPPING-SET>
+                  </ELEMENTS>
+                </AR-PACKAGE>
+                <AR-PACKAGE>
+                  <SHORT-NAME>DltLogChannelToProcessMappings</SHORT-NAME>
+                  <ELEMENTS>
+                    <DLT-APPLICATION-TO-PROCESS-MAPPING>
+                      <SHORT-NAME>RES_TraceIntegrationTestDltApplicationToProcessMapping</SHORT-NAME>
+                      <DLT-APPLICATION-REF DEST="DLT-APPLICATION">/apd/Machines/RadarFusionWRSOMEIPMachine/dlt/RadarFusionWRSOMEIPMachineDltEcu/RES_TraceIntegrationTest</DLT-APPLICATION-REF>
+                      <PROCESS-REF DEST="PROCESS">/apd/Machines/RadarFusionWRSOMEIPMachine/Processes/RES_TraceIntegrationTest</PROCESS-REF>
+                    </DLT-APPLICATION-TO-PROCESS-MAPPING>
+                    <DLT-LOG-SINK-TO-PORT-PROTOTYPE-MAPPING>
+                      <SHORT-NAME>RES_TraceIntegrationTestDltLogSinkToPortPrototypeMapping</SHORT-NAME>
+                      <DLT-CONTEXT-REF DEST="DLT-CONTEXT">/apd/Dlt/DefaultDltContext</DLT-CONTEXT-REF>
+                      <DLT-LOG-SINK-REFS>
+                        <DLT-LOG-SINK-REF DEST="DLT-LOG-SINK">/apd/Machines/RadarFusionWRSOMEIPMachine/dlt/ConsoleDltSink</DLT-LOG-SINK-REF>
+                        <DLT-LOG-SINK-REF DEST="DLT-LOG-SINK">/apd/Dlt/RemoteDltSink</DLT-LOG-SINK-REF>
+                        <DLT-LOG-SINK-REF DEST="DLT-LOG-SINK">/apd/Dlt/RES_TraceIntegrationTestFileDltSink</DLT-LOG-SINK-REF>
+                      </DLT-LOG-SINK-REFS>
+                      <PROCESS-REF DEST="PROCESS">/apd/Machines/RadarFusionWRSOMEIPMachine/Processes/RES_TraceIntegrationTest</PROCESS-REF>
+                    </DLT-LOG-SINK-TO-PORT-PROTOTYPE-MAPPING>
+                  </ELEMENTS>
+                </AR-PACKAGE>
+                <AR-PACKAGE>
+                  <SHORT-NAME>Processes</SHORT-NAME>
+                  <ELEMENTS>
+                    <PROCESS>
+                      <SHORT-NAME>RES_TraceIntegrationTest</SHORT-NAME>
+                      <DESIGN-REF DEST="PROCESS-DESIGN">/apd/Machines/RadarFusionWRSOMEIPMachine/ProcessDesigns/RES_TraceIntegrationTest</DESIGN-REF>
+                      <EXECUTABLE-REFS>
+                        <EXECUTABLE-REF DEST="EXECUTABLE">/apd/Executables/RES_TraceIntegrationTest</EXECUTABLE-REF>
+                      </EXECUTABLE-REFS>
+                      <PROCESS-STATE-MACHINE>
+                        <SHORT-NAME>state_machine</SHORT-NAME>
+                        <TYPE-TREF DEST="MODE-DECLARATION-GROUP">/apd/ModeDeclarationGroups/ProcessStateMachine</TYPE-TREF>
+                      </PROCESS-STATE-MACHINE>
+                      <STATE-DEPENDENT-STARTUP-CONFIGS>
+                        <STATE-DEPENDENT-STARTUP-CONFIG>
+                          <FUNCTION-GROUP-STATE-IREFS>
+                            <FUNCTION-GROUP-STATE-IREF>
+                              <CONTEXT-MODE-DECLARATION-GROUP-PROTOTYPE-REF DEST="MODE-DECLARATION-GROUP-PROTOTYPE">/apd/Machines/RadarFusionWRSOMEIPMachine/FunctionGroupSets/RadarFusionWRSOMEIPFunctionGroups/MachineFG</CONTEXT-MODE-DECLARATION-GROUP-PROTOTYPE-REF>
+                              <TARGET-MODE-DECLARATION-REF DEST="MODE-DECLARATION">/apd/ModeDeclarationGroups/MachineState/Driving</TARGET-MODE-DECLARATION-REF>
+                            </FUNCTION-GROUP-STATE-IREF>
+                            <FUNCTION-GROUP-STATE-IREF>
+                              <CONTEXT-MODE-DECLARATION-GROUP-PROTOTYPE-REF DEST="MODE-DECLARATION-GROUP-PROTOTYPE">/apd/Machines/RadarFusionWRSOMEIPMachine/FunctionGroupSets/RadarFusionWRSOMEIPFunctionGroups/MachineFG</CONTEXT-MODE-DECLARATION-GROUP-PROTOTYPE-REF>
+                              <TARGET-MODE-DECLARATION-REF DEST="MODE-DECLARATION">/apd/ModeDeclarationGroups/MachineState/Parking</TARGET-MODE-DECLARATION-REF>
+                            </FUNCTION-GROUP-STATE-IREF>
+                          </FUNCTION-GROUP-STATE-IREFS>
+                          <RESOURCE-GROUP-REF DEST="RESOURCE-GROUP">/apd/Machines/RadarFusionWRSOMEIPMachine/RadarFusionWRSOMEIPMachine/Linux/ResourceGroup1</RESOURCE-GROUP-REF>
+                          <STARTUP-CONFIG-REF DEST="STARTUP-CONFIG">/apd/Machines/RadarFusionWRSOMEIPMachine/StartupConfigSets/RES_TraceIntegrationTest</STARTUP-CONFIG-REF>
+                        </STATE-DEPENDENT-STARTUP-CONFIG>
+                      </STATE-DEPENDENT-STARTUP-CONFIGS>
+                    </PROCESS>
+                  </ELEMENTS>
+                </AR-PACKAGE>
+                <AR-PACKAGE>
+                  <SHORT-NAME>ServiceInstanceToPortPrototypeMappings</SHORT-NAME>
+                  <ELEMENTS>
+                    <SERVICE-INSTANCE-TO-PORT-PROTOTYPE-MAPPING>
+                      <SHORT-NAME>TIT_RequiredServiceInstance_toPort</SHORT-NAME>
+                      <PORT-PROTOTYPE-IREF>
+                        <TARGET-PORT-PROTOTYPE-REF DEST="R-PORT-PROTOTYPE">/apd/AdaptiveApplicationSwComponentTypes/TitClientComponent/TitServicePort</TARGET-PORT-PROTOTYPE-REF>
+                      </PORT-PROTOTYPE-IREF>
+                      <PROCESS-REF DEST="PROCESS">/apd/Machines/RadarFusionWRSOMEIPMachine/Processes/RES_TraceIntegrationTest</PROCESS-REF>
+                      <SERVICE-INSTANCE-REF DEST="REQUIRED-SOMEIP-SERVICE-INSTANCE">/apd/Machines/RadarFusionWRSOMEIPMachine/ServiceInstances/TIT_RequiredSomeipServiceInstance</SERVICE-INSTANCE-REF>
+                    </SERVICE-INSTANCE-TO-PORT-PROTOTYPE-MAPPING>
+                  </ELEMENTS>
+                </AR-PACKAGE>
+                <AR-PACKAGE>
+                  <SHORT-NAME>StartupConfigSets</SHORT-NAME>
+                  <ELEMENTS>
+                    <STARTUP-CONFIG>
+                      <SHORT-NAME>RES_TraceIntegrationTest</SHORT-NAME>
+                      <ENVIRONMENT-VARIABLES>
+                        <TAG-WITH-OPTIONAL-VALUE>
+                          <KEY>WRSOMEIP_CONFIG_PATH</KEY>
+                          <VALUE>/etc/wrsomeip.json</VALUE>
+                        </TAG-WITH-OPTIONAL-VALUE>
+                      </ENVIRONMENT-VARIABLES>
+                      <SCHEDULING-POLICY>SCHEDULING-POLICY-ROUND-ROBIN</SCHEDULING-POLICY>
+                      <SCHEDULING-PRIORITY>12</SCHEDULING-PRIORITY>
+                      <TERMINATION-BEHAVIOR>PROCESS-IS-NOT-SELF-TERMINATING</TERMINATION-BEHAVIOR>
+                    </STARTUP-CONFIG>
+                  </ELEMENTS>
+                </AR-PACKAGE>
+              </AR-PACKAGES>
+            </AR-PACKAGE>
+          </AR-PACKAGES>
+        </AR-PACKAGE>
+      </AR-PACKAGES>
+    </AR-PACKAGE>
+  </AR-PACKAGES>
+</AUTOSAR>

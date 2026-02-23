@@ -1,0 +1,51 @@
+## Convention for test builds within the repository (perhaps using the SDK)
+BUILD/
+build/
+# bitbake links
+oe-logs
+oe-workdir
+
+# Python Artifacts
+*.pyc
+__pycache__/
+
+# Eclipse related artifacts
+.settings/
+.project
+.cproject
+.pydevproject
+
+# Visual Studio Code artifacts
+.vscode
+*.code-workspace
+
+# Common compiler artifacts
+*.so
+*.a
+*.o
+*.out
+
+# Common backup filename extensions
+*~
+*.bak
+*.cbk
+
+# Other binary files not typically committed to git
+*.gz
+*.tar
+*.tgz
+*.bz2
+
+# CMake artifacts
+CMakeCache.txt
+CMakeFiles/
+cmake-build-*/
+
+# Test tools
+st_scenarios/test/dlt-daemon/
+st_scenarios/test/googletest/
+
+# Doxygen artifacts
+st_scenarios/doc/doxygen.log
+st_scenarios/doc/out/
+

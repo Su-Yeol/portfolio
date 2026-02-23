@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<AUTOSAR xmlns="http://autosar.org/schema/r4.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://autosar.org/schema/r4.0 AUTOSAR_00052.xsd">
+  <AR-PACKAGES>
+    <AR-PACKAGE>
+      <SHORT-NAME>apd</SHORT-NAME>
+      <AR-PACKAGES>
+        <AR-PACKAGE>
+          <SHORT-NAME>VehiclePackages</SHORT-NAME>
+          <ELEMENTS>
+            <VEHICLE-PACKAGE>
+              <SHORT-NAME>PicarCampaign</SHORT-NAME>
+              <DRIVER-NOTIFICATIONS>
+                <VEHICLE-DRIVER-NOTIFICATION>
+                  <APPROVAL-REQUIRED>true</APPROVAL-REQUIRED>
+                  <NOTIFICATION-STATE>TRANSFER</NOTIFICATION-STATE>
+                </VEHICLE-DRIVER-NOTIFICATION>
+                <VEHICLE-DRIVER-NOTIFICATION>
+                  <APPROVAL-REQUIRED>true</APPROVAL-REQUIRED>
+                  <NOTIFICATION-STATE>PROCESS</NOTIFICATION-STATE>
+                </VEHICLE-DRIVER-NOTIFICATION>
+                <VEHICLE-DRIVER-NOTIFICATION>
+                  <APPROVAL-REQUIRED>false</APPROVAL-REQUIRED>
+                  <NOTIFICATION-STATE>ACTIVATE</NOTIFICATION-STATE>
+                </VEHICLE-DRIVER-NOTIFICATION>
+                <VEHICLE-DRIVER-NOTIFICATION>
+                  <APPROVAL-REQUIRED>false</APPROVAL-REQUIRED>
+                  <NOTIFICATION-STATE>ROLL-BACK</NOTIFICATION-STATE>
+                </VEHICLE-DRIVER-NOTIFICATION>
+                <VEHICLE-DRIVER-NOTIFICATION>
+                  <APPROVAL-REQUIRED>false</APPROVAL-REQUIRED>
+                  <NOTIFICATION-STATE>FINISH</NOTIFICATION-STATE>
+                </VEHICLE-DRIVER-NOTIFICATION>
+              </DRIVER-NOTIFICATIONS>
+              <PACKAGER-SIGNATURE-REF DEST="CRYPTO-SERVICE-CERTIFICATE">/apd/CryptoServiceCertificates/integratorCert</PACKAGER-SIGNATURE-REF>
+              <REPOSITORY>https://autosar.org/apdrepo</REPOSITORY>
+              <ROLLOUT-QUALIFICATIONS>
+                <VEHICLE-ROLLOUT-STEP>
+                  <SHORT-NAME>UltrasonicRolloutStep</SHORT-NAME>
+                  <SAFETY-CONDITIONS>
+                    <SAFETY-CONDITION>AUDIO_ON</SAFETY-CONDITION>
+                  </SAFETY-CONDITIONS>
+                  <UCM-PROCESSINGS>
+                    <UCM-STEP>
+                      <SHORT-NAME>UltrasonicStep</SHORT-NAME>
+                      <SOFTWARE-PACKAGE-STEPS>
+                        <SOFTWARE-PACKAGE-STEP>
+                          <SHORT-NAME>UltrasonicTransfer</SHORT-NAME>
+                          <TRANSFERS>
+                            <SOFTWARE-PACKAGE-STORING>
+                              <STORING>NONE</STORING>
+                              <TRANSFER-REFS>
+                                <TRANSFER-REF DEST="SOFTWARE-PACKAGE">/apd/SoftwarePackages/UltrasonicSensorAppSwpkgInstall</TRANSFER-REF>
+                              </TRANSFER-REFS>
+                            </SOFTWARE-PACKAGE-STORING>
+                          </TRANSFERS>
+                        </SOFTWARE-PACKAGE-STEP>
+                        <SOFTWARE-PACKAGE-STEP>
+                          <SHORT-NAME>UltrasonicProcess</SHORT-NAME>
+                          <PROCESS-REF DEST="SOFTWARE-PACKAGE">/apd/SoftwarePackages/UltrasonicSensorAppSwpkgInstall</PROCESS-REF>
+                          <TRANSFERS>
+                            <SOFTWARE-PACKAGE-STORING>
+                              <STORING>NONE</STORING>
+                            </SOFTWARE-PACKAGE-STORING>
+                          </TRANSFERS>
+                        </SOFTWARE-PACKAGE-STEP>
+                      </SOFTWARE-PACKAGE-STEPS>
+                      <UCM-REF DEST="UCM-DESCRIPTION">/apd/VehiclePackages/PicarCampaign/RadarFusionMachineUCM</UCM-REF>
+                    </UCM-STEP>
+                  </UCM-PROCESSINGS>
+                </VEHICLE-ROLLOUT-STEP>
+                <VEHICLE-ROLLOUT-STEP>
+                  <SHORT-NAME>VEHICLE_ROLLOUT_STEP_2</SHORT-NAME>
+                  <SAFETY-CONDITIONS>
+                    <SAFETY-CONDITION>IGN_OFF</SAFETY-CONDITION>
+                    <SAFETY-CONDITION>CAMERA_ON</SAFETY-CONDITION>
+                  </SAFETY-CONDITIONS>
+                  <UCM-PROCESSINGS>
+                    <UCM-STEP>
+                      <SHORT-NAME>ControllerStep</SHORT-NAME>
+                      <SOFTWARE-PACKAGE-STEPS>
+                        <SOFTWARE-PACKAGE-STEP>
+                          <SHORT-NAME>ControllerTransfer</SHORT-NAME>
+                          <TRANSFERS>
+                            <SOFTWARE-PACKAGE-STORING>
+                              <STORING>NONE</STORING>
+                              <TRANSFER-REFS>
+                                <TRANSFER-REF DEST="SOFTWARE-PACKAGE">/apd/SoftwarePackages/ControllerAppSwpkgUpdate</TRANSFER-REF>
+                              </TRANSFER-REFS>
+                            </SOFTWARE-PACKAGE-STORING>
+                          </TRANSFERS>
+                        </SOFTWARE-PACKAGE-STEP>
+                        <SOFTWARE-PACKAGE-STEP>
+                          <SHORT-NAME>ControllerProcess</SHORT-NAME>
+                          <PROCESS-REF DEST="SOFTWARE-PACKAGE">/apd/SoftwarePackages/ControllerAppSwpkgUpdate</PROCESS-REF>
+                          <TRANSFERS>
+                            <SOFTWARE-PACKAGE-STORING>
+                              <STORING>NONE</STORING>
+                            </SOFTWARE-PACKAGE-STORING>
+                          </TRANSFERS>
+                        </SOFTWARE-PACKAGE-STEP>
+                        <SOFTWARE-PACKAGE-STEP>
+                          <SHORT-NAME>Activate</SHORT-NAME>
+                        </SOFTWARE-PACKAGE-STEP>
+                      </SOFTWARE-PACKAGE-STEPS>
+                      <UCM-REF DEST="UCM-DESCRIPTION">/apd/VehiclePackages/PicarCampaign/RadarFusionMachineUCM</UCM-REF>
+                    </UCM-STEP>
+                  </UCM-PROCESSINGS>
+                </VEHICLE-ROLLOUT-STEP>
+              </ROLLOUT-QUALIFICATIONS>
+              <UCMS>
+                <UCM-DESCRIPTION>
+                  <SHORT-NAME>RadarFusionMachineUCM</SHORT-NAME>
+                  <IDENTIFIER>RadarFusionMachineUCM</IDENTIFIER>
+                  <UCM-MODULE-INSTANTIATION-REF DEST="UCM-MODULE-INSTANTIATION">TBD</UCM-MODULE-INSTANTIATION-REF>
+                </UCM-DESCRIPTION>
+              </UCMS>
+              <UCM-MASTER-FALLBACK-REFS>
+                <UCM-MASTER-FALLBACK-REF DEST="UCM-DESCRIPTION">TBD</UCM-MASTER-FALLBACK-REF>
+              </UCM-MASTER-FALLBACK-REFS>
+            </VEHICLE-PACKAGE>
+          </ELEMENTS>
+        </AR-PACKAGE>
+      </AR-PACKAGES>
+    </AR-PACKAGE>
+  </AR-PACKAGES>
+</AUTOSAR>

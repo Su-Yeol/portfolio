@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<AUTOSAR xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://autosar.org/schema/r4.0" xsi:schemaLocation="http://autosar.org/schema/r4.0 AUTOSAR_00052.xsd">
+  <AR-PACKAGES>
+    <AR-PACKAGE>
+      <SHORT-NAME>apd</SHORT-NAME>
+      <AR-PACKAGES>
+        <AR-PACKAGE>
+          <SHORT-NAME>TraceIntegrationTest</SHORT-NAME>
+          <ELEMENTS>
+            <LT-MESSAGE-COLLECTION-TO-PORT-PROTOTYPE-MAPPING>
+              <SHORT-NAME>ModeledMsgs_Mapping</SHORT-NAME>
+              <LOG-AND-TRACE-MESSAGE-COLLECTION-SET-REF DEST="LOG-AND-TRACE-MESSAGE-COLLECTION-SET">/apd/TraceIntegrationTest/ModeledMsgs</LOG-AND-TRACE-MESSAGE-COLLECTION-SET-REF>
+              <R-PORT-PROTOTYPE-REF DEST="R-PORT-PROTOTYPE">/apd/AdaptiveApplicationSwComponentTypes/TitClientComponent/TraceIntegrationTest_RPort</R-PORT-PROTOTYPE-REF>
+            </LT-MESSAGE-COLLECTION-TO-PORT-PROTOTYPE-MAPPING>
+            <LT-MESSAGE-COLLECTION-TO-PORT-PROTOTYPE-MAPPING>
+              <SHORT-NAME>CommunicationMsgs_to_TitClientComponent</SHORT-NAME>
+              <LOG-AND-TRACE-MESSAGE-COLLECTION-SET-REF DEST="LOG-AND-TRACE-MESSAGE-COLLECTION-SET">/apd/TraceIntegrationTest/CommunicationMsgs</LOG-AND-TRACE-MESSAGE-COLLECTION-SET-REF>
+              <R-PORT-PROTOTYPE-REF DEST="R-PORT-PROTOTYPE">/apd/AdaptiveApplicationSwComponentTypes/TitClientComponent/TraceIntegrationTest_RPort</R-PORT-PROTOTYPE-REF>
+            </LT-MESSAGE-COLLECTION-TO-PORT-PROTOTYPE-MAPPING>
+            <LT-MESSAGE-COLLECTION-TO-PORT-PROTOTYPE-MAPPING>
+              <SHORT-NAME>OSMsgs_Mapping</SHORT-NAME>
+              <LOG-AND-TRACE-MESSAGE-COLLECTION-SET-REF DEST="LOG-AND-TRACE-MESSAGE-COLLECTION-SET">/AUTOSAR/GenDef/Standardized_LogMessages_OSI/log</LOG-AND-TRACE-MESSAGE-COLLECTION-SET-REF>
+              <R-PORT-PROTOTYPE-REF DEST="R-PORT-PROTOTYPE">/apd/AdaptiveApplicationSwComponentTypes/TitClientComponent/TraceIntegrationTest_RPort</R-PORT-PROTOTYPE-REF>
+            </LT-MESSAGE-COLLECTION-TO-PORT-PROTOTYPE-MAPPING>
+            <LT-MESSAGE-COLLECTION-TO-PORT-PROTOTYPE-MAPPING>
+              <SHORT-NAME>ModeledMsgs_to_TitServiceComponent</SHORT-NAME>
+              <LOG-AND-TRACE-MESSAGE-COLLECTION-SET-REF DEST="LOG-AND-TRACE-MESSAGE-COLLECTION-SET">/apd/TraceIntegrationTest/ModeledMsgs</LOG-AND-TRACE-MESSAGE-COLLECTION-SET-REF>
+              <R-PORT-PROTOTYPE-REF DEST="R-PORT-PROTOTYPE">/apd/AdaptiveApplicationSwComponentTypes/TitServiceComponent/LogAndTrace_RPort</R-PORT-PROTOTYPE-REF>
+            </LT-MESSAGE-COLLECTION-TO-PORT-PROTOTYPE-MAPPING>
+            <LT-MESSAGE-COLLECTION-TO-PORT-PROTOTYPE-MAPPING>
+              <SHORT-NAME>CommunicationMsgs_to_TitServiceComponent</SHORT-NAME>
+              <LOG-AND-TRACE-MESSAGE-COLLECTION-SET-REF DEST="LOG-AND-TRACE-MESSAGE-COLLECTION-SET">/apd/TraceIntegrationTest/CommunicationMsgs</LOG-AND-TRACE-MESSAGE-COLLECTION-SET-REF>
+              <R-PORT-PROTOTYPE-REF DEST="R-PORT-PROTOTYPE">/apd/AdaptiveApplicationSwComponentTypes/TitServiceComponent/LogAndTrace_RPort</R-PORT-PROTOTYPE-REF>
+            </LT-MESSAGE-COLLECTION-TO-PORT-PROTOTYPE-MAPPING>
+            <LOG-AND-TRACE-MESSAGE-COLLECTION-SET>
+              <SHORT-NAME>ModeledMsgs</SHORT-NAME>
+              <DLT-MESSAGES>
+                <DLT-MESSAGE>
+                  <SHORT-NAME>Test1Msg</SHORT-NAME>
+                  <DLT-ARGUMENTS>
+                    <DLT-ARGUMENT>
+                      <SHORT-NAME>Argument</SHORT-NAME>
+                      <LENGTH>1</LENGTH>
+                      <NETWORK-REPRESENTATION>
+                        <SW-DATA-DEF-PROPS-VARIANTS>
+                          <SW-DATA-DEF-PROPS-CONDITIONAL>
+                            <BASE-TYPE-REF DEST="SW-BASE-TYPE">/AUTOSAR/StdTypes/uint8_t</BASE-TYPE-REF>
+                            <UNIT-REF DEST="UNIT">/AUTOSAR/PhysicalUnits/Units_Blueprint/NoUnit</UNIT-REF>
+                          </SW-DATA-DEF-PROPS-CONDITIONAL>
+                        </SW-DATA-DEF-PROPS-VARIANTS>
+                      </NETWORK-REPRESENTATION>
+                    </DLT-ARGUMENT>
+                  </DLT-ARGUMENTS>
+                  <MESSAGE-ID>0x00123002</MESSAGE-ID>
+                  <MESSAGE-LINE-NUMBER>0</MESSAGE-LINE-NUMBER>
+                  <MESSAGE-SOURCE-FILE>source_file_path</MESSAGE-SOURCE-FILE>
+                  <MESSAGE-TYPE-INFO>DLT_TRACE_STATE</MESSAGE-TYPE-INFO>
+                </DLT-MESSAGE>
+              </DLT-MESSAGES>
+            </LOG-AND-TRACE-MESSAGE-COLLECTION-SET>
+            <LOG-AND-TRACE-MESSAGE-COLLECTION-SET>
+              <SHORT-NAME>CommunicationMsgs</SHORT-NAME>
+              <DLT-MESSAGES>
+                <DLT-MESSAGE>
+                  <SHORT-NAME>RequestCalculation</SHORT-NAME>
+                  <DLT-ARGUMENTS>
+                    <DLT-ARGUMENT>
+                      <SHORT-NAME>Argument</SHORT-NAME>
+                      <LENGTH>1</LENGTH>
+                      <NETWORK-REPRESENTATION>
+                        <SW-DATA-DEF-PROPS-VARIANTS>
+                          <SW-DATA-DEF-PROPS-CONDITIONAL>
+                            <BASE-TYPE-REF DEST="SW-BASE-TYPE">/AUTOSAR/StdTypes/uint32_t</BASE-TYPE-REF>
+                            <UNIT-REF DEST="UNIT">/AUTOSAR/PhysicalUnits/Units_Blueprint/NoUnit</UNIT-REF>
+                          </SW-DATA-DEF-PROPS-CONDITIONAL>
+                        </SW-DATA-DEF-PROPS-VARIANTS>
+                      </NETWORK-REPRESENTATION>
+                    </DLT-ARGUMENT>
+                  </DLT-ARGUMENTS>
+                  <MESSAGE-ID>0x00123003</MESSAGE-ID>
+                  <MESSAGE-LINE-NUMBER>0</MESSAGE-LINE-NUMBER>
+                  <MESSAGE-SOURCE-FILE>source_file_path</MESSAGE-SOURCE-FILE>
+                  <MESSAGE-TYPE-INFO>DLT_TRACE_STATE</MESSAGE-TYPE-INFO>
+                </DLT-MESSAGE>
+                <DLT-MESSAGE>
+                  <SHORT-NAME>StartCalculation</SHORT-NAME>
+                  <DLT-ARGUMENTS>
+                    <DLT-ARGUMENT>
+                      <SHORT-NAME>Argument</SHORT-NAME>
+                      <LENGTH>1</LENGTH>
+                      <NETWORK-REPRESENTATION>
+                        <SW-DATA-DEF-PROPS-VARIANTS>
+                          <SW-DATA-DEF-PROPS-CONDITIONAL>
+                            <BASE-TYPE-REF DEST="SW-BASE-TYPE">/AUTOSAR/StdTypes/uint32_t</BASE-TYPE-REF>
+                            <UNIT-REF DEST="UNIT">/AUTOSAR/PhysicalUnits/Units_Blueprint/NoUnit</UNIT-REF>
+                          </SW-DATA-DEF-PROPS-CONDITIONAL>
+                        </SW-DATA-DEF-PROPS-VARIANTS>
+                      </NETWORK-REPRESENTATION>
+                    </DLT-ARGUMENT>
+                  </DLT-ARGUMENTS>
+                  <MESSAGE-ID>0x00123004</MESSAGE-ID>
+                  <MESSAGE-LINE-NUMBER>0</MESSAGE-LINE-NUMBER>
+                  <MESSAGE-SOURCE-FILE>source_file_path</MESSAGE-SOURCE-FILE>
+                  <MESSAGE-TYPE-INFO>DLT_TRACE_STATE</MESSAGE-TYPE-INFO>
+                </DLT-MESSAGE>
+                <DLT-MESSAGE>
+                  <SHORT-NAME>EndCalculation</SHORT-NAME>
+                  <DLT-ARGUMENTS>
+                    <DLT-ARGUMENT>
+                      <SHORT-NAME>Result</SHORT-NAME>
+                      <LENGTH>1</LENGTH>
+                      <NETWORK-REPRESENTATION>
+                        <SW-DATA-DEF-PROPS-VARIANTS>
+                          <SW-DATA-DEF-PROPS-CONDITIONAL>
+                            <BASE-TYPE-REF DEST="SW-BASE-TYPE">/AUTOSAR/StdTypes/uint32_t</BASE-TYPE-REF>
+                            <UNIT-REF DEST="UNIT">/AUTOSAR/PhysicalUnits/Units_Blueprint/NoUnit</UNIT-REF>
+                          </SW-DATA-DEF-PROPS-CONDITIONAL>
+                        </SW-DATA-DEF-PROPS-VARIANTS>
+                      </NETWORK-REPRESENTATION>
+                    </DLT-ARGUMENT>
+                  </DLT-ARGUMENTS>
+                  <MESSAGE-ID>0x00123005</MESSAGE-ID>
+                  <MESSAGE-LINE-NUMBER>0</MESSAGE-LINE-NUMBER>
+                  <MESSAGE-SOURCE-FILE>source_file_path</MESSAGE-SOURCE-FILE>
+                  <MESSAGE-TYPE-INFO>DLT_TRACE_STATE</MESSAGE-TYPE-INFO>
+                </DLT-MESSAGE>
+                <DLT-MESSAGE>
+                  <SHORT-NAME>FinishedCalculation</SHORT-NAME>
+                  <DLT-ARGUMENTS>
+                    <DLT-ARGUMENT>
+                      <SHORT-NAME>Result</SHORT-NAME>
+                      <LENGTH>1</LENGTH>
+                      <NETWORK-REPRESENTATION>
+                        <SW-DATA-DEF-PROPS-VARIANTS>
+                          <SW-DATA-DEF-PROPS-CONDITIONAL>
+                            <BASE-TYPE-REF DEST="SW-BASE-TYPE">/AUTOSAR/StdTypes/uint32_t</BASE-TYPE-REF>
+                            <UNIT-REF DEST="UNIT">/AUTOSAR/PhysicalUnits/Units_Blueprint/NoUnit</UNIT-REF>
+                          </SW-DATA-DEF-PROPS-CONDITIONAL>
+                        </SW-DATA-DEF-PROPS-VARIANTS>
+                      </NETWORK-REPRESENTATION>
+                    </DLT-ARGUMENT>
+                  </DLT-ARGUMENTS>
+                  <MESSAGE-ID>0x00123006</MESSAGE-ID>
+                  <MESSAGE-LINE-NUMBER>0</MESSAGE-LINE-NUMBER>
+                  <MESSAGE-SOURCE-FILE>source_file_path</MESSAGE-SOURCE-FILE>
+                  <MESSAGE-TYPE-INFO>DLT_TRACE_STATE</MESSAGE-TYPE-INFO>
+                </DLT-MESSAGE>
+              </DLT-MESSAGES>
+            </LOG-AND-TRACE-MESSAGE-COLLECTION-SET>
+          </ELEMENTS>
+        </AR-PACKAGE>
+      </AR-PACKAGES>
+    </AR-PACKAGE>
+  </AR-PACKAGES>
+</AUTOSAR>

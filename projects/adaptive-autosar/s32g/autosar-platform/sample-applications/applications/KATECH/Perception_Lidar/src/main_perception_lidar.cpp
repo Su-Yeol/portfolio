@@ -1,0 +1,453 @@
+// --------------------------------------------------------------------------
+// |              _    _ _______     .----.      _____         _____        |
+// |         /\  | |  | |__   __|  .  ____ .    / ____|  /\   |  __ \       |
+// |        /  \ | |  | |  | |    .  / __ \ .  | (___   /  \  | |__) |      |
+// |       / /\ \| |  | |  | |   .  / / / / v   \___ \ / /\ \ |  _  /       |
+// |      / /__\ \ |__| |  | |   . / /_/ /  .   ____) / /__\ \| | \ \       |
+// |     /________\____/   |_|   ^ \____/  .   |_____/________\_|  \_\      |
+// |                              . _ _  .                                  |
+// --------------------------------------------------------------------------
+//
+// All Rights Reserved.
+// Any use of this source code is subject to a license agreement with the
+// AUTOSAR development cooperation.
+// More information is available at www.autosar.org.
+//
+// Disclaimer
+//
+// This work (specification and/or software implementation) and the material
+// contained in it, as released by AUTOSAR, is for the purpose of information
+// only. AUTOSAR and the companies that have contributed to it shall not be
+// liable for any use of the work.
+//
+// The material contained in this work is protected by copyright and other
+// types of intellectual property rights. The commercial exploitation of the
+// material contained in this work requires a license to such intellectual
+// property rights.
+//
+// This work may be utilized or reproduced without any modification, in any
+// form or by any means, for informational purposes only. For any other
+// purpose, no part of the work may be utilized or reproduced, in any form
+// or by any means, without permission in writing from the publisher.
+//
+// The work has been developed for automotive applications only. It has
+// neither been developed, nor tested for non-automotive applications.
+//
+// The word AUTOSAR and the AUTOSAR logo are registered trademarks.
+// --------------------------------------------------------------------------
+
+///////////////////////////////////////////////////////////////////////
+// This is just a test main to test the communication API
+// The different components svl-brige, video, tester, ... are used in one
+// application. This could be also different applications but we
+// currently have no mechanism implemeted for inter-process-communication
+// between applications. We also have no execution environment in use here
+// I.e. this code as nothing to do with the communication or execution API
+///////////////////////////////////////////////////////////////////////
+
+#include <thread>
+#include <chrono>
+#include <cstdio>
+#include <cstdint>
+#include <cstdlib>
+#include <csignal>
+#include <stdio.h>
+#include <random>
+
+#include <ara/com/e2exf/status_handler.h>
+#include <ara/exec/execution_client.h>
+
+#include <ara/log/logger.h>
+#include "logger.h"
+#include "ara/core/initialization.h"
+
+#include "collect_fault_perception_lidar_provider.h"
+#include "perception_obstacles_provider.h"
+#include "v2x_data_subscriber.h"
+
+// ======= Process RTT =======
+#include <vsomeip/vsomeip.hpp>
+#include <memory>
+#include <iostream>
+
+#include <unordered_map>
+#include <mutex>
+#include <cstring>
+// ======= Process RTT =======
+
+std::random_device m_rd;
+std::default_random_engine m_rand_eng(m_rd());
+std::uniform_real_distribution<double> m_ud_10000_10000(-10000, 10000);
+std::uniform_int_distribution<std::uint32_t> m_ud_0_10000(0, 10000);
+std::uniform_int_distribution<std::uint16_t> m_ud_0_16(0, 16);
+std::uniform_int_distribution<std::uint8_t> m_ud_0_3(0, 3);
+std::uniform_real_distribution<float> m_ud_10_10(-10, 10);
+std::uniform_real_distribution<float> m_ud_0_360(0, 359.9);
+
+namespace PerceptionLidar
+{
+
+std::shared_ptr<adcm::CollectFaultPerceptionLidar_Provider> collectFault_provider;
+
+// Atomic flag for exit after SIGTERM caught
+std::atomic_bool continueExecution{true};
+std::atomic_uint gEventReceived_Count_v2x_data{0};
+std::atomic_uint gEventReceived_Count_vehicle_location{0};
+std::atomic_uint gMainthread_Loopcount{0};
+
+std::atomic_uint64_t gFaultStatus{0};
+void setFault(unsigned char faultID)
+{
+    gFaultStatus |= (static_cast<std::uint64_t>(1) << faultID);
+}
+
+void clearFault(unsigned char faultID)
+{
+    gFaultStatus &= ~((static_cast<std::uint64_t>(1) << faultID));
+}
+
+std::uint64_t getFaultStatus()
+{
+    return gFaultStatus;
+}
+
+void sendFault()
+{
+    static adcm::collect_fault_perception_lidar_Objects gCollectFault;
+    gCollectFault.AP = 0;
+    gCollectFault.Fault_PerceptionLidar.clear();
+    std::uint64_t temp = getFaultStatus();
+
+    for(int i = 0; i < 64; i++) {
+        if(temp & (static_cast<std::uint64_t>(1) << i)) {
+            gCollectFault.Fault_PerceptionLidar.push_back(i);
+        }
+    }
+
+    collectFault_provider->send(gCollectFault);
+    adcm::Log::Verbose() << "[Localization] send collectFault Event ";
+}
+
+void SigTermHandler(int signal)
+{
+    if(signal == SIGTERM) {
+        // set atomic exit flag
+        continueExecution = false;
+    }
+}
+
+bool RegisterSigTermHandler()
+{
+    struct sigaction sa;
+    sa.sa_handler = SigTermHandler;
+    sa.sa_flags = 0;
+    sigemptyset(&sa.sa_mask);
+
+    // register signal handler
+    if(sigaction(SIGTERM, &sa, NULL) == -1) {
+        // Could not register a SIGTERM signal handler
+        return false;
+    }
+
+    return true;
+}
+
+void ThreadReceiveV2XData()
+{
+    adcm::Log::Info() << "Perception_Lidar ThreadReceiveEvent Start!!";
+    adcm::V2XData_Subscriber v2xData_subscriber;
+    adcm::Log::Info() << "Perception_Lidar .init()";
+    v2xData_subscriber.init("Perception_Lidar/Perception_Lidar/RPort_v2x_data");
+
+    while(continueExecution) {
+        gMainthread_Loopcount++;
+        adcm::Log::Verbose() << "[Perception_Lidar] Application loop";
+        bool v2xData_rxEvent = v2xData_subscriber.waitEvent(120);
+
+        if(v2xData_rxEvent) {
+            while(!v2xData_subscriber.isEventQueueEmpty()) {
+                auto data = v2xData_subscriber.getEvent();
+                gEventReceived_Count_v2x_data++;
+                adcm::Log::Verbose() << "[EVENT] Perception_Lidar V2X Data received";
+
+                if(data != nullptr) {
+                    adcm::Log::Verbose() << "[Enter] Perception_Lidar v2x_data Event Callback";
+
+                    auto intersections = data->intersections;
+
+                    adcm::Log::Verbose() << "id : " << intersections.id;
+                    adcm::Log::Verbose() << "revision : " << intersections.revision;
+                    adcm::Log::Verbose() << "status : " << intersections.status;
+                    adcm::Log::Verbose() << "moy : " << intersections.moy;
+                    adcm::Log::Verbose() << "timeStamp : " << intersections.timeStamp;
+                    
+                    auto MovementState = intersections.states.MovementState;
+
+                    if(!MovementState.empty()) {
+                        adcm::Log::Verbose() << "MovementState: ";
+
+                        for(typename std::vector<adcm::movementState>::iterator itr = MovementState.begin(); itr != MovementState.end(); ++itr) {
+                            
+                            adcm::Log::Verbose() << "movementName : " << itr->movementName;
+                            adcm::Log::Verbose() << "signalGroup : " << itr->signalGroup;
+                            adcm::Log::Verbose() << "eventState : " << itr->eventState;
+                            adcm::Log::Verbose() << "timing_minEndTime : " << itr->timing_minEndTime;
+                            adcm::Log::Verbose() << "timing_maxEndTime : " << itr->timing_maxEndTime;
+                        }
+
+                    } else {
+                        adcm::Log::Verbose() << "MovementState empty!!! ";
+                    }
+                }
+            }
+        }
+    }
+}
+
+void ThreadSendPerceptionObstacles()
+{
+    adcm::Log::Info() << "Perception_Lidar ThreadSendPerceptionObstacles Start!!";
+    adcm::PerceptionObstacles_Provider perceptionObstacles_provider;
+    perceptionObstacles_provider.init("Perception_Lidar/Perception_Lidar/PPort_perception_obstacles");
+
+    while(continueExecution) {
+        std::this_thread::sleep_for(std::chrono::milliseconds(100));
+
+        adcm::perception_obstacles_Objects perceptionObstacles;
+        // perception obstacles
+        adcm::Perception_obstacles obstacle;
+        perceptionObstacles.PerceptionObstacleVector.clear();
+
+        obstacle.Id = m_ud_0_16(m_rand_eng);
+        obstacle.Type = m_ud_0_3(m_rand_eng);
+        obstacle.Position.X = m_ud_10_10(m_rand_eng);
+        obstacle.Position.Y = m_ud_10_10(m_rand_eng);
+        obstacle.Length = m_ud_10_10(m_rand_eng);
+        obstacle.Width = m_ud_10_10(m_rand_eng);
+        obstacle.Timestamp = m_ud_10000_10000(m_rand_eng);
+        obstacle.Velocity_x = m_ud_10_10(m_rand_eng);
+        obstacle.Velocity_y = m_ud_10_10(m_rand_eng);
+        obstacle.Heading = m_ud_0_360(m_rand_eng);
+
+        perceptionObstacles.PerceptionObstacleVector.push_back(obstacle);
+        perceptionObstacles.Lidar_Status = m_ud_0_3(m_rand_eng) % 2 == 0 ? true : false;
+
+        // tx
+        perceptionObstacles_provider.send(perceptionObstacles);
+        adcm::Log::Verbose() << "[Perception_Lidar] send perceptionObstacles Event ";
+    }
+}
+
+
+void ThreadSendCollectFault()
+{
+    INFO("ThreadSendCollectFault Start!!");
+
+    while(continueExecution) {
+        std::this_thread::sleep_for(std::chrono::milliseconds(1000));
+        // set fault
+        setFault(32);
+        setFault(39);
+        setFault(40);
+        setFault(41);
+        setFault(42);
+        setFault(43);
+        setFault(44);
+        sendFault();
+        INFO("Set fault");
+        std::this_thread::sleep_for(std::chrono::milliseconds(1000));
+        // clear fault
+        clearFault(32);
+        clearFault(40);
+        clearFault(41);
+        clearFault(42);
+        clearFault(43);
+        clearFault(44);
+        sendFault();
+        INFO("Clear fault");
+
+    }
+}
+
+void ThreadMonitor()
+{
+    while(continueExecution) {
+        std::this_thread::sleep_for(std::chrono::milliseconds(1000));
+
+        if(gMainthread_Loopcount == 0) {
+            adcm::Log::Error() << "Main thread Timeout!!!";
+
+        } else {
+            gMainthread_Loopcount = 0;
+
+            if(gEventReceived_Count_v2x_data != 0) {
+                adcm::Log::Info() << "v2x_data Received count = " << gEventReceived_Count_v2x_data;
+                gEventReceived_Count_v2x_data = 0;
+
+            } else {
+                adcm::Log::Info() << "v2x_data event timeout!!!";
+            }
+        }
+    }
+}
+
+}  // namespace
+
+
+// ========================================= Process RTT =========================================
+// static std::shared_ptr<vsomeip::application> lidar_app;
+// static const vsomeip::service_t SVC  = 0x7A01;   // HDMAP 고유 Service ID
+// static const vsomeip::instance_t INST = 0x0006;  // Instance ID
+// static const vsomeip::method_t ECHO   = 0x0001;  // Echo Method ID
+
+// void on_echo_request(const std::shared_ptr<vsomeip::message> &req) {
+//     auto resp = vsomeip::runtime::get()->create_response(req);
+//     resp->set_payload(req->get_payload());
+
+//     auto pl = req->get_payload();
+//     if (pl && pl->get_length() > 0) {
+//         adcm::Log::Info() << "[Pro-Lidar] ECHO Request received. Payload size = " 
+//                           << pl->get_length() << " bytes";
+//     } else {
+//         adcm::Log::Info() << "[Pro-Lidar] ECHO Request received (empty payload)";
+//     }
+
+//     lidar_app->send(resp);
+// }
+
+// void vsomeip_server_thread() {
+//     lidar_app = vsomeip::runtime::get()->create_application("lidar_echo");
+//     lidar_app->init();
+//     lidar_app->register_message_handler(SVC, INST, ECHO, on_echo_request);
+//     lidar_app->offer_service(SVC, INST);
+//     lidar_app->start();
+// }
+
+static std::shared_ptr<vsomeip::application> lidar_app;
+static const vsomeip::service_t SVC  = 0x7A01;   // HDMAP 고유 Service ID
+static const vsomeip::instance_t INST = 0x0006;  // Instance ID
+static const vsomeip::method_t ECHO   = 0x0001;  // Echo Method ID
+
+#pragma pack(push, 1)
+struct Payload {
+    uint64_t seq;
+    uint32_t cnt;
+    uint8_t  padding[56];
+};
+#pragma pack(pop)
+
+struct RecvStats {
+    uint64_t recv_total = 0;
+    uint32_t last_cnt   = 0;
+    uint64_t lost_total = 0; // cnt 기준 유실 추정
+};
+
+static std::mutex g_mu;
+static std::unordered_map<vsomeip::client_t, RecvStats> g_stats;
+
+static inline void log_stats_periodically(vsomeip::client_t cid, const RecvStats& s) {
+    // 필요시 주기적으로만 출력(예: 1000개마다)
+    if (s.recv_total % 1000 == 0) {
+        adcm::Log::Info() << "[Pro-Lidar] client=0x" << std::hex << cid << std::dec
+                          << " recv=" << s.recv_total
+                          << " last_cnt=" << s.last_cnt
+                          << " lost=" << s.lost_total;
+    }
+}
+
+void on_echo_request(const std::shared_ptr<vsomeip::message> &req) {
+    auto resp = vsomeip::runtime::get()->create_response(req);
+
+    Payload p{};
+    auto pl = req->get_payload();
+    if (pl && pl->get_length() >= sizeof(Payload)) {
+        std::memcpy(&p, pl->get_data(), sizeof(Payload));
+    }
+
+    {
+        std::lock_guard<std::mutex> lk(g_mu);
+        auto cid = req->get_client();   // vsomeip client id
+        auto &st = g_stats[cid];
+        st.recv_total++;
+
+        if (p.cnt > st.last_cnt + 1) {
+            st.lost_total += (p.cnt - (st.last_cnt + 1)); // 중간 구간 유실 추정
+        }
+        if (p.cnt > st.last_cnt)
+            st.last_cnt = p.cnt;
+
+        log_stats_periodically(cid, st);
+    }
+
+    if (pl && pl->get_length() > 0)
+        adcm::Log::Verbose() << "[Pro-Lidar] ECHO req: len=" << pl->get_length()
+                             << " seq=" << p.seq << " cnt=" << p.cnt;
+
+    resp->set_payload(pl);
+    lidar_app->send(resp);
+}
+
+void vsomeip_server_thread() {
+    lidar_app = vsomeip::runtime::get()->create_application("lidar_echo");
+    lidar_app->init();
+    lidar_app->register_message_handler(SVC, INST, ECHO, on_echo_request);
+    lidar_app->offer_service(SVC, INST);
+    lidar_app->start();
+}
+// ========================================= Process RTT =========================================
+
+
+int main(int argc, char* argv[])
+{
+    std::vector<std::thread> thread_list;
+    UNUSED(argc);
+    UNUSED(argv);
+
+    if(!ara::core::Initialize()) {
+        // No interaction with ARA is possible here since initialization failed
+        return EXIT_FAILURE;
+    }
+
+    ara::exec::ExecutionClient exec_client;
+    exec_client.ReportExecutionState(ara::exec::ExecutionState::kRunning);
+
+    if(!PerceptionLidar::RegisterSigTermHandler()) {
+        adcm::Log::Error() << "Unable to register signal handler";
+    }
+
+#ifndef R19_11_1
+    adcm::Log::Info() << "Perception_Lidar: configure e2e protection";
+    bool success = ara::com::e2exf::StatusHandler::Configure(
+                       "./etc/e2e_dataid_mapping.json", ara::com::e2exf::ConfigurationFormat::JSON,
+                       "./etc/e2e_statemachines.json", ara::com::e2exf::ConfigurationFormat::JSON);
+    adcm::Log::Info() << "Perception_Lidar: e2e configuration " << (success ? "succeeded" : "failed");
+#endif
+    adcm::Log::Info() << "Ok, let's produce some Perception_Lidar data...";
+
+    {
+        PerceptionLidar::collectFault_provider = std::make_shared<adcm::CollectFaultPerceptionLidar_Provider>();
+        PerceptionLidar::collectFault_provider->init("Perception_Lidar/Perception_Lidar/PPort_collect_fault_perception_lidar");
+        PerceptionLidar::sendFault();
+    }
+
+    // thread_list.push_back(std::thread(vsomeip_server_thread)); // Process RTT
+
+    thread_list.push_back(std::thread(PerceptionLidar::ThreadReceiveV2XData));
+    thread_list.push_back(std::thread(PerceptionLidar::ThreadSendPerceptionObstacles));
+    thread_list.push_back(std::thread(PerceptionLidar::ThreadSendCollectFault));
+    thread_list.push_back(std::thread(PerceptionLidar::ThreadMonitor));
+
+    adcm::Log::Info() << "Thread join";
+    for(int i = 0; i < static_cast<int>(thread_list.size()); i++) {
+        thread_list[i].join();
+    }
+
+    adcm::Log::Info() << "done.";
+
+    if(!ara::core::Deinitialize()) {
+        // No interaction with ARA is possible here since some ARA resources can be destroyed already
+        return EXIT_FAILURE;
+    }
+
+    return EXIT_SUCCESS;
+}

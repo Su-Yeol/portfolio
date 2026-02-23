@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<AUTOSAR xmlns="http://autosar.org/schema/r4.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://autosar.org/schema/r4.0 AUTOSAR_00052.xsd">
+  <AR-PACKAGES>
+    <AR-PACKAGE>
+      <SHORT-NAME>apd</SHORT-NAME>
+      <AR-PACKAGES>
+        <AR-PACKAGE>
+          <SHORT-NAME>ServiceInterfaceDeployments</SHORT-NAME>
+          <ELEMENTS>
+            <SOMEIP-SERVICE-INTERFACE-DEPLOYMENT>
+              <SHORT-NAME>UpdateRequest_Someip</SHORT-NAME>
+              <METHOD-DEPLOYMENTS>
+                <SOMEIP-METHOD-DEPLOYMENT>
+                  <SHORT-NAME>PrepareRollback</SHORT-NAME>
+                  <METHOD-REF DEST="CLIENT-SERVER-OPERATION">/apd/ServiceInterfaces/UpdateRequest/PrepareRollback</METHOD-REF>
+                  <METHOD-ID>30004</METHOD-ID>
+                  <TRANSPORT-PROTOCOL>UDP</TRANSPORT-PROTOCOL>
+                </SOMEIP-METHOD-DEPLOYMENT>
+                <SOMEIP-METHOD-DEPLOYMENT>
+                  <SHORT-NAME>PrepareUpdate</SHORT-NAME>
+                  <METHOD-REF DEST="CLIENT-SERVER-OPERATION">/apd/ServiceInterfaces/UpdateRequest/PrepareUpdate</METHOD-REF>
+                  <METHOD-ID>30001</METHOD-ID>
+                  <TRANSPORT-PROTOCOL>UDP</TRANSPORT-PROTOCOL>
+                </SOMEIP-METHOD-DEPLOYMENT>
+                <SOMEIP-METHOD-DEPLOYMENT>
+                  <SHORT-NAME>ResetMachine</SHORT-NAME>
+                  <METHOD-REF DEST="CLIENT-SERVER-OPERATION">/apd/ServiceInterfaces/UpdateRequest/ResetMachine</METHOD-REF>
+                  <METHOD-ID>30002</METHOD-ID>
+                  <TRANSPORT-PROTOCOL>UDP</TRANSPORT-PROTOCOL>
+                </SOMEIP-METHOD-DEPLOYMENT>
+                <SOMEIP-METHOD-DEPLOYMENT>
+                  <SHORT-NAME>RequestUpdateSession</SHORT-NAME>
+                  <METHOD-REF DEST="CLIENT-SERVER-OPERATION">/apd/ServiceInterfaces/UpdateRequest/RequestUpdateSession</METHOD-REF>
+                  <METHOD-ID>30000</METHOD-ID>
+                  <TRANSPORT-PROTOCOL>UDP</TRANSPORT-PROTOCOL>
+                </SOMEIP-METHOD-DEPLOYMENT>
+                <SOMEIP-METHOD-DEPLOYMENT>
+                  <SHORT-NAME>StopUpdateSession</SHORT-NAME>
+                  <METHOD-REF DEST="CLIENT-SERVER-OPERATION">/apd/ServiceInterfaces/UpdateRequest/StopUpdateSession</METHOD-REF>
+                  <METHOD-ID>30005</METHOD-ID>
+                  <TRANSPORT-PROTOCOL>UDP</TRANSPORT-PROTOCOL>
+                </SOMEIP-METHOD-DEPLOYMENT>
+                <SOMEIP-METHOD-DEPLOYMENT>
+                  <SHORT-NAME>VerfiyUpdate</SHORT-NAME>
+                  <METHOD-REF DEST="CLIENT-SERVER-OPERATION">/apd/ServiceInterfaces/UpdateRequest/VerifyUpdate</METHOD-REF>
+                  <METHOD-ID>30003</METHOD-ID>
+                  <TRANSPORT-PROTOCOL>UDP</TRANSPORT-PROTOCOL>
+                </SOMEIP-METHOD-DEPLOYMENT>
+              </METHOD-DEPLOYMENTS>
+              <SERVICE-INTERFACE-REF DEST="SERVICE-INTERFACE">/apd/ServiceInterfaces/UpdateRequest</SERVICE-INTERFACE-REF>
+              <SERVICE-INTERFACE-ID>666</SERVICE-INTERFACE-ID>
+              <SERVICE-INTERFACE-VERSION>
+                <MAJOR-VERSION>1</MAJOR-VERSION>
+                <MINOR-VERSION>0</MINOR-VERSION>
+              </SERVICE-INTERFACE-VERSION>
+            </SOMEIP-SERVICE-INTERFACE-DEPLOYMENT>
+          </ELEMENTS>
+        </AR-PACKAGE>
+      </AR-PACKAGES>
+    </AR-PACKAGE>
+  </AR-PACKAGES>
+</AUTOSAR>

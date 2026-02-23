@@ -1,0 +1,9 @@
+[Unit]
+Description=Autosar execution manager
+
+[Service]
+ExecStart=/usr/sbin/execution-manager
+WorkingDirectory=/tmp
+
+[Install]
+WantedBy=multi-user.target

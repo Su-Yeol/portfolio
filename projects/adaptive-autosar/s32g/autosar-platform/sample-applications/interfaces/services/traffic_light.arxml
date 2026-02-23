@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<AUTOSAR xmlns="http://autosar.org/schema/r4.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://autosar.org/schema/r4.0 AUTOSAR_00052.xsd">
+    <AR-PACKAGES>
+        <AR-PACKAGE>
+            <SHORT-NAME>adcm</SHORT-NAME>
+            <ELEMENTS>
+                <SERVICE-INTERFACE>
+                    <SHORT-NAME>traffic_light</SHORT-NAME>
+                    <NAMESPACES>
+                        <SYMBOL-PROPS>
+                            <SHORT-NAME>adcm</SHORT-NAME>
+                            <SYMBOL>adcm</SYMBOL>
+                        </SYMBOL-PROPS>
+                    </NAMESPACES>
+                    <EVENTS>
+                        <VARIABLE-DATA-PROTOTYPE>
+                            <SHORT-NAME>trafficLightEvent</SHORT-NAME>
+                            <TYPE-TREF DEST="STD-CPP-IMPLEMENTATION-DATA-TYPE">/adcm/events/traffic_light_Objects</TYPE-TREF>
+                        </VARIABLE-DATA-PROTOTYPE>
+                    </EVENTS>
+                </SERVICE-INTERFACE>
+            </ELEMENTS>
+            <AR-PACKAGES>
+                <AR-PACKAGE>
+                    <SHORT-NAME>events</SHORT-NAME>
+                    <ELEMENTS>
+                        <STD-CPP-IMPLEMENTATION-DATA-TYPE>
+                            <SHORT-NAME>traffic_light_Objects</SHORT-NAME>
+                            <CATEGORY>STRUCTURE</CATEGORY>
+                            <NAMESPACES>
+                                <SYMBOL-PROPS>
+                                    <SHORT-NAME>adcm</SHORT-NAME>
+                                    <SYMBOL>adcm</SYMBOL>
+                                </SYMBOL-PROPS>
+                            </NAMESPACES>
+                            <SUB-ELEMENTS>
+                                <CPP-IMPLEMENTATION-DATA-TYPE-ELEMENT>
+                                    <SHORT-NAME>PerceptionTrafficlightVector</SHORT-NAME>
+                                    <TYPE-REFERENCE>
+                                        <INPLACE>false</INPLACE>
+                                        <TYPE-REFERENCE-REF DEST="STD-CPP-IMPLEMENTATION-DATA-TYPE">/adcm/events/perception_trafficlight_Array</TYPE-REFERENCE-REF>
+                                    </TYPE-REFERENCE>
+                                </CPP-IMPLEMENTATION-DATA-TYPE-ELEMENT>
+
+                                <CPP-IMPLEMENTATION-DATA-TYPE-ELEMENT>
+                                    <SHORT-NAME>Camera_Status</SHORT-NAME>
+                                    <TYPE-REFERENCE>
+                                        <INPLACE>false</INPLACE>
+                                        <TYPE-REFERENCE-REF DEST="STD-CPP-IMPLEMENTATION-DATA-TYPE">/AUTOSAR/StdTypes/bool</TYPE-REFERENCE-REF>
+                                    </TYPE-REFERENCE>
+                                </CPP-IMPLEMENTATION-DATA-TYPE-ELEMENT>
+
+                                <CPP-IMPLEMENTATION-DATA-TYPE-ELEMENT>
+                                    <SHORT-NAME>TL_CAM_Status</SHORT-NAME>
+                                    <TYPE-REFERENCE>
+                                        <INPLACE>false</INPLACE>
+                                        <TYPE-REFERENCE-REF DEST="STD-CPP-IMPLEMENTATION-DATA-TYPE">/AUTOSAR/StdTypes/bool</TYPE-REFERENCE-REF>
+                                    </TYPE-REFERENCE>
+                                </CPP-IMPLEMENTATION-DATA-TYPE-ELEMENT>
+                            </SUB-ELEMENTS>
+                            <TYPE-EMITTER>TYPE_EMITTER_ARA</TYPE-EMITTER>
+                        </STD-CPP-IMPLEMENTATION-DATA-TYPE>
+
+                        <STD-CPP-IMPLEMENTATION-DATA-TYPE>
+                            <SHORT-NAME>perception_trafficlight_Array</SHORT-NAME>
+                            <CATEGORY>VECTOR</CATEGORY>
+                            <TEMPLATE-ARGUMENTS>
+                                <CPP-TEMPLATE-ARGUMENT>
+                                    <TEMPLATE-TYPE-REF DEST="STD-CPP-IMPLEMENTATION-DATA-TYPE">/adcm/events/Perception_trafficlight</TEMPLATE-TYPE-REF>
+                                </CPP-TEMPLATE-ARGUMENT>
+                            </TEMPLATE-ARGUMENTS>
+                            <TYPE-EMITTER>TYPE_EMITTER_ARA</TYPE-EMITTER>
+                        </STD-CPP-IMPLEMENTATION-DATA-TYPE>
+
+                        <STD-CPP-IMPLEMENTATION-DATA-TYPE>
+                            <SHORT-NAME>Perception_trafficlight</SHORT-NAME>
+                            <CATEGORY>STRUCTURE</CATEGORY>
+                            <NAMESPACES>
+                                <SYMBOL-PROPS>
+                                    <SHORT-NAME>adcm</SHORT-NAME>
+                                    <SYMBOL>adcm</SYMBOL>
+                                </SYMBOL-PROPS>
+                            </NAMESPACES>
+                            <SUB-ELEMENTS>
+                                <CPP-IMPLEMENTATION-DATA-TYPE-ELEMENT>
+                                    <SHORT-NAME>Id</SHORT-NAME>
+                                    <TYPE-REFERENCE>
+                                        <INPLACE>false</INPLACE>
+                                        <TYPE-REFERENCE-REF DEST="STD-CPP-IMPLEMENTATION-DATA-TYPE">/adcm/CppImplementationDataTypes/String</TYPE-REFERENCE-REF>
+                                    </TYPE-REFERENCE>
+                                </CPP-IMPLEMENTATION-DATA-TYPE-ELEMENT>
+
+                                <CPP-IMPLEMENTATION-DATA-TYPE-ELEMENT>
+                                    <SHORT-NAME>Color</SHORT-NAME>
+                                    <TYPE-REFERENCE>
+                                        <INPLACE>false</INPLACE>
+                                        <TYPE-REFERENCE-REF DEST="STD-CPP-IMPLEMENTATION-DATA-TYPE">/adcm/events/trafficLightColor</TYPE-REFERENCE-REF>
+                                    </TYPE-REFERENCE>
+                                </CPP-IMPLEMENTATION-DATA-TYPE-ELEMENT>
+
+                                <CPP-IMPLEMENTATION-DATA-TYPE-ELEMENT>
+                                    <SHORT-NAME>Position</SHORT-NAME>
+                                    <TYPE-REFERENCE>
+                                        <INPLACE>false</INPLACE>
+                                        <TYPE-REFERENCE-REF DEST="STD-CPP-IMPLEMENTATION-DATA-TYPE">/adcm/CppImplementationDataTypes/BBox2D</TYPE-REFERENCE-REF>
+                                    </TYPE-REFERENCE>
+                                </CPP-IMPLEMENTATION-DATA-TYPE-ELEMENT>
+
+                                <CPP-IMPLEMENTATION-DATA-TYPE-ELEMENT>
+                                    <SHORT-NAME>CameraID</SHORT-NAME>
+                                    <TYPE-REFERENCE>
+                                        <INPLACE>false</INPLACE>
+                                        <TYPE-REFERENCE-REF DEST="STD-CPP-IMPLEMENTATION-DATA-TYPE">/AUTOSAR/StdTypes/int16_t</TYPE-REFERENCE-REF>
+                                    </TYPE-REFERENCE>
+                                </CPP-IMPLEMENTATION-DATA-TYPE-ELEMENT>
+
+                            </SUB-ELEMENTS>
+                            <TYPE-EMITTER>TYPE_EMITTER_ARA</TYPE-EMITTER>
+                        </STD-CPP-IMPLEMENTATION-DATA-TYPE>
+
+                        <STD-CPP-IMPLEMENTATION-DATA-TYPE>
+                            <SHORT-NAME>trafficLightColor</SHORT-NAME>
+                            <CATEGORY>TYPE_REFERENCE</CATEGORY>
+                            <SW-DATA-DEF-PROPS>
+                                <SW-DATA-DEF-PROPS-VARIANTS>
+                                    <SW-DATA-DEF-PROPS-CONDITIONAL>
+                                        <COMPU-METHOD-REF DEST="COMPU-METHOD">/adcm/events/trafficLightColorVariant</COMPU-METHOD-REF>
+                                    </SW-DATA-DEF-PROPS-CONDITIONAL>
+                                </SW-DATA-DEF-PROPS-VARIANTS>
+                            </SW-DATA-DEF-PROPS>
+                            <NAMESPACES>
+                                <SYMBOL-PROPS>
+                                    <SHORT-NAME>adcm</SHORT-NAME>
+                                    <SYMBOL>adcm</SYMBOL>
+                                </SYMBOL-PROPS>
+                            </NAMESPACES>
+                            <TYPE-EMITTER>TYPE_EMITTER_ARA</TYPE-EMITTER>
+                            <TYPE-REFERENCE-REF DEST="STD-CPP-IMPLEMENTATION-DATA-TYPE">/AUTOSAR/StdTypes/uint16_t</TYPE-REFERENCE-REF>
+                        </STD-CPP-IMPLEMENTATION-DATA-TYPE>
+                        <COMPU-METHOD>
+                            <SHORT-NAME>trafficLightColorVariant</SHORT-NAME>
+                            <CATEGORY>TEXTTABLE</CATEGORY>
+                            <COMPU-INTERNAL-TO-PHYS>
+                                <COMPU-SCALES>
+                                    <COMPU-SCALE>
+                                        <SYMBOL>UNKNOWN</SYMBOL>
+                                        <LOWER-LIMIT INTERVAL-TYPE="CLOSED">0x00</LOWER-LIMIT>
+                                        <UPPER-LIMIT INTERVAL-TYPE="CLOSED">0x00</UPPER-LIMIT>
+                                    </COMPU-SCALE>
+                                    <!-- "Blue" -->
+                                    <COMPU-SCALE>
+                                        <SYMBOL>GREEN</SYMBOL>
+                                        <LOWER-LIMIT INTERVAL-TYPE="CLOSED">0x50</LOWER-LIMIT>
+                                        <UPPER-LIMIT INTERVAL-TYPE="CLOSED">0x50</UPPER-LIMIT>
+                                    </COMPU-SCALE>
+                                    <!-- "Blue and Left arrow" -->
+                                    <COMPU-SCALE>
+                                        <SYMBOL>GREEN_LEFT_GREEN_ARROW</SYMBOL>
+                                        <LOWER-LIMIT INTERVAL-TYPE="CLOSED">0x51</LOWER-LIMIT>
+                                        <UPPER-LIMIT INTERVAL-TYPE="CLOSED">0x51</UPPER-LIMIT>
+                                    </COMPU-SCALE>
+                                    <!-- "Red" -->
+                                    <COMPU-SCALE>
+                                        <SYMBOL>RED</SYMBOL>
+                                        <LOWER-LIMIT INTERVAL-TYPE="CLOSED">0x52</LOWER-LIMIT>
+                                        <UPPER-LIMIT INTERVAL-TYPE="CLOSED">0x52</UPPER-LIMIT>
+                                    </COMPU-SCALE>
+                                    <!-- "Red and Left arrow" -->
+                                    <COMPU-SCALE>
+                                        <SYMBOL>RED_LEFT_GREEN_ARROW</SYMBOL>
+                                        <LOWER-LIMIT INTERVAL-TYPE="CLOSED">0x53</LOWER-LIMIT>
+                                        <UPPER-LIMIT INTERVAL-TYPE="CLOSED">0x53</UPPER-LIMIT>
+                                    </COMPU-SCALE>
+                                    <!-- "Yellow" -->
+                                    <COMPU-SCALE>
+                                        <SYMBOL>YELLOW</SYMBOL>
+                                        <LOWER-LIMIT INTERVAL-TYPE="CLOSED">0x55</LOWER-LIMIT>
+                                        <UPPER-LIMIT INTERVAL-TYPE="CLOSED">0x55</UPPER-LIMIT>
+                                    </COMPU-SCALE>
+                                    <!-- "Left arrow" -->
+                                    <COMPU-SCALE>
+                                        <SYMBOL>LEFT_GREEN_ARROW</SYMBOL>
+                                        <LOWER-LIMIT INTERVAL-TYPE="CLOSED">0x56</LOWER-LIMIT>
+                                        <UPPER-LIMIT INTERVAL-TYPE="CLOSED">0x56</UPPER-LIMIT>
+                                    </COMPU-SCALE>
+                                    <!-- "Red and Yellow" -->
+                                    <COMPU-SCALE>
+                                        <SYMBOL>RED_YELLOW</SYMBOL>
+                                        <LOWER-LIMIT INTERVAL-TYPE="CLOSED">0x57</LOWER-LIMIT>
+                                        <UPPER-LIMIT INTERVAL-TYPE="CLOSED">0x57</UPPER-LIMIT>
+                                    </COMPU-SCALE>
+                                    <!-- //"Blue and Yellow" -->
+                                    <COMPU-SCALE>
+                                        <SYMBOL>GREEN_YELLOW</SYMBOL>
+                                        <LOWER-LIMIT INTERVAL-TYPE="CLOSED">0x58</LOWER-LIMIT>
+                                        <UPPER-LIMIT INTERVAL-TYPE="CLOSED">0x58</UPPER-LIMIT>
+                                    </COMPU-SCALE>
+                                    <!-- "Yellow and Left arrow" -->
+                                    <COMPU-SCALE>
+                                        <SYMBOL>YELLOW_GREEN_LEFT_ARROW</SYMBOL> 
+                                        <LOWER-LIMIT INTERVAL-TYPE="CLOSED">0x59</LOWER-LIMIT>
+                                        <UPPER-LIMIT INTERVAL-TYPE="CLOSED">0x59</UPPER-LIMIT>
+                                    </COMPU-SCALE>
+                                    <!-- "No traffic signal" -->
+                                    <COMPU-SCALE>
+                                        <SYMBOL>OFF</SYMBOL>
+                                        <LOWER-LIMIT INTERVAL-TYPE="CLOSED">0x5A</LOWER-LIMIT>
+                                        <UPPER-LIMIT INTERVAL-TYPE="CLOSED">0x5A</UPPER-LIMIT>
+                                    </COMPU-SCALE>
+                                </COMPU-SCALES>
+                            </COMPU-INTERNAL-TO-PHYS>
+                        </COMPU-METHOD>
+                    </ELEMENTS>
+                </AR-PACKAGE>
+            </AR-PACKAGES>
+        </AR-PACKAGE>
+    </AR-PACKAGES>
+</AUTOSAR>

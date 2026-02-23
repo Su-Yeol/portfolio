@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<AUTOSAR xmlns="http://autosar.org/schema/r4.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://autosar.org/schema/r4.0 AUTOSAR_00052.xsd">
+  <AR-PACKAGES>
+    <AR-PACKAGE>
+      <SHORT-NAME>apd</SHORT-NAME>
+      <AR-PACKAGES>
+        <AR-PACKAGE>
+          <SHORT-NAME>diag</SHORT-NAME>
+          <ELEMENTS>
+            <!-- Corresponding SW component for the service interface -->
+            <ADAPTIVE-APPLICATION-SW-COMPONENT-TYPE>
+              <SHORT-NAME>SeedKeyProvider</SHORT-NAME>
+              <PORTS>
+                <P-PORT-PROTOTYPE>
+                  <SHORT-NAME>port</SHORT-NAME>
+                  <PROVIDED-INTERFACE-TREF DEST="SERVICE-INTERFACE">/ara/diag/SecurityAccess</PROVIDED-INTERFACE-TREF>
+                </P-PORT-PROTOTYPE>
+              </PORTS>
+            </ADAPTIVE-APPLICATION-SW-COMPONENT-TYPE>
+            <!-- Executable/process mapping -->
+            <EXECUTABLE>
+              <SHORT-NAME>SeedKeyExe</SHORT-NAME>
+              <ROOT-SW-COMPONENT-PROTOTYPE>
+                <SHORT-NAME>service</SHORT-NAME>
+                <APPLICATION-TYPE-TREF DEST="ADAPTIVE-APPLICATION-SW-COMPONENT-TYPE">/apd/diag/SeedKeyProvider</APPLICATION-TYPE-TREF>
+              </ROOT-SW-COMPONENT-PROTOTYPE>
+            </EXECUTABLE>
+            <PROCESS>
+              <SHORT-NAME>SeedKey_instance</SHORT-NAME>
+              <DESIGN-REF DEST="PROCESS-DESIGN">/apd/diag/SeedKey_instance_design</DESIGN-REF>
+              <EXECUTABLE-REFS>
+                <EXECUTABLE-REF DEST="EXECUTABLE">/apd/diag/SeedKeyExe</EXECUTABLE-REF>
+              </EXECUTABLE-REFS>
+            </PROCESS>
+            <PROCESS-DESIGN>
+              <SHORT-NAME>SeedKey_instance_design</SHORT-NAME>
+              <EXECUTABLE-REFS>
+                <EXECUTABLE-REF DEST="EXECUTABLE">/apd/diag/SeedKeyExe</EXECUTABLE-REF>
+              </EXECUTABLE-REFS>
+            </PROCESS-DESIGN>
+            <PROCESS-TO-MACHINE-MAPPING-SET>
+              <SHORT-NAME>ProcessToMachineMappingSet</SHORT-NAME>
+              <PROCESS-TO-MACHINE-MAPPINGS>
+                <PROCESS-TO-MACHINE-MAPPING>
+                  <SHORT-NAME>SeedKeyInstanceProcessMapping</SHORT-NAME>
+                  <MACHINE-REF DEST="MACHINE">/ara/diag/applications/dmMachine</MACHINE-REF>
+                  <PROCESS-REF DEST="PROCESS">/apd/diag/SeedKey_instance</PROCESS-REF>
+                </PROCESS-TO-MACHINE-MAPPING>
+              </PROCESS-TO-MACHINE-MAPPINGS>
+            </PROCESS-TO-MACHINE-MAPPING-SET>
+          </ELEMENTS>
+        </AR-PACKAGE>
+      </AR-PACKAGES>
+    </AR-PACKAGE>
+  </AR-PACKAGES>
+</AUTOSAR>

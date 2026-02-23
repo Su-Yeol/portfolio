@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<AUTOSAR xmlns="http://autosar.org/schema/r4.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://autosar.org/schema/r4.0 AUTOSAR_00052.xsd">
+  <AR-PACKAGES>
+    <AR-PACKAGE>
+      <SHORT-NAME>apd</SHORT-NAME>
+      <AR-PACKAGES>
+        <AR-PACKAGE>
+          <SHORT-NAME>Machines</SHORT-NAME>
+          <AR-PACKAGES>
+            <AR-PACKAGE>
+              <SHORT-NAME>FusionMachine</SHORT-NAME>
+              <AR-PACKAGES>
+                <AR-PACKAGE>
+                  <SHORT-NAME>PersistencyKeyValueStorages</SHORT-NAME>
+                  <ELEMENTS>
+                    <PERSISTENCY-KEY-VALUE-STORAGE>
+                      <SHORT-NAME>SwPackageCurrentStatusDatabase</SHORT-NAME>
+                      <DEPLOYMENT-URIS>
+                        <PERSISTENCY-DEPLOYMENT-URI>
+                          <URI>/opt/package_manager/var/swpackage_current_status_database.json</URI>
+                        </PERSISTENCY-DEPLOYMENT-URI>
+                      </DEPLOYMENT-URIS>
+                    </PERSISTENCY-KEY-VALUE-STORAGE>
+                    <PERSISTENCY-KEY-VALUE-STORAGE>
+                      <SHORT-NAME>SwPackageTransferStatusStorageForPackageManager</SHORT-NAME>
+                      <DEPLOYMENT-URIS>
+                        <PERSISTENCY-DEPLOYMENT-URI>
+                          <URI>/opt/package_manager/var/swpackage_transfer_status_database.json</URI>
+                        </PERSISTENCY-DEPLOYMENT-URI>
+                      </DEPLOYMENT-URIS>
+                    </PERSISTENCY-KEY-VALUE-STORAGE>
+                  </ELEMENTS>
+                </AR-PACKAGE>
+                <AR-PACKAGE>
+                  <SHORT-NAME>PersistentPortPrototypeToKeyValueStorageMappings</SHORT-NAME>
+                  <ELEMENTS>
+                    <PERSISTENCY-PORT-PROTOTYPE-TO-KEY-VALUE-STORAGE-MAPPING>
+                      <SHORT-NAME>SwPackageCurrentStatusToPortMapping</SHORT-NAME>
+                      <PORT-PROTOTYPE-IREF>
+                        <TARGET-PORT-PROTOTYPE-REF DEST="PR-PORT-PROTOTYPE">/apd/AdaptiveApplicationSwComponentTypes/package_manager/SwPackageCurrentStatusPRPort</TARGET-PORT-PROTOTYPE-REF>
+                      </PORT-PROTOTYPE-IREF>
+                      <PROCESS-REF DEST="PROCESS">/apd/Machines/FusionMachine/Processes/package_manager</PROCESS-REF>
+                      <KEY-VALUE-STORAGE-REF DEST="PERSISTENCY-KEY-VALUE-STORAGE">/apd/Machines/FusionMachine/PersistencyKeyValueStorages/SwPackageCurrentStatusDatabase</KEY-VALUE-STORAGE-REF>
+                    </PERSISTENCY-PORT-PROTOTYPE-TO-KEY-VALUE-STORAGE-MAPPING>
+                    <PERSISTENCY-PORT-PROTOTYPE-TO-KEY-VALUE-STORAGE-MAPPING>
+                      <SHORT-NAME>SwPackageTransferStatusStorageToPortMappingForPackageManager</SHORT-NAME>
+                      <PORT-PROTOTYPE-IREF>
+                        <TARGET-PORT-PROTOTYPE-REF DEST="PR-PORT-PROTOTYPE">/apd/AdaptiveApplicationSwComponentTypes/package_manager/SwPackageTransferStatusPRPort</TARGET-PORT-PROTOTYPE-REF>
+                      </PORT-PROTOTYPE-IREF>
+                      <PROCESS-REF DEST="PROCESS">/apd/Machines/FusionMachine/Processes/package_manager</PROCESS-REF>
+                      <KEY-VALUE-STORAGE-REF DEST="PERSISTENCY-KEY-VALUE-STORAGE">/apd/Machines/FusionMachine/PersistencyKeyValueStorages/SwPackageTransferStatusStorageForPackageManager</KEY-VALUE-STORAGE-REF>
+                    </PERSISTENCY-PORT-PROTOTYPE-TO-KEY-VALUE-STORAGE-MAPPING>
+                  </ELEMENTS>
+                </AR-PACKAGE>
+                <AR-PACKAGE>
+                  <SHORT-NAME>ProcessToMachineMappings</SHORT-NAME>
+                  <ELEMENTS>
+                    <PROCESS-TO-MACHINE-MAPPING-SET>
+                      <SHORT-NAME>package_manager</SHORT-NAME>
+                      <PROCESS-TO-MACHINE-MAPPINGS>
+                        <PROCESS-TO-MACHINE-MAPPING>
+                          <SHORT-NAME>package_manager</SHORT-NAME>
+                          <MACHINE-REF DEST="MACHINE">/apd/Machines/FusionMachine/FusionMachine</MACHINE-REF>
+                          <PROCESS-REF DEST="PROCESS">/apd/Machines/FusionMachine/Processes/package_manager</PROCESS-REF>
+                        </PROCESS-TO-MACHINE-MAPPING>
+                      </PROCESS-TO-MACHINE-MAPPINGS>
+                    </PROCESS-TO-MACHINE-MAPPING-SET>
+                  </ELEMENTS>
+                </AR-PACKAGE>
+                <AR-PACKAGE>
+                  <SHORT-NAME>DltLogChannelToProcessMappings</SHORT-NAME>
+                  <ELEMENTS>
+                    <DLT-APPLICATION-TO-PROCESS-MAPPING>
+                      <SHORT-NAME>package_managerDltApplicationToProcessMapping</SHORT-NAME>
+                      <DLT-APPLICATION-REF DEST="DLT-APPLICATION">/apd/Machines/FusionMachine/Dlt/FusionMachineDltEcu/PackageManager</DLT-APPLICATION-REF>
+                      <PROCESS-REF DEST="PROCESS">/apd/Machines/FusionMachine/Processes/package_manager</PROCESS-REF>
+                    </DLT-APPLICATION-TO-PROCESS-MAPPING>
+                    <DLT-LOG-SINK-TO-PORT-PROTOTYPE-MAPPING>
+                      <SHORT-NAME>package_managerDltLogSinkToPortPrototypeMapping</SHORT-NAME>
+                      <DLT-CONTEXT-REF DEST="DLT-CONTEXT">/apd/Dlt/DefaultDltContext</DLT-CONTEXT-REF>
+                      <DLT-LOG-SINK-REFS>
+                        <DLT-LOG-SINK-REF DEST="DLT-LOG-SINK">/apd/Machines/FusionMachine/Dlt/ConsoleDltSink</DLT-LOG-SINK-REF>
+                        <DLT-LOG-SINK-REF DEST="DLT-LOG-SINK">/apd/Dlt/PackageManagerFileDltSink</DLT-LOG-SINK-REF>
+                        <DLT-LOG-SINK-REF DEST="DLT-LOG-SINK">/apd/Dlt/RemoteDltSink</DLT-LOG-SINK-REF>
+                      </DLT-LOG-SINK-REFS>
+                      <PROCESS-REF DEST="PROCESS">/apd/Machines/FusionMachine/Processes/package_manager</PROCESS-REF>
+                    </DLT-LOG-SINK-TO-PORT-PROTOTYPE-MAPPING>
+                  </ELEMENTS>
+                </AR-PACKAGE>
+                <AR-PACKAGE>
+                  <SHORT-NAME>Processes</SHORT-NAME>
+                  <ELEMENTS>
+                    <PROCESS>
+                      <SHORT-NAME>package_manager</SHORT-NAME>
+                      <EXECUTABLE-REFS>
+                        <EXECUTABLE-REF DEST="EXECUTABLE">/apd/Executables/package_manager</EXECUTABLE-REF>
+                      </EXECUTABLE-REFS>
+                      <PROCESS-STATE-MACHINE>
+                        <SHORT-NAME>state_machine</SHORT-NAME>
+                        <TYPE-TREF DEST="MODE-DECLARATION-GROUP">/apd/ModeDeclarationGroups/ProcessStateMachine</TYPE-TREF>
+                      </PROCESS-STATE-MACHINE>
+                      <STATE-DEPENDENT-STARTUP-CONFIGS>
+                        <STATE-DEPENDENT-STARTUP-CONFIG>
+                          <EXECUTION-DEPENDENCYS>
+                            <EXECUTION-DEPENDENCY>
+                              <PROCESS-STATE-IREF>
+                                <CONTEXT-MODE-DECLARATION-GROUP-PROTOTYPE-REF DEST="MODE-DECLARATION-GROUP-PROTOTYPE">/apd/Machines/FusionMachine/Processes/StateManager/state_machine</CONTEXT-MODE-DECLARATION-GROUP-PROTOTYPE-REF>
+                                <TARGET-MODE-DECLARATION-REF DEST="MODE-DECLARATION">/apd/ModeDeclarationGroups/ProcessStateMachine/Running</TARGET-MODE-DECLARATION-REF>
+                              </PROCESS-STATE-IREF>
+                            </EXECUTION-DEPENDENCY>
+                          </EXECUTION-DEPENDENCYS>
+                          <FUNCTION-GROUP-STATE-IREFS>
+                            <FUNCTION-GROUP-STATE-IREF>
+                              <CONTEXT-MODE-DECLARATION-GROUP-PROTOTYPE-REF DEST="MODE-DECLARATION-GROUP-PROTOTYPE">/apd/Machines/FusionMachine/FunctionGroupSets/FusionFunctionGroups/MachineFG</CONTEXT-MODE-DECLARATION-GROUP-PROTOTYPE-REF>
+                              <TARGET-MODE-DECLARATION-REF DEST="MODE-DECLARATION">/apd/ModeDeclarationGroups/MachineState/Driving</TARGET-MODE-DECLARATION-REF>
+                            </FUNCTION-GROUP-STATE-IREF>
+                          </FUNCTION-GROUP-STATE-IREFS>
+                          <RESOURCE-GROUP-REF DEST="RESOURCE-GROUP">/apd/Machines/FusionMachine/FusionMachine/Linux/ResourceGroup1</RESOURCE-GROUP-REF>
+                          <STARTUP-CONFIG-REF DEST="STARTUP-CONFIG">/apd/Machines/FusionMachine/startup_configs/package_manager_startup</STARTUP-CONFIG-REF>
+                        </STATE-DEPENDENT-STARTUP-CONFIG>
+                      </STATE-DEPENDENT-STARTUP-CONFIGS>
+                    </PROCESS>
+                  </ELEMENTS>
+                </AR-PACKAGE>
+                <AR-PACKAGE>
+                  <SHORT-NAME>ServiceInstanceToPortPrototypeMappings</SHORT-NAME>
+                  <ELEMENTS>
+                    <SERVICE-INSTANCE-TO-PORT-PROTOTYPE-MAPPING>
+                      <SHORT-NAME>PackageManagementInstanceToPortMapping</SHORT-NAME>
+                      <PORT-PROTOTYPE-IREF>
+                        <TARGET-PORT-PROTOTYPE-REF DEST="P-PORT-PROTOTYPE">/apd/AdaptiveApplicationSwComponentTypes/package_manager/PackageManagementPPort</TARGET-PORT-PROTOTYPE-REF>
+                      </PORT-PROTOTYPE-IREF>
+                      <PROCESS-REF DEST="PROCESS">/apd/Machines/FusionMachine/Processes/package_manager</PROCESS-REF>
+                      <SERVICE-INSTANCE-REF DEST="PROVIDED-SOMEIP-SERVICE-INSTANCE">/apd/Machines/FusionMachine/ServiceInstances/SomeIpPackageManagementInstance</SERVICE-INSTANCE-REF>
+                    </SERVICE-INSTANCE-TO-PORT-PROTOTYPE-MAPPING>
+                    <SERVICE-INSTANCE-TO-PORT-PROTOTYPE-MAPPING>
+                      <SHORT-NAME>RequiredUpdateRequestPortMapping</SHORT-NAME>
+                      <PORT-PROTOTYPE-IREF>
+                        <TARGET-PORT-PROTOTYPE-REF DEST="R-PORT-PROTOTYPE">/apd/AdaptiveApplicationSwComponentTypes/package_manager/UpdateRequestRPort</TARGET-PORT-PROTOTYPE-REF>
+                      </PORT-PROTOTYPE-IREF>
+                      <PROCESS-REF DEST="PROCESS">/apd/Machines/FusionMachine/Processes/package_manager</PROCESS-REF>
+                      <SERVICE-INSTANCE-REF DEST="REQUIRED-SOMEIP-SERVICE-INSTANCE">/apd/Machines/FusionMachine/ServiceInstances/UpdateRequest_RequiredSomeipServiceInstance</SERVICE-INSTANCE-REF>
+                    </SERVICE-INSTANCE-TO-PORT-PROTOTYPE-MAPPING>
+                  </ELEMENTS>
+                </AR-PACKAGE>
+                <AR-PACKAGE>
+                  <SHORT-NAME>startup_configs</SHORT-NAME>
+                  <ELEMENTS>
+                    <STARTUP-CONFIG>
+                      <SHORT-NAME>package_manager_startup</SHORT-NAME>
+                      <SCHEDULING-POLICY>SCHEDULING-POLICY-ROUND-ROBIN</SCHEDULING-POLICY>
+                      <SCHEDULING-PRIORITY>12</SCHEDULING-PRIORITY>
+                      <TERMINATION-BEHAVIOR>PROCESS-IS-NOT-SELF-TERMINATING</TERMINATION-BEHAVIOR>
+                    </STARTUP-CONFIG>
+                  </ELEMENTS>
+                </AR-PACKAGE>
+              </AR-PACKAGES>
+            </AR-PACKAGE>
+          </AR-PACKAGES>
+        </AR-PACKAGE>
+      </AR-PACKAGES>
+    </AR-PACKAGE>
+  </AR-PACKAGES>
+</AUTOSAR>

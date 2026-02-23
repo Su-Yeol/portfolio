@@ -1,0 +1,209 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<AUTOSAR xmlns="http://autosar.org/schema/r4.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://autosar.org/schema/r4.0 AUTOSAR_00052.xsd">
+  <AR-PACKAGES>
+    <AR-PACKAGE>
+      <SHORT-NAME>apd</SHORT-NAME>
+      <AR-PACKAGES>
+        <AR-PACKAGE>
+          <SHORT-NAME>CompuMethods</SHORT-NAME>
+          <ELEMENTS>
+            <COMPU-METHOD>
+              <SHORT-NAME>TlvStateDefs</SHORT-NAME>
+              <CATEGORY>TEXTTABLE</CATEGORY>
+              <COMPU-INTERNAL-TO-PHYS>
+                <COMPU-SCALES>
+                  <COMPU-SCALE>
+                    <SHORT-LABEL>Available</SHORT-LABEL>
+                    <SYMBOL>RS_AVAILABLE</SYMBOL>
+                    <LOWER-LIMIT INTERVAL-TYPE="CLOSED">0x01</LOWER-LIMIT>
+                    <UPPER-LIMIT INTERVAL-TYPE="CLOSED">0x01</UPPER-LIMIT>
+                    <COMPU-CONST>
+                      <VT>RS_AVAILABLE</VT>
+                    </COMPU-CONST>
+                  </COMPU-SCALE>
+                  <COMPU-SCALE>
+                    <SHORT-LABEL>OFF</SHORT-LABEL>
+                    <SYMBOL>RS_OFF</SYMBOL>
+                    <LOWER-LIMIT INTERVAL-TYPE="CLOSED">0x03</LOWER-LIMIT>
+                    <UPPER-LIMIT INTERVAL-TYPE="CLOSED">0x03</UPPER-LIMIT>
+                    <COMPU-CONST>
+                      <VT>RS_OFF</VT>
+                    </COMPU-CONST>
+                  </COMPU-SCALE>
+                </COMPU-SCALES>
+              </COMPU-INTERNAL-TO-PHYS>
+            </COMPU-METHOD>
+          </ELEMENTS>
+        </AR-PACKAGE>
+        <AR-PACKAGE>
+          <SHORT-NAME>TlvDataIdDefinitionSet</SHORT-NAME>
+          <ELEMENTS>
+            <TLV-DATA-ID-DEFINITION-SET>
+              <SHORT-NAME>TlvDataIdDefinition_State</SHORT-NAME>
+              <TLV-DATA-ID-DEFINITIONS>
+                <TLV-DATA-ID-DEFINITION>
+                  <ID>0</ID>
+                  <TLV-IMPLEMENTATION-DATA-TYPE-ELEMENT-REF DEST="CPP-IMPLEMENTATION-DATA-TYPE-ELEMENT">/apd/CppImplementationDataTypes/TlvState/temperature</TLV-IMPLEMENTATION-DATA-TYPE-ELEMENT-REF>
+                </TLV-DATA-ID-DEFINITION>
+                <TLV-DATA-ID-DEFINITION>
+                  <ID>1</ID>
+                  <TLV-IMPLEMENTATION-DATA-TYPE-ELEMENT-REF DEST="CPP-IMPLEMENTATION-DATA-TYPE-ELEMENT">/apd/CppImplementationDataTypes/TlvState/voltage</TLV-IMPLEMENTATION-DATA-TYPE-ELEMENT-REF>
+                </TLV-DATA-ID-DEFINITION>
+                <TLV-DATA-ID-DEFINITION>
+                  <ID>2</ID>
+                  <TLV-IMPLEMENTATION-DATA-TYPE-ELEMENT-REF DEST="CPP-IMPLEMENTATION-DATA-TYPE-ELEMENT">/apd/CppImplementationDataTypes/TlvState/current</TLV-IMPLEMENTATION-DATA-TYPE-ELEMENT-REF>
+                </TLV-DATA-ID-DEFINITION>
+                <TLV-DATA-ID-DEFINITION>
+                  <ID>3</ID>
+                  <TLV-IMPLEMENTATION-DATA-TYPE-ELEMENT-REF DEST="CPP-IMPLEMENTATION-DATA-TYPE-ELEMENT">/apd/CppImplementationDataTypes/TlvState/state</TLV-IMPLEMENTATION-DATA-TYPE-ELEMENT-REF>
+                </TLV-DATA-ID-DEFINITION>
+              </TLV-DATA-ID-DEFINITIONS>
+            </TLV-DATA-ID-DEFINITION-SET>
+          </ELEMENTS>
+        </AR-PACKAGE>
+        <AR-PACKAGE>
+          <SHORT-NAME>TransformationToServiceInterfaceElementMapping</SHORT-NAME>
+          <ELEMENTS>
+            <TRANSFORMATION-PROPS-TO-SERVICE-INTERFACE-ELEMENT-MAPPING>
+              <SHORT-NAME>tlv_TransformationProps_Mapping</SHORT-NAME>
+              <METHOD-RETURN-REFS>
+                <METHOD-RETURN-REF DEST="CLIENT-SERVER-OPERATION">/apd/ServiceInterfaces/tlv/State</METHOD-RETURN-REF>
+              </METHOD-RETURN-REFS>
+              <TLV-DATA-ID-DEFINITION-REFS>
+                <TLV-DATA-ID-DEFINITION-REF DEST="TLV-DATA-ID-DEFINITION-SET">/apd/TlvDataIdDefinitionSet/TlvDataIdDefinition_State</TLV-DATA-ID-DEFINITION-REF>
+              </TLV-DATA-ID-DEFINITION-REFS>
+              <TRANSFORMATION-PROPS-REF DEST="AP-SOMEIP-TRANSFORMATION-PROPS">/apd/TransformationToServiceInterfaceElementMapping/TransformationPropsSet/tlv_State_TransformationProps</TRANSFORMATION-PROPS-REF>
+            </TRANSFORMATION-PROPS-TO-SERVICE-INTERFACE-ELEMENT-MAPPING>
+            <TRANSFORMATION-PROPS-SET>
+              <SHORT-NAME>TransformationPropsSet</SHORT-NAME>
+              <TRANSFORMATION-PROPSS>
+                <AP-SOMEIP-TRANSFORMATION-PROPS>
+                  <SHORT-NAME>tlv_State_TransformationProps</SHORT-NAME>
+                  <IS-DYNAMIC-LENGTH-FIELD-SIZE>false</IS-DYNAMIC-LENGTH-FIELD-SIZE>
+                  <SIZE-OF-STRUCT-LENGTH-FIELD>2</SIZE-OF-STRUCT-LENGTH-FIELD>
+                </AP-SOMEIP-TRANSFORMATION-PROPS>
+              </TRANSFORMATION-PROPSS>
+            </TRANSFORMATION-PROPS-SET>
+          </ELEMENTS>
+        </AR-PACKAGE>
+        <AR-PACKAGE>
+          <SHORT-NAME>CppImplementationDataTypes</SHORT-NAME>
+          <ELEMENTS>
+            <STD-CPP-IMPLEMENTATION-DATA-TYPE>
+              <SHORT-NAME>TlvStateDefs</SHORT-NAME>
+              <CATEGORY>TYPE_REFERENCE</CATEGORY>
+              <SW-DATA-DEF-PROPS>
+                <SW-DATA-DEF-PROPS-VARIANTS>
+                  <SW-DATA-DEF-PROPS-CONDITIONAL>
+                    <COMPU-METHOD-REF DEST="COMPU-METHOD">/apd/CompuMethods/TlvStateDefs</COMPU-METHOD-REF>
+                  </SW-DATA-DEF-PROPS-CONDITIONAL>
+                </SW-DATA-DEF-PROPS-VARIANTS>
+              </SW-DATA-DEF-PROPS>
+              <NAMESPACES>
+                <SYMBOL-PROPS>
+                  <SHORT-NAME>ara</SHORT-NAME>
+                  <SYMBOL>ara</SYMBOL>
+                </SYMBOL-PROPS>
+                <SYMBOL-PROPS>
+                  <SHORT-NAME>com</SHORT-NAME>
+                  <SYMBOL>com</SYMBOL>
+                </SYMBOL-PROPS>
+                <SYMBOL-PROPS>
+                  <SHORT-NAME>sample</SHORT-NAME>
+                  <SYMBOL>sample</SYMBOL>
+                </SYMBOL-PROPS>
+              </NAMESPACES>
+              <TYPE-EMITTER>TYPE_EMITTER_ARA</TYPE-EMITTER>
+              <TYPE-REFERENCE-REF DEST="STD-CPP-IMPLEMENTATION-DATA-TYPE">/AUTOSAR/StdTypes/uint16_t</TYPE-REFERENCE-REF>
+            </STD-CPP-IMPLEMENTATION-DATA-TYPE>
+            <STD-CPP-IMPLEMENTATION-DATA-TYPE>
+              <SHORT-NAME>TlvState</SHORT-NAME>
+              <CATEGORY>STRUCTURE</CATEGORY>
+              <NAMESPACES>
+                <SYMBOL-PROPS>
+                  <SHORT-NAME>ara</SHORT-NAME>
+                  <SYMBOL>ara</SYMBOL>
+                </SYMBOL-PROPS>
+                <SYMBOL-PROPS>
+                  <SHORT-NAME>com</SHORT-NAME>
+                  <SYMBOL>com</SYMBOL>
+                </SYMBOL-PROPS>
+                <SYMBOL-PROPS>
+                  <SHORT-NAME>sample</SHORT-NAME>
+                  <SYMBOL>sample</SYMBOL>
+                </SYMBOL-PROPS>
+              </NAMESPACES>
+              <SUB-ELEMENTS>
+                <CPP-IMPLEMENTATION-DATA-TYPE-ELEMENT>
+                  <SHORT-NAME>temperature</SHORT-NAME>
+                  <TYPE-REFERENCE>
+                    <INPLACE>false</INPLACE>
+                    <TYPE-REFERENCE-REF DEST="STD-CPP-IMPLEMENTATION-DATA-TYPE">/AUTOSAR/StdTypes/float</TYPE-REFERENCE-REF>
+                  </TYPE-REFERENCE>
+                </CPP-IMPLEMENTATION-DATA-TYPE-ELEMENT>
+                <CPP-IMPLEMENTATION-DATA-TYPE-ELEMENT>
+                  <SHORT-NAME>voltage</SHORT-NAME>
+                  <TYPE-REFERENCE>
+                    <INPLACE>false</INPLACE>
+                    <TYPE-REFERENCE-REF DEST="STD-CPP-IMPLEMENTATION-DATA-TYPE">/AUTOSAR/StdTypes/float</TYPE-REFERENCE-REF>
+                  </TYPE-REFERENCE>
+                </CPP-IMPLEMENTATION-DATA-TYPE-ELEMENT>
+                <CPP-IMPLEMENTATION-DATA-TYPE-ELEMENT>
+                  <SHORT-NAME>current</SHORT-NAME>
+                  <IS-OPTIONAL>true</IS-OPTIONAL>
+                  <TYPE-REFERENCE>
+                    <INPLACE>false</INPLACE>
+                    <TYPE-REFERENCE-REF DEST="STD-CPP-IMPLEMENTATION-DATA-TYPE">/AUTOSAR/StdTypes/float</TYPE-REFERENCE-REF>
+                  </TYPE-REFERENCE>
+                </CPP-IMPLEMENTATION-DATA-TYPE-ELEMENT>
+                <CPP-IMPLEMENTATION-DATA-TYPE-ELEMENT>
+                  <SHORT-NAME>state</SHORT-NAME>
+                  <IS-OPTIONAL>true</IS-OPTIONAL>
+                  <TYPE-REFERENCE>
+                    <INPLACE>false</INPLACE>
+                    <TYPE-REFERENCE-REF DEST="STD-CPP-IMPLEMENTATION-DATA-TYPE">/apd/CppImplementationDataTypes/TlvStateDefs</TYPE-REFERENCE-REF>
+                  </TYPE-REFERENCE>
+                </CPP-IMPLEMENTATION-DATA-TYPE-ELEMENT>
+              </SUB-ELEMENTS>
+              <TYPE-EMITTER>TYPE_EMITTER_ARA</TYPE-EMITTER>
+            </STD-CPP-IMPLEMENTATION-DATA-TYPE>
+          </ELEMENTS>
+        </AR-PACKAGE>
+        <AR-PACKAGE>
+          <SHORT-NAME>ServiceInterfaces</SHORT-NAME>
+          <ELEMENTS>
+            <SERVICE-INTERFACE>
+              <SHORT-NAME>tlv</SHORT-NAME>
+              <NAMESPACES>
+                <SYMBOL-PROPS>
+                  <SHORT-NAME>ara</SHORT-NAME>
+                  <SYMBOL>ara</SYMBOL>
+                </SYMBOL-PROPS>
+                <SYMBOL-PROPS>
+                  <SHORT-NAME>com</SHORT-NAME>
+                  <SYMBOL>com</SYMBOL>
+                </SYMBOL-PROPS>
+                <SYMBOL-PROPS>
+                  <SHORT-NAME>sample</SHORT-NAME>
+                  <SYMBOL>sample</SYMBOL>
+                </SYMBOL-PROPS>
+              </NAMESPACES>
+              <METHODS>
+                <CLIENT-SERVER-OPERATION>
+                  <SHORT-NAME>State</SHORT-NAME>
+                  <ARGUMENTS>
+                    <ARGUMENT-DATA-PROTOTYPE>
+                      <SHORT-NAME>state</SHORT-NAME>
+                      <TYPE-TREF DEST="STD-CPP-IMPLEMENTATION-DATA-TYPE">/apd/CppImplementationDataTypes/TlvState</TYPE-TREF>
+                      <DIRECTION>OUT</DIRECTION>
+                    </ARGUMENT-DATA-PROTOTYPE>
+                  </ARGUMENTS>
+                </CLIENT-SERVER-OPERATION>
+              </METHODS>
+            </SERVICE-INTERFACE>
+          </ELEMENTS>
+        </AR-PACKAGE>
+      </AR-PACKAGES>
+    </AR-PACKAGE>
+  </AR-PACKAGES>
+</AUTOSAR>

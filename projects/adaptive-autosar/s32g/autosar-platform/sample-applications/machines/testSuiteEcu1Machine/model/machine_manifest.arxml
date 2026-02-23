@@ -1,0 +1,580 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<AUTOSAR xmlns="http://autosar.org/schema/r4.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://autosar.org/schema/r4.0 AUTOSAR_00052.xsd">
+  <AR-PACKAGES>
+    <AR-PACKAGE>
+      <SHORT-NAME>apd</SHORT-NAME>
+      <AR-PACKAGES>
+        <AR-PACKAGE>
+          <!-- Machines -->
+          <SHORT-NAME>Machines</SHORT-NAME>
+          <AR-PACKAGES>
+            <AR-PACKAGE>
+              <SHORT-NAME>testSuiteEcu1Machine</SHORT-NAME>
+              <ELEMENTS>
+                <MACHINE>
+                  <!-- testSuiteEcu1Machine -->
+                  <SHORT-NAME>testSuiteEcu1Machine</SHORT-NAME>
+                  <DEFAULT-APPLICATION-TIMEOUT>
+                    <EXIT-TIMEOUT-VALUE>0.1</EXIT-TIMEOUT-VALUE>
+                  </DEFAULT-APPLICATION-TIMEOUT>
+                  <ENVIRONMENT-VARIABLES>
+                    <TAG-WITH-OPTIONAL-VALUE>
+                      <KEY>DLT_LOG_MODE</KEY>
+                      <VALUE>3</VALUE>
+                    </TAG-WITH-OPTIONAL-VALUE>
+                  </ENVIRONMENT-VARIABLES>
+                  <MACHINE-DESIGN-REF DEST="MACHINE-DESIGN">/apd/MachineDesigns/testSuiteEcu1MachineDesign</MACHINE-DESIGN-REF>
+                  <MODULE-INSTANTIATIONS>
+                    <!-- LogAndTraceInstanciation -->
+                    <LOG-AND-TRACE-INSTANTIATION>
+                      <SHORT-NAME>LogAndTraceInstanciation</SHORT-NAME>
+                      <DLT-ECU-REF DEST="DLT-ECU">/apd/Machines/testSuiteEcu1Machine/dlt/testSuiteEcu1MachineDltEcu</DLT-ECU-REF>
+                      <LOG-SINK-REFS>
+                        <LOG-SINK-REF DEST="DLT-LOG-SINK">/apd/Machines/testSuiteEcu1Machine/dlt/ConsoleDltSink</LOG-SINK-REF>
+                        <!--LOG-SINK-REF DEST="DLT-LOG-SINK">/apd/Dlt/RemoteDltSink</LOG-SINK-REF-->
+                      </LOG-SINK-REFS>
+                    </LOG-AND-TRACE-INSTANTIATION>
+                    <OS-MODULE-INSTANTIATION>
+                      <SHORT-NAME>Linux</SHORT-NAME>
+                      <RESOURCE-GROUPS>
+                        <RESOURCE-GROUP>
+                          <SHORT-NAME>ResourceGroup1</SHORT-NAME>
+                          <CPU-USAGE>95</CPU-USAGE>
+                          <MEM-USAGE>2000000000</MEM-USAGE>
+                        </RESOURCE-GROUP>
+                        <RESOURCE-GROUP>
+                          <SHORT-NAME>ResourceGroup2</SHORT-NAME>
+                          <CPU-USAGE>95</CPU-USAGE>
+                          <MEM-USAGE>2000000000</MEM-USAGE>
+                        </RESOURCE-GROUP>
+                        <RESOURCE-GROUP>
+                          <SHORT-NAME>ResourceGroupDB</SHORT-NAME>
+                          <CPU-USAGE>80</CPU-USAGE>
+                          <MEM-USAGE>500000000</MEM-USAGE>
+                        </RESOURCE-GROUP>
+                        <RESOURCE-GROUP>
+                          <SHORT-NAME>ResourceGroupDIAG</SHORT-NAME>
+                          <CPU-USAGE>80</CPU-USAGE>
+                          <MEM-USAGE>500000000</MEM-USAGE>
+                        </RESOURCE-GROUP>
+                        <RESOURCE-GROUP>
+                          <SHORT-NAME>ResourceGroupIAM</SHORT-NAME>
+                          <CPU-USAGE>80</CPU-USAGE>
+                          <MEM-USAGE>500000000</MEM-USAGE>
+                        </RESOURCE-GROUP>
+                        <RESOURCE-GROUP>
+                          <SHORT-NAME>ResourceGroupSM</SHORT-NAME>
+                          <CPU-USAGE>80</CPU-USAGE>
+                          <MEM-USAGE>500000000</MEM-USAGE>
+                        </RESOURCE-GROUP>
+                      </RESOURCE-GROUPS>
+                    </OS-MODULE-INSTANTIATION>
+                    <UCM-SUBORDINATE-MODULE-INSTANTIATION>
+                      <SHORT-NAME>UcmInstance</SHORT-NAME>
+                      <IDENTIFIER>DevelopmentMachineUCM</IDENTIFIER>
+                    </UCM-SUBORDINATE-MODULE-INSTANTIATION>
+                  </MODULE-INSTANTIATIONS>
+                </MACHINE>
+              </ELEMENTS>
+              <AR-PACKAGES>
+                <AR-PACKAGE>
+                  <!-- ModeDeclarationGroups -->
+                  <SHORT-NAME>ModeDeclarationGroups</SHORT-NAME>
+                  <ELEMENTS>
+                    <MODE-DECLARATION-GROUP>
+                      <SHORT-NAME>TestSuiteECU1MachineState</SHORT-NAME>
+                      <INITIAL-MODE-REF DEST="MODE-DECLARATION">/apd/Machines/testSuiteEcu1Machine/ModeDeclarationGroups/TestSuiteECU1MachineState/Startup</INITIAL-MODE-REF>
+                      <MODE-DECLARATIONS>
+                        <MODE-DECLARATION>
+                          <SHORT-NAME>Driving</SHORT-NAME>
+                        </MODE-DECLARATION>
+                        <MODE-DECLARATION>
+                          <SHORT-NAME>Leaving</SHORT-NAME>
+                        </MODE-DECLARATION>
+                        <MODE-DECLARATION>
+                          <SHORT-NAME>Off</SHORT-NAME>
+                        </MODE-DECLARATION>
+                        <MODE-DECLARATION>
+                          <SHORT-NAME>Parking</SHORT-NAME>
+                        </MODE-DECLARATION>
+                        <MODE-DECLARATION>
+                          <SHORT-NAME>Restart</SHORT-NAME>
+                        </MODE-DECLARATION>
+                        <MODE-DECLARATION>
+                          <SHORT-NAME>Shutdown</SHORT-NAME>
+                        </MODE-DECLARATION>
+                        <MODE-DECLARATION>
+                          <SHORT-NAME>Startup</SHORT-NAME>
+                        </MODE-DECLARATION>
+                        <MODE-DECLARATION>
+                          <SHORT-NAME>Verify</SHORT-NAME>
+                        </MODE-DECLARATION>
+                      </MODE-DECLARATIONS>
+                    </MODE-DECLARATION-GROUP>
+                    <MODE-DECLARATION-GROUP>
+                      <SHORT-NAME>CM_Testcase_1</SHORT-NAME>
+                      <INITIAL-MODE-REF DEST="MODE-DECLARATION">/apd/Machines/testSuiteEcu1Machine/ModeDeclarationGroups/CM_Testcase_1/Off</INITIAL-MODE-REF>
+                      <MODE-DECLARATIONS>
+                        <MODE-DECLARATION>
+                          <SHORT-NAME>Off</SHORT-NAME>
+                        </MODE-DECLARATION>
+                        <MODE-DECLARATION>
+                          <SHORT-NAME>On</SHORT-NAME>
+                        </MODE-DECLARATION>
+                        <MODE-DECLARATION>
+                          <SHORT-NAME>Shutdown</SHORT-NAME>
+                        </MODE-DECLARATION>
+                        <MODE-DECLARATION>
+                          <SHORT-NAME>Verify</SHORT-NAME>
+                        </MODE-DECLARATION>
+                      </MODE-DECLARATIONS>
+                    </MODE-DECLARATION-GROUP>
+                    <MODE-DECLARATION-GROUP>
+                      <SHORT-NAME>SystemTestFunctionGroup</SHORT-NAME>
+                      <INITIAL-MODE-REF DEST="MODE-DECLARATION">/apd/Machines/testSuiteEcu1Machine/ModeDeclarationGroups/SystemTestFunctionGroup/Off</INITIAL-MODE-REF>
+                      <MODE-DECLARATIONS>
+                        <MODE-DECLARATION>
+                          <SHORT-NAME>Off</SHORT-NAME>
+                        </MODE-DECLARATION>
+                        <MODE-DECLARATION>
+                          <SHORT-NAME>STS_DDS_00001</SHORT-NAME>
+                        </MODE-DECLARATION>
+                        <MODE-DECLARATION>
+                          <SHORT-NAME>STS_DDS_00002</SHORT-NAME>
+                        </MODE-DECLARATION>
+                        <MODE-DECLARATION>
+                          <SHORT-NAME>STS_DDS_00003</SHORT-NAME>
+                        </MODE-DECLARATION>
+                        <MODE-DECLARATION>
+                          <SHORT-NAME>STS_DDS_00004</SHORT-NAME>
+                        </MODE-DECLARATION>
+                        <MODE-DECLARATION>
+                          <SHORT-NAME>STS_CM_00001</SHORT-NAME>
+                        </MODE-DECLARATION>
+                        <MODE-DECLARATION>
+                          <SHORT-NAME>STS_CM_00003</SHORT-NAME>
+                        </MODE-DECLARATION>
+                        <MODE-DECLARATION>
+                          <SHORT-NAME>STS_CM_00004</SHORT-NAME>
+                        </MODE-DECLARATION>
+                        <MODE-DECLARATION>
+                          <SHORT-NAME>STC_EMO_00001_Driving</SHORT-NAME>
+                        </MODE-DECLARATION>
+                        <MODE-DECLARATION>
+                          <SHORT-NAME>STC_EMO_00001_Parking</SHORT-NAME>
+                        </MODE-DECLARATION>
+                        <MODE-DECLARATION>
+                          <SHORT-NAME>STC_EMO_00001_Shutdown</SHORT-NAME>
+                        </MODE-DECLARATION>
+                        <MODE-DECLARATION>
+                          <SHORT-NAME>STC_EMO_00001_Startup</SHORT-NAME>
+                        </MODE-DECLARATION>
+                        <MODE-DECLARATION>
+                          <SHORT-NAME>STC_EMO_00001_Restart</SHORT-NAME>
+                        </MODE-DECLARATION>
+                        <MODE-DECLARATION>
+                          <SHORT-NAME>STC_EMO_00002_Driving</SHORT-NAME>
+                        </MODE-DECLARATION>
+                        <MODE-DECLARATION>
+                          <SHORT-NAME>STC_EMO_00002_Parking</SHORT-NAME>
+                        </MODE-DECLARATION>
+                        <MODE-DECLARATION>
+                          <SHORT-NAME>STC_EMO_00002_Shutdown</SHORT-NAME>
+                        </MODE-DECLARATION>
+                        <MODE-DECLARATION>
+                          <SHORT-NAME>STC_EMO_00002_Startup</SHORT-NAME>
+                        </MODE-DECLARATION>
+                        <MODE-DECLARATION>
+                          <SHORT-NAME>STC_EMO_00002_Restart</SHORT-NAME>
+                        </MODE-DECLARATION>
+                        <MODE-DECLARATION>
+                          <SHORT-NAME>Shutdown</SHORT-NAME>
+                        </MODE-DECLARATION>
+                        <MODE-DECLARATION>
+                          <SHORT-NAME>Verify</SHORT-NAME>
+                        </MODE-DECLARATION>
+                      </MODE-DECLARATIONS>
+                    </MODE-DECLARATION-GROUP>
+                    <MODE-DECLARATION-GROUP>
+                      <SHORT-NAME>SystemTestFunctionGroup1</SHORT-NAME>
+                      <INITIAL-MODE-REF DEST="MODE-DECLARATION">/apd/Machines/testSuiteEcu1Machine/ModeDeclarationGroups/SystemTestFunctionGroup1/Off</INITIAL-MODE-REF>
+                      <MODE-DECLARATIONS>
+                        <MODE-DECLARATION>
+                          <SHORT-NAME>Off</SHORT-NAME>
+                        </MODE-DECLARATION>
+                        <MODE-DECLARATION>
+                          <SHORT-NAME>STC_EMO_00002_Running</SHORT-NAME>
+                        </MODE-DECLARATION>
+                        <MODE-DECLARATION>
+                          <SHORT-NAME>STC_EMO_00002_Fallback</SHORT-NAME>
+                        </MODE-DECLARATION>
+                        <MODE-DECLARATION>
+                          <SHORT-NAME>STC_EMO_00002_Diag</SHORT-NAME>
+                        </MODE-DECLARATION>
+                        <MODE-DECLARATION>
+                          <SHORT-NAME>Shutdown</SHORT-NAME>
+                        </MODE-DECLARATION>
+                        <MODE-DECLARATION>
+                          <SHORT-NAME>Verify</SHORT-NAME>
+                        </MODE-DECLARATION>
+                      </MODE-DECLARATIONS>
+                    </MODE-DECLARATION-GROUP>
+                    <MODE-DECLARATION-GROUP>
+                      <SHORT-NAME>SystemTestFunctionGroup2</SHORT-NAME>
+                      <INITIAL-MODE-REF DEST="MODE-DECLARATION">/apd/Machines/testSuiteEcu1Machine/ModeDeclarationGroups/SystemTestFunctionGroup2/Off</INITIAL-MODE-REF>
+                      <MODE-DECLARATIONS>
+                        <MODE-DECLARATION>
+                          <SHORT-NAME>Off</SHORT-NAME>
+                        </MODE-DECLARATION>
+                        <MODE-DECLARATION>
+                          <SHORT-NAME>STC_EMO_00002_On</SHORT-NAME>
+                        </MODE-DECLARATION>
+                        <MODE-DECLARATION>
+                          <SHORT-NAME>STC_EMO_00002_Activate</SHORT-NAME>
+                        </MODE-DECLARATION>
+                        <MODE-DECLARATION>
+                          <SHORT-NAME>Verify</SHORT-NAME>
+                        </MODE-DECLARATION>
+                      </MODE-DECLARATIONS>
+                    </MODE-DECLARATION-GROUP>
+                  </ELEMENTS>
+                </AR-PACKAGE>
+                <AR-PACKAGE>
+                  <!-- FunctionGroupSets -->
+                  <SHORT-NAME>FunctionGroupSets</SHORT-NAME>
+                  <ELEMENTS>
+                    <FUNCTION-GROUP-SET>
+                      <SHORT-NAME>testSuiteEcu1FunctionGroups</SHORT-NAME>
+                      <FUNCTION-GROUPS>
+                        <MODE-DECLARATION-GROUP-PROTOTYPE>
+                          <SHORT-NAME>MachineFG</SHORT-NAME>
+                          <TYPE-TREF DEST="MODE-DECLARATION-GROUP">/apd/Machines/testSuiteEcu1Machine/ModeDeclarationGroups/TestSuiteECU1MachineState</TYPE-TREF>
+                        </MODE-DECLARATION-GROUP-PROTOTYPE>
+                        <MODE-DECLARATION-GROUP-PROTOTYPE>
+                          <SHORT-NAME>CMTestCase1FG</SHORT-NAME>
+                          <TYPE-TREF DEST="MODE-DECLARATION-GROUP">/apd/Machines/testSuiteEcu1Machine/ModeDeclarationGroups/CM_Testcase_1</TYPE-TREF>
+                        </MODE-DECLARATION-GROUP-PROTOTYPE>
+                        <MODE-DECLARATION-GROUP-PROTOTYPE>
+                          <SHORT-NAME>SystemTestFunctionGroup</SHORT-NAME>
+                          <TYPE-TREF DEST="MODE-DECLARATION-GROUP">/apd/Machines/testSuiteEcu1Machine/ModeDeclarationGroups/SystemTestFunctionGroup</TYPE-TREF>
+                        </MODE-DECLARATION-GROUP-PROTOTYPE>
+                        <MODE-DECLARATION-GROUP-PROTOTYPE>
+                          <SHORT-NAME>SystemTestFunctionGroup1</SHORT-NAME>
+                          <TYPE-TREF DEST="MODE-DECLARATION-GROUP">/apd/Machines/testSuiteEcu1Machine/ModeDeclarationGroups/SystemTestFunctionGroup1</TYPE-TREF>
+                        </MODE-DECLARATION-GROUP-PROTOTYPE>
+                        <MODE-DECLARATION-GROUP-PROTOTYPE>
+                          <SHORT-NAME>SystemTestFunctionGroup2</SHORT-NAME>
+                          <TYPE-TREF DEST="MODE-DECLARATION-GROUP">/apd/Machines/testSuiteEcu1Machine/ModeDeclarationGroups/SystemTestFunctionGroup2</TYPE-TREF>
+                        </MODE-DECLARATION-GROUP-PROTOTYPE>
+                        <MODE-DECLARATION-GROUP-PROTOTYPE>
+                          <SHORT-NAME>Lane_Change_Assistance</SHORT-NAME>
+                          <TYPE-TREF DEST="MODE-DECLARATION-GROUP">/apd/ModeDeclarationGroups/Lane_Change_Assistance</TYPE-TREF>
+                        </MODE-DECLARATION-GROUP-PROTOTYPE>
+                        <MODE-DECLARATION-GROUP-PROTOTYPE>
+                          <SHORT-NAME>Pedestrian_Protection</SHORT-NAME>
+                          <TYPE-TREF DEST="MODE-DECLARATION-GROUP">/apd/ModeDeclarationGroups/Pedestrian_Protection</TYPE-TREF>
+                        </MODE-DECLARATION-GROUP-PROTOTYPE>
+                      </FUNCTION-GROUPS>
+                    </FUNCTION-GROUP-SET>
+                  </ELEMENTS>
+                </AR-PACKAGE>
+                <AR-PACKAGE>
+                  <!-- SoftwareClusters -->
+                  <SHORT-NAME>SoftwareClusters</SHORT-NAME>
+                  <ELEMENTS>
+                    <SOFTWARE-CLUSTER>
+                      <SHORT-NAME>testSuiteCMCluster</SHORT-NAME>
+                      <CATEGORY>PLATFORM_CORE</CATEGORY>
+                      <CLAIMED-FUNCTION-GROUP-REFS>
+                        <CLAIMED-FUNCTION-GROUP-REF DEST="MODE-DECLARATION-GROUP-PROTOTYPE">/apd/Machines/testSuiteEcu1Machine/FunctionGroupSets/testSuiteEcu1FunctionGroups/MachineFG</CLAIMED-FUNCTION-GROUP-REF>
+                        <CLAIMED-FUNCTION-GROUP-REF DEST="MODE-DECLARATION-GROUP-PROTOTYPE">/apd/Machines/testSuiteEcu1Machine/FunctionGroupSets/testSuiteEcu1FunctionGroups/Lane_Change_Assistance</CLAIMED-FUNCTION-GROUP-REF>
+                        <CLAIMED-FUNCTION-GROUP-REF DEST="MODE-DECLARATION-GROUP-PROTOTYPE">/apd/Machines/testSuiteEcu1Machine/FunctionGroupSets/testSuiteEcu1FunctionGroups/Pedestrian_Protection</CLAIMED-FUNCTION-GROUP-REF>
+                        <CLAIMED-FUNCTION-GROUP-REF DEST="MODE-DECLARATION-GROUP-PROTOTYPE">/apd/Machines/testSuiteEcu1Machine/FunctionGroupSets/testSuiteEcu1FunctionGroups/CMTestCase1FG</CLAIMED-FUNCTION-GROUP-REF>
+                        <CLAIMED-FUNCTION-GROUP-REF DEST="MODE-DECLARATION-GROUP-PROTOTYPE">/apd/Machines/testSuiteEcu1Machine/FunctionGroupSets/testSuiteEcu1FunctionGroups/SystemTestFunctionGroup</CLAIMED-FUNCTION-GROUP-REF>
+                        <CLAIMED-FUNCTION-GROUP-REF DEST="MODE-DECLARATION-GROUP-PROTOTYPE">/apd/Machines/testSuiteEcu1Machine/FunctionGroupSets/testSuiteEcu1FunctionGroups/SystemTestFunctionGroup1</CLAIMED-FUNCTION-GROUP-REF>
+                        <CLAIMED-FUNCTION-GROUP-REF DEST="MODE-DECLARATION-GROUP-PROTOTYPE">/apd/Machines/testSuiteEcu1Machine/FunctionGroupSets/testSuiteEcu1FunctionGroups/SystemTestFunctionGroup2</CLAIMED-FUNCTION-GROUP-REF>
+                      </CLAIMED-FUNCTION-GROUP-REFS>
+                      <CONTAINED-PROCESS-REFS>
+                        <CONTAINED-PROCESS-REF DEST="PROCESS">/apd/Machines/testSuiteEcu1Machine/Processes/ST_CMApp01Instance1</CONTAINED-PROCESS-REF>
+                        <CONTAINED-PROCESS-REF DEST="PROCESS">/apd/Machines/testSuiteEcu1Machine/Processes/ST_CMApp03Instance1</CONTAINED-PROCESS-REF>
+                        <CONTAINED-PROCESS-REF DEST="PROCESS">/apd/Machines/testSuiteEcu1Machine/Processes/ST_CMApp10Instance1</CONTAINED-PROCESS-REF>
+                        <CONTAINED-PROCESS-REF DEST="PROCESS">/apd/Machines/testSuiteEcu1Machine/Processes/ST_CMApp12Instance1</CONTAINED-PROCESS-REF>
+                        <CONTAINED-PROCESS-REF DEST="PROCESS">/apd/Machines/testSuiteEcu1Machine/Processes/ST_CMApp13Instance1</CONTAINED-PROCESS-REF>
+                        <CONTAINED-PROCESS-REF DEST="PROCESS">/apd/Machines/testSuiteEcu1Machine/Processes/ST_DIAGApp01Instance1</CONTAINED-PROCESS-REF>
+                        <CONTAINED-PROCESS-REF DEST="PROCESS">/apd/Machines/testSuiteEcu1Machine/Processes/StateManager</CONTAINED-PROCESS-REF>
+                        <CONTAINED-PROCESS-REF DEST="PROCESS">/apd/Machines/testSuiteEcu1Machine/Processes/ST_DDSApp01Instance1</CONTAINED-PROCESS-REF>
+                        <CONTAINED-PROCESS-REF DEST="PROCESS">/apd/Machines/testSuiteEcu1Machine/Processes/ST_DDSApp02Instance1</CONTAINED-PROCESS-REF>
+                        <CONTAINED-PROCESS-REF DEST="PROCESS">/apd/Machines/testSuiteEcu1Machine/Processes/STBG_EMOAppSysFGInstance</CONTAINED-PROCESS-REF>
+                        <CONTAINED-PROCESS-REF DEST="PROCESS">/apd/Machines/testSuiteEcu1Machine/Processes/STBG_EMOAppSysFG1Instance</CONTAINED-PROCESS-REF>
+                        <CONTAINED-PROCESS-REF DEST="PROCESS">/apd/Machines/testSuiteEcu1Machine/Processes/STBG_EMOAppSysFG2Instance</CONTAINED-PROCESS-REF>
+                        <CONTAINED-PROCESS-REF DEST="PROCESS">/apd/Machines/testSuiteEcu1Machine/Processes/STC1_EMOApp02Instance</CONTAINED-PROCESS-REF>
+                        <CONTAINED-PROCESS-REF DEST="PROCESS">/apd/Machines/testSuiteEcu1Machine/Processes/STC1_EMOApp03Instance</CONTAINED-PROCESS-REF>
+                        <CONTAINED-PROCESS-REF DEST="PROCESS">/apd/Machines/testSuiteEcu1Machine/Processes/STC1_EMOApp04Instance</CONTAINED-PROCESS-REF>
+                        <CONTAINED-PROCESS-REF DEST="PROCESS">/apd/Machines/testSuiteEcu1Machine/Processes/STC1_EMOApp05Instance</CONTAINED-PROCESS-REF>
+                        <CONTAINED-PROCESS-REF DEST="PROCESS">/apd/Machines/testSuiteEcu1Machine/Processes/STC2_EMOApp02Instance</CONTAINED-PROCESS-REF>
+                        <CONTAINED-PROCESS-REF DEST="PROCESS">/apd/Machines/testSuiteEcu1Machine/Processes/STC2_EMOApp03Instance</CONTAINED-PROCESS-REF>
+                        <CONTAINED-PROCESS-REF DEST="PROCESS">/apd/Machines/testSuiteEcu1Machine/Processes/STC2_EMOApp04Instance</CONTAINED-PROCESS-REF>
+                        <CONTAINED-PROCESS-REF DEST="PROCESS">/apd/Machines/testSuiteEcu1Machine/Processes/STC2_EMOApp05Instance</CONTAINED-PROCESS-REF>
+                        <CONTAINED-PROCESS-REF DEST="PROCESS">/apd/Machines/testSuiteEcu1Machine/Processes/STC2_EMOApp06Instance</CONTAINED-PROCESS-REF>
+                      </CONTAINED-PROCESS-REFS>
+                      <MODULE-INSTANTIATION-REFS>
+                        <MODULE-INSTANTIATION-REF DEST="OS-MODULE-INSTANTIATION">/apd/Machines/testSuiteEcu1Machine/testSuiteEcu1Machine/Linux</MODULE-INSTANTIATION-REF>
+                        <MODULE-INSTANTIATION-REF DEST="LOG-AND-TRACE-INSTANTIATION">/apd/Machines/testSuiteEcu1Machine/testSuiteEcu1Machine/LogAndTraceInstanciation</MODULE-INSTANTIATION-REF>
+                      </MODULE-INSTANTIATION-REFS>
+                    </SOFTWARE-CLUSTER>
+                  </ELEMENTS>
+                </AR-PACKAGE>
+                <AR-PACKAGE>
+                  <SHORT-NAME>dlt</SHORT-NAME>
+                  <ELEMENTS>
+                    <DLT-ECU>
+                      <SHORT-NAME>testSuiteEcu1MachineDltEcu</SHORT-NAME>
+                      <APPLICATIONS>
+                        <DLT-APPLICATION>
+                          <SHORT-NAME>CMApp01Application</SHORT-NAME>
+                          <APPLICATION-DESCRIPTION>CM App 01</APPLICATION-DESCRIPTION>
+                          <APPLICATION-ID>CM01</APPLICATION-ID>
+                          <CONTEXTS>
+                            <DLT-CONTEXT-REF-CONDITIONAL>
+                              <DLT-CONTEXT-REF DEST="DLT-CONTEXT">/apd/Dlt/DefaultDltContext</DLT-CONTEXT-REF>
+                            </DLT-CONTEXT-REF-CONDITIONAL>
+                          </CONTEXTS>
+                        </DLT-APPLICATION>
+                        <DLT-APPLICATION>
+                          <SHORT-NAME>CMApp03Application</SHORT-NAME>
+                          <APPLICATION-DESCRIPTION>CM App 03</APPLICATION-DESCRIPTION>
+                          <APPLICATION-ID>CM03</APPLICATION-ID>
+                          <CONTEXTS>
+                            <DLT-CONTEXT-REF-CONDITIONAL>
+                              <DLT-CONTEXT-REF DEST="DLT-CONTEXT">/apd/Dlt/DefaultDltContext</DLT-CONTEXT-REF>
+                            </DLT-CONTEXT-REF-CONDITIONAL>
+                          </CONTEXTS>
+                        </DLT-APPLICATION>
+                        <DLT-APPLICATION>
+                          <SHORT-NAME>CMApp10Application</SHORT-NAME>
+                          <APPLICATION-DESCRIPTION>CM App 10</APPLICATION-DESCRIPTION>
+                          <APPLICATION-ID>CM10</APPLICATION-ID>
+                          <CONTEXTS>
+                            <DLT-CONTEXT-REF-CONDITIONAL>
+                              <DLT-CONTEXT-REF DEST="DLT-CONTEXT">/apd/Dlt/DefaultDltContext</DLT-CONTEXT-REF>
+                            </DLT-CONTEXT-REF-CONDITIONAL>
+                          </CONTEXTS>
+                        </DLT-APPLICATION>
+                        <DLT-APPLICATION>
+                          <SHORT-NAME>CMApp12Application</SHORT-NAME>
+                          <APPLICATION-DESCRIPTION>CM App 12</APPLICATION-DESCRIPTION>
+                          <APPLICATION-ID>CM12</APPLICATION-ID>
+                          <CONTEXTS>
+                            <DLT-CONTEXT-REF-CONDITIONAL>
+                              <DLT-CONTEXT-REF DEST="DLT-CONTEXT">/apd/Dlt/DefaultDltContext</DLT-CONTEXT-REF>
+                            </DLT-CONTEXT-REF-CONDITIONAL>
+                          </CONTEXTS>
+                        </DLT-APPLICATION>
+                        <DLT-APPLICATION>
+                          <SHORT-NAME>CMApp13Application</SHORT-NAME>
+                          <APPLICATION-DESCRIPTION>CM App 13</APPLICATION-DESCRIPTION>
+                          <APPLICATION-ID>CM13</APPLICATION-ID>
+                          <CONTEXTS>
+                            <DLT-CONTEXT-REF-CONDITIONAL>
+                              <DLT-CONTEXT-REF DEST="DLT-CONTEXT">/apd/Dlt/DefaultDltContext</DLT-CONTEXT-REF>
+                            </DLT-CONTEXT-REF-CONDITIONAL>
+                          </CONTEXTS>
+                        </DLT-APPLICATION>
+                        <!-- <DLT-APPLICATION>
+                          <SHORT-NAME>CMApp12Application</SHORT-NAME>
+                          <APPLICATION-DESCRIPTION>CM App 12</APPLICATION-DESCRIPTION>
+                          <APPLICATION-ID>CM12</APPLICATION-ID>
+                          <CONTEXTS>
+                            <DLT-CONTEXT-REF-CONDITIONAL>
+                              <DLT-CONTEXT-REF DEST="DLT-CONTEXT">/apd/Machines/testSuiteEcu1Machine/dlt/DefaultDltContext</DLT-CONTEXT-REF>
+                            </DLT-CONTEXT-REF-CONDITIONAL>
+                          </CONTEXTS>
+                        </DLT-APPLICATION>
+                        <DLT-APPLICATION>
+                          <SHORT-NAME>CMApp13Application</SHORT-NAME>
+                          <APPLICATION-DESCRIPTION>CM App 13</APPLICATION-DESCRIPTION>
+                          <APPLICATION-ID>CM13</APPLICATION-ID>
+                          <CONTEXTS>
+                            <DLT-CONTEXT-REF-CONDITIONAL>
+                              <DLT-CONTEXT-REF DEST="DLT-CONTEXT">/apd/Machines/testSuiteEcu1Machine/dlt/DefaultDltContext</DLT-CONTEXT-REF>
+                            </DLT-CONTEXT-REF-CONDITIONAL>
+                          </CONTEXTS>
+                        </DLT-APPLICATION> -->
+                        <DLT-APPLICATION>
+                          <SHORT-NAME>DIAGApp01Application</SHORT-NAME>
+                          <APPLICATION-DESCRIPTION>Diag App 01</APPLICATION-DESCRIPTION>
+                          <APPLICATION-ID>DA01</APPLICATION-ID>
+                          <CONTEXTS>
+                            <DLT-CONTEXT-REF-CONDITIONAL>
+                              <DLT-CONTEXT-REF DEST="DLT-CONTEXT">/apd/Dlt/DefaultDltContext</DLT-CONTEXT-REF>
+                            </DLT-CONTEXT-REF-CONDITIONAL>
+                          </CONTEXTS>
+                        </DLT-APPLICATION>
+                        <DLT-APPLICATION>
+                          <SHORT-NAME>StateManagerApplication</SHORT-NAME>
+                          <APPLICATION-DESCRIPTION>State Manager</APPLICATION-DESCRIPTION>
+                          <APPLICATION-ID>STMR</APPLICATION-ID>
+                          <CONTEXTS>
+                            <DLT-CONTEXT-REF-CONDITIONAL>
+                              <DLT-CONTEXT-REF DEST="DLT-CONTEXT">/apd/Dlt/DefaultDltContext</DLT-CONTEXT-REF>
+                            </DLT-CONTEXT-REF-CONDITIONAL>
+                          </CONTEXTS>
+                        </DLT-APPLICATION>
+                        <DLT-APPLICATION>
+                          <SHORT-NAME>DDSApp01Application</SHORT-NAME>
+                          <APPLICATION-DESCRIPTION>DDS App 01</APPLICATION-DESCRIPTION>
+                          <APPLICATION-ID>DD01</APPLICATION-ID>
+                          <CONTEXTS>
+                            <DLT-CONTEXT-REF-CONDITIONAL>
+                              <DLT-CONTEXT-REF DEST="DLT-CONTEXT">/apd/Dlt/DefaultDltContext</DLT-CONTEXT-REF>
+                            </DLT-CONTEXT-REF-CONDITIONAL>
+                          </CONTEXTS>
+                        </DLT-APPLICATION>
+                        <DLT-APPLICATION>
+                          <SHORT-NAME>DDSApp02Application</SHORT-NAME>
+                          <APPLICATION-DESCRIPTION>DDS App 02</APPLICATION-DESCRIPTION>
+                          <APPLICATION-ID>DD02</APPLICATION-ID>
+                          <CONTEXTS>
+                            <DLT-CONTEXT-REF-CONDITIONAL>
+                              <DLT-CONTEXT-REF DEST="DLT-CONTEXT">/apd/Dlt/DefaultDltContext</DLT-CONTEXT-REF>
+                            </DLT-CONTEXT-REF-CONDITIONAL>
+                          </CONTEXTS>
+                        </DLT-APPLICATION>
+                        <DLT-APPLICATION>
+                          <SHORT-NAME>STBG_EMOAppSysFGApplication</SHORT-NAME>
+                          <APPLICATION-DESCRIPTION>STBG EMOAppSysFG</APPLICATION-DESCRIPTION>
+                          <APPLICATION-ID>EMB0</APPLICATION-ID>
+                          <CONTEXTS>
+                            <DLT-CONTEXT-REF-CONDITIONAL>
+                              <DLT-CONTEXT-REF DEST="DLT-CONTEXT">/apd/Dlt/DefaultDltContext</DLT-CONTEXT-REF>
+                            </DLT-CONTEXT-REF-CONDITIONAL>
+                          </CONTEXTS>
+                        </DLT-APPLICATION>
+                        <DLT-APPLICATION>
+                          <SHORT-NAME>STBG_EMOAppSysFG1Application</SHORT-NAME>
+                          <APPLICATION-DESCRIPTION>STBG EMOAppSysFG1</APPLICATION-DESCRIPTION>
+                          <APPLICATION-ID>EMB1</APPLICATION-ID>
+                          <CONTEXTS>
+                            <DLT-CONTEXT-REF-CONDITIONAL>
+                              <DLT-CONTEXT-REF DEST="DLT-CONTEXT">/apd/Dlt/DefaultDltContext</DLT-CONTEXT-REF>
+                            </DLT-CONTEXT-REF-CONDITIONAL>
+                          </CONTEXTS>
+                        </DLT-APPLICATION>
+                        <DLT-APPLICATION>
+                          <SHORT-NAME>STBG_EMOAppSysFG2Application</SHORT-NAME>
+                          <APPLICATION-DESCRIPTION>STBG EMOAppSysFG2</APPLICATION-DESCRIPTION>
+                          <APPLICATION-ID>EMB2</APPLICATION-ID>
+                          <CONTEXTS>
+                            <DLT-CONTEXT-REF-CONDITIONAL>
+                              <DLT-CONTEXT-REF DEST="DLT-CONTEXT">/apd/Dlt/DefaultDltContext</DLT-CONTEXT-REF>
+                            </DLT-CONTEXT-REF-CONDITIONAL>
+                          </CONTEXTS>
+                        </DLT-APPLICATION>
+                        <DLT-APPLICATION>
+                          <SHORT-NAME>STC1_EMOApp02Application</SHORT-NAME>
+                          <APPLICATION-DESCRIPTION>STC1 EMOApp02</APPLICATION-DESCRIPTION>
+                          <APPLICATION-ID>EM12</APPLICATION-ID>
+                          <CONTEXTS>
+                            <DLT-CONTEXT-REF-CONDITIONAL>
+                              <DLT-CONTEXT-REF DEST="DLT-CONTEXT">/apd/Dlt/DefaultDltContext</DLT-CONTEXT-REF>
+                            </DLT-CONTEXT-REF-CONDITIONAL>
+                          </CONTEXTS>
+                        </DLT-APPLICATION>
+                        <DLT-APPLICATION>
+                          <SHORT-NAME>STC1_EMOApp03Application</SHORT-NAME>
+                          <APPLICATION-DESCRIPTION>STC1 EMOApp03</APPLICATION-DESCRIPTION>
+                          <APPLICATION-ID>EM13</APPLICATION-ID>
+                          <CONTEXTS>
+                            <DLT-CONTEXT-REF-CONDITIONAL>
+                              <DLT-CONTEXT-REF DEST="DLT-CONTEXT">/apd/Dlt/DefaultDltContext</DLT-CONTEXT-REF>
+                            </DLT-CONTEXT-REF-CONDITIONAL>
+                          </CONTEXTS>
+                        </DLT-APPLICATION>
+                        <DLT-APPLICATION>
+                          <SHORT-NAME>STC1_EMOApp04Application</SHORT-NAME>
+                          <APPLICATION-DESCRIPTION>STC1 EMOApp04</APPLICATION-DESCRIPTION>
+                          <APPLICATION-ID>EM14</APPLICATION-ID>
+                          <CONTEXTS>
+                            <DLT-CONTEXT-REF-CONDITIONAL>
+                              <DLT-CONTEXT-REF DEST="DLT-CONTEXT">/apd/Dlt/DefaultDltContext</DLT-CONTEXT-REF>
+                            </DLT-CONTEXT-REF-CONDITIONAL>
+                          </CONTEXTS>
+                        </DLT-APPLICATION>
+                        <DLT-APPLICATION>
+                          <SHORT-NAME>STC1_EMOApp05Application</SHORT-NAME>
+                          <APPLICATION-DESCRIPTION>STC1 EMOApp05</APPLICATION-DESCRIPTION>
+                          <APPLICATION-ID>EM15</APPLICATION-ID>
+                          <CONTEXTS>
+                            <DLT-CONTEXT-REF-CONDITIONAL>
+                              <DLT-CONTEXT-REF DEST="DLT-CONTEXT">/apd/Dlt/DefaultDltContext</DLT-CONTEXT-REF>
+                            </DLT-CONTEXT-REF-CONDITIONAL>
+                          </CONTEXTS>
+                        </DLT-APPLICATION>
+                        <DLT-APPLICATION>
+                          <SHORT-NAME>STC2_EMOApp02Application</SHORT-NAME>
+                          <APPLICATION-DESCRIPTION>STC2 EMOApp02</APPLICATION-DESCRIPTION>
+                          <APPLICATION-ID>EM22</APPLICATION-ID>
+                          <CONTEXTS>
+                            <DLT-CONTEXT-REF-CONDITIONAL>
+                              <DLT-CONTEXT-REF DEST="DLT-CONTEXT">/apd/Dlt/DefaultDltContext</DLT-CONTEXT-REF>
+                            </DLT-CONTEXT-REF-CONDITIONAL>
+                          </CONTEXTS>
+                        </DLT-APPLICATION>
+                        <DLT-APPLICATION>
+                          <SHORT-NAME>STC2_EMOApp03Application</SHORT-NAME>
+                          <APPLICATION-DESCRIPTION>STC2 EMOApp03</APPLICATION-DESCRIPTION>
+                          <APPLICATION-ID>EM23</APPLICATION-ID>
+                          <CONTEXTS>
+                            <DLT-CONTEXT-REF-CONDITIONAL>
+                              <DLT-CONTEXT-REF DEST="DLT-CONTEXT">/apd/Dlt/DefaultDltContext</DLT-CONTEXT-REF>
+                            </DLT-CONTEXT-REF-CONDITIONAL>
+                          </CONTEXTS>
+                        </DLT-APPLICATION>
+                        <DLT-APPLICATION>
+                          <SHORT-NAME>STC2_EMOApp04Application</SHORT-NAME>
+                          <APPLICATION-DESCRIPTION>STC2 EMOApp04</APPLICATION-DESCRIPTION>
+                          <APPLICATION-ID>EM24</APPLICATION-ID>
+                          <CONTEXTS>
+                            <DLT-CONTEXT-REF-CONDITIONAL>
+                              <DLT-CONTEXT-REF DEST="DLT-CONTEXT">/apd/Dlt/DefaultDltContext</DLT-CONTEXT-REF>
+                            </DLT-CONTEXT-REF-CONDITIONAL>
+                          </CONTEXTS>
+                        </DLT-APPLICATION>
+                        <DLT-APPLICATION>
+                          <SHORT-NAME>STC2_EMOApp05Application</SHORT-NAME>
+                          <APPLICATION-DESCRIPTION>STC2 EMOApp05</APPLICATION-DESCRIPTION>
+                          <APPLICATION-ID>EM25</APPLICATION-ID>
+                          <CONTEXTS>
+                            <DLT-CONTEXT-REF-CONDITIONAL>
+                              <DLT-CONTEXT-REF DEST="DLT-CONTEXT">/apd/Dlt/DefaultDltContext</DLT-CONTEXT-REF>
+                            </DLT-CONTEXT-REF-CONDITIONAL>
+                          </CONTEXTS>
+                        </DLT-APPLICATION>
+                        <DLT-APPLICATION>
+                          <SHORT-NAME>STC2_EMOApp06Application</SHORT-NAME>
+                          <APPLICATION-DESCRIPTION>STC2 EMOApp06</APPLICATION-DESCRIPTION>
+                          <APPLICATION-ID>EM26</APPLICATION-ID>
+                          <CONTEXTS>
+                            <DLT-CONTEXT-REF-CONDITIONAL>
+                              <DLT-CONTEXT-REF DEST="DLT-CONTEXT">/apd/Dlt/DefaultDltContext</DLT-CONTEXT-REF>
+                            </DLT-CONTEXT-REF-CONDITIONAL>
+                          </CONTEXTS>
+                        </DLT-APPLICATION>
+                      </APPLICATIONS>
+                    </DLT-ECU>
+                    <DLT-LOG-SINK>
+                      <SHORT-NAME>ConsoleDltSink</SHORT-NAME>
+                      <CATEGORY>DLT_LOGSINK_CONSOLE</CATEGORY>
+                      <BUFFER-OUTPUT>true</BUFFER-OUTPUT>
+                      <DEFAULT-LOG-THRESHOLD>VERBOSE</DEFAULT-LOG-THRESHOLD>
+                    </DLT-LOG-SINK>
+                  </ELEMENTS>
+                </AR-PACKAGE>
+              </AR-PACKAGES>
+            </AR-PACKAGE>
+          </AR-PACKAGES>
+        </AR-PACKAGE>
+      </AR-PACKAGES>
+    </AR-PACKAGE>
+  </AR-PACKAGES>
+</AUTOSAR>

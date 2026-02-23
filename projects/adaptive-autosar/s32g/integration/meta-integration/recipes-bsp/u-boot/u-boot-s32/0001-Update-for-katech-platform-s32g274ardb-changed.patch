@@ -1,0 +1,328 @@
+From edf3c6dd8d99bb66fe2095035a1986afeb6a77b2 Mon Sep 17 00:00:00 2001
+From: jyhan <jyhan@katech.re.kr>
+Date: Wed, 15 Jan 2025 21:07:39 +0900
+Subject: [PATCH] Update for katech platform: s32g274ardb changed.
+
+---
+ board/nxp/s32-cc/s32g/Kconfig       |  20 +++++
+ board/nxp/s32-cc/s32g/s32g88q5182.c | 102 +++++++++++++++++++++++++
+ board/nxp/s32-cc/s32g/s32gxxxaevb.c |   1 +
+ board/nxp/s32-cc/s32g/s32gxxxardb.c | 114 +++++++++++++++++++++++++++-
+ board/nxp/s32g274ardb2/Kconfig      |   2 +-
+ 5 files changed, 237 insertions(+), 2 deletions(-)
+ create mode 100644 board/nxp/s32-cc/s32g/s32g88q5182.c
+
+diff --git a/board/nxp/s32-cc/s32g/Kconfig b/board/nxp/s32-cc/s32g/Kconfig
+index ee23eea7bc..55d039190f 100644
+--- a/board/nxp/s32-cc/s32g/Kconfig
++++ b/board/nxp/s32-cc/s32g/Kconfig
+@@ -1,4 +1,23 @@
+ config NXP_S32GRDB_BOARD
++	bool
++	default n
++	imply BOARD_LATE_INIT
++	imply CMD_PMIC
++	imply DM_PMIC
++	imply DM_PMIC_FS5600
++	imply DM_PMIC_PF5020
++	imply DM_PMIC_VR5510
++	imply NXP_S32CC_BOARD_COMMON
++	select ADC
++	select DM_REGULATOR
++	select OF_BOARD_SETUP
++	select SARADC_S32CC
++	select SPI_FLASH_MACRONIX
++	select SPI_FLASH_MX25UW51245G
++	select SPI_FLASH_SOFT_RESET
++	select SPI_FLASH_SOFT_RESET_ON_BOOT
++
++config NXP_S32GRDB_BOARDAA
+ 	bool
+ 	default n
+ 	imply BOARD_LATE_INIT
+@@ -19,6 +38,7 @@ config NXP_S32GRDB_BOARD
+ 	select SPI_FLASH_SOFT_RESET
+ 	select SPI_FLASH_SOFT_RESET_ON_BOOT
+ 
++
+ config NXP_S32GEVB3_BOARD
+ 	bool
+ 	default n
+diff --git a/board/nxp/s32-cc/s32g/s32g88q5182.c b/board/nxp/s32-cc/s32g/s32g88q5182.c
+new file mode 100644
+index 0000000000..07ad10af76
+--- /dev/null
++++ b/board/nxp/s32-cc/s32g/s32g88q5182.c
+@@ -0,0 +1,102 @@
++#include <asm/arch/soc.h>
++#include <board_common.h>
++#include <common.h>
++#include <miiphy.h>
++
++#define MV_CORE_0_ADDR 0xF 
++#define MV_CORE_1_ADDR 0xE 
++ 
++#define MV_CORE_0_SMI "pfeng_emac_2" 
++#define MV_CORE_1_SMI "pfeng_emac_1" 
++ 
++#define MV_SMI_CMD_REG  (unsigned short)(0x0) 
++#define MV_SMI_DATA_REG (unsigned short)(0x1) 
++ 
++#define MV_SMI_OP_WR    (unsigned short)(0x1) 
++#define MV_SMI_OP_RD (unsigned short)(0x2) 
++
++unsigned short setMVCmd (unsigned short op, unsigned short devAddr, unsigned short regAddr) 
++{ 
++ unsigned short retCmd = 0x9000; 
++ 
++ retCmd |= op<<10; 
++ retCmd |= (devAddr&0x1F)<<5; 
++ retCmd |= (regAddr&0x1F); 
++ 
++ return retCmd; 
++} 
++ 
++int writeMVreg (const char *devname, unsigned char dev, unsigned char addr, unsigned char reg, 
++    unsigned short value) 
++{ 
++ unsigned short cmd; 
++ cmd = setMVCmd(MV_SMI_OP_WR, addr, reg); 
++ if(miiphy_write(devname, dev, MV_SMI_DATA_REG, value)) return 1; 
++ if(miiphy_write(devname, dev, MV_SMI_CMD_REG, cmd)) return 1; 
++ 
++ //printf("%s(%s,0x%X,0x%X,0x%X)\n", __func__, devname, dev, addr, value); 
++} 
++ 
++int readMVreg (const char *devname, unsigned char dev, unsigned char addr, unsigned char reg, 
++    unsigned short *value) 
++{ 
++ unsigned short cmd; 
++ 
++ cmd = setMVCmd(MV_SMI_OP_RD, addr, reg); 
++ if(miiphy_write(devname, dev, MV_SMI_CMD_REG, cmd)) return 1; 
++ if(miiphy_read(devname, dev, MV_SMI_DATA_REG, value)) return 1; 
++ 
++ //printf("%s(%s,0x%X,0x%X,0x%X)\n", __func__, devname, dev, addr, *value); 
++ 
++ return 0; 
++} 
++ 
++int setMVregbit (const char *devname, unsigned char dev, unsigned char addr, unsigned char reg, 
++    unsigned short value) 
++{ 
++ unsigned short data; 
++ 
++ if (readMVreg(devname, dev, addr, reg, &data)) return 1; 
++ data |= value; 
++ if (writeMVreg(devname, dev, addr, reg, data)) return 1; 
++ 
++ return 0; 
++} 
++ 
++int clearMVregbit (const char *devname, unsigned char dev, unsigned char addr, unsigned char reg, 
++    unsigned short value) 
++{ 
++ unsigned short data; 
++ 
++ if (readMVreg(devname, dev, addr, reg, &data)) return 1; 
++ data &= ~value; 
++ if (writeMVreg(devname, dev, addr, reg, data)) return 1; 
++ 
++ return 0; 
++} 
++ 
++
++
++int last_stage_init(void) 
++{ 
++ int ret; 
++ unsigned short val=0; 
++ 
++    ret = miiphy_read(MV_CORE_0_SMI, MV_CORE_0_ADDR, MV_SMI_DATA_REG, &val); 
++ 
++    if (ret||(val>0)) { 
++  printf("MV88Q5192#0 Initial fail!\n"); 
++ } else { 
++  setMVregbit(MV_CORE_0_SMI, MV_CORE_0_ADDR, 0x7, 0x1, 0xC000); 
++ } 
++ 
++ ret = miiphy_read(MV_CORE_1_SMI, MV_CORE_1_ADDR, MV_SMI_DATA_REG, &val); 
++ 
++ if (ret||(val>0)) { 
++  printf("MV88Q5192#1 Initial fail!\n"); 
++            } else { 
++     setMVregbit(MV_CORE_1_SMI, MV_CORE_1_ADDR, 0x7, 0x1, 0xC000); 
++    } 
++ 
++ return 0; 
++} 
+\ No newline at end of file
+diff --git a/board/nxp/s32-cc/s32g/s32gxxxaevb.c b/board/nxp/s32-cc/s32g/s32gxxxaevb.c
+index 4d7ca408c5..736f5d435c 100644
+--- a/board/nxp/s32-cc/s32g/s32gxxxaevb.c
++++ b/board/nxp/s32-cc/s32g/s32gxxxaevb.c
+@@ -52,6 +52,7 @@ static int enable_saf1508bet(void)
+ 	return ret;
+ }
+ 
++
+ int misc_init_r(void)
+ {
+ 	if (IS_ENABLED(CONFIG_NET) && IS_ENABLED(CONFIG_NXP_PFENG) &&
+diff --git a/board/nxp/s32-cc/s32g/s32gxxxardb.c b/board/nxp/s32-cc/s32g/s32gxxxardb.c
+index 8be3785f0e..78cb252ef4 100644
+--- a/board/nxp/s32-cc/s32g/s32gxxxardb.c
++++ b/board/nxp/s32-cc/s32g/s32gxxxardb.c
+@@ -16,6 +16,19 @@
+ #define SJA1110_UC_COMPATIBLE "nxp,sja1110-uc"
+ #define SJA1110_SWITCH_COMPATIBLE "nxp,sja1110-switch"
+ #define SJA1110_DSA_COMPATIBLE "nxp,sja1110a"
++#include <miiphy.h>
++
++#define MV_CORE_0_ADDR 0xF 
++#define MV_CORE_1_ADDR 0xE 
++ 
++#define MV_CORE_0_SMI "pfeng-mdio-2" 
++#define MV_CORE_1_SMI "pfeng-mdio-1" 
++ 
++#define MV_SMI_CMD_REG  (unsigned short)(0x0) 
++#define MV_SMI_DATA_REG (unsigned short)(0x1) 
++ 
++#define MV_SMI_OP_WR    (unsigned short)(0x1) 
++#define MV_SMI_OP_RD (unsigned short)(0x2) 
+ 
+ /**
+  * enum board_type - RDB board type
+@@ -215,9 +228,15 @@ int board_late_init(void)
+ 		env_set("pfe1_phy_addr", "3");
+ 		break;
+ 	case 'D':
++	
++		env_set("pfe1_phy_addr", "1");
++		break;
+ 	case 'E':
+ 	case 'F':
+-		env_set("pfe1_phy_addr", "8");
++
++		env_set("pfe1_phy_addr", "1");
++		//env_set("pfe1_phy_addr", "8");
++
+ 		break;
+ 	default:
+ 		env_set("pfe1_phy_addr", NULL);
+@@ -299,9 +318,102 @@ out_err:
+ 	pr_err("SJA1110 DSA driver not enabled.\n");
+ }
+ 
++
++////////////////////////jyhan////////////////
++
++unsigned short setMVCmd (unsigned short op, unsigned short devAddr, unsigned short regAddr) 
++{ 
++ unsigned short retCmd = 0x9000; 
++ 
++ retCmd |= op<<10; 
++ retCmd |= (devAddr&0x1F)<<5; 
++ retCmd |= (regAddr&0x1F); 
++ 
++ return retCmd; 
++} 
++ 
++int writeMVreg (const char *devname, unsigned char dev, unsigned char addr, unsigned char reg, 
++    unsigned short value) 
++{ 
++ unsigned short cmd; 
++ cmd = setMVCmd(MV_SMI_OP_WR, addr, reg); 
++ if(miiphy_write(devname, dev, MV_SMI_DATA_REG, value)) return 1; 
++ if(miiphy_write(devname, dev, MV_SMI_CMD_REG, cmd)) return 1; 
++ 
++ //printf("%s(%s,0x%X,0x%X,0x%X)\n", __func__, devname, dev, addr, value); 
++} 
++ 
++int readMVreg (const char *devname, unsigned char dev, unsigned char addr, unsigned char reg, 
++    unsigned short *value) 
++{ 
++ unsigned short cmd; 
++ 
++ cmd = setMVCmd(MV_SMI_OP_RD, addr, reg); 
++ if(miiphy_write(devname, dev, MV_SMI_CMD_REG, cmd)) return 1; 
++ if(miiphy_read(devname, dev, MV_SMI_DATA_REG, value)) return 1; 
++ 
++ //printf("%s(%s,0x%X,0x%X,0x%X)\n", __func__, devname, dev, addr, *value); 
++ 
++ return 0; 
++} 
++ 
++int setMVregbit (const char *devname, unsigned char dev, unsigned char addr, unsigned char reg, 
++    unsigned short value) 
++{ 
++ unsigned short data; 
++ 
++ if (readMVreg(devname, dev, addr, reg, &data)) return 1; 
++ data |= value; 
++ if (writeMVreg(devname, dev, addr, reg, data)) return 1; 
++ 
++ return 0; 
++} 
++ 
++int clearMVregbit (const char *devname, unsigned char dev, unsigned char addr, unsigned char reg, 
++    unsigned short value) 
++{ 
++ unsigned short data; 
++ 
++ if (readMVreg(devname, dev, addr, reg, &data)) return 1; 
++ data &= ~value; 
++ if (writeMVreg(devname, dev, addr, reg, data)) return 1; 
++ 
++ return 0; 
++} 
++ 
++
++
++int switch_setup(void) 
++{ 
++ int ret; 
++ unsigned short val=0; 
++ 
++ ret = miiphy_read(MV_CORE_0_SMI, MV_CORE_0_ADDR, MV_SMI_DATA_REG, &val); 
++ 
++ if (ret||(val>0)) { 
++  printf("MV88Q5192#0 Initial fail!\n"); 
++ } else { 
++  setMVregbit(MV_CORE_0_SMI, MV_CORE_0_ADDR, 0x7, 0x1, 0xC000); 
++ } 
++ 
++ ret = miiphy_read(MV_CORE_1_SMI, MV_CORE_1_ADDR, MV_SMI_DATA_REG, &val); 
++ 
++ if (ret||(val>0)) { 
++  printf("MV88Q5192#1 Initial fail!\n"); 
++            } else { 
++     setMVregbit(MV_CORE_1_SMI, MV_CORE_1_ADDR, 0x7, 0x1, 0xC000); 
++    } 
++ 
++ return 0; 
++} 
++
++////////////////////////jyhan////////////////
++
++
+ int ft_board_setup(void *blob, struct bd_info *bd)
+ {
+ 	ft_sja1110_dsa_setup(blob);
++	switch_setup(); ////////////////////////jyhan////////////////
+ 
+ 	return 0;
+ }
+diff --git a/board/nxp/s32g274ardb2/Kconfig b/board/nxp/s32g274ardb2/Kconfig
+index 85378f7e32..fbee77cfb7 100644
+--- a/board/nxp/s32g274ardb2/Kconfig
++++ b/board/nxp/s32g274ardb2/Kconfig
+@@ -18,7 +18,7 @@ config ENV_SECT_SIZE
+ config S32CC_HWCONFIG
+ 	string "S32CC HWConfig definition"
+ 	depends on PHY_S32CC_SERDES
+-	default "serdes0:mode=pcie,clock=ext;pcie0:mode=rc;serdes1:mode=xpcs0&xpcs1,clock=ext,fmhz=125;xpcs1_0:speed=2G5;xpcs1_1:speed=2G5"
++	default "pcie0:mode=sgmii, clock=ext, fmhz=125, xpcs_mode=both;pcie1:mode=rc,clock=ext"
+ 	help
+ 	  The configuration for the SerDes modules, stored in
+ 	  the variable 'hwconfig'.

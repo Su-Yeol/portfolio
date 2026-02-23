@@ -1,0 +1,238 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<AUTOSAR xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://autosar.org/schema/r4.0" xsi:schemaLocation="http://autosar.org/schema/r4.0 AUTOSAR_00052.xsd">
+  <AR-PACKAGES>
+    <AR-PACKAGE>
+      <SHORT-NAME>katech</SHORT-NAME>
+      <AR-PACKAGES>
+        <AR-PACKAGE>
+          <SHORT-NAME>Machines</SHORT-NAME>
+          <AR-PACKAGES>
+            <AR-PACKAGE>
+              <SHORT-NAME>AdaptiveMachine</SHORT-NAME>
+              <AR-PACKAGES>
+                <AR-PACKAGE>
+                  <SHORT-NAME>ProcessToMachineMappings</SHORT-NAME>
+                  <ELEMENTS>
+                    <PROCESS-TO-MACHINE-MAPPING-SET>
+                      <SHORT-NAME>Planning</SHORT-NAME>
+                      <PROCESS-TO-MACHINE-MAPPINGS>
+                        <PROCESS-TO-MACHINE-MAPPING>
+                          <SHORT-NAME>Planning</SHORT-NAME>
+                          <MACHINE-REF DEST="MACHINE">/katech/Machines/AdaptiveMachine/AdaptiveMachine</MACHINE-REF>
+                          <PROCESS-REF DEST="PROCESS">/katech/Machines/AdaptiveMachine/Processes/Planning</PROCESS-REF>
+                        </PROCESS-TO-MACHINE-MAPPING>
+                      </PROCESS-TO-MACHINE-MAPPINGS>
+                    </PROCESS-TO-MACHINE-MAPPING-SET>
+                  </ELEMENTS>
+                </AR-PACKAGE>
+                <AR-PACKAGE>
+                  <SHORT-NAME>DltLogChannelToProcessMappings</SHORT-NAME>
+                  <ELEMENTS>
+                    <DLT-APPLICATION-TO-PROCESS-MAPPING>
+                      <SHORT-NAME>PlanningDltApplicationToProcessMapping</SHORT-NAME>
+                      <DLT-APPLICATION-REF DEST="DLT-APPLICATION">/katech/Machines/AdaptiveMachine/Dlt/KatechDltEcu/Planning</DLT-APPLICATION-REF>
+                      <PROCESS-REF DEST="PROCESS">/katech/Machines/AdaptiveMachine/Processes/Planning</PROCESS-REF>
+                    </DLT-APPLICATION-TO-PROCESS-MAPPING>
+                    <DLT-LOG-SINK-TO-PORT-PROTOTYPE-MAPPING>
+                      <SHORT-NAME>PlanningDltLogSinkToPortPrototypeMapping</SHORT-NAME>
+                      <DLT-CONTEXT-REF DEST="DLT-CONTEXT">/katech/Machines/AdaptiveMachine/Dlt/DefaultDltContext</DLT-CONTEXT-REF>
+                      <DLT-LOG-SINK-REFS>
+                        <DLT-LOG-SINK-REF DEST="DLT-LOG-SINK">/katech/Machines/AdaptiveMachine/Dlt/ConsoleDltSink</DLT-LOG-SINK-REF>
+                        <DLT-LOG-SINK-REF DEST="DLT-LOG-SINK">/katech/Machines/AdaptiveMachine/Dlt/RemoteDltSink</DLT-LOG-SINK-REF>
+                        <DLT-LOG-SINK-REF DEST="DLT-LOG-SINK">/katech/Machines/AdaptiveMachine/Dlt/PlanningFileDltSink</DLT-LOG-SINK-REF>
+                      </DLT-LOG-SINK-REFS>
+                      <PROCESS-REF DEST="PROCESS">/katech/Machines/AdaptiveMachine/Processes/Planning</PROCESS-REF>
+                    </DLT-LOG-SINK-TO-PORT-PROTOTYPE-MAPPING>
+                  </ELEMENTS>
+                </AR-PACKAGE>
+                <AR-PACKAGE>
+                  <SHORT-NAME>Processes</SHORT-NAME>
+                  <ELEMENTS>
+                    <PROCESS>
+                      <SHORT-NAME>Planning</SHORT-NAME>
+                      <EXECUTABLE-REFS>
+                        <EXECUTABLE-REF DEST="EXECUTABLE">/katech/Executables/Planning</EXECUTABLE-REF>
+                      </EXECUTABLE-REFS>
+                      <PROCESS-STATE-MACHINE>
+                        <SHORT-NAME>state_machine</SHORT-NAME>
+                        <TYPE-TREF DEST="MODE-DECLARATION-GROUP">/katech/ModeDeclarationGroups/ProcessStateMachine</TYPE-TREF>
+                      </PROCESS-STATE-MACHINE>
+                      <STATE-DEPENDENT-STARTUP-CONFIGS>
+                        <STATE-DEPENDENT-STARTUP-CONFIG>
+                          <EXECUTION-DEPENDENCYS>
+                            <EXECUTION-DEPENDENCY>
+                              <PROCESS-STATE-IREF>
+                                <CONTEXT-MODE-DECLARATION-GROUP-PROTOTYPE-REF DEST="MODE-DECLARATION-GROUP-PROTOTYPE">/katech/Machines/AdaptiveMachine/Processes/Guardian/state_machine</CONTEXT-MODE-DECLARATION-GROUP-PROTOTYPE-REF>
+                                <TARGET-MODE-DECLARATION-REF DEST="MODE-DECLARATION">/katech/ModeDeclarationGroups/ProcessStateMachine/Running</TARGET-MODE-DECLARATION-REF>
+                              </PROCESS-STATE-IREF>
+                            </EXECUTION-DEPENDENCY>
+                            <EXECUTION-DEPENDENCY>
+                              <PROCESS-STATE-IREF>
+                                <CONTEXT-MODE-DECLARATION-GROUP-PROTOTYPE-REF DEST="MODE-DECLARATION-GROUP-PROTOTYPE">/katech/Machines/AdaptiveMachine/Processes/Hdmap/state_machine</CONTEXT-MODE-DECLARATION-GROUP-PROTOTYPE-REF>
+                                <TARGET-MODE-DECLARATION-REF DEST="MODE-DECLARATION">/katech/ModeDeclarationGroups/ProcessStateMachine/Running</TARGET-MODE-DECLARATION-REF>
+                              </PROCESS-STATE-IREF>
+                            </EXECUTION-DEPENDENCY>
+                          </EXECUTION-DEPENDENCYS>
+                          <FUNCTION-GROUP-STATE-IREFS>
+                            <FUNCTION-GROUP-STATE-IREF>
+                              <CONTEXT-MODE-DECLARATION-GROUP-PROTOTYPE-REF DEST="MODE-DECLARATION-GROUP-PROTOTYPE">/katech/Machines/AdaptiveMachine/FunctionGroupSets/AdaptiveFunctionGroups/MachineFG</CONTEXT-MODE-DECLARATION-GROUP-PROTOTYPE-REF>
+                              <TARGET-MODE-DECLARATION-REF DEST="MODE-DECLARATION">/katech/ModeDeclarationGroups/MachineState/Driving</TARGET-MODE-DECLARATION-REF>
+                            </FUNCTION-GROUP-STATE-IREF>
+                          </FUNCTION-GROUP-STATE-IREFS>
+                          <RESOURCE-GROUP-REF DEST="RESOURCE-GROUP">/katech/Machines/AdaptiveMachine/AdaptiveMachine/Linux/ResourceGroupKATECH</RESOURCE-GROUP-REF>
+                          <STARTUP-CONFIG-REF DEST="STARTUP-CONFIG">/katech/Machines/AdaptiveMachine/StartupConfigSets/Planning</STARTUP-CONFIG-REF>
+                        </STATE-DEPENDENT-STARTUP-CONFIG>
+                      </STATE-DEPENDENT-STARTUP-CONFIGS>
+                    </PROCESS>
+                  </ELEMENTS>
+                </AR-PACKAGE>
+                <AR-PACKAGE>
+                  <SHORT-NAME>ServiceInstanceToPortPrototypeMappings</SHORT-NAME>
+                  <ELEMENTS>
+                    <SERVICE-INSTANCE-TO-PORT-PROTOTYPE-MAPPING>
+                      <SHORT-NAME>ProvidedServiceInstance_toPort_planning_collect_fault_planning</SHORT-NAME>
+                      <PORT-PROTOTYPE-IREF>
+                        <TARGET-PORT-PROTOTYPE-REF DEST="P-PORT-PROTOTYPE">/katech/AdaptiveApplicationSwComponentTypes/Planning/PPort_collect_fault_planning</TARGET-PORT-PROTOTYPE-REF>
+                      </PORT-PROTOTYPE-IREF>
+                      <PROCESS-REF DEST="PROCESS">/katech/Machines/AdaptiveMachine/Processes/Planning</PROCESS-REF>
+                      <SERVICE-INSTANCE-REF DEST="PROVIDED-SOMEIP-SERVICE-INSTANCE">/katech/Machines/AdaptiveMachine/ServiceInstances/ProvidedSomeipServiceInstance_collect_fault_planning</SERVICE-INSTANCE-REF>
+                    </SERVICE-INSTANCE-TO-PORT-PROTOTYPE-MAPPING>
+                    <SERVICE-INSTANCE-TO-PORT-PROTOTYPE-MAPPING>
+                      <SHORT-NAME>ProvidedServiceInstance_toPort_planning_driving_trajectory</SHORT-NAME>
+                      <PORT-PROTOTYPE-IREF>
+                        <TARGET-PORT-PROTOTYPE-REF DEST="P-PORT-PROTOTYPE">/katech/AdaptiveApplicationSwComponentTypes/Planning/PPort_driving_trajectory</TARGET-PORT-PROTOTYPE-REF>
+                      </PORT-PROTOTYPE-IREF>
+                      <PROCESS-REF DEST="PROCESS">/katech/Machines/AdaptiveMachine/Processes/Planning</PROCESS-REF>
+                      <SERVICE-INSTANCE-REF DEST="PROVIDED-SOMEIP-SERVICE-INSTANCE">/katech/Machines/AdaptiveMachine/ServiceInstances/ProvidedSomeipServiceInstance_driving_trajectory</SERVICE-INSTANCE-REF>
+                    </SERVICE-INSTANCE-TO-PORT-PROTOTYPE-MAPPING>
+                    <SERVICE-INSTANCE-TO-PORT-PROTOTYPE-MAPPING>
+                      <SHORT-NAME>ProvidedServiceInstance_toPort_planning_planning_hmi_data</SHORT-NAME>
+                      <PORT-PROTOTYPE-IREF>
+                        <TARGET-PORT-PROTOTYPE-REF DEST="P-PORT-PROTOTYPE">/katech/AdaptiveApplicationSwComponentTypes/Planning/PPort_planning_hmi_data</TARGET-PORT-PROTOTYPE-REF>
+                      </PORT-PROTOTYPE-IREF>
+                      <PROCESS-REF DEST="PROCESS">/katech/Machines/AdaptiveMachine/Processes/Planning</PROCESS-REF>
+                      <SERVICE-INSTANCE-REF DEST="PROVIDED-SOMEIP-SERVICE-INSTANCE">/katech/Machines/AdaptiveMachine/ServiceInstances/ProvidedSomeipServiceInstance_planning_hmi_data</SERVICE-INSTANCE-REF>
+                    </SERVICE-INSTANCE-TO-PORT-PROTOTYPE-MAPPING>
+                    <SERVICE-INSTANCE-TO-PORT-PROTOTYPE-MAPPING>
+                      <SHORT-NAME>ProvidedServiceInstance_toPort_planning_smart_cruise_control</SHORT-NAME>
+                      <PORT-PROTOTYPE-IREF>
+                        <TARGET-PORT-PROTOTYPE-REF DEST="P-PORT-PROTOTYPE">/katech/AdaptiveApplicationSwComponentTypes/Planning/PPort_smart_cruise_control</TARGET-PORT-PROTOTYPE-REF>
+                      </PORT-PROTOTYPE-IREF>
+                      <PROCESS-REF DEST="PROCESS">/katech/Machines/AdaptiveMachine/Processes/Planning</PROCESS-REF>
+                      <SERVICE-INSTANCE-REF DEST="PROVIDED-SOMEIP-SERVICE-INSTANCE">/katech/Machines/AdaptiveMachine/ServiceInstances/ProvidedSomeipServiceInstance_smart_cruise_control</SERVICE-INSTANCE-REF>
+                    </SERVICE-INSTANCE-TO-PORT-PROTOTYPE-MAPPING>
+                    <SERVICE-INSTANCE-TO-PORT-PROTOTYPE-MAPPING>
+                      <SHORT-NAME>RequiredServiceInstance_toPort_planning_can_data</SHORT-NAME>
+                      <PORT-PROTOTYPE-IREF>
+                        <TARGET-PORT-PROTOTYPE-REF DEST="R-PORT-PROTOTYPE">/katech/AdaptiveApplicationSwComponentTypes/Planning/RPort_can_data</TARGET-PORT-PROTOTYPE-REF>
+                      </PORT-PROTOTYPE-IREF>
+                      <PROCESS-REF DEST="PROCESS">/katech/Machines/AdaptiveMachine/Processes/Planning</PROCESS-REF>
+                      <SERVICE-INSTANCE-REF DEST="REQUIRED-SOMEIP-SERVICE-INSTANCE">/katech/Machines/AdaptiveMachine/ServiceInstances/RequiredSomeipServiceInstance_can_data</SERVICE-INSTANCE-REF>
+                    </SERVICE-INSTANCE-TO-PORT-PROTOTYPE-MAPPING>
+                    <SERVICE-INSTANCE-TO-PORT-PROTOTYPE-MAPPING>
+                      <SHORT-NAME>RequiredServiceInstance_toPort_planning_can_data_etc</SHORT-NAME>
+                      <PORT-PROTOTYPE-IREF>
+                        <TARGET-PORT-PROTOTYPE-REF DEST="R-PORT-PROTOTYPE">/katech/AdaptiveApplicationSwComponentTypes/Planning/RPort_can_data_etc</TARGET-PORT-PROTOTYPE-REF>
+                      </PORT-PROTOTYPE-IREF>
+                      <PROCESS-REF DEST="PROCESS">/katech/Machines/AdaptiveMachine/Processes/Planning</PROCESS-REF>
+                      <SERVICE-INSTANCE-REF DEST="REQUIRED-SOMEIP-SERVICE-INSTANCE">/katech/Machines/AdaptiveMachine/ServiceInstances/RequiredSomeipServiceInstance_can_data_etc</SERVICE-INSTANCE-REF>
+                    </SERVICE-INSTANCE-TO-PORT-PROTOTYPE-MAPPING>
+                    <SERVICE-INSTANCE-TO-PORT-PROTOTYPE-MAPPING>
+                      <SHORT-NAME>RequiredServiceInstance_toPort_planning_emergency_braking</SHORT-NAME>
+                      <PORT-PROTOTYPE-IREF>
+                        <TARGET-PORT-PROTOTYPE-REF DEST="R-PORT-PROTOTYPE">/katech/AdaptiveApplicationSwComponentTypes/Planning/RPort_emergency_braking</TARGET-PORT-PROTOTYPE-REF>
+                      </PORT-PROTOTYPE-IREF>
+                      <PROCESS-REF DEST="PROCESS">/katech/Machines/AdaptiveMachine/Processes/Planning</PROCESS-REF>
+                      <SERVICE-INSTANCE-REF DEST="REQUIRED-SOMEIP-SERVICE-INSTANCE">/katech/Machines/AdaptiveMachine/ServiceInstances/RequiredSomeipServiceInstance_emergency_braking</SERVICE-INSTANCE-REF>
+                    </SERVICE-INSTANCE-TO-PORT-PROTOTYPE-MAPPING>
+                    <SERVICE-INSTANCE-TO-PORT-PROTOTYPE-MAPPING>
+                      <SHORT-NAME>RequiredServiceInstance_toPort_planning_local_map</SHORT-NAME>
+                      <PORT-PROTOTYPE-IREF>
+                        <TARGET-PORT-PROTOTYPE-REF DEST="R-PORT-PROTOTYPE">/katech/AdaptiveApplicationSwComponentTypes/Planning/RPort_local_map</TARGET-PORT-PROTOTYPE-REF>
+                      </PORT-PROTOTYPE-IREF>
+                      <PROCESS-REF DEST="PROCESS">/katech/Machines/AdaptiveMachine/Processes/Planning</PROCESS-REF>
+                      <SERVICE-INSTANCE-REF DEST="REQUIRED-SOMEIP-SERVICE-INSTANCE">/katech/Machines/AdaptiveMachine/ServiceInstances/RequiredSomeipServiceInstance_local_map</SERVICE-INSTANCE-REF>
+                    </SERVICE-INSTANCE-TO-PORT-PROTOTYPE-MAPPING>
+                    <SERVICE-INSTANCE-TO-PORT-PROTOTYPE-MAPPING>
+                      <SHORT-NAME>RequiredServiceInstance_toPort_planning_perception_obstacles</SHORT-NAME>
+                      <PORT-PROTOTYPE-IREF>
+                        <TARGET-PORT-PROTOTYPE-REF DEST="R-PORT-PROTOTYPE">/katech/AdaptiveApplicationSwComponentTypes/Planning/RPort_perception_obstacles</TARGET-PORT-PROTOTYPE-REF>
+                      </PORT-PROTOTYPE-IREF>
+                      <PROCESS-REF DEST="PROCESS">/katech/Machines/AdaptiveMachine/Processes/Planning</PROCESS-REF>
+                      <SERVICE-INSTANCE-REF DEST="REQUIRED-SOMEIP-SERVICE-INSTANCE">/katech/Machines/AdaptiveMachine/ServiceInstances/RequiredSomeipServiceInstance_perception_obstacles</SERVICE-INSTANCE-REF>
+                    </SERVICE-INSTANCE-TO-PORT-PROTOTYPE-MAPPING>
+                    <SERVICE-INSTANCE-TO-PORT-PROTOTYPE-MAPPING>
+                      <SHORT-NAME>RequiredServiceInstance_toPort_planning_report_fault</SHORT-NAME>
+                      <PORT-PROTOTYPE-IREF>
+                        <TARGET-PORT-PROTOTYPE-REF DEST="R-PORT-PROTOTYPE">/katech/AdaptiveApplicationSwComponentTypes/Planning/RPort_report_fault</TARGET-PORT-PROTOTYPE-REF>
+                      </PORT-PROTOTYPE-IREF>
+                      <PROCESS-REF DEST="PROCESS">/katech/Machines/AdaptiveMachine/Processes/Planning</PROCESS-REF>
+                      <SERVICE-INSTANCE-REF DEST="REQUIRED-SOMEIP-SERVICE-INSTANCE">/katech/Machines/AdaptiveMachine/ServiceInstances/RequiredSomeipServiceInstance_report_fault</SERVICE-INSTANCE-REF>
+                    </SERVICE-INSTANCE-TO-PORT-PROTOTYPE-MAPPING>
+                    <SERVICE-INSTANCE-TO-PORT-PROTOTYPE-MAPPING>
+                      <SHORT-NAME>RequiredServiceInstance_toPort_planning_routing_result</SHORT-NAME>
+                      <PORT-PROTOTYPE-IREF>
+                        <TARGET-PORT-PROTOTYPE-REF DEST="R-PORT-PROTOTYPE">/katech/AdaptiveApplicationSwComponentTypes/Planning/RPort_routing_result</TARGET-PORT-PROTOTYPE-REF>
+                      </PORT-PROTOTYPE-IREF>
+                      <PROCESS-REF DEST="PROCESS">/katech/Machines/AdaptiveMachine/Processes/Planning</PROCESS-REF>
+                      <SERVICE-INSTANCE-REF DEST="REQUIRED-SOMEIP-SERVICE-INSTANCE">/katech/Machines/AdaptiveMachine/ServiceInstances/RequiredSomeipServiceInstance_routing_result</SERVICE-INSTANCE-REF>
+                    </SERVICE-INSTANCE-TO-PORT-PROTOTYPE-MAPPING>
+                    <SERVICE-INSTANCE-TO-PORT-PROTOTYPE-MAPPING>
+                      <SHORT-NAME>RequiredServiceInstance_toPort_planning_sensor_radar</SHORT-NAME>
+                      <PORT-PROTOTYPE-IREF>
+                        <TARGET-PORT-PROTOTYPE-REF DEST="R-PORT-PROTOTYPE">/katech/AdaptiveApplicationSwComponentTypes/Planning/RPort_sensor_radar</TARGET-PORT-PROTOTYPE-REF>
+                      </PORT-PROTOTYPE-IREF>
+                      <PROCESS-REF DEST="PROCESS">/katech/Machines/AdaptiveMachine/Processes/Planning</PROCESS-REF>
+                      <SERVICE-INSTANCE-REF DEST="REQUIRED-SOMEIP-SERVICE-INSTANCE">/katech/Machines/AdaptiveMachine/ServiceInstances/RequiredSomeipServiceInstance_sensor_radar</SERVICE-INSTANCE-REF>
+                    </SERVICE-INSTANCE-TO-PORT-PROTOTYPE-MAPPING>
+                    <SERVICE-INSTANCE-TO-PORT-PROTOTYPE-MAPPING>
+                      <SHORT-NAME>RequiredServiceInstance_toPort_planning_traffic_light</SHORT-NAME>
+                      <PORT-PROTOTYPE-IREF>
+                        <TARGET-PORT-PROTOTYPE-REF DEST="R-PORT-PROTOTYPE">/katech/AdaptiveApplicationSwComponentTypes/Planning/RPort_traffic_light</TARGET-PORT-PROTOTYPE-REF>
+                      </PORT-PROTOTYPE-IREF>
+                      <PROCESS-REF DEST="PROCESS">/katech/Machines/AdaptiveMachine/Processes/Planning</PROCESS-REF>
+                      <SERVICE-INSTANCE-REF DEST="REQUIRED-SOMEIP-SERVICE-INSTANCE">/katech/Machines/AdaptiveMachine/ServiceInstances/RequiredSomeipServiceInstance_traffic_light</SERVICE-INSTANCE-REF>
+                    </SERVICE-INSTANCE-TO-PORT-PROTOTYPE-MAPPING>
+                    <SERVICE-INSTANCE-TO-PORT-PROTOTYPE-MAPPING>
+                      <SHORT-NAME>RequiredServiceInstance_toPort_planning_v2x_data</SHORT-NAME>
+                      <PORT-PROTOTYPE-IREF>
+                        <TARGET-PORT-PROTOTYPE-REF DEST="R-PORT-PROTOTYPE">/katech/AdaptiveApplicationSwComponentTypes/Planning/RPort_v2x_data</TARGET-PORT-PROTOTYPE-REF>
+                      </PORT-PROTOTYPE-IREF>
+                      <PROCESS-REF DEST="PROCESS">/katech/Machines/AdaptiveMachine/Processes/Planning</PROCESS-REF>
+                      <SERVICE-INSTANCE-REF DEST="REQUIRED-SOMEIP-SERVICE-INSTANCE">/katech/Machines/AdaptiveMachine/ServiceInstances/RequiredSomeipServiceInstance_v2x_data</SERVICE-INSTANCE-REF>
+                    </SERVICE-INSTANCE-TO-PORT-PROTOTYPE-MAPPING>
+                    <SERVICE-INSTANCE-TO-PORT-PROTOTYPE-MAPPING>
+                      <SHORT-NAME>RequiredServiceInstance_toPort_planning_vehicle_location</SHORT-NAME>
+                      <PORT-PROTOTYPE-IREF>
+                        <TARGET-PORT-PROTOTYPE-REF DEST="R-PORT-PROTOTYPE">/katech/AdaptiveApplicationSwComponentTypes/Planning/RPort_vehicle_location</TARGET-PORT-PROTOTYPE-REF>
+                      </PORT-PROTOTYPE-IREF>
+                      <PROCESS-REF DEST="PROCESS">/katech/Machines/AdaptiveMachine/Processes/Planning</PROCESS-REF>
+                      <SERVICE-INSTANCE-REF DEST="REQUIRED-SOMEIP-SERVICE-INSTANCE">/katech/Machines/AdaptiveMachine/ServiceInstances/RequiredSomeipServiceInstance_vehicle_location</SERVICE-INSTANCE-REF>
+                    </SERVICE-INSTANCE-TO-PORT-PROTOTYPE-MAPPING>
+                  </ELEMENTS>
+                </AR-PACKAGE>
+                <AR-PACKAGE>
+                  <SHORT-NAME>StartupConfigSets</SHORT-NAME>
+                  <ELEMENTS>
+                    <STARTUP-CONFIG>
+                      <SHORT-NAME>Planning</SHORT-NAME>
+                      <ENVIRONMENT-VARIABLES>
+                        <TAG-WITH-OPTIONAL-VALUE>
+                          <KEY>VSOMEIP_CONFIGURATION</KEY>
+                          <VALUE>/etc/vsomeip.json</VALUE>
+                        </TAG-WITH-OPTIONAL-VALUE>
+                      </ENVIRONMENT-VARIABLES>
+                      <SCHEDULING-POLICY>SCHEDULING-POLICY-ROUND-ROBIN</SCHEDULING-POLICY>
+                      <SCHEDULING-PRIORITY>12</SCHEDULING-PRIORITY>
+                      <TERMINATION-BEHAVIOR>PROCESS-IS-NOT-SELF-TERMINATING</TERMINATION-BEHAVIOR>
+                    </STARTUP-CONFIG>
+                  </ELEMENTS>
+                </AR-PACKAGE>
+              </AR-PACKAGES>
+            </AR-PACKAGE>
+          </AR-PACKAGES>
+        </AR-PACKAGE>
+      </AR-PACKAGES>
+    </AR-PACKAGE>
+  </AR-PACKAGES>
+</AUTOSAR>

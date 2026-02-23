@@ -1,0 +1,14 @@
+# Make all text files use unix eol within the repository
+# but the native format on checkout.
+
+* text=auto
+
+# Exclude some explicitly binary files
+
+*.pdf binary
+*.jpg binary
+*.eap binary
+*.png binary
+*.tar binay
+*.gz binary
+

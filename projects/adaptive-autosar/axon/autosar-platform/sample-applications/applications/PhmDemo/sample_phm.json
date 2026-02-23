@@ -1,0 +1,234 @@
+{
+    "globalSupervision":
+    [
+        {
+            "shortName": "suGlobal",
+            "supervisionCycle": 7,
+            "expiredSupervisonCycleTolerance": 1,
+            "localSupervision":
+            [
+                "engineLocal",
+                "wheelLocal"
+            ]
+        }
+    ],
+    "localSupervision":
+    [
+        {
+            "shortName": "engineLocal",
+            "failedSupervisionCyclesTolerance": 1,
+            "aliveSupervision":
+            [
+            ],
+            "deadlineSupervision":
+            [
+            ],
+            "logicalSupervision":
+            [
+                "logical"
+            ],
+            "supervisedEntityId": "RPort_0"
+        },
+        {
+            "shortName": "wheelLocal",
+            "failedSupervisionCyclesTolerance": 2,
+            "aliveSupervision":
+            [
+                "alive"
+            ],
+            "deadlineSupervision":
+            [
+                "deadline0",
+                "deadline1",
+                "deadline2"
+            ],
+            "logicalSupervision":
+            [
+            ],
+            "supervisedEntityId": "RPort_1"
+        },
+        {
+            "shortName": "motorLocal",
+            "failedSupervisionCyclesTolerance": 1,
+            "aliveSupervision":
+            [
+            ],
+            "deadlineSupervision":
+            [
+                "deadline3"
+            ],
+            "logicalSupervision":
+            [
+            ],
+            "supervisedEntityId": "RPort_2"
+        }
+    ],
+    "aliveSupervision":
+    [
+        {
+            "shortName": "alive",
+            "checkpointName": "wheelFinished3",
+            "expectedAliveIndications": 6,
+            "maxMargin": 2,
+            "minMargin": 2,
+            "aliveReferenceCycle": 150
+        }
+    ],
+    "deadlineSupervision":
+    [
+        {
+            "shortName": "deadline0",
+            "checkpointTransition":
+            [
+                "wheelStarted0",
+                "wheelFinished0"
+            ],
+            "maxDeadline": 100,
+            "minDeadline": 0
+        },
+        {
+            "shortName": "deadline1",
+            "checkpointTransition":
+            [
+                "wheelStarted1",
+                "wheelFinished1"
+            ],
+            "maxDeadline": 100,
+            "minDeadline": 0
+        },
+        {
+            "shortName": "deadline2",
+            "checkpointTransition":
+            [
+                "wheelStarted2",
+                "wheelFinished2"
+            ],
+            "maxDeadline": 100,
+            "minDeadline": 0
+        },
+        {
+            "shortName": "deadline3",
+            "checkpointTransition":
+            [
+                "motorStart0",
+                "motorFinish0"
+            ],
+            "maxDeadline": 50,
+            "minDeadline": 0
+        }
+    ],
+    "logicalSupervision":
+    [
+        {
+            "shortName": "logical",
+            "initialCheckpoint":
+            [
+                "engineInitializing"
+            ],
+            "finalCheckpoint":
+            [
+                "engineInitializingFinished"
+            ],
+            "transition":
+            [
+                {
+                    "shortName": "transition1",
+                    "sourceCheckpoint": "engineInitializing",
+                    "targetCheckpoint": "engineStartupTest"
+                },
+                {
+                    "shortName": "transition2",
+                    "sourceCheckpoint": "engineStartupTest",
+                    "targetCheckpoint": "engineInitializingFinished"
+                }
+            ]
+        }
+    ],
+    "supervisionCheckpoint":
+    [
+        {
+            "shortName": "engineInitializing",
+            "supervisedEntityId": "RPort_0",
+            "prototypeId": "SwComponentPrototype_0",
+            "checkpointId": "0",
+            "process": "/apd/Machines/RadarFusionMachine/Processes/PhmDemo"
+        },
+        {
+            "shortName": "engineStartupTest",
+            "supervisedEntityId": "RPort_0",
+            "prototypeId": "SwComponentPrototype_0",
+            "checkpointId": "1",
+            "process": "/apd/Machines/RadarFusionMachine/Processes/PhmDemo"
+        },
+        {
+            "shortName": "engineInitializingFinished",
+            "supervisedEntityId": "RPort_0",
+            "prototypeId": "SwComponentPrototype_0",
+            "checkpointId": "2",
+            "process": "/apd/Machines/RadarFusionMachine/Processes/PhmDemo"
+        },
+        {
+            "shortName": "wheelStarted0",
+            "supervisedEntityId": "RPort_1",
+            "prototypeId": "SwComponentPrototype_0",
+            "checkpointId": "0",
+            "process": "/apd/Machines/RadarFusionMachine/Processes/PhmDemo"
+        },
+        {
+            "shortName": "wheelStarted1",
+            "supervisedEntityId": "RPort_1",
+            "prototypeId": "SwComponentPrototype_1",
+            "checkpointId": "0",
+            "process": "/apd/Machines/RadarFusionMachine/Processes/PhmDemo"
+        },
+        {
+            "shortName": "wheelStarted2",
+            "supervisedEntityId": "RPort_1",
+            "prototypeId": "SwComponentPrototype_2",
+            "checkpointId": "0",
+            "process": "/apd/Machines/RadarFusionMachine/Processes/PhmDemo"
+        },
+        {
+            "shortName": "wheelFinished0",
+            "supervisedEntityId": "RPort_1",
+            "prototypeId": "SwComponentPrototype_0",
+            "checkpointId": "1",
+            "process": "/apd/Machines/RadarFusionMachine/Processes/PhmDemo"
+        },
+        {
+            "shortName": "wheelFinished1",
+            "supervisedEntityId": "RPort_1",
+            "prototypeId": "SwComponentPrototype_1",
+            "checkpointId": "1",
+            "process": "/apd/Machines/RadarFusionMachine/Processes/PhmDemo"
+        },
+        {
+            "shortName": "wheelFinished2",
+            "supervisedEntityId": "RPort_1",
+            "prototypeId": "SwComponentPrototype_2",
+            "checkpointId": "1",
+            "process": "/apd/Machines/RadarFusionMachine/Processes/PhmDemo"
+        },
+        {
+            "shortName": "wheelFinished3",
+            "supervisedEntityId": "RPort_1",
+            "prototypeId": "SwComponentPrototype_3",
+            "checkpointId": "1",
+            "process": "/apd/Machines/RadarFusionMachine/Processes/PhmDemo"
+        },
+        {
+            "shortName": "motorStart0",
+            "supervisedEntityId": "RPort_2",
+            "prototypeId": "SwComponentPrototype_0",
+            "checkpointId": "0",
+            "process": "/apd/Machines/RadarFusionMachine/Processes/PhmDemo"
+        },
+        {
+            "shortName": "motorFinish0",
+            "supervisedEntityId": "RPort_2",
+            "prototypeId": "SwComponentPrototype_0",
+            "checkpointId": "1",
+            "process": "/apd/Machines/RadarFusionMachine/Processes/PhmDemo"
+        }
+    ]
+}

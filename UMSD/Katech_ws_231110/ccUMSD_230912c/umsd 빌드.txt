@@ -1,6 +1,0 @@
-umsd 폴더에서
-source ./setenv 하고
-make 
-하면 네이티브 빌드해요
-
-date -s "2023-10-13 13:50"

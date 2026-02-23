@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<AUTOSAR xmlns="http://autosar.org/schema/r4.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://autosar.org/schema/r4.0 AUTOSAR_00052.xsd">
+  <AR-PACKAGES>
+    <AR-PACKAGE>
+      <SHORT-NAME>apd</SHORT-NAME>
+      <AR-PACKAGES>
+        <AR-PACKAGE>
+          <SHORT-NAME>Machines</SHORT-NAME>
+          <AR-PACKAGES>
+            <AR-PACKAGE>
+              <SHORT-NAME>testSuiteEcu1WRSOMEIPMachine</SHORT-NAME>
+              <AR-PACKAGES>
+                <AR-PACKAGE>
+                  <!-- ProcessDesigns -->
+                  <SHORT-NAME>ProcessDesigns</SHORT-NAME>
+                  <ELEMENTS>
+                    <PROCESS-DESIGN>
+                      <SHORT-NAME>STC1_EMOApp02Instance</SHORT-NAME>
+                      <EXECUTABLE-REFS>
+                        <EXECUTABLE-REF DEST="EXECUTABLE">/apd/Executables/STC1_EMOApp02</EXECUTABLE-REF>
+                      </EXECUTABLE-REFS>
+                    </PROCESS-DESIGN>
+                    <PROCESS-DESIGN>
+                      <SHORT-NAME>STC1_EMOApp03Instance</SHORT-NAME>
+                      <EXECUTABLE-REFS>
+                        <EXECUTABLE-REF DEST="EXECUTABLE">/apd/Executables/STC1_EMOApp03</EXECUTABLE-REF>
+                      </EXECUTABLE-REFS>
+                    </PROCESS-DESIGN>
+                    <PROCESS-DESIGN>
+                      <SHORT-NAME>STC1_EMOApp04Instance</SHORT-NAME>
+                      <EXECUTABLE-REFS>
+                        <EXECUTABLE-REF DEST="EXECUTABLE">/apd/Executables/STC1_EMOApp04</EXECUTABLE-REF>
+                      </EXECUTABLE-REFS>
+                    </PROCESS-DESIGN>
+                    <PROCESS-DESIGN>
+                      <SHORT-NAME>STC1_EMOApp05Instance</SHORT-NAME>
+                      <EXECUTABLE-REFS>
+                        <EXECUTABLE-REF DEST="EXECUTABLE">/apd/Executables/STC1_EMOApp05</EXECUTABLE-REF>
+                      </EXECUTABLE-REFS>
+                    </PROCESS-DESIGN>
+                  </ELEMENTS>
+                </AR-PACKAGE>
+              </AR-PACKAGES>
+            </AR-PACKAGE>
+          </AR-PACKAGES>
+        </AR-PACKAGE>
+      </AR-PACKAGES>
+    </AR-PACKAGE>
+  </AR-PACKAGES>
+</AUTOSAR>

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<AUTOSAR xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://autosar.org/schema/r4.0" xsi:schemaLocation="http://autosar.org/schema/r4.0 AUTOSAR_00052.xsd">
+  <AR-PACKAGES>
+    <AR-PACKAGE>
+      <SHORT-NAME>apd</SHORT-NAME>
+      <AR-PACKAGES>
+        <AR-PACKAGE>
+          <SHORT-NAME>SoftwareClusters</SHORT-NAME>
+          <AR-PACKAGES>
+            <AR-PACKAGE>
+              <SHORT-NAME>SWCL_BASE</SHORT-NAME>
+              <ELEMENTS>
+                <SOFTWARE-CLUSTER>
+                  <SHORT-NAME>SWCL_BASE</SHORT-NAME>
+                  <ARTIFACT-CHECKSUMS>@ARTIFACT_CHECKSUMS@
+                  </ARTIFACT-CHECKSUMS>
+                  <CONTAINED-PROCESS-REFS>
+                    <!-- <CONTAINED-PROCESS-REF DEST="PROCESS">/apd/Machines/RadarFusionMachine/Processes/ultrasonicsensor</CONTAINED-PROCESS-REF> -->
+                  </CONTAINED-PROCESS-REFS>
+                  <INSTALLATION-BEHAVIOR>CANNOT-BE-REMOVED</INSTALLATION-BEHAVIOR>
+                  <LICENSE-REFS>
+                    <LICENSE-REF DEST="DOCUMENTATION">/apd/Documentations/AUTOSAR_LIC</LICENSE-REF>
+                  </LICENSE-REFS>
+                  <RELEASE-NOTES-REF DEST="DOCUMENTATION">/apd/Documentations/R2003_RN</RELEASE-NOTES-REF>
+                  <TYPE-APPROVAL>e1*2024/123*4567*89</TYPE-APPROVAL>
+                  <VENDOR-ID>1447315780</VENDOR-ID>
+                  <VERSION>1.0.0</VERSION>
+                </SOFTWARE-CLUSTER>
+              </ELEMENTS>
+            </AR-PACKAGE>
+          </AR-PACKAGES>
+        </AR-PACKAGE>
+      </AR-PACKAGES>
+    </AR-PACKAGE>
+  </AR-PACKAGES>
+</AUTOSAR>

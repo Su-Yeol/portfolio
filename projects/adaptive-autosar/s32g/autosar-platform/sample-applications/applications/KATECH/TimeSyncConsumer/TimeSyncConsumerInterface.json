@@ -1,0 +1,17 @@
+{
+    "timeSynchronizationInterface":
+    {
+        "timeBaseType": "Synchronized",
+        "interfaceType": "SynchronizedTimeBaseConsumer",
+        "instanceSpecifier": "GPS"
+    },
+    "ptpConfiguration":
+    {
+        "networkInterface": "eth0",
+        "globalTimeTxPeriod": 1.2,
+        "globalTimePropagationDelay": 0.1,
+        "messageCompliance": true,
+        "hardwareTimestamping": false,
+        "precisionMeasurement": false
+    }
+}

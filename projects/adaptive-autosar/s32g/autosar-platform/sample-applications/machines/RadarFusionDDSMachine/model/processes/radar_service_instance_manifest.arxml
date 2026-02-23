@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<AUTOSAR xmlns="http://autosar.org/schema/r4.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://autosar.org/schema/r4.0 AUTOSAR_00052.xsd">
+  <AR-PACKAGES>
+    <AR-PACKAGE>
+      <SHORT-NAME>apd</SHORT-NAME>
+      <AR-PACKAGES>
+        <AR-PACKAGE>
+          <SHORT-NAME>Machines</SHORT-NAME>
+          <AR-PACKAGES>
+            <AR-PACKAGE>
+              <SHORT-NAME>RadarFusionDDSMachine</SHORT-NAME>
+              <AR-PACKAGES>
+                <AR-PACKAGE>
+                  <SHORT-NAME>ServiceInstanceToMachineMappings</SHORT-NAME>
+                  <ELEMENTS>
+                    <DDS-SERVICE-INSTANCE-TO-MACHINE-MAPPING>
+                      <SHORT-NAME>radar_ProvidedServiceInstance_toMachine</SHORT-NAME>
+                      <COMMUNICATION-CONNECTOR-REF DEST="ETHERNET-COMMUNICATION-CONNECTOR">/apd/MachineDesigns/RadarFusionDDSMachineDesign/RadarFusionDDSConnector</COMMUNICATION-CONNECTOR-REF>
+                      <SERVICE-INSTANCE-REFS>
+                        <SERVICE-INSTANCE-REF DEST="DDS-PROVIDED-SERVICE-INSTANCE">/apd/Machines/RadarFusionDDSMachine/ServiceInstances/Radar_ProvidedDdsServiceInstance</SERVICE-INSTANCE-REF>
+                      </SERVICE-INSTANCE-REFS>
+                    </DDS-SERVICE-INSTANCE-TO-MACHINE-MAPPING>
+                  </ELEMENTS>
+                </AR-PACKAGE>
+                <AR-PACKAGE>
+                  <SHORT-NAME>ServiceInstances</SHORT-NAME>
+                  <ELEMENTS>
+                    <DDS-PROVIDED-SERVICE-INSTANCE>
+                      <SHORT-NAME>Radar_ProvidedDdsServiceInstance</SHORT-NAME>
+                      <E-2-E-EVENT-PROTECTION-PROPSS>
+                        <END-2-END-EVENT-PROTECTION-PROPS>
+                          <SHORT-NAME>End2EndEventProtectionProps</SHORT-NAME>
+                          <DATA-IDS>
+                            <DATA-ID>4321</DATA-ID>
+                          </DATA-IDS>
+                          <E-2-E-PROFILE-CONFIGURATION-REF DEST="E-2-E-PROFILE-CONFIGURATION">/apd/Machines/RadarFusionDDSMachine/E2E/e2eprofiles/PROFILE_01</E-2-E-PROFILE-CONFIGURATION-REF>
+                          <EVENT-REF DEST="DDS-EVENT-DEPLOYMENT">/apd/ServiceInterfaceDeployments/Radar_Dds/DdsEventBrakeEvent</EVENT-REF>
+                          <MAX-DATA-LENGTH>4096</MAX-DATA-LENGTH>
+                          <MIN-DATA-LENGTH>1</MIN-DATA-LENGTH>
+                        </END-2-END-EVENT-PROTECTION-PROPS>
+                        <END-2-END-EVENT-PROTECTION-PROPS>
+                          <SHORT-NAME>End2EndEventProtectionProps</SHORT-NAME>
+                          <DATA-IDS>
+                            <DATA-ID>4321</DATA-ID>
+                            <DATA-ID>4321</DATA-ID>
+                          </DATA-IDS>
+                          <E-2-E-PROFILE-CONFIGURATION-REF DEST="E-2-E-PROFILE-CONFIGURATION">/apd/Machines/RadarFusionDDSMachine/E2E/e2eprofiles/PROFILE_01</E-2-E-PROFILE-CONFIGURATION-REF>
+                          <EVENT-REF DEST="DDS-EVENT-DEPLOYMENT">/apd/ServiceInterfaceDeployments/Radar_Dds/DdsEventParkingBrakeEvent</EVENT-REF>
+                          <MAX-DATA-LENGTH>4096</MAX-DATA-LENGTH>
+                          <MIN-DATA-LENGTH>1</MIN-DATA-LENGTH>
+                        </END-2-END-EVENT-PROTECTION-PROPS>
+                      </E-2-E-EVENT-PROTECTION-PROPSS>
+                      <SERVICE-INTERFACE-DEPLOYMENT-REF DEST="DDS-SERVICE-INTERFACE-DEPLOYMENT">/apd/ServiceInterfaceDeployments/Radar_Dds</SERVICE-INTERFACE-DEPLOYMENT-REF>
+                      <QOS-PROFILE>default</QOS-PROFILE>
+                      <DOMAIN-ID>42</DOMAIN-ID>
+                      <EVENT-QOS-PROPSS>
+                        <DDS-EVENT-QOS-PROPS>
+                          <QOS-PROFILE>default</QOS-PROFILE>
+                          <EVENT-REF DEST="SERVICE-EVENT-DEPLOYMENT">/apd/ServiceInterfaceDeployments/Radar_Dds/DdsEventBrakeEvent</EVENT-REF>
+                        </DDS-EVENT-QOS-PROPS>
+                      </EVENT-QOS-PROPSS>
+                      <FIELD-NOTIFIER-QOS-PROPSS>
+                        <DDS-FIELD-QOS-PROPS>
+                          <QOS-PROFILE>default</QOS-PROFILE>
+                          <FIELD-REF DEST="SERVICE-FIELD-DEPLOYMENT">/apd/ServiceInterfaceDeployments/Radar_Dds/UpdateRate_Dds</FIELD-REF>
+                        </DDS-FIELD-QOS-PROPS>
+                      </FIELD-NOTIFIER-QOS-PROPSS>
+                      <SERVICE-INSTANCE-ID>19</SERVICE-INSTANCE-ID>
+                    </DDS-PROVIDED-SERVICE-INSTANCE>
+                  </ELEMENTS>
+                </AR-PACKAGE>
+              </AR-PACKAGES>
+            </AR-PACKAGE>
+          </AR-PACKAGES>
+        </AR-PACKAGE>
+      </AR-PACKAGES>
+    </AR-PACKAGE>
+  </AR-PACKAGES>
+</AUTOSAR>

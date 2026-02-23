@@ -1,0 +1,535 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<AUTOSAR xmlns="http://autosar.org/schema/r4.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://autosar.org/schema/r4.0 AUTOSAR_00052.xsd">
+  <AR-PACKAGES>
+    <AR-PACKAGE>
+      <SHORT-NAME>apd</SHORT-NAME>
+      <AR-PACKAGES>
+        <AR-PACKAGE>
+          <SHORT-NAME>Machines</SHORT-NAME>
+          <AR-PACKAGES>
+            <AR-PACKAGE>
+              <SHORT-NAME>RadarFusionWRSOMEIPMachine</SHORT-NAME>
+              <ELEMENTS>
+                <MACHINE>
+                  <SHORT-NAME>RadarFusionWRSOMEIPMachine</SHORT-NAME>
+                  <DEFAULT-APPLICATION-TIMEOUT>
+                    <EXIT-TIMEOUT-VALUE>0.1</EXIT-TIMEOUT-VALUE>
+                  </DEFAULT-APPLICATION-TIMEOUT>
+                  <ENVIRONMENT-VARIABLES>
+                    <TAG-WITH-OPTIONAL-VALUE>
+                      <KEY>DLT_LOG_MODE</KEY>
+                      <VALUE>3</VALUE>
+                    </TAG-WITH-OPTIONAL-VALUE>
+                  </ENVIRONMENT-VARIABLES>
+                  <MACHINE-DESIGN-REF DEST="MACHINE-DESIGN">/apd/MachineDesigns/RadarFusionWRSOMEIPMachineDesign</MACHINE-DESIGN-REF>
+                  <MODULE-INSTANTIATIONS>
+                    <LOG-AND-TRACE-INSTANTIATION>
+                      <SHORT-NAME>LogAndTraceInstanciation</SHORT-NAME>
+                      <DLT-ECU-REF DEST="DLT-ECU">/apd/Machines/RadarFusionWRSOMEIPMachine/dlt/RadarFusionWRSOMEIPMachineDltEcu</DLT-ECU-REF>
+                      <LOG-SINK-REFS>
+                        <LOG-SINK-REF DEST="DLT-LOG-SINK">/apd/Machines/RadarFusionWRSOMEIPMachine/dlt/ConsoleDltSink</LOG-SINK-REF>
+                      </LOG-SINK-REFS>
+                    </LOG-AND-TRACE-INSTANTIATION>
+                    <OS-MODULE-INSTANTIATION>
+                      <SHORT-NAME>Linux</SHORT-NAME>
+                      <RESOURCE-GROUPS>
+                        <RESOURCE-GROUP>
+                          <SHORT-NAME>ResourceGroup1</SHORT-NAME>
+                          <CPU-USAGE>95</CPU-USAGE>
+                          <MEM-USAGE>2000000000</MEM-USAGE>
+                        </RESOURCE-GROUP>
+                        <RESOURCE-GROUP>
+                          <SHORT-NAME>ResourceGroup2</SHORT-NAME>
+                          <CPU-USAGE>95</CPU-USAGE>
+                          <MEM-USAGE>2000000000</MEM-USAGE>
+                        </RESOURCE-GROUP>
+                        <RESOURCE-GROUP>
+                          <SHORT-NAME>ResourceGroupDB</SHORT-NAME>
+                          <CPU-USAGE>80</CPU-USAGE>
+                          <MEM-USAGE>500000000</MEM-USAGE>
+                        </RESOURCE-GROUP>
+                        <RESOURCE-GROUP>
+                          <SHORT-NAME>ResourceGroupDIAG</SHORT-NAME>
+                          <CPU-USAGE>80</CPU-USAGE>
+                          <MEM-USAGE>500000000</MEM-USAGE>
+                        </RESOURCE-GROUP>
+                        <RESOURCE-GROUP>
+                          <SHORT-NAME>ResourceGroupIAM</SHORT-NAME>
+                          <CPU-USAGE>80</CPU-USAGE>
+                          <MEM-USAGE>500000000</MEM-USAGE>
+                        </RESOURCE-GROUP>
+                        <RESOURCE-GROUP>
+                          <SHORT-NAME>ResourceGroupSM</SHORT-NAME>
+                          <CPU-USAGE>80</CPU-USAGE>
+                          <MEM-USAGE>500000000</MEM-USAGE>
+                        </RESOURCE-GROUP>
+                      </RESOURCE-GROUPS>
+                    </OS-MODULE-INSTANTIATION>
+                    <UCM-SUBORDINATE-MODULE-INSTANTIATION>
+                      <SHORT-NAME>UcmInstance</SHORT-NAME>
+                      <IDENTIFIER>RadarFusionWRSOMEIPMachineUCM</IDENTIFIER>
+                    </UCM-SUBORDINATE-MODULE-INSTANTIATION>
+                  </MODULE-INSTANTIATIONS>
+                  <PROCESSORS>
+                    <PROCESSOR>
+                      <SHORT-NAME>DefaultProcessor</SHORT-NAME>
+                      <CORES>
+                        <PROCESSOR-CORE>
+                          <SHORT-NAME>ProcessorCore0</SHORT-NAME>
+                          <CORE-ID>0</CORE-ID>
+                        </PROCESSOR-CORE>
+                        <PROCESSOR-CORE>
+                          <SHORT-NAME>ProcessorCore1</SHORT-NAME>
+                          <CORE-ID>1</CORE-ID>
+                        </PROCESSOR-CORE>
+                      </CORES>
+                    </PROCESSOR>
+                  </PROCESSORS>
+                </MACHINE>
+              </ELEMENTS>
+              <AR-PACKAGES>
+                <AR-PACKAGE>
+                  <SHORT-NAME>E2E</SHORT-NAME>
+                  <ELEMENTS>
+                    <E-2-E-PROFILE-CONFIGURATION-SET>
+                      <SHORT-NAME>e2eprofiles</SHORT-NAME>
+                      <E-2-E-PROFILE-CONFIGURATIONS>
+                        <E-2-E-PROFILE-CONFIGURATION>
+                          <SHORT-NAME>PROFILE_01</SHORT-NAME>
+                          <MAX-DELTA-COUNTER>1</MAX-DELTA-COUNTER>
+                          <MAX-ERROR-STATE-INIT>0</MAX-ERROR-STATE-INIT>
+                          <MAX-ERROR-STATE-INVALID>0</MAX-ERROR-STATE-INVALID>
+                          <MAX-ERROR-STATE-VALID>0</MAX-ERROR-STATE-VALID>
+                          <MIN-OK-STATE-INIT>1</MIN-OK-STATE-INIT>
+                          <MIN-OK-STATE-INVALID>1</MIN-OK-STATE-INVALID>
+                          <MIN-OK-STATE-VALID>1</MIN-OK-STATE-VALID>
+                          <PROFILE-NAME>PROFILE_01</PROFILE-NAME>
+                          <WINDOW-SIZE-INIT>1</WINDOW-SIZE-INIT>
+                          <WINDOW-SIZE-INVALID>1</WINDOW-SIZE-INVALID>
+                          <WINDOW-SIZE-VALID>1</WINDOW-SIZE-VALID>
+                        </E-2-E-PROFILE-CONFIGURATION>
+                      </E-2-E-PROFILE-CONFIGURATIONS>
+                    </E-2-E-PROFILE-CONFIGURATION-SET>
+                  </ELEMENTS>
+                </AR-PACKAGE>
+                <AR-PACKAGE>
+                  <SHORT-NAME>FunctionGroupSets</SHORT-NAME>
+                  <ELEMENTS>
+                    <FUNCTION-GROUP-SET>
+                      <SHORT-NAME>RadarFusionWRSOMEIPFunctionGroups</SHORT-NAME>
+                      <FUNCTION-GROUPS>
+                        <MODE-DECLARATION-GROUP-PROTOTYPE>
+                          <SHORT-NAME>MachineFG</SHORT-NAME>
+                          <TYPE-TREF DEST="MODE-DECLARATION-GROUP">/apd/ModeDeclarationGroups/MachineState</TYPE-TREF>
+                        </MODE-DECLARATION-GROUP-PROTOTYPE>
+                        <MODE-DECLARATION-GROUP-PROTOTYPE>
+                          <SHORT-NAME>Sensor</SHORT-NAME>
+                          <TYPE-TREF DEST="MODE-DECLARATION-GROUP">/apd/ModeDeclarationGroups/Sensor</TYPE-TREF>
+                        </MODE-DECLARATION-GROUP-PROTOTYPE>
+                        <MODE-DECLARATION-GROUP-PROTOTYPE>
+                          <SHORT-NAME>Lane_Change_Assistance</SHORT-NAME>
+                          <TYPE-TREF DEST="MODE-DECLARATION-GROUP">/apd/ModeDeclarationGroups/Lane_Change_Assistance</TYPE-TREF>
+                        </MODE-DECLARATION-GROUP-PROTOTYPE>
+                        <MODE-DECLARATION-GROUP-PROTOTYPE>
+                          <SHORT-NAME>Pedestrian_Protection</SHORT-NAME>
+                          <TYPE-TREF DEST="MODE-DECLARATION-GROUP">/apd/ModeDeclarationGroups/Pedestrian_Protection</TYPE-TREF>
+                        </MODE-DECLARATION-GROUP-PROTOTYPE>
+                        <MODE-DECLARATION-GROUP-PROTOTYPE>
+                          <SHORT-NAME>UpdatableApplicationFG</SHORT-NAME>
+                          <TYPE-TREF DEST="MODE-DECLARATION-GROUP">/apd/ModeDeclarationGroups/UpdatableApplicationFG</TYPE-TREF>
+                        </MODE-DECLARATION-GROUP-PROTOTYPE>
+                      </FUNCTION-GROUPS>
+                    </FUNCTION-GROUP-SET>
+                  </ELEMENTS>
+                </AR-PACKAGE>
+                <AR-PACKAGE>
+                  <SHORT-NAME>SoftwareClusters</SHORT-NAME>
+                  <ELEMENTS>
+                    <SOFTWARE-CLUSTER>
+                      <SHORT-NAME>RadarFusionCoreCluster</SHORT-NAME>
+                      <CATEGORY>PLATFORM_CORE</CATEGORY>
+                      <CLAIMED-FUNCTION-GROUP-REFS>
+                        <CLAIMED-FUNCTION-GROUP-REF DEST="MODE-DECLARATION-GROUP-PROTOTYPE">/apd/Machines/RadarFusionWRSOMEIPMachine/FunctionGroupSets/RadarFusionWRSOMEIPFunctionGroups/MachineFG</CLAIMED-FUNCTION-GROUP-REF>
+                        <CLAIMED-FUNCTION-GROUP-REF DEST="MODE-DECLARATION-GROUP-PROTOTYPE">/apd/Machines/RadarFusionWRSOMEIPMachine/FunctionGroupSets/RadarFusionWRSOMEIPFunctionGroups/Lane_Change_Assistance</CLAIMED-FUNCTION-GROUP-REF>
+                        <CLAIMED-FUNCTION-GROUP-REF DEST="MODE-DECLARATION-GROUP-PROTOTYPE">/apd/Machines/RadarFusionWRSOMEIPMachine/FunctionGroupSets/RadarFusionWRSOMEIPFunctionGroups/Pedestrian_Protection</CLAIMED-FUNCTION-GROUP-REF>
+                        <CLAIMED-FUNCTION-GROUP-REF DEST="MODE-DECLARATION-GROUP-PROTOTYPE">/apd/Machines/RadarFusionWRSOMEIPMachine/FunctionGroupSets/RadarFusionWRSOMEIPFunctionGroups/UpdatableApplicationFG</CLAIMED-FUNCTION-GROUP-REF>
+                        <CLAIMED-FUNCTION-GROUP-REF DEST="MODE-DECLARATION-GROUP-PROTOTYPE">/ara/apd/function_group_sets/DevelopmentFunctionGroups/UpdatableApplicationFG</CLAIMED-FUNCTION-GROUP-REF>
+                      </CLAIMED-FUNCTION-GROUP-REFS>
+                      <CONTAINED-PROCESS-REFS>
+                        <CONTAINED-PROCESS-REF DEST="PROCESS">/apd/Machines/RadarFusionWRSOMEIPMachine/Processes/access_manager</CONTAINED-PROCESS-REF>
+                        <CONTAINED-PROCESS-REF DEST="PROCESS">/apd/Machines/RadarFusionWRSOMEIPMachine/Processes/CMValidatorPublisher</CONTAINED-PROCESS-REF>
+                        <CONTAINED-PROCESS-REF DEST="PROCESS">/apd/Machines/RadarFusionWRSOMEIPMachine/Processes/CMValidatorSubscriber</CONTAINED-PROCESS-REF>
+                        <CONTAINED-PROCESS-REF DEST="PROCESS">/apd/Machines/RadarFusionWRSOMEIPMachine/Processes/DemonstratorTutorial</CONTAINED-PROCESS-REF>
+                        <CONTAINED-PROCESS-REF DEST="PROCESS">/apd/Machines/RadarFusionWRSOMEIPMachine/Processes/EmoIntegrationTest</CONTAINED-PROCESS-REF>
+                        <CONTAINED-PROCESS-REF DEST="PROCESS">/apd/Machines/RadarFusionWRSOMEIPMachine/Processes/EmoSampleApplication</CONTAINED-PROCESS-REF>
+                        <CONTAINED-PROCESS-REF DEST="PROCESS">/apd/Machines/RadarFusionWRSOMEIPMachine/Processes/ExtendedTutorial</CONTAINED-PROCESS-REF>
+                        <CONTAINED-PROCESS-REF DEST="PROCESS">/apd/Machines/RadarFusionWRSOMEIPMachine/Processes/FaultyCalibrationApplication</CONTAINED-PROCESS-REF>
+                        <CONTAINED-PROCESS-REF DEST="PROCESS">/apd/Machines/RadarFusionWRSOMEIPMachine/Processes/FaultyProbingApplication</CONTAINED-PROCESS-REF>
+                        <CONTAINED-PROCESS-REF DEST="PROCESS">/apd/Machines/RadarFusionWRSOMEIPMachine/Processes/flashing_adapter</CONTAINED-PROCESS-REF>
+                        <CONTAINED-PROCESS-REF DEST="PROCESS">/apd/Machines/RadarFusionWRSOMEIPMachine/Processes/package_manager</CONTAINED-PROCESS-REF>
+                        <CONTAINED-PROCESS-REF DEST="PROCESS">/apd/Machines/RadarFusionWRSOMEIPMachine/Processes/fusion</CONTAINED-PROCESS-REF>
+                        <CONTAINED-PROCESS-REF DEST="PROCESS">/apd/Machines/RadarFusionWRSOMEIPMachine/Processes/PersistencyDemo</CONTAINED-PROCESS-REF>
+                        <CONTAINED-PROCESS-REF DEST="PROCESS">/apd/Machines/RadarFusionWRSOMEIPMachine/Processes/PersistencyRedundancyDemo</CONTAINED-PROCESS-REF>
+                        <CONTAINED-PROCESS-REF DEST="PROCESS">/apd/Machines/RadarFusionWRSOMEIPMachine/Processes/PhmDemo</CONTAINED-PROCESS-REF>
+                        <CONTAINED-PROCESS-REF DEST="PROCESS">/apd/Machines/RadarFusionWRSOMEIPMachine/Processes/pkgmgr_sample</CONTAINED-PROCESS-REF>
+                        <CONTAINED-PROCESS-REF DEST="PROCESS">/apd/Machines/RadarFusionWRSOMEIPMachine/Processes/radar</CONTAINED-PROCESS-REF>
+                        <CONTAINED-PROCESS-REF DEST="PROCESS">/apd/Machines/RadarFusionWRSOMEIPMachine/Processes/RES_TimingRefApp</CONTAINED-PROCESS-REF>
+                        <CONTAINED-PROCESS-REF DEST="PROCESS">/apd/Machines/RadarFusionWRSOMEIPMachine/Processes/RES_TimingRefServiceApp</CONTAINED-PROCESS-REF>
+                        <CONTAINED-PROCESS-REF DEST="PROCESS">/apd/Machines/RadarFusionWRSOMEIPMachine/Processes/RES_TraceIntegrationTest</CONTAINED-PROCESS-REF>
+                        <CONTAINED-PROCESS-REF DEST="PROCESS">/apd/Machines/RadarFusionWRSOMEIPMachine/Processes/RES_TraceIntegrationTest2</CONTAINED-PROCESS-REF>
+                        <CONTAINED-PROCESS-REF DEST="PROCESS">/apd/Machines/RadarFusionWRSOMEIPMachine/Processes/SecDemoFc</CONTAINED-PROCESS-REF>
+                        <CONTAINED-PROCESS-REF DEST="PROCESS">/apd/Machines/RadarFusionWRSOMEIPMachine/Processes/SecIamTestApp</CONTAINED-PROCESS-REF>
+                        <CONTAINED-PROCESS-REF DEST="PROCESS">/apd/Machines/RadarFusionWRSOMEIPMachine/Processes/SensorDemoApplication</CONTAINED-PROCESS-REF>
+                        <CONTAINED-PROCESS-REF DEST="PROCESS">/apd/Machines/RadarFusionWRSOMEIPMachine/Processes/smtool</CONTAINED-PROCESS-REF>
+                        <CONTAINED-PROCESS-REF DEST="PROCESS">/apd/Machines/RadarFusionWRSOMEIPMachine/Processes/StateManager</CONTAINED-PROCESS-REF>
+                        <CONTAINED-PROCESS-REF DEST="PROCESS">/apd/Machines/RadarFusionWRSOMEIPMachine/Processes/TimeSyncConsumer</CONTAINED-PROCESS-REF>
+                        <CONTAINED-PROCESS-REF DEST="PROCESS">/apd/Machines/RadarFusionWRSOMEIPMachine/Processes/TimeSyncProvider</CONTAINED-PROCESS-REF>
+                        <CONTAINED-PROCESS-REF DEST="PROCESS">/apd/Machines/RadarFusionWRSOMEIPMachine/Processes/update_adapter_agl</CONTAINED-PROCESS-REF>
+                        <CONTAINED-PROCESS-REF DEST="PROCESS">/apd/Machines/RadarFusionWRSOMEIPMachine/Processes/update_adapter_android</CONTAINED-PROCESS-REF>
+                      </CONTAINED-PROCESS-REFS>
+                      <MODULE-INSTANTIATION-REFS>
+                        <MODULE-INSTANTIATION-REF DEST="OS-MODULE-INSTANTIATION">/apd/Machines/RadarFusionWRSOMEIPMachine/RadarFusionWRSOMEIPMachine/Linux</MODULE-INSTANTIATION-REF>
+                      </MODULE-INSTANTIATION-REFS>
+                    </SOFTWARE-CLUSTER>
+                  </ELEMENTS>
+                </AR-PACKAGE>
+                <AR-PACKAGE>
+                  <SHORT-NAME>dlt</SHORT-NAME>
+                  <ELEMENTS>
+                    <DLT-ECU>
+                      <SHORT-NAME>RadarFusionWRSOMEIPMachineDltEcu</SHORT-NAME>
+                      <APPLICATIONS>
+                        <DLT-APPLICATION>
+                          <SHORT-NAME>CMValidatorPublisherApplication</SHORT-NAME>
+                          <APPLICATION-DESCRIPTION>CM Validator Publisher Application</APPLICATION-DESCRIPTION>
+                          <APPLICATION-ID>CMVP</APPLICATION-ID>
+                          <CONTEXTS>
+                            <DLT-CONTEXT-REF-CONDITIONAL>
+                              <DLT-CONTEXT-REF DEST="DLT-CONTEXT">/apd/Dlt/DefaultDltContext</DLT-CONTEXT-REF>
+                            </DLT-CONTEXT-REF-CONDITIONAL>
+                          </CONTEXTS>
+                        </DLT-APPLICATION>
+                        <DLT-APPLICATION>
+                          <SHORT-NAME>CMValidatorSubscriberApplication</SHORT-NAME>
+                          <APPLICATION-DESCRIPTION>CM Validator Subscriber Application</APPLICATION-DESCRIPTION>
+                          <APPLICATION-ID>CMVS</APPLICATION-ID>
+                          <CONTEXTS>
+                            <DLT-CONTEXT-REF-CONDITIONAL>
+                              <DLT-CONTEXT-REF DEST="DLT-CONTEXT">/apd/Dlt/DefaultDltContext</DLT-CONTEXT-REF>
+                            </DLT-CONTEXT-REF-CONDITIONAL>
+                          </CONTEXTS>
+                        </DLT-APPLICATION>
+                        <DLT-APPLICATION>
+                          <SHORT-NAME>FusionApplication</SHORT-NAME>
+                          <APPLICATION-DESCRIPTION>example app. fusion</APPLICATION-DESCRIPTION>
+                          <APPLICATION-ID>EXFU</APPLICATION-ID>
+                          <CONTEXTS>
+                            <DLT-CONTEXT-REF-CONDITIONAL>
+                              <DLT-CONTEXT-REF DEST="DLT-CONTEXT">/apd/Dlt/DefaultDltContext</DLT-CONTEXT-REF>
+                            </DLT-CONTEXT-REF-CONDITIONAL>
+                          </CONTEXTS>
+                        </DLT-APPLICATION>
+                        <DLT-APPLICATION>
+                          <SHORT-NAME>RadarApplication</SHORT-NAME>
+                          <APPLICATION-DESCRIPTION>example app. radar</APPLICATION-DESCRIPTION>
+                          <APPLICATION-ID>EXRA</APPLICATION-ID>
+                          <CONTEXTS>
+                            <DLT-CONTEXT-REF-CONDITIONAL>
+                              <DLT-CONTEXT-REF DEST="DLT-CONTEXT">/apd/Dlt/DefaultDltContext</DLT-CONTEXT-REF>
+                            </DLT-CONTEXT-REF-CONDITIONAL>
+                          </CONTEXTS>
+                        </DLT-APPLICATION>
+                        <DLT-APPLICATION>
+                          <SHORT-NAME>StateManagerApplication</SHORT-NAME>
+                          <APPLICATION-DESCRIPTION>State Manager</APPLICATION-DESCRIPTION>
+                          <APPLICATION-ID>STMR</APPLICATION-ID>
+                          <CONTEXTS>
+                            <DLT-CONTEXT-REF-CONDITIONAL>
+                              <DLT-CONTEXT-REF DEST="DLT-CONTEXT">/apd/Dlt/DefaultDltContext</DLT-CONTEXT-REF>
+                            </DLT-CONTEXT-REF-CONDITIONAL>
+                          </CONTEXTS>
+                        </DLT-APPLICATION>
+                        <DLT-APPLICATION>
+                          <SHORT-NAME>FaultyCalibrationApplication</SHORT-NAME>
+                          <APPLICATION-DESCRIPTION>Faulty Calibration Application</APPLICATION-DESCRIPTION>
+                          <APPLICATION-ID>FCAP</APPLICATION-ID>
+                          <CONTEXTS>
+                            <DLT-CONTEXT-REF-CONDITIONAL>
+                              <DLT-CONTEXT-REF DEST="DLT-CONTEXT">/apd/Dlt/DefaultDltContext</DLT-CONTEXT-REF>
+                            </DLT-CONTEXT-REF-CONDITIONAL>
+                          </CONTEXTS>
+                        </DLT-APPLICATION>
+                        <DLT-APPLICATION>
+                          <SHORT-NAME>FaultyProbingApplication</SHORT-NAME>
+                          <APPLICATION-DESCRIPTION>Faulty Probing Application</APPLICATION-DESCRIPTION>
+                          <APPLICATION-ID>FPAP</APPLICATION-ID>
+                          <CONTEXTS>
+                            <DLT-CONTEXT-REF-CONDITIONAL>
+                              <DLT-CONTEXT-REF DEST="DLT-CONTEXT">/apd/Dlt/DefaultDltContext</DLT-CONTEXT-REF>
+                            </DLT-CONTEXT-REF-CONDITIONAL>
+                          </CONTEXTS>
+                        </DLT-APPLICATION>
+                        <DLT-APPLICATION>
+                          <SHORT-NAME>SecDemoFcApplication</SHORT-NAME>
+                          <APPLICATION-DESCRIPTION>Sec Demo Fc Application</APPLICATION-DESCRIPTION>
+                          <APPLICATION-ID>SDFC</APPLICATION-ID>
+                          <CONTEXTS>
+                            <DLT-CONTEXT-REF-CONDITIONAL>
+                              <DLT-CONTEXT-REF DEST="DLT-CONTEXT">/apd/Dlt/DefaultDltContext</DLT-CONTEXT-REF>
+                            </DLT-CONTEXT-REF-CONDITIONAL>
+                          </CONTEXTS>
+                        </DLT-APPLICATION>
+                        <DLT-APPLICATION>
+                          <SHORT-NAME>SecIamTestAppApplication</SHORT-NAME>
+                          <APPLICATION-DESCRIPTION>Sec Iam Test Application</APPLICATION-DESCRIPTION>
+                          <APPLICATION-ID>SIT</APPLICATION-ID>
+                          <CONTEXTS>
+                            <DLT-CONTEXT-REF-CONDITIONAL>
+                              <DLT-CONTEXT-REF DEST="DLT-CONTEXT">/apd/Dlt/DefaultDltContext</DLT-CONTEXT-REF>
+                            </DLT-CONTEXT-REF-CONDITIONAL>
+                          </CONTEXTS>
+                        </DLT-APPLICATION>
+                        <DLT-APPLICATION>
+                          <SHORT-NAME>SensorDemoApplication</SHORT-NAME>
+                          <APPLICATION-DESCRIPTION>Sensor Demo Application</APPLICATION-DESCRIPTION>
+                          <APPLICATION-ID>SDAP</APPLICATION-ID>
+                          <CONTEXTS>
+                            <DLT-CONTEXT-REF-CONDITIONAL>
+                              <DLT-CONTEXT-REF DEST="DLT-CONTEXT">/apd/Dlt/DefaultDltContext</DLT-CONTEXT-REF>
+                            </DLT-CONTEXT-REF-CONDITIONAL>
+                          </CONTEXTS>
+                        </DLT-APPLICATION>
+                        <DLT-APPLICATION>
+                          <SHORT-NAME>DemonstratorTutorialApplication</SHORT-NAME>
+                          <APPLICATION-DESCRIPTION>Demonstrator Tutorial Application</APPLICATION-DESCRIPTION>
+                          <APPLICATION-ID>TTRL</APPLICATION-ID>
+                          <CONTEXTS>
+                            <DLT-CONTEXT-REF-CONDITIONAL>
+                              <DLT-CONTEXT-REF DEST="DLT-CONTEXT">/apd/Dlt/DefaultDltContext</DLT-CONTEXT-REF>
+                            </DLT-CONTEXT-REF-CONDITIONAL>
+                          </CONTEXTS>
+                        </DLT-APPLICATION>
+                        <DLT-APPLICATION>
+                          <SHORT-NAME>TimeSyncProviderApplication</SHORT-NAME>
+                          <APPLICATION-DESCRIPTION>Time Sync Provider Application</APPLICATION-DESCRIPTION>
+                          <APPLICATION-ID>TSYP</APPLICATION-ID>
+                          <CONTEXTS>
+                            <DLT-CONTEXT-REF-CONDITIONAL>
+                              <DLT-CONTEXT-REF DEST="DLT-CONTEXT">/apd/Dlt/DefaultDltContext</DLT-CONTEXT-REF>
+                            </DLT-CONTEXT-REF-CONDITIONAL>
+                          </CONTEXTS>
+                        </DLT-APPLICATION>
+                        <DLT-APPLICATION>
+                          <SHORT-NAME>TimeSyncConsumerApplication</SHORT-NAME>
+                          <APPLICATION-DESCRIPTION>Time Sync Consumer Application</APPLICATION-DESCRIPTION>
+                          <APPLICATION-ID>TSYC</APPLICATION-ID>
+                          <CONTEXTS>
+                            <DLT-CONTEXT-REF-CONDITIONAL>
+                              <DLT-CONTEXT-REF DEST="DLT-CONTEXT">/apd/Dlt/DefaultDltContext</DLT-CONTEXT-REF>
+                            </DLT-CONTEXT-REF-CONDITIONAL>
+                          </CONTEXTS>
+                        </DLT-APPLICATION>
+                        <DLT-APPLICATION>
+                          <SHORT-NAME>EmoIntegrationTestApplication</SHORT-NAME>
+                          <APPLICATION-DESCRIPTION>EMO Integration Test</APPLICATION-DESCRIPTION>
+                          <APPLICATION-ID>EMIT</APPLICATION-ID>
+                          <CONTEXTS>
+                            <DLT-CONTEXT-REF-CONDITIONAL>
+                              <DLT-CONTEXT-REF DEST="DLT-CONTEXT">/apd/Dlt/DefaultDltContext</DLT-CONTEXT-REF>
+                            </DLT-CONTEXT-REF-CONDITIONAL>
+                          </CONTEXTS>
+                        </DLT-APPLICATION>
+                        <DLT-APPLICATION>
+                          <SHORT-NAME>EmoSampleApplicationLogChannel</SHORT-NAME>
+                          <APPLICATION-DESCRIPTION>Emo Sample Application</APPLICATION-DESCRIPTION>
+                          <APPLICATION-ID>EMAP</APPLICATION-ID>
+                          <CONTEXTS>
+                            <DLT-CONTEXT-REF-CONDITIONAL>
+                              <DLT-CONTEXT-REF DEST="DLT-CONTEXT">/apd/Dlt/DefaultDltContext</DLT-CONTEXT-REF>
+                            </DLT-CONTEXT-REF-CONDITIONAL>
+                          </CONTEXTS>
+                        </DLT-APPLICATION>
+                        <DLT-APPLICATION>
+                          <SHORT-NAME>RES_TimingRefApp</SHORT-NAME>
+                          <APPLICATION-DESCRIPTION>Time Reference Application</APPLICATION-DESCRIPTION>
+                          <APPLICATION-ID>RTRA</APPLICATION-ID>
+                          <CONTEXTS>
+                            <DLT-CONTEXT-REF-CONDITIONAL>
+                              <DLT-CONTEXT-REF DEST="DLT-CONTEXT">/apd/Dlt/DefaultDltContext</DLT-CONTEXT-REF>
+                            </DLT-CONTEXT-REF-CONDITIONAL>
+                          </CONTEXTS>
+                        </DLT-APPLICATION>
+                        <DLT-APPLICATION>
+                          <SHORT-NAME>RES_TimingRefServiceApp</SHORT-NAME>
+                          <APPLICATION-DESCRIPTION>Time Reference Application Service Provider</APPLICATION-DESCRIPTION>
+                          <APPLICATION-ID>RTRS</APPLICATION-ID>
+                          <CONTEXTS>
+                            <DLT-CONTEXT-REF-CONDITIONAL>
+                              <DLT-CONTEXT-REF DEST="DLT-CONTEXT">/apd/Dlt/DefaultDltContext</DLT-CONTEXT-REF>
+                            </DLT-CONTEXT-REF-CONDITIONAL>
+                          </CONTEXTS>
+                        </DLT-APPLICATION>
+                        <DLT-APPLICATION>
+                          <SHORT-NAME>RES_TraceIntegrationTest</SHORT-NAME>
+                          <APPLICATION-DESCRIPTION>Trace Integration Test</APPLICATION-DESCRIPTION>
+                          <APPLICATION-ID>RTIT</APPLICATION-ID>
+                          <CONTEXTS>
+                            <DLT-CONTEXT-REF-CONDITIONAL>
+                              <DLT-CONTEXT-REF DEST="DLT-CONTEXT">/apd/Dlt/DefaultDltContext</DLT-CONTEXT-REF>
+                            </DLT-CONTEXT-REF-CONDITIONAL>
+                          </CONTEXTS>
+                        </DLT-APPLICATION>
+                        <DLT-APPLICATION>
+                          <SHORT-NAME>RES_TraceIntegrationTest2</SHORT-NAME>
+                          <APPLICATION-DESCRIPTION>Trace Integration Test2</APPLICATION-DESCRIPTION>
+                          <APPLICATION-ID>RTI2</APPLICATION-ID>
+                          <CONTEXTS>
+                            <DLT-CONTEXT-REF-CONDITIONAL>
+                              <DLT-CONTEXT-REF DEST="DLT-CONTEXT">/apd/Dlt/DefaultDltContext</DLT-CONTEXT-REF>
+                            </DLT-CONTEXT-REF-CONDITIONAL>
+                          </CONTEXTS>
+                        </DLT-APPLICATION>
+                        <DLT-APPLICATION>
+                          <SHORT-NAME>ExtendedTutorialApplication</SHORT-NAME>
+                          <APPLICATION-DESCRIPTION>Extended Tutorial Application</APPLICATION-DESCRIPTION>
+                          <APPLICATION-ID>ETRL</APPLICATION-ID>
+                          <CONTEXTS>
+                            <DLT-CONTEXT-REF-CONDITIONAL>
+                              <DLT-CONTEXT-REF DEST="DLT-CONTEXT">/apd/Dlt/DefaultDltContext</DLT-CONTEXT-REF>
+                            </DLT-CONTEXT-REF-CONDITIONAL>
+                          </CONTEXTS>
+                        </DLT-APPLICATION>
+                        <DLT-APPLICATION>
+                          <SHORT-NAME>PhmDemoApplication</SHORT-NAME>
+                          <APPLICATION-DESCRIPTION>PhmDemo Application</APPLICATION-DESCRIPTION>
+                          <APPLICATION-ID>PHMD</APPLICATION-ID>
+                          <CONTEXTS>
+                            <DLT-CONTEXT-REF-CONDITIONAL>
+                              <DLT-CONTEXT-REF DEST="DLT-CONTEXT">/apd/Dlt/DefaultDltContext</DLT-CONTEXT-REF>
+                            </DLT-CONTEXT-REF-CONDITIONAL>
+                          </CONTEXTS>
+                        </DLT-APPLICATION>
+                        <DLT-APPLICATION>
+                          <SHORT-NAME>UpdateAdapterAglApplication</SHORT-NAME>
+                          <APPLICATION-DESCRIPTION>Update Adapter for non-AUTOSAR platform</APPLICATION-DESCRIPTION>
+                          <APPLICATION-ID>UAGL</APPLICATION-ID>
+                          <CONTEXTS>
+                            <DLT-CONTEXT-REF-CONDITIONAL>
+                              <DLT-CONTEXT-REF DEST="DLT-CONTEXT">/apd/Dlt/DefaultDltContext</DLT-CONTEXT-REF>
+                            </DLT-CONTEXT-REF-CONDITIONAL>
+                          </CONTEXTS>
+                        </DLT-APPLICATION>
+                        <DLT-APPLICATION>
+                          <SHORT-NAME>UpdateAdapterAndroidApplication</SHORT-NAME>
+                          <APPLICATION-DESCRIPTION>Update Adapter for non-AUTOSAR platform</APPLICATION-DESCRIPTION>
+                          <APPLICATION-ID>UAND</APPLICATION-ID>
+                          <CONTEXTS>
+                            <DLT-CONTEXT-REF-CONDITIONAL>
+                              <DLT-CONTEXT-REF DEST="DLT-CONTEXT">/apd/Dlt/DefaultDltContext</DLT-CONTEXT-REF>
+                            </DLT-CONTEXT-REF-CONDITIONAL>
+                          </CONTEXTS>
+                        </DLT-APPLICATION>
+                        <DLT-APPLICATION>
+                          <SHORT-NAME>FlashingAdapterApplication</SHORT-NAME>
+                          <APPLICATION-DESCRIPTION>Flashing Adapter</APPLICATION-DESCRIPTION>
+                          <APPLICATION-ID>FLAD</APPLICATION-ID>
+                          <CONTEXTS>
+                            <DLT-CONTEXT-REF-CONDITIONAL>
+                              <DLT-CONTEXT-REF DEST="DLT-CONTEXT">/apd/Dlt/DefaultDltContext</DLT-CONTEXT-REF>
+                            </DLT-CONTEXT-REF-CONDITIONAL>
+                          </CONTEXTS>
+                        </DLT-APPLICATION>
+                        <DLT-APPLICATION>
+                          <SHORT-NAME>PkgmgrApplication</SHORT-NAME>
+                          <APPLICATION-DESCRIPTION>UCM SAMPLE</APPLICATION-DESCRIPTION>
+                          <APPLICATION-ID>UCMS</APPLICATION-ID>
+                          <CONTEXTS>
+                            <DLT-CONTEXT-REF-CONDITIONAL>
+                              <DLT-CONTEXT-REF DEST="DLT-CONTEXT">/apd/Dlt/DefaultDltContext</DLT-CONTEXT-REF>
+                            </DLT-CONTEXT-REF-CONDITIONAL>
+                          </CONTEXTS>
+                        </DLT-APPLICATION>
+                        <DLT-APPLICATION>
+                          <SHORT-NAME>PackageManager</SHORT-NAME>
+                          <APPLICATION-DESCRIPTION>UCM</APPLICATION-DESCRIPTION>
+                          <APPLICATION-ID>UCM</APPLICATION-ID>
+                          <CONTEXTS>
+                            <DLT-CONTEXT-REF-CONDITIONAL>
+                              <DLT-CONTEXT-REF DEST="DLT-CONTEXT">/apd/Dlt/DefaultDltContext</DLT-CONTEXT-REF>
+                            </DLT-CONTEXT-REF-CONDITIONAL>
+                          </CONTEXTS>
+                        </DLT-APPLICATION>
+                        <DLT-APPLICATION>
+                          <SHORT-NAME>VehiclePackageManager</SHORT-NAME>
+                          <APPLICATION-DESCRIPTION>UCM Master</APPLICATION-DESCRIPTION>
+                          <APPLICATION-ID>UCMM</APPLICATION-ID>
+                          <CONTEXTS>
+                            <DLT-CONTEXT-REF-CONDITIONAL>
+                              <DLT-CONTEXT-REF DEST="DLT-CONTEXT">/apd/Dlt/DefaultDltContext</DLT-CONTEXT-REF>
+                            </DLT-CONTEXT-REF-CONDITIONAL>
+                          </CONTEXTS>
+                        </DLT-APPLICATION>
+                      </APPLICATIONS>
+                    </DLT-ECU>
+                    <DLT-LOG-SINK>
+                      <SHORT-NAME>ConsoleDltSink</SHORT-NAME>
+                      <CATEGORY>DLT_LOGSINK_CONSOLE</CATEGORY>
+                      <BUFFER-OUTPUT>true</BUFFER-OUTPUT>
+                      <DEFAULT-LOG-THRESHOLD>VERBOSE</DEFAULT-LOG-THRESHOLD>
+                    </DLT-LOG-SINK>
+                  </ELEMENTS>
+                </AR-PACKAGE>
+              </AR-PACKAGES>
+            </AR-PACKAGE>
+          </AR-PACKAGES>
+        </AR-PACKAGE>
+      </AR-PACKAGES>
+    </AR-PACKAGE>
+    <!-- These are stub elements to generate specific parts of the machine manifest that are referenced by existing apps directly. -->
+    <!-- As soon as the applications are migrated, these stubs can be removed again. -->
+    <AR-PACKAGE>
+      <SHORT-NAME>ara</SHORT-NAME>
+      <AR-PACKAGES>
+        <AR-PACKAGE>
+          <SHORT-NAME>apd</SHORT-NAME>
+          <AR-PACKAGES>
+            <AR-PACKAGE>
+              <SHORT-NAME>function_group_modes</SHORT-NAME>
+              <ELEMENTS>
+                <MODE-DECLARATION-GROUP>
+                  <SHORT-NAME>UpdatableApplicationFG</SHORT-NAME>
+                  <INITIAL-MODE-REF DEST="MODE-DECLARATION">/ara/apd/function_group_modes/UpdatableApplicationFG/Off</INITIAL-MODE-REF>
+                  <MODE-DECLARATIONS>
+                    <MODE-DECLARATION>
+                      <SHORT-NAME>Off</SHORT-NAME>
+                    </MODE-DECLARATION>
+                    <MODE-DECLARATION>
+                      <SHORT-NAME>Running</SHORT-NAME>
+                    </MODE-DECLARATION>
+                    <MODE-DECLARATION>
+                      <SHORT-NAME>Verify</SHORT-NAME>
+                    </MODE-DECLARATION>
+                  </MODE-DECLARATIONS>
+                </MODE-DECLARATION-GROUP>
+              </ELEMENTS>
+            </AR-PACKAGE>
+            <AR-PACKAGE>
+              <SHORT-NAME>function_group_sets</SHORT-NAME>
+              <ELEMENTS>
+                <FUNCTION-GROUP-SET>
+                  <SHORT-NAME>DevelopmentFunctionGroups</SHORT-NAME>
+                  <FUNCTION-GROUPS>
+                    <MODE-DECLARATION-GROUP-PROTOTYPE>
+                      <SHORT-NAME>UpdatableApplicationFG</SHORT-NAME>
+                      <TYPE-TREF DEST="MODE-DECLARATION-GROUP">/ara/apd/function_group_modes/UpdatableApplicationFG</TYPE-TREF>
+                    </MODE-DECLARATION-GROUP-PROTOTYPE>
+                  </FUNCTION-GROUPS>
+                </FUNCTION-GROUP-SET>
+              </ELEMENTS>
+            </AR-PACKAGE>
+          </AR-PACKAGES>
+        </AR-PACKAGE>
+      </AR-PACKAGES>
+    </AR-PACKAGE>
+  </AR-PACKAGES>
+</AUTOSAR>

@@ -1,0 +1,37 @@
+{
+    "End2EndEventDataIdMappingSet":
+    {
+        "End2EndEventDataIdMapping1":
+        {
+            "serviceId": 59020,
+            "instanceId": 29,
+            "eventId": 3004,
+            "dataId": 4321
+        },
+        "End2EndEventDataIdMapping2":
+        {
+            "serviceId": 34384,
+            "instanceId": 30,
+            "eventId": 3005,
+            "dataId": 5432
+        },
+        "End2EndEventDataIdMapping3":
+        {
+            "serviceId": 54009,
+            "instanceId": 31,
+            "dataId": 6543
+        },
+        "End2EndEventDataIdMapping4":
+        {
+            "serviceId": 7230,
+            "instanceId": 32,
+            "dataId": 7654
+        },
+        "End2EndEventDataIdMapping5":
+        {
+            "serviceId": 12072,
+            "instanceId": 33,
+            "dataId": 8765
+        }
+    }
+}

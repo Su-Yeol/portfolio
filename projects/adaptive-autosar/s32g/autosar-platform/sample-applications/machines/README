@@ -1,0 +1,2 @@
+Each folder in this project represents an AUTOSAR machine that is connected to the APDNetwork.
+Please note that only one (1) AUTOSAR machine can be installed per Yocto image.

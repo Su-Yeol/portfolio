@@ -1,0 +1,37 @@
+{
+	"CarInfo": {
+		"number" : 2,
+		"LicensePlate" : "2742",
+		"CPU_A_IP" : "192.168.1.201",
+		"CPU_B_IP" : "192.168.1.211",
+		"S32G_IP" : "192.168.1.99"
+	},
+	"LOG" : {
+		"mode" : "DBG"
+	},
+	"device" : {
+		"GPS" : "/dev/ttyRTK1",
+		"IMU" : "/dev/ttyIMU"
+	},
+	"communication" : {
+		"Localization" : {
+			"UDP" : true,
+			"Port" : 10001
+		},
+		"DrivingTrajectory" : {
+			"UDP" : true,
+			"Port" : 10002
+		}
+	},
+	"NATS" : {
+        "protocol" : "nats",
+        "ip" : "192.168.1.211",
+        "port" : "4222"
+    },
+    "MODE" : {
+        "mode" : "KCITY"
+    },
+    "HMI" : {
+        "coordinate" : "UTM_52N"
+    }
+}

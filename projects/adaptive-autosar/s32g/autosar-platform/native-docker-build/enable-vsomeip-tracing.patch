@@ -1,0 +1,300 @@
+From 7b817da918e8647d4e4d942be3552913045b3fcc Mon Sep 17 00:00:00 2001
+From: Florian Frank <f.frank@eu.denso.com>
+Date: Wed, 8 Feb 2023 09:46:23 +0100
+Subject: Vsomeip tracing
+
+---
+ implementation/endpoints/src/client_endpoint_impl.cpp     | 2 +-
+ .../endpoints/src/local_client_endpoint_impl.cpp          | 6 +++---
+ .../endpoints/src/local_server_endpoint_impl.cpp          | 8 ++++----
+ implementation/endpoints/src/server_endpoint_impl.cpp     | 4 ++--
+ implementation/endpoints/src/tcp_server_endpoint_impl.cpp | 2 +-
+ implementation/endpoints/src/udp_client_endpoint_impl.cpp | 2 +-
+ implementation/endpoints/src/udp_server_endpoint_impl.cpp | 2 +-
+ implementation/routing/src/routing_manager_impl.cpp       | 8 ++++----
+ implementation/routing/src/routing_manager_proxy.cpp      | 8 ++++----
+ implementation/routing/src/routing_manager_stub.cpp       | 8 ++++----
+ .../service_discovery/src/service_discovery_impl.cpp      | 2 +-
+ 11 files changed, 26 insertions(+), 26 deletions(-)
+
+diff --git a/implementation/endpoints/src/client_endpoint_impl.cpp b/implementation/endpoints/src/client_endpoint_impl.cpp
+index 434ed14..922feb1 100644
+--- a/implementation/endpoints/src/client_endpoint_impl.cpp
++++ b/implementation/endpoints/src/client_endpoint_impl.cpp
+@@ -153,7 +153,7 @@ bool client_endpoint_impl<Protocol>::send(const uint8_t *_data, uint32_t _size)
+     std::lock_guard<std::mutex> its_lock(mutex_);
+     bool must_depart(false);
+     const bool queue_size_zero_on_entry(queue_.empty());
+-#if 0
++#if 1
+     std::stringstream msg;
+     msg << "cei::send: ";
+     for (uint32_t i = 0; i < _size; i++)
+diff --git a/implementation/endpoints/src/local_client_endpoint_impl.cpp b/implementation/endpoints/src/local_client_endpoint_impl.cpp
+index 7e58e67..416f163 100644
+--- a/implementation/endpoints/src/local_client_endpoint_impl.cpp
++++ b/implementation/endpoints/src/local_client_endpoint_impl.cpp
+@@ -189,7 +189,7 @@ bool local_client_endpoint_impl::send(const uint8_t *_data, uint32_t _size) {
+         !check_queue_limit(_data, _size)) {
+         ret = false;
+     } else {
+-#if 0
++#if 1
+         std::stringstream msg;
+         msg << "lce::send: ";
+         for (uint32_t i = 0; i < _size; i++)
+@@ -275,7 +275,7 @@ void local_client_endpoint_impl::receive_cbk(
+             handler();
+     } else {
+ 
+-#if 0
++#if 1
+         std::stringstream msg;
+         msg << "lce<" << this << ">::recv: ";
+         for (std::size_t i = 0; i < recv_buffer_.size(); i++)
+@@ -382,7 +382,7 @@ bool local_client_endpoint_impl::send(const std::vector<byte_t>& _cmd_header,
+         !check_queue_limit(_data, its_complete_size)) {
+         ret = false;
+     } else {
+-#if 0
++#if 1
+         std::stringstream msg;
+         msg << "lce::send: ";
+         for (uint32_t i = 0; i < _size; i++)
+diff --git a/implementation/endpoints/src/local_server_endpoint_impl.cpp b/implementation/endpoints/src/local_server_endpoint_impl.cpp
+index 1d412e4..4c68836 100644
+--- a/implementation/endpoints/src/local_server_endpoint_impl.cpp
++++ b/implementation/endpoints/src/local_server_endpoint_impl.cpp
+@@ -143,7 +143,7 @@ void local_server_endpoint_impl::stop() {
+ }
+ 
+ bool local_server_endpoint_impl::send(const uint8_t *_data, uint32_t _size) {
+-#if 0
++#if 1
+     std::stringstream msg;
+     msg << "lse::send ";
+     for (uint32_t i = 0; i < _size; i++)
+@@ -456,7 +456,7 @@ void local_server_endpoint_impl::connection::send_queued(
+     static const byte_t its_end_tag[] = { 0x07, 0x6D, 0x37, 0x67 };
+     std::vector<boost::asio::const_buffer> bufs;
+ 
+-#if 0
++#if 1
+         std::stringstream msg;
+         msg << "lse::sq: ";
+         for (std::size_t i = 0; i < _buffer->size(); i++)
+@@ -561,7 +561,7 @@ void local_server_endpoint_impl::connection::receive_cbk(
+     std::uint32_t its_command_size = 0;
+ 
+     if (!_error && 0 < _bytes) {
+-#if 0
++#if 1
+         std::stringstream msg;
+         msg << "lse::c<" << this << ">rcb: ";
+         for (std::size_t i = 0; i < _bytes + recv_buffer_size_; i++)
+@@ -732,7 +732,7 @@ void local_server_endpoint_impl::connection::receive_cbk(
+                     VSOMEIP_WARNING << std::hex << "Client 0x" << its_host->get_client()
+                             << " didn't receive VSOMEIP_ASSIGN_CLIENT as first message";
+                 }
+-                #if 0
++                #if 1
+                         std::stringstream local_msg;
+                         local_msg << "lse::c<" << this << ">rcb::thunk: ";
+                         for (std::size_t i = its_start; i < its_end; i++)
+diff --git a/implementation/endpoints/src/server_endpoint_impl.cpp b/implementation/endpoints/src/server_endpoint_impl.cpp
+index 90aea96..6eacaef 100644
+--- a/implementation/endpoints/src/server_endpoint_impl.cpp
++++ b/implementation/endpoints/src/server_endpoint_impl.cpp
+@@ -166,7 +166,7 @@ void server_endpoint_impl<Protocol>::set_connected(bool _connected) {
+ 
+ template<typename Protocol>bool server_endpoint_impl<Protocol>::send(const uint8_t *_data,
+         uint32_t _size) {
+-#if 0
++#if 1
+     std::stringstream msg;
+     msg << "sei::send ";
+     for (uint32_t i = 0; i < _size; i++)
+@@ -273,7 +273,7 @@ bool server_endpoint_impl<Protocol>::send_intern(
+ 
+     bool must_depart(false);
+ 
+-#if 0
++#if 1
+     std::stringstream msg;
+     msg << "sei::send_intern: ";
+     for (uint32_t i = 0; i < _size; i++)
+diff --git a/implementation/endpoints/src/tcp_server_endpoint_impl.cpp b/implementation/endpoints/src/tcp_server_endpoint_impl.cpp
+index 1cd2b5b..ef29fae 100644
+--- a/implementation/endpoints/src/tcp_server_endpoint_impl.cpp
++++ b/implementation/endpoints/src/tcp_server_endpoint_impl.cpp
+@@ -485,7 +485,7 @@ void tcp_server_endpoint_impl::connection::receive_cbk(
+                 " couldn't lock server_";
+         return;
+     }
+-#if 0
++#if 1
+     std::stringstream msg;
+     for (std::size_t i = 0; i < _bytes + recv_buffer_size_; ++i)
+         msg << std::hex << std::setw(2) << std::setfill('0')
+diff --git a/implementation/endpoints/src/udp_client_endpoint_impl.cpp b/implementation/endpoints/src/udp_client_endpoint_impl.cpp
+index dc7a7bf..45fa84e 100644
+--- a/implementation/endpoints/src/udp_client_endpoint_impl.cpp
++++ b/implementation/endpoints/src/udp_client_endpoint_impl.cpp
+@@ -165,7 +165,7 @@ void udp_client_endpoint_impl::send_queued() {
+     } else {
+         return;
+     }
+-#if 0
++#if 1
+     std::stringstream msg;
+     msg << "ucei<" << remote_.address() << ":"
+         << std::dec << remote_.port()  << ">::sq: ";
+diff --git a/implementation/endpoints/src/udp_server_endpoint_impl.cpp b/implementation/endpoints/src/udp_server_endpoint_impl.cpp
+index bd6fc62..f2cb25a 100644
+--- a/implementation/endpoints/src/udp_server_endpoint_impl.cpp
++++ b/implementation/endpoints/src/udp_server_endpoint_impl.cpp
+@@ -233,7 +233,7 @@ void udp_server_endpoint_impl::send_queued(
+         const queue_iterator_type _queue_iterator) {
+ 
+     message_buffer_ptr_t its_buffer = _queue_iterator->second.second.front();
+-#if 0
++#if 1
+         std::stringstream msg;
+         msg << "usei::sq(" << _queue_iterator->first.address().to_string() << ":"
+             << _queue_iterator->first.port() << "): ";
+diff --git a/implementation/routing/src/routing_manager_impl.cpp b/implementation/routing/src/routing_manager_impl.cpp
+index bade0ff..b753438 100644
+--- a/implementation/routing/src/routing_manager_impl.cpp
++++ b/implementation/routing/src/routing_manager_impl.cpp
+@@ -1317,7 +1317,7 @@ void routing_manager_impl::on_message(const byte_t *_data, length_t _size,
+         client_t _bound_client, credentials_t _credentials,
+         const boost::asio::ip::address &_remote_address,
+         std::uint16_t _remote_port) {
+-#if 0
++#if 1
+     std::stringstream msg;
+     msg << "rmi::on_message: ";
+     for (uint32_t i = 0; i < _size; ++i)
+@@ -1481,7 +1481,7 @@ bool routing_manager_impl::on_message(
+         credentials_t _credentials,
+         uint8_t _check_status,
+         bool _is_from_remote) {
+-#if 0
++#if 1
+     std::stringstream msg;
+     msg << "rmi::on_message("
+             << std::hex << std::setw(4) << std::setfill('0')
+@@ -3907,7 +3907,7 @@ bool routing_manager_impl::create_placeholder_event_and_subscribe(
+ void routing_manager_impl::handle_subscription_state(
+         client_t _client, service_t _service, instance_t _instance,
+         eventgroup_t _eventgroup, event_t _event) {
+-#if 0
++#if 1
+     VSOMEIP_ERROR << "routing_manager_impl::" << __func__
+             << "(" << std::hex << _client << "): "
+             << "event="
+@@ -3933,7 +3933,7 @@ void routing_manager_impl::handle_subscription_state(
+         = std::make_tuple(_service, _instance, _eventgroup, its_client);
+     auto its_state = remote_subscription_state_.find(its_tuple);
+     if (its_state != remote_subscription_state_.end()) {
+-#if 0
++#if 1
+         VSOMEIP_ERROR << "routing_manager_impl::" << __func__
+                 << "(" << std::hex << _client << "): "
+                 << "event="
+diff --git a/implementation/routing/src/routing_manager_proxy.cpp b/implementation/routing/src/routing_manager_proxy.cpp
+index 3eba2a5..4ec1da8 100644
+--- a/implementation/routing/src/routing_manager_proxy.cpp
++++ b/implementation/routing/src/routing_manager_proxy.cpp
+@@ -864,7 +864,7 @@ void routing_manager_proxy::on_message(const byte_t *_data, length_t _size,
+     (void)_destination;
+     (void)_remote_address;
+     (void)_remote_port;
+-#if 0
++#if 1
+     std::stringstream msg;
+     msg << "rmp::on_message: ";
+     for (length_t i = 0; i < _size; ++i)
+@@ -1545,7 +1545,7 @@ void routing_manager_proxy::on_message(const byte_t *_data, length_t _size,
+ 
+ void routing_manager_proxy::on_routing_info(const byte_t *_data,
+         uint32_t _size) {
+-#if 0
++#if 1
+     std::stringstream msg;
+     msg << "rmp::on_routing_info(" << std::hex << client_ << "): ";
+     for (uint32_t i = 0; i < _size; ++i)
+@@ -1783,7 +1783,7 @@ void routing_manager_proxy::on_routing_info(const byte_t *_data,
+ 
+ void routing_manager_proxy::on_offered_services_info(const byte_t *_data,
+         uint32_t _size) {
+-#if 0
++#if 1
+     std::stringstream msg;
+     msg << "rmp::on_offered_services_info(" << std::hex << client_ << "): ";
+     for (uint32_t i = 0; i < _size; ++i)
+@@ -2101,7 +2101,7 @@ void routing_manager_proxy::send_register_event(client_t _client,
+ void routing_manager_proxy::on_subscribe_ack(client_t _client,
+         service_t _service, instance_t _instance, eventgroup_t _eventgroup, event_t _event) {
+     (void)_client;
+-#if 0
++#if 1
+     VSOMEIP_ERROR << "routing_manager_proxy::" << __func__
+             << "(" << std::hex << host_->get_client() << "):"
+             << "event="
+diff --git a/implementation/routing/src/routing_manager_stub.cpp b/implementation/routing/src/routing_manager_stub.cpp
+index 72668ea..1a75652 100644
+--- a/implementation/routing/src/routing_manager_stub.cpp
++++ b/implementation/routing/src/routing_manager_stub.cpp
+@@ -165,7 +165,7 @@ void routing_manager_stub::on_message(const byte_t *_data, length_t _size,
+     (void)_destination;
+     (void)_remote_address;
+     (void) _remote_port;
+-#if 0
++#if 1
+     std::stringstream msg;
+     msg << "rms::on_message: ";
+     for (length_t i = 0; i < _size; ++i)
+@@ -1039,7 +1039,7 @@ void routing_manager_stub::send_client_credentials_info(const client_t _target)
+         std::memcpy(&its_command[VSOMEIP_COMMAND_SIZE_POS_MIN], &its_size, sizeof(uint32_t));
+         its_size += VSOMEIP_COMMAND_PAYLOAD_POS;
+ 
+-#if 0
++#if 1
+         std::stringstream msg;
+         msg << "rms::send_credentials_info to (" << std::hex << _target << "): ";
+         for (uint32_t i = 0; i < its_size; ++i)
+@@ -1096,7 +1096,7 @@ void routing_manager_stub::send_client_routing_info(const client_t _target) {
+         std::memcpy(&its_command[VSOMEIP_COMMAND_SIZE_POS_MIN], &its_size, sizeof(uint32_t));
+         its_size += VSOMEIP_COMMAND_PAYLOAD_POS;
+ 
+-#if 0
++#if 1
+         std::stringstream msg;
+         msg << "rms::send_routing_info to (" << std::hex << _target << "): ";
+         for (uint32_t i = 0; i < its_size; ++i)
+@@ -1133,7 +1133,7 @@ void routing_manager_stub::send_offered_services_info(const client_t _target) {
+         std::memcpy(&its_command[VSOMEIP_COMMAND_SIZE_POS_MIN], &its_size, sizeof(uint32_t));
+         its_size += VSOMEIP_COMMAND_PAYLOAD_POS;
+ 
+-#if 0
++#if 1
+         std::stringstream msg;
+         msg << "rms::send_offered_services_info to (" << std::hex << _target << "): ";
+         for (uint32_t i = 0; i < its_size; ++i)
+diff --git a/implementation/service_discovery/src/service_discovery_impl.cpp b/implementation/service_discovery/src/service_discovery_impl.cpp
+index b252e62..0a65219 100644
+--- a/implementation/service_discovery/src/service_discovery_impl.cpp
++++ b/implementation/service_discovery/src/service_discovery_impl.cpp
+@@ -994,7 +994,7 @@ service_discovery_impl::on_message(
+         const byte_t *_data, length_t _length,
+         const boost::asio::ip::address &_sender,
+         const boost::asio::ip::address &_destination) {
+-#if 0
++#if 1
+     std::stringstream msg;
+     msg << "sdi::on_message: ";
+     for (length_t i = 0; i < _length; ++i)
+-- 
+2.25.1
+

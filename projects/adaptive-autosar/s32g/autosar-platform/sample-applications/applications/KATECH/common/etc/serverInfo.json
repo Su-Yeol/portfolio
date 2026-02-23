@@ -1,0 +1,18 @@
+{
+    "HTTP" : {
+        "ip" : "192.168.200.60",
+        "port" : "8080",
+        "endpoint" : "telemetry"
+    },
+    "NATS" : {
+        "protocol" : "nats",
+        "ip" : "user:CHANGE_ME_PASSWORD@nats.example.com",
+        "port" : "4222"
+    },
+    "MODE" : {
+        "mode" : "DEMO_DUMMY_MODE"
+    },
+    "SOCKET" : {
+        "port" : "5000"
+    }
+}

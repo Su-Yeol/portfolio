@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<AUTOSAR xmlns="http://autosar.org/schema/r4.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://autosar.org/schema/r4.0 AUTOSAR_00052.xsd">
+  <AR-PACKAGES>
+    <AR-PACKAGE>
+      <SHORT-NAME>System</SHORT-NAME>
+      <ELEMENTS>
+        <SYSTEM>
+          <SHORT-NAME>WgresTrpSystemAp</SHORT-NAME>
+          <ROOT-SOFTWARE-COMPOSITIONS>
+            <ROOT-SW-COMPOSITION-PROTOTYPE>
+              <SHORT-NAME>rscpTrp</SHORT-NAME>
+              <SOFTWARE-COMPOSITION-TREF DEST="COMPOSITION-SW-COMPONENT-TYPE">/Components/ApApComposition</SOFTWARE-COMPOSITION-TREF>
+            </ROOT-SW-COMPOSITION-PROTOTYPE>
+          </ROOT-SOFTWARE-COMPOSITIONS>
+        </SYSTEM>
+      </ELEMENTS>
+    </AR-PACKAGE>
+    <AR-PACKAGE>
+      <SHORT-NAME>Components</SHORT-NAME>
+      <ELEMENTS>
+        <COMPOSITION-SW-COMPONENT-TYPE>
+          <SHORT-NAME>ApApComposition</SHORT-NAME>
+          <COMPONENTS>
+            <SW-COMPONENT-PROTOTYPE>
+              <SHORT-NAME>dataPreprocessor</SHORT-NAME>
+              <TYPE-TREF DEST="ADAPTIVE-APPLICATION-SW-COMPONENT-TYPE">/apd/AdaptiveApplicationSwComponentTypes/DataPreprocessor</TYPE-TREF>
+            </SW-COMPONENT-PROTOTYPE>
+            <SW-COMPONENT-PROTOTYPE>
+              <SHORT-NAME>hpProcessingApplication</SHORT-NAME>
+              <TYPE-TREF DEST="ADAPTIVE-APPLICATION-SW-COMPONENT-TYPE">/apd/AdaptiveApplicationSwComponentTypes/HpProcessingApp</TYPE-TREF>
+            </SW-COMPONENT-PROTOTYPE>
+          </COMPONENTS>
+        </COMPOSITION-SW-COMPONENT-TYPE>
+      </ELEMENTS>
+    </AR-PACKAGE>
+    <AR-PACKAGE>
+      <SHORT-NAME>TimingExtensions</SHORT-NAME>
+      <ELEMENTS>
+        <SYSTEM-TIMING>
+          <SHORT-NAME>PuttingEventChainsTogetherAp</SHORT-NAME>
+          <TIMING-DESCRIPTIONS>
+            <TIMING-DESCRIPTION-EVENT-CHAIN>
+              <SHORT-NAME>ReactingOnSensorData</SHORT-NAME>
+              <STIMULUS-REF DEST="TD-EVENT-VARIABLE-DATA-PROTOTYPE">/TimingExtensions/syst_SensorDataAp/tdeSensorDataReceived</STIMULUS-REF>
+              <RESPONSE-REF DEST="TD-EVENT-OPERATION">/TimingExtensions/syst_MethodCallAp/tdeMethodInvoke</RESPONSE-REF>
+              <SEGMENT-REFS>
+                <SEGMENT-REF DEST="TIMING-DESCRIPTION-EVENT-CHAIN">/TimingExtensions/syst_MethodCallAp/tdecMethodInvokeToActionCallReceived</SEGMENT-REF>
+                <SEGMENT-REF DEST="TIMING-DESCRIPTION-EVENT-CHAIN">/TimingExtensions/syst_SensorDataAp/tdecSensorDataApSrvToApClient</SEGMENT-REF>
+              </SEGMENT-REFS>
+            </TIMING-DESCRIPTION-EVENT-CHAIN>
+          </TIMING-DESCRIPTIONS>
+          <SYSTEM-REF DEST="SYSTEM">/System/WgresTrpSystemAp</SYSTEM-REF>
+        </SYSTEM-TIMING>
+        <SYSTEM-TIMING>
+          <SHORT-NAME>syst_MethodCallAp</SHORT-NAME>
+          <TIMING-DESCRIPTIONS>
+            <TD-EVENT-OPERATION>
+              <SHORT-NAME>tdeActionCallReceived</SHORT-NAME>
+              <IS-EXTERNAL>false</IS-EXTERNAL>
+              <PORT-REF DEST="P-PORT-PROTOTYPE">/apd/AdaptiveApplicationSwComponentTypes/DataPreprocessor/SensorData_ActuatorPort</PORT-REF>
+              <OPERATION-REF DEST="CLIENT-SERVER-OPERATION">/apd/ServiceInterfaces/SensorActuatorService/Action</OPERATION-REF>
+              <TD-EVENT-OPERATION-TYPE>OPERATION-CALL-RECEIVED</TD-EVENT-OPERATION-TYPE>
+            </TD-EVENT-OPERATION>
+            <TD-EVENT-OPERATION>
+              <SHORT-NAME>tdeActionCallResponseSent</SHORT-NAME>
+              <IS-EXTERNAL>false</IS-EXTERNAL>
+              <PORT-REF DEST="P-PORT-PROTOTYPE">/apd/AdaptiveApplicationSwComponentTypes/DataPreprocessor/SensorData_ActuatorPort</PORT-REF>
+              <OPERATION-REF DEST="CLIENT-SERVER-OPERATION">/apd/ServiceInterfaces/SensorActuatorService/Action</OPERATION-REF>
+              <TD-EVENT-OPERATION-TYPE>OPERATION-CALL-RESPONSE-SENT</TD-EVENT-OPERATION-TYPE>
+            </TD-EVENT-OPERATION>
+            <TD-EVENT-OPERATION>
+              <SHORT-NAME>tdeMethodInvoke</SHORT-NAME>
+              <IS-EXTERNAL>false</IS-EXTERNAL>
+              <PORT-REF DEST="R-PORT-PROTOTYPE">/apd/AdaptiveApplicationSwComponentTypes/HpProcessingApp/cpapservicePort</PORT-REF>
+              <OPERATION-REF DEST="CLIENT-SERVER-OPERATION">/apd/ServiceInterfaces/SensorActuatorService/Action</OPERATION-REF>
+              <TD-EVENT-OPERATION-TYPE>OPERATION-CALLED</TD-EVENT-OPERATION-TYPE>
+            </TD-EVENT-OPERATION>
+            <TD-EVENT-OPERATION>
+              <SHORT-NAME>tdeMethodReturn</SHORT-NAME>
+              <IS-EXTERNAL>false</IS-EXTERNAL>
+              <PORT-REF DEST="R-PORT-PROTOTYPE">/apd/AdaptiveApplicationSwComponentTypes/HpProcessingApp/cpapservicePort</PORT-REF>
+              <OPERATION-REF DEST="CLIENT-SERVER-OPERATION">/apd/ServiceInterfaces/SensorActuatorService/Action</OPERATION-REF>
+              <TD-EVENT-OPERATION-TYPE>OPERATION-CALL-RESPONSE-RECEIVED</TD-EVENT-OPERATION-TYPE>
+            </TD-EVENT-OPERATION>
+            <TIMING-DESCRIPTION-EVENT-CHAIN>
+              <SHORT-NAME>tdecActionCallResponseSentToMethodReturn</SHORT-NAME>
+              <STIMULUS-REF DEST="TD-EVENT-OPERATION">/TimingExtensions/syst_MethodCallAp/tdeActionCallResponseSent</STIMULUS-REF>
+              <RESPONSE-REF DEST="TD-EVENT-OPERATION">/TimingExtensions/syst_MethodCallAp/tdeMethodReturn</RESPONSE-REF>
+              <SEGMENT-REFS>
+                <SEGMENT-REF DEST="TIMING-DESCRIPTION-EVENT-CHAIN">/TimingExtensions/syst_MethodCallAp/tdecActionCallResponseSentToMethodReturn</SEGMENT-REF>
+              </SEGMENT-REFS>
+            </TIMING-DESCRIPTION-EVENT-CHAIN>
+            <TIMING-DESCRIPTION-EVENT-CHAIN>
+              <SHORT-NAME>tdecActionProcessed</SHORT-NAME>
+              <STIMULUS-REF DEST="TD-EVENT-OPERATION">/TimingExtensions/syst_MethodCallAp/tdeActionCallReceived</STIMULUS-REF>
+              <RESPONSE-REF DEST="TD-EVENT-OPERATION">/TimingExtensions/syst_MethodCallAp/tdeActionCallResponseSent</RESPONSE-REF>
+              <SEGMENT-REFS>
+                <SEGMENT-REF DEST="TIMING-DESCRIPTION-EVENT-CHAIN">/TimingExtensions/syst_MethodCallAp/tdecActionProcessed</SEGMENT-REF>
+              </SEGMENT-REFS>
+            </TIMING-DESCRIPTION-EVENT-CHAIN>
+            <TIMING-DESCRIPTION-EVENT-CHAIN>
+              <SHORT-NAME>tdecMethodInvokeToActionCallReceived</SHORT-NAME>
+              <STIMULUS-REF DEST="TD-EVENT-OPERATION">/TimingExtensions/syst_MethodCallAp/tdeMethodInvoke</STIMULUS-REF>
+              <RESPONSE-REF DEST="TD-EVENT-OPERATION">/TimingExtensions/syst_MethodCallAp/tdeActionCallReceived</RESPONSE-REF>
+              <SEGMENT-REFS>
+                <SEGMENT-REF DEST="TIMING-DESCRIPTION-EVENT-CHAIN">/TimingExtensions/syst_MethodCallAp/tdecMethodInvokeToActionCallReceived</SEGMENT-REF>
+              </SEGMENT-REFS>
+            </TIMING-DESCRIPTION-EVENT-CHAIN>
+            <TIMING-DESCRIPTION-EVENT-CHAIN>
+              <SHORT-NAME>tdecMethodInvokeToReturn</SHORT-NAME>
+              <STIMULUS-REF DEST="TD-EVENT-OPERATION">/TimingExtensions/syst_MethodCallAp/tdeMethodInvoke</STIMULUS-REF>
+              <RESPONSE-REF DEST="TD-EVENT-OPERATION">/TimingExtensions/syst_MethodCallAp/tdeMethodReturn</RESPONSE-REF>
+              <SEGMENT-REFS>
+                <SEGMENT-REF DEST="TIMING-DESCRIPTION-EVENT-CHAIN">/TimingExtensions/syst_MethodCallAp/tdecActionCallResponseSentToMethodReturn</SEGMENT-REF>
+                <SEGMENT-REF DEST="TIMING-DESCRIPTION-EVENT-CHAIN">/TimingExtensions/syst_MethodCallAp/tdecActionProcessed</SEGMENT-REF>
+                <SEGMENT-REF DEST="TIMING-DESCRIPTION-EVENT-CHAIN">/TimingExtensions/syst_MethodCallAp/tdecMethodInvokeToActionCallReceived</SEGMENT-REF>
+              </SEGMENT-REFS>
+            </TIMING-DESCRIPTION-EVENT-CHAIN>
+          </TIMING-DESCRIPTIONS>
+          <TIMING-REQUIREMENTS>
+            <LATENCY-TIMING-CONSTRAINT>
+              <SHORT-NAME>ltcFromTo</SHORT-NAME>
+              <LATENCY-CONSTRAINT-TYPE>REACTION</LATENCY-CONSTRAINT-TYPE>
+              <SCOPE-REF DEST="TIMING-DESCRIPTION-EVENT-CHAIN">/TimingExtensions/syst_MethodCallAp/tdecMethodInvokeToReturn</SCOPE-REF>
+              <MINIMUM>
+                <CSE-CODE>3</CSE-CODE>
+                <CSE-CODE-FACTOR>10</CSE-CODE-FACTOR>
+              </MINIMUM>
+              <MAXIMUM>
+                <CSE-CODE>3</CSE-CODE>
+                <CSE-CODE-FACTOR>11</CSE-CODE-FACTOR>
+              </MAXIMUM>
+            </LATENCY-TIMING-CONSTRAINT>
+          </TIMING-REQUIREMENTS>
+          <SYSTEM-REF DEST="SYSTEM">/System/WgresTrpSystemAp</SYSTEM-REF>
+        </SYSTEM-TIMING>
+        <SYSTEM-TIMING>
+          <SHORT-NAME>syst_SensorDataAp</SHORT-NAME>
+          <TIMING-DESCRIPTIONS>
+            <TD-EVENT-VARIABLE-DATA-PROTOTYPE>
+              <SHORT-NAME>tdeSensorDataReceived</SHORT-NAME>
+              <IS-EXTERNAL>false</IS-EXTERNAL>
+              <PORT-REF DEST="R-PORT-PROTOTYPE">/apd/AdaptiveApplicationSwComponentTypes/HpProcessingApp/cpapservicePort</PORT-REF>
+              <DATA-ELEMENT-REF DEST="VARIABLE-DATA-PROTOTYPE">/apd/ServiceInterfaces/SensorActuatorService/sensorData</DATA-ELEMENT-REF>
+              <TD-EVENT-VARIABLE-DATA-PROTOTYPE-TYPE>VARIABLE-DATA-PROTOTYPE-RECEIVED</TD-EVENT-VARIABLE-DATA-PROTOTYPE-TYPE>
+            </TD-EVENT-VARIABLE-DATA-PROTOTYPE>
+            <TD-EVENT-VARIABLE-DATA-PROTOTYPE>
+              <SHORT-NAME>tdeSensorDataSent</SHORT-NAME>
+              <IS-EXTERNAL>false</IS-EXTERNAL>
+              <PORT-REF DEST="P-PORT-PROTOTYPE">/apd/AdaptiveApplicationSwComponentTypes/DataPreprocessor/SensorData_ActuatorPort</PORT-REF>
+              <DATA-ELEMENT-REF DEST="VARIABLE-DATA-PROTOTYPE">/apd/ServiceInterfaces/SensorActuatorService/sensorData</DATA-ELEMENT-REF>
+              <TD-EVENT-VARIABLE-DATA-PROTOTYPE-TYPE>VARIABLE-DATA-PROTOTYPE-SENT</TD-EVENT-VARIABLE-DATA-PROTOTYPE-TYPE>
+            </TD-EVENT-VARIABLE-DATA-PROTOTYPE>
+            <TIMING-DESCRIPTION-EVENT-CHAIN>
+              <SHORT-NAME>tdecSensorDataApSrvToApClient</SHORT-NAME>
+              <STIMULUS-REF DEST="TD-EVENT-VARIABLE-DATA-PROTOTYPE">/TimingExtensions/syst_SensorDataAp/tdeSensorDataSent</STIMULUS-REF>
+              <RESPONSE-REF DEST="TD-EVENT-VARIABLE-DATA-PROTOTYPE">/TimingExtensions/syst_SensorDataAp/tdeSensorDataReceived</RESPONSE-REF>
+              <SEGMENT-REFS>
+                <SEGMENT-REF DEST="TIMING-DESCRIPTION-EVENT-CHAIN">/TimingExtensions/syst_SensorDataAp/tdecSensorDataApSrvToApClient</SEGMENT-REF>
+              </SEGMENT-REFS>
+            </TIMING-DESCRIPTION-EVENT-CHAIN>
+          </TIMING-DESCRIPTIONS>
+          <TIMING-REQUIREMENTS>
+            <LATENCY-TIMING-CONSTRAINT>
+              <SHORT-NAME>ltcSensorData</SHORT-NAME>
+              <LATENCY-CONSTRAINT-TYPE>REACTION</LATENCY-CONSTRAINT-TYPE>
+              <SCOPE-REF DEST="TIMING-DESCRIPTION-EVENT-CHAIN">/TimingExtensions/syst_SensorDataAp/tdecSensorDataApSrvToApClient</SCOPE-REF>
+              <MINIMUM>
+                <CSE-CODE>3</CSE-CODE>
+                <CSE-CODE-FACTOR>1</CSE-CODE-FACTOR>
+              </MINIMUM>
+              <MAXIMUM>
+                <CSE-CODE>3</CSE-CODE>
+                <CSE-CODE-FACTOR>2</CSE-CODE-FACTOR>
+              </MAXIMUM>
+            </LATENCY-TIMING-CONSTRAINT>
+            <PERIODIC-EVENT-TRIGGERING>
+              <SHORT-NAME>petcSensorData</SHORT-NAME>
+              <EVENT-REF DEST="TD-EVENT-VARIABLE-DATA-PROTOTYPE">/TimingExtensions/syst_SensorDataAp/tdeSensorDataSent</EVENT-REF>
+              <MINIMUM-INTER-ARRIVAL-TIME>
+                <CSE-CODE>3</CSE-CODE>
+                <CSE-CODE-FACTOR>100</CSE-CODE-FACTOR>
+              </MINIMUM-INTER-ARRIVAL-TIME>
+              <JITTER>
+                <CSE-CODE>3</CSE-CODE>
+                <CSE-CODE-FACTOR>4</CSE-CODE-FACTOR>
+              </JITTER>
+              <PERIOD>
+                <CSE-CODE>3</CSE-CODE>
+                <CSE-CODE-FACTOR>100</CSE-CODE-FACTOR>
+              </PERIOD>
+            </PERIODIC-EVENT-TRIGGERING>
+          </TIMING-REQUIREMENTS>
+          <SYSTEM-REF DEST="SYSTEM">/System/WgresTrpSystemAp</SYSTEM-REF>
+        </SYSTEM-TIMING>
+      </ELEMENTS>
+    </AR-PACKAGE>
+  </AR-PACKAGES>
+</AUTOSAR>

@@ -1,32 +1,116 @@
-# Prerequisites
-*.d
+# OS / Editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
 
-# Compiled Object files
-*.slo
-*.lo
+# Windows ADS artifacts
+*:Zone.Identifier
+
+# Build outputs
+*.d
 *.o
 *.obj
-
-# Precompiled Headers
-*.gch
-*.pch
-
-# Compiled Dynamic libraries
+*.lo
+*.slo
+*.a
+*.la
 *.so
+*.so.*
 *.dylib
 *.dll
-
-# Fortran module files
-*.mod
-*.smod
-
-# Compiled Static libraries
-*.lai
-*.la
-*.a
-*.lib
-
-# Executables
 *.exe
 *.out
 *.app
+
+# CMake / Make
+build/
+cmake-build*/
+CMakeFiles/
+CMakeCache.txt
+cmake_install.cmake
+compile_commands.json
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.venv/
+venv/
+
+# Logs / runtime outputs
+*.log
+*.log.*
+*.pcap
+*.bag
+core
+core.*
+*.core
+logs/
+artifacts/
+output/
+
+# Repository-local generated outputs
+projects/**/logs/
+projects/**/artifacts/
+projects/**/build/
+projects/**/output/
+projects/adaptive-autosar/common-sample/src/sample-application/opendds/bin/*
+projects/time-synchronization-daemon/**/tmp/
+projects/adaptive-autosar/s32g/**/oe-logs
+projects/adaptive-autosar/s32g/**/oe-workdir
+projects/adaptive-autosar/s32g/**/build/
+projects/adaptive-autosar/s32g/**/build_docker/
+projects/adaptive-autosar/s32g/**/build_s32g*/
+projects/adaptive-autosar/s32g/**/downloads/
+projects/adaptive-autosar/s32g/**/sstate-cache/
+projects/adaptive-autosar/s32g/**/tmp/
+projects/adaptive-autosar/s32g/**/hawkbit_provider/config.ini
+projects/adaptive-autosar/axon/autosar-platform/**/oe-logs
+projects/adaptive-autosar/axon/autosar-platform/**/oe-workdir
+projects/adaptive-autosar/axon/integration/**/oe-logs
+projects/adaptive-autosar/axon/integration/**/oe-workdir
+projects/adaptive-autosar/axon/autosar-platform/**/.git
+projects/adaptive-autosar/axon/integration/**/.git
+projects/adaptive-autosar/axon/autosar-platform/**/hawkbit/.netrc
+projects/adaptive-autosar/axon/autosar-platform/**/hawkbit_provider/config.ini
+projects/adaptive-autosar/axon/integration/**/hawkbit_provider/config.ini
+projects/adaptive-autosar/axon/autosar-platform/**/ara_ucm_native/files/*.pem
+
+# Secrets / local config
+.env
+.env.*
+*.pem
+*.key
+*.p12
+*.pfx
+id_rsa
+id_rsa.pub
+
+# Archive and private local quarantine
+archive/private-local/
+archive/umsd-package/UMSD.tar
+*.tar
+*.tar.gz
+*.zip
+projects/adaptive-autosar/axon/autosar-platform/ara-api/*
+!projects/adaptive-autosar/axon/autosar-platform/ara-api/README.md
+projects/adaptive-autosar/axon/autosar-platform/yocto-layers/*
+!projects/adaptive-autosar/axon/autosar-platform/yocto-layers/README.md
+projects/adaptive-autosar/s32g/autosar-platform/ara-api/*
+!projects/adaptive-autosar/s32g/autosar-platform/ara-api/README.md
+projects/adaptive-autosar/s32g/autosar-platform/yocto-layers/*
+!projects/adaptive-autosar/s32g/autosar-platform/yocto-layers/README.md
+projects/autonomous-driving-stack/modules/common/config/can_spec.ini
+projects/autonomous-driving-stack/modules/common/config/can_spec.json
+projects/autonomous-driving-stack/modules/common/config/can_spec.yaml
+projects/autonomous-driving-stack/modules/common/src/private/**
+!projects/autonomous-driving-stack/modules/common/src/private/README.md
+projects/adaptive-autosar/**/Control/lib/common/config/can_spec.ini
+projects/adaptive-autosar/s32g/autosar-platform/**/hawkbit/.netrc
+projects/adaptive-autosar/s32g/autosar-platform/**/hawkbit_provider/config.ini
+projects/adaptive-autosar/s32g/autosar-platform/**/ara_ucm_native/files/*.pem
+projects/adaptive-autosar/s32g/autosar-platform/**/oe-logs
+projects/adaptive-autosar/s32g/autosar-platform/**/oe-workdir
+projects/adaptive-autosar/s32g/autosar-platform/sample-applications/applications/KATECH/Control/private-adcm/

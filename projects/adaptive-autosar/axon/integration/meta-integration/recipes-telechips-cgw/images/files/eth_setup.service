@@ -1,0 +1,12 @@
+[Unit]
+Description=Network AP Ethernet setup Service
+After=network.target
+Wants=network.target
+
+[Service]
+Restart=no
+RemainAfterExit=yes
+ExecStart=/etc/eth_setup
+
+[Install]
+WantedBy=multi-user.target

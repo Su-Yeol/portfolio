@@ -1,2 +1,0 @@
-/home/KATECH/build/CMakeFiles/rebuild_cache.dir
-/home/KATECH/build/CMakeFiles/edit_cache.dir

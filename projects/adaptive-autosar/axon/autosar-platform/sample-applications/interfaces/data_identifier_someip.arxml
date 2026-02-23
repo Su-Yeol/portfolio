@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<AUTOSAR xmlns="http://autosar.org/schema/r4.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://autosar.org/schema/r4.0 AUTOSAR_00052.xsd">
+  <AR-PACKAGES>
+    <AR-PACKAGE>
+      <SHORT-NAME>apd</SHORT-NAME>
+      <AR-PACKAGES>
+        <AR-PACKAGE>
+          <SHORT-NAME>ServiceInterfaceDeployments</SHORT-NAME>
+          <ELEMENTS>
+            <SOMEIP-SERVICE-INTERFACE-DEPLOYMENT>
+              <SHORT-NAME>DataIdentifier_Someip</SHORT-NAME>
+              <METHOD-DEPLOYMENTS>
+                <SOMEIP-METHOD-DEPLOYMENT>
+                  <SHORT-NAME>Read_Someip</SHORT-NAME>
+                  <METHOD-REF DEST="CLIENT-SERVER-OPERATION">/apd/ServiceInterfaces/DataIdentifier/Read</METHOD-REF>
+                  <METHOD-ID>1704</METHOD-ID>
+                  <TRANSPORT-PROTOCOL>UDP</TRANSPORT-PROTOCOL>
+                </SOMEIP-METHOD-DEPLOYMENT>
+                <SOMEIP-METHOD-DEPLOYMENT>
+                  <SHORT-NAME>Write_Someip</SHORT-NAME>
+                  <METHOD-REF DEST="CLIENT-SERVER-OPERATION">/apd/ServiceInterfaces/DataIdentifier/Write</METHOD-REF>
+                  <METHOD-ID>1705</METHOD-ID>
+                  <TRANSPORT-PROTOCOL>UDP</TRANSPORT-PROTOCOL>
+                </SOMEIP-METHOD-DEPLOYMENT>
+              </METHOD-DEPLOYMENTS>
+              <SERVICE-INTERFACE-REF DEST="SERVICE-INTERFACE">/apd/ServiceInterfaces/DataIdentifier</SERVICE-INTERFACE-REF>
+              <SERVICE-INTERFACE-ID>1701</SERVICE-INTERFACE-ID>
+            </SOMEIP-SERVICE-INTERFACE-DEPLOYMENT>
+          </ELEMENTS>
+        </AR-PACKAGE>
+      </AR-PACKAGES>
+    </AR-PACKAGE>
+  </AR-PACKAGES>
+</AUTOSAR>

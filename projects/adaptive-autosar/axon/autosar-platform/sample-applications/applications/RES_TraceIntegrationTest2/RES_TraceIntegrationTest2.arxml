@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<AUTOSAR xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://autosar.org/schema/r4.0" xsi:schemaLocation="http://autosar.org/schema/r4.0 AUTOSAR_00052.xsd">
+  <AR-PACKAGES>
+    <AR-PACKAGE>
+      <SHORT-NAME>apd</SHORT-NAME>
+      <AR-PACKAGES>
+        <AR-PACKAGE>
+          <SHORT-NAME>LogAndTraceInterface</SHORT-NAME>
+          <ELEMENTS>
+            <LOG-AND-TRACE-INTERFACE>
+              <SHORT-NAME>TraceIntegrationTest2</SHORT-NAME>
+              <NAMESPACES>
+                <SYMBOL-PROPS>
+                  <SHORT-NAME>apd</SHORT-NAME>
+                  <SYMBOL>apd</SYMBOL>
+                </SYMBOL-PROPS>
+                <SYMBOL-PROPS>
+                  <SHORT-NAME>wgres</SHORT-NAME>
+                  <SYMBOL>wgres</SYMBOL>
+                </SYMBOL-PROPS>
+              </NAMESPACES>
+            </LOG-AND-TRACE-INTERFACE>
+          </ELEMENTS>
+        </AR-PACKAGE>
+        <AR-PACKAGE>
+          <SHORT-NAME>AdaptiveApplicationSwComponentTypes</SHORT-NAME>
+          <ELEMENTS>
+            <ADAPTIVE-APPLICATION-SW-COMPONENT-TYPE>
+              <SHORT-NAME>TitServiceComponent</SHORT-NAME>
+              <PORTS>
+                <P-PORT-PROTOTYPE>
+                  <SHORT-NAME>SensorData_ActuatorPort</SHORT-NAME>
+                  <PROVIDED-INTERFACE-TREF DEST="SERVICE-INTERFACE">/apd/ServiceInterfaces/TitService</PROVIDED-INTERFACE-TREF>
+                </P-PORT-PROTOTYPE>
+                <R-PORT-PROTOTYPE>
+                  <SHORT-NAME>LogAndTrace_RPort</SHORT-NAME>
+                  <REQUIRED-INTERFACE-TREF DEST="LOG-AND-TRACE-INTERFACE">/apd/LogAndTraceInterface/TraceIntegrationTest2</REQUIRED-INTERFACE-TREF>
+                </R-PORT-PROTOTYPE>
+              </PORTS>
+            </ADAPTIVE-APPLICATION-SW-COMPONENT-TYPE>
+          </ELEMENTS>
+        </AR-PACKAGE>
+        <AR-PACKAGE>
+          <SHORT-NAME>Executables</SHORT-NAME>
+          <ELEMENTS>
+            <EXECUTABLE>
+              <SHORT-NAME>RES_TraceIntegrationTest2</SHORT-NAME>
+              <CATEGORY>APPLICATION_LEVEL</CATEGORY>
+              <MINIMUM-TIMER-GRANULARITY>1000</MINIMUM-TIMER-GRANULARITY>
+              <ROOT-SW-COMPONENT-PROTOTYPE>
+                <SHORT-NAME>RES_TraceIntegrationTest2</SHORT-NAME>
+                <APPLICATION-TYPE-TREF DEST="ADAPTIVE-APPLICATION-SW-COMPONENT-TYPE">/apd/AdaptiveApplicationSwComponentTypes/TitServiceComponent</APPLICATION-TYPE-TREF>
+              </ROOT-SW-COMPONENT-PROTOTYPE>
+              <TRACE-SWITCH-CONFIGURATIONS>
+                <TRACE-SWITCH-CONFIGURATION>
+                  <TRACE-MESSAGE-REF DEST="DLT-MESSAGE">/apd/TraceIntegrationTest/ModeledMsgs/Test1Msg</TRACE-MESSAGE-REF>
+                  <!-- AR-123458<NAMESPACES>
+                    <SYMBOL-PROPS>
+                      <SHORT-NAME>apd</SHORT-NAME>
+                      <SYMBOL>apd</SYMBOL>
+                    </SYMBOL-PROPS>
+                    <SYMBOL-PROPS>
+                      <SHORT-NAME>wgres</SHORT-NAME>
+                      <SYMBOL>wgres</SYMBOL>
+                    </SYMBOL-PROPS>
+                  </NAMESPACES>-->
+                  <!-- tc-01 -->
+                  <TRACE-SWITCH>TRACE-SWITCH-LOG</TRACE-SWITCH>
+                  <!-- tc-05-01 <TRACE-SWITCH>TRACE-SWITCH-NONE</TRACE-SWITCH> -->
+                </TRACE-SWITCH-CONFIGURATION>
+              </TRACE-SWITCH-CONFIGURATIONS>
+            </EXECUTABLE>
+          </ELEMENTS>
+        </AR-PACKAGE>
+      </AR-PACKAGES>
+    </AR-PACKAGE>
+  </AR-PACKAGES>
+</AUTOSAR>

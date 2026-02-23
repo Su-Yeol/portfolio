@@ -1,0 +1,7 @@
+[Match]
+Name=pfe1
+
+[Network]
+Address=192.168.11.200/24
+Gateway=192.168.11.1
+DNS=8.8.8.8

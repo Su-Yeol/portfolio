@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<AUTOSAR xmlns="http://autosar.org/schema/r4.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://autosar.org/schema/r4.0 AUTOSAR_00052.xsd">
+  <AR-PACKAGES>
+    <AR-PACKAGE>
+      <SHORT-NAME>apd</SHORT-NAME>
+      <AR-PACKAGES>
+        <AR-PACKAGE>
+          <SHORT-NAME>ServiceInterfaceDeployments</SHORT-NAME>
+          <ELEMENTS>
+            <DDS-SERVICE-INTERFACE-DEPLOYMENT>
+              <SHORT-NAME>Radar_Dds</SHORT-NAME>
+              <EVENT-DEPLOYMENTS>
+                <DDS-EVENT-DEPLOYMENT>
+                  <SHORT-NAME>DdsEventBrakeEvent</SHORT-NAME>
+                  <EVENT-REF DEST="VARIABLE-DATA-PROTOTYPE">/apd/ServiceInterfaces/radar/brakeEvent</EVENT-REF>
+                  <TOPIC-NAME>DdsTopicBrakeEvent</TOPIC-NAME>
+                  <TRANSPORT-PROTOCOLS>
+                    <TRANSPORT-PROTOCOL>UDP</TRANSPORT-PROTOCOL>
+                  </TRANSPORT-PROTOCOLS>
+                </DDS-EVENT-DEPLOYMENT>
+                <DDS-EVENT-DEPLOYMENT>
+                  <SHORT-NAME>DdsEventParkingBrakeEvent</SHORT-NAME>
+                  <EVENT-REF DEST="VARIABLE-DATA-PROTOTYPE">/apd/ServiceInterfaces/radar/parkingBrakeEvent</EVENT-REF>
+                  <TOPIC-NAME>DdsTopicParkingBrakeEvent</TOPIC-NAME>
+                  <TRANSPORT-PROTOCOLS>
+                    <TRANSPORT-PROTOCOL>UDP</TRANSPORT-PROTOCOL>
+                  </TRANSPORT-PROTOCOLS>
+                </DDS-EVENT-DEPLOYMENT>
+              </EVENT-DEPLOYMENTS>
+              <FIELD-DEPLOYMENTS>
+                <DDS-FIELD-DEPLOYMENT>
+                  <SHORT-NAME>UpdateRate_Dds</SHORT-NAME>
+                  <FIELD-REF DEST="FIELD">/apd/ServiceInterfaces/radar/UpdateRate</FIELD-REF>
+                  <NOTIFIER>
+                    <SHORT-NAME>notifier</SHORT-NAME>
+                    <TOPIC-NAME>DdsTopicUpdateRateNotifier</TOPIC-NAME>
+                    <TRANSPORT-PROTOCOLS>
+                      <TRANSPORT-PROTOCOL>UDP</TRANSPORT-PROTOCOL>
+                    </TRANSPORT-PROTOCOLS>
+                  </NOTIFIER>
+                </DDS-FIELD-DEPLOYMENT>
+                <DDS-FIELD-DEPLOYMENT>
+                  <SHORT-NAME>FrontObjectDistance_Dds</SHORT-NAME>
+                  <FIELD-REF DEST="FIELD">/apd/ServiceInterfaces/radar/FrontObjectDistance</FIELD-REF>
+                  <NOTIFIER>
+                    <SHORT-NAME>notifier</SHORT-NAME>
+                    <TOPIC-NAME>DdsTopicFrontObjectDistanceNotifier</TOPIC-NAME>
+                    <TRANSPORT-PROTOCOLS>
+                      <TRANSPORT-PROTOCOL>UDP</TRANSPORT-PROTOCOL>
+                    </TRANSPORT-PROTOCOLS>
+                  </NOTIFIER>
+                </DDS-FIELD-DEPLOYMENT>
+                <DDS-FIELD-DEPLOYMENT>
+                  <SHORT-NAME>RearObjectDistance_Dds</SHORT-NAME>
+                  <FIELD-REF DEST="FIELD">/apd/ServiceInterfaces/radar/RearObjectDistance</FIELD-REF>
+                </DDS-FIELD-DEPLOYMENT>
+                <DDS-FIELD-DEPLOYMENT>
+                  <SHORT-NAME>ObjectDetectionLimit_Dds</SHORT-NAME>
+                  <FIELD-REF DEST="FIELD">/apd/ServiceInterfaces/radar/ObjectDetectionLimit</FIELD-REF>
+                </DDS-FIELD-DEPLOYMENT>
+              </FIELD-DEPLOYMENTS>
+              <SERVICE-INTERFACE-REF DEST="SERVICE-INTERFACE">/apd/ServiceInterfaces/radar</SERVICE-INTERFACE-REF>
+              <FIELD-REPLY-TOPIC-NAME>DdsTopicRadarFieldReply</FIELD-REPLY-TOPIC-NAME>
+              <FIELD-REQUEST-TOPIC-NAME>DdsTopicRadarFieldRequest</FIELD-REQUEST-TOPIC-NAME>
+              <METHOD-REPLY-TOPIC-NAME>DdsTopicRadarMethodReply</METHOD-REPLY-TOPIC-NAME>
+              <METHOD-REQUEST-TOPIC-NAME>DdsTopicRadarMethodRequest</METHOD-REQUEST-TOPIC-NAME>
+              <SERVICE-INTERFACE-ID>Radar</SERVICE-INTERFACE-ID>
+              <TRANSPORT-PROTOCOLS>
+                <TRANSPORT-PROTOCOL>UDP</TRANSPORT-PROTOCOL>
+              </TRANSPORT-PROTOCOLS>
+            </DDS-SERVICE-INTERFACE-DEPLOYMENT>
+          </ELEMENTS>
+        </AR-PACKAGE>
+      </AR-PACKAGES>
+    </AR-PACKAGE>
+  </AR-PACKAGES>
+</AUTOSAR>
