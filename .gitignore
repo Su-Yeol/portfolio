@@ -114,3 +114,17 @@ projects/adaptive-autosar/s32g/autosar-platform/**/ara_ucm_native/files/*.pem
 projects/adaptive-autosar/s32g/autosar-platform/**/oe-logs
 projects/adaptive-autosar/s32g/autosar-platform/**/oe-workdir
 projects/adaptive-autosar/s32g/autosar-platform/sample-applications/applications/KATECH/Control/private-adcm/
+Control/lib/common/src/private/
+**/common/src/private/
+*/private/
+
+# Private classification for portfolio subprojects
+# masters-research: non-public research artifacts and raw data
+masters-research/data/**
+!masters-research/data/.gitkeep
+masters-research/artifacts/**
+masters-research/experiments/legacy/**
+
+# korec-rehab: reserved private implementation area
+korec-rehab/include/private/**
+korec-rehab/src/firmware_profiles/private/**
