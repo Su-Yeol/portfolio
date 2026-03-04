@@ -102,11 +102,6 @@ projects/adaptive-autosar/s32g/autosar-platform/ara-api/*
 !projects/adaptive-autosar/s32g/autosar-platform/ara-api/README.md
 projects/adaptive-autosar/s32g/autosar-platform/yocto-layers/*
 !projects/adaptive-autosar/s32g/autosar-platform/yocto-layers/README.md
-projects/autonomous-driving-stack/modules/common/config/can_spec.ini
-projects/autonomous-driving-stack/modules/common/config/can_spec.json
-projects/autonomous-driving-stack/modules/common/config/can_spec.yaml
-projects/autonomous-driving-stack/modules/common/src/private/**
-!projects/autonomous-driving-stack/modules/common/src/private/README.md
 projects/adaptive-autosar/**/Control/lib/common/config/can_spec.ini
 projects/adaptive-autosar/s32g/autosar-platform/**/hawkbit/.netrc
 projects/adaptive-autosar/s32g/autosar-platform/**/hawkbit_provider/config.ini
@@ -137,6 +132,4 @@ katech-automotive/projects/**/common/src/private/**
 !katech-automotive/projects/**/common/src/private/README.md
 
 # Relocated structure: non-public module configs
-katech-automotive/projects/autonomous-driving-stack/modules/aeb-control/conf/config.ini
-katech-automotive/projects/autonomous-driving-stack/modules/control-module/conf/config.ini
-katech-automotive/projects/autonomous-driving-stack/modules/decision-module/config.ini
+katech-automotive/projects/autonomous-driving-stack/**/config/

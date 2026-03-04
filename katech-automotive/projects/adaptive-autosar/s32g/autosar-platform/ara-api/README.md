@@ -1,43 +1,21 @@
-# Ara Api
+# S32G ara-api (Public Placeholder)
 
-## Overview
-This module contains Adaptive AUTOSAR platform, integration, and sample-application assets.
-It is structured for platform bring-up, integration, and module-level validation.
+This directory is a placeholder for S32G Adaptive AUTOSAR `ara-api` sources.
 
-## Features
-- Clear module boundaries with directory-level ownership
-- Relative-path based navigation and execution flow
-- Documentation aligned with current repository layout
-- Platform/integration separation for AUTOSAR workflows
+## Public Snapshot Policy
 
-## Architecture
-```text
-ara-api
-└── README.md
+The actual `ara-api` content is intentionally excluded from this repository. The folder remains so scripts and documentation can refer to a stable path.
 
-0 directories, 1 file
-```
+## Local Setup
 
-## Tech Stack
-- Language: Mixed source and configuration assets
-- Framework / Library: Platform and module-specific dependencies
-- Build Tool: Project-specific scripts
+1. Retrieve the private/vendor `ara-api` package.
+2. Populate this directory with the approved source tree.
+3. Continue with setup/build flow from:
 
-## Getting Started
-### Prerequisites
-- Compiler/toolchain and shell environment for this module
-
-### Build / Installation
 ```bash
-cd katech-automotive/projects/adaptive-autosar/s32g/autosar-platform/ara-api
-# Use project-level build procedure
+cd katech-automotive/projects/adaptive-autosar/s32g/scripts
 ```
 
-### Run
-```bash
-cd katech-automotive/projects/adaptive-autosar/s32g/autosar-platform/ara-api
-# Follow module scripts and integration workflow
-```
+## Commit Hygiene
 
-## License
-- Refer to the repository-level `LICENSE` and policy documents.
+Do not commit proprietary APIs, confidential manifests, certificates, or license-restricted artifacts.

@@ -1,43 +1,17 @@
-# Yocto Layers
+# S32G yocto-layers (Public Placeholder)
 
-## Overview
-This module contains Adaptive AUTOSAR platform, integration, and sample-application assets.
-It is structured for platform bring-up, integration, and module-level validation.
+This directory marks where S32G Yocto layers are expected in a full internal environment.
 
-## Features
-- Clear module boundaries with directory-level ownership
-- Relative-path based navigation and execution flow
-- Documentation aligned with current repository layout
-- Platform/integration separation for AUTOSAR workflows
+## Why Only README Exists
 
-## Architecture
-```text
-yocto-layers
-└── README.md
+Public portfolio repository keeps path structure but excludes private layer sources and generated Yocto build data.
 
-0 directories, 1 file
-```
+## Expected Local Action
 
-## Tech Stack
-- Language: Mixed source and configuration assets
-- Framework / Library: Platform and module-specific dependencies
-- Build Tool: Project-specific scripts
+1. Sync private Yocto layers into this directory.
+2. Run environment setup/build scripts in `s32g/scripts`.
+3. Keep generated `build_*`, `tmp`, `downloads`, and `sstate-cache` directories untracked.
 
-## Getting Started
-### Prerequisites
-- Compiler/toolchain and shell environment for this module
+## Security and Licensing
 
-### Build / Installation
-```bash
-cd katech-automotive/projects/adaptive-autosar/s32g/autosar-platform/yocto-layers
-# Use project-level build procedure
-```
-
-### Run
-```bash
-cd katech-automotive/projects/adaptive-autosar/s32g/autosar-platform/yocto-layers
-# Follow module scripts and integration workflow
-```
-
-## License
-- Refer to the repository-level `LICENSE` and policy documents.
+Treat all proprietary recipes, binaries, and credentials as non-public assets.

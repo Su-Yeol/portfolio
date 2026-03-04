@@ -1,43 +1,26 @@
-# Ara Api
+# AXON ara-api (Public Placeholder)
 
-## Overview
-This module contains Adaptive AUTOSAR platform, integration, and sample-application assets.
-It is structured for platform bring-up, integration, and module-level validation.
+This directory is a placeholder for AXON Adaptive AUTOSAR `ara-api` content.
 
-## Features
-- Clear module boundaries with directory-level ownership
-- Relative-path based navigation and execution flow
-- Documentation aligned with current repository layout
-- Platform/integration separation for AUTOSAR workflows
+## Why It Looks Empty
 
-## Architecture
-```text
-ara-api
-└── README.md
+Public repository policy excludes the actual `ara-api` tree from version control. The path is kept to preserve project structure and tooling expectations.
 
-0 directories, 1 file
-```
+## Expected Source of Truth
 
-## Tech Stack
-- Language: Mixed source and configuration assets
-- Framework / Library: Platform and module-specific dependencies
-- Build Tool: Project-specific scripts
+- Internal/private mirror or vendor package
+- Team-specific synchronization process outside this public repository
 
-## Getting Started
-### Prerequisites
-- Compiler/toolchain and shell environment for this module
+## What To Do When Setting Up Locally
 
-### Build / Installation
+1. Obtain the private `ara-api` package from the approved internal source.
+2. Restore files under this directory.
+3. Continue build/integration steps from the parent project:
+
 ```bash
-cd katech-automotive/projects/adaptive-autosar/axon/autosar-platform/ara-api
-# Use project-level build procedure
+cd katech-automotive/projects/adaptive-autosar
 ```
 
-### Run
-```bash
-cd katech-automotive/projects/adaptive-autosar/axon/autosar-platform/ara-api
-# Follow module scripts and integration workflow
-```
+## Security Note
 
-## License
-- Refer to the repository-level `LICENSE` and policy documents.
+Do not commit proprietary AUTOSAR artifacts, credentials, or licensed third-party payloads back into the public repo.

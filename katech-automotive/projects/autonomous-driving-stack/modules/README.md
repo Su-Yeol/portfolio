@@ -1,73 +1,27 @@
-# Modules
+# Autonomous Driving Modules
 
-## Overview
-This module provides autonomous-driving functional components and integration scripts.
-It is organized for incremental module build and verification workflows.
+This directory contains the functional modules used by the autonomous-driving stack.
 
-## Features
-- Clear module boundaries with directory-level ownership
-- Relative-path based navigation and execution flow
-- Documentation aligned with current repository layout
-- Module-oriented build and runtime organization
+## Modules
 
-## Architecture
-```text
-modules
-├── README.md
-├── aeb-control
-│   ├── README.md
-│   ├── build
-│   ├── build.sh
-│   ├── conf
-│   └── src
-├── common
-│   ├── README.md
-│   ├── config
-│   ├── include
-│   └── src
-├── control-module
-│   ├── README.md
-│   ├── build
-│   ├── build.sh
-│   ├── conf
-│   └── src
-├── decision-module
-│   ├── README.md
-│   ├── build
-│   ├── build.sh
-│   ├── bulid.sh
-│   ├── cangateway.sh
-│   ├── config.ini -> ../../config/decision-module.ini
-│   ├── source_gateway
-│   └── source_kcity
-└── remote-control
-    ├── README.md
-    ├── output
-    └── src
+| Module | Role | Build Command | Output |
+| --- | --- | --- | --- |
+| `aeb-control` | AEB control runtime | `./build.sh` | `build/run_aeb` |
+| `control-module` | Lateral/longitudinal control runtime | `./build.sh` | `build/run_control` |
+| `decision-module` | K-City and gateway decision binaries | `./build.sh`, `./cangateway.sh` | `build/run_kcity`, `build/run_gateway` |
+| `common` | Shared config, CRC, signal codec, common headers | linked by module builds | static source linkage |
+| `remote-control` | UDP/CAN remote communication example binaries | prebuilt in `output/` | `output/remotePC`, `output/remoteS32G` |
 
-19 directories, 12 files
-```
+## Important Runtime Flag
 
-## Tech Stack
-- Language: C/C++, Python, Shell
-- Framework / Library: Platform and module-specific dependencies
-- Build Tool: Project-specific scripts
+For full behavior, private implementation is expected:
 
-## Getting Started
-### Prerequisites
-- Compiler/toolchain and shell environment for this module
-
-### Build / Installation
 ```bash
-cd katech-automotive/projects/autonomous-driving-stack/modules
-# Use project-level build procedure
+USE_PRIVATE_IMPL=1 ./build.sh
 ```
 
-### Run
-```bash
-cd katech-automotive/projects/autonomous-driving-stack/modules
-# Follow module scripts and integration workflow
-```
+Without that flag, several binaries are intentionally stubbed for public release and report missing private implementation.
 
-## License
-- Refer to the repository-level `LICENSE` and policy documents.
+## Compatibility Note
+
+- `decision-module/build.sh` delegates to `decision-module/bulid.sh` (spelling kept for backward compatibility).

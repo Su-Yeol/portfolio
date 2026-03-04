@@ -1,61 +1,68 @@
 # Autonomous Driving Stack
 
-## Overview
-This module provides autonomous-driving functional components and integration scripts.
-It is organized for incremental module build and verification workflows.
+Module-oriented driving stack with separated build/run paths for AEB, control, decision, and remote-control functions. Includes a CAN gateway integration and project-level decision builds for two deployment targets (gateway, K-City).
 
-## Features
-- Clear module boundaries with directory-level ownership
-- Relative-path based navigation and execution flow
-- Documentation aligned with current repository layout
-- Module-oriented build and runtime organization
+## Stack
 
-## Architecture
+![C++](https://img.shields.io/badge/C++-00599C?style=flat&logo=cplusplus&logoColor=white)
+![C](https://img.shields.io/badge/C-00599C?style=flat&logo=c&logoColor=white)
+![Shell](https://img.shields.io/badge/Shell-4EAA25?style=flat&logo=gnubash&logoColor=white)
+![CAN](https://img.shields.io/badge/CAN_Bus-333333?style=flat)
+
+---
+
+## Directory Overview
+
 ```text
-autonomous-driving-stack
-├── README.md
-├── artifacts
-│   └── decision-module
-├── config
-│   ├── aeb-control.ini
-│   ├── control-module.ini
-│   └── decision-module.ini
-├── logs
-│   └── decision-module
-├── modules
-│   ├── README.md
-│   ├── aeb-control
-│   ├── common
-│   ├── control-module
-│   ├── decision-module
-│   └── remote-control
-└── scripts
-    ├── build_decision_gateway.sh
-    └── build_decision_kcity.sh
-
-12 directories, 7 files
+autonomous-driving-stack/
+├── config/
+│   ├── aeb-control.ini
+│   ├── control-module.ini
+│   └── decision-module.ini
+├── modules/
+│   ├── aeb-control/
+│   ├── common/
+│   ├── control-module/
+│   ├── decision-module/
+│   └── remote-control/
+├── scripts/
+│   ├── build_decision_gateway.sh
+│   └── build_decision_kcity.sh
+└── artifacts/decision-module/
 ```
 
-## Tech Stack
-- Language: C/C++, Python, Shell
-- Framework / Library: Platform and module-specific dependencies
-- Build Tool: Project-specific scripts
+## Build
 
-## Getting Started
-### Prerequisites
-- Compiler/toolchain and shell environment for this module
+### Module-local builds
 
-### Build / Installation
+```bash
+cd modules/aeb-control      && ./build.sh
+cd modules/control-module   && ./build.sh
+cd modules/decision-module  && ./build.sh
+cd modules/decision-module  && ./cangateway.sh
+```
+
+### Project-level decision builds
+
 ```bash
 cd katech-automotive/projects/autonomous-driving-stack
-# Use project-level build procedure
+./scripts/build_decision_gateway.sh
+./scripts/build_decision_kcity.sh
 ```
 
-### Run
-```bash
-cd katech-automotive/projects/autonomous-driving-stack
-# Follow module scripts and integration workflow
-```
+## Output Locations
 
-## License
-- Refer to the repository-level `LICENSE` and policy documents.
+| Build path | Output |
+|---|---|
+| `modules/*/build/` | `run_*` per module |
+| `artifacts/decision-module/` | `run_gateway`, `run_kcity` |
+
+## Public vs Private Runtime
+
+- Public sources compile successfully.
+- Without `USE_PRIVATE_IMPL=1`, major runtime binaries print `"private implementation is not available"` and exit.
+- Private implementation files are expected under `modules/common/src/private/`.
+
+## Public Snapshot Note
+
+`build_decision_kcity.sh` requires `modules/decision-module/include/` and will fail in this snapshot when that path is absent.

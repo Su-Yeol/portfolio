@@ -1,51 +1,33 @@
-# Aeb Control
+# AEB Control Module
 
-## Overview
-This module provides autonomous-driving functional components and integration scripts.
-It is organized for incremental module build and verification workflows.
+AEB runtime module that links shared common sources and emits `run_aeb`.
 
-## Features
-- Clear module boundaries with directory-level ownership
-- Relative-path based navigation and execution flow
-- Documentation aligned with current repository layout
-- Module-oriented build and runtime organization
+## Build
 
-## Architecture
-```text
-aeb-control
-├── README.md
-├── build
-│   └── run_aeb
-├── build.sh
-├── conf
-│   └── config.ini -> ../../../config/aeb-control.ini
-└── src
-    ├── AEBControl_S32G_v2.cpp
-    └── Communicator.cpp
-
-3 directories, 6 files
-```
-
-## Tech Stack
-- Language: C/C++, Shell
-- Framework / Library: Platform and module-specific dependencies
-- Build Tool: Project-specific scripts
-
-## Getting Started
-### Prerequisites
-- Compiler/toolchain and shell environment for this module
-
-### Build / Installation
-```bash
-cd katech-automotive/projects/autonomous-driving-stack/modules/aeb-control
-# Use project-level build procedure
-```
-
-### Run
 ```bash
 cd katech-automotive/projects/autonomous-driving-stack/modules/aeb-control
 ./build.sh
 ```
 
-## License
-- Refer to the repository-level `LICENSE` and policy documents.
+Output:
+
+- `build/run_aeb`
+
+## Dependencies
+
+- Common sources from `../common/src/`
+- Common headers from `../common/include/`
+- Optional private implementation from `../common/src/private/aeb-control/`
+
+## Private/Public Behavior
+
+- Default build compiles a public stub binary that reports missing private implementation.
+- Full behavior build:
+
+```bash
+USE_PRIVATE_IMPL=1 ./build.sh
+```
+
+## Config Link
+
+- `conf/config.ini` points to `../../../config/aeb-control.ini`.

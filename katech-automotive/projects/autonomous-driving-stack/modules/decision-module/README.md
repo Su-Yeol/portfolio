@@ -1,60 +1,39 @@
 # Decision Module
 
-## Overview
-This module provides autonomous-driving functional components and integration scripts.
-It is organized for incremental module build and verification workflows.
+Decision module provides two binaries:
 
-## Features
-- Clear module boundaries with directory-level ownership
-- Relative-path based navigation and execution flow
-- Documentation aligned with current repository layout
-- Module-oriented build and runtime organization
+- `run_kcity` (from `source_kcity/*.cpp`)
+- `run_gateway` (from `source_gateway/CANGateway.cpp`)
 
-## Architecture
-```text
-decision-module
-├── README.md
-├── build
-│   ├── run_gateway
-│   └── run_kcity
-├── build.sh
-├── bulid.sh
-├── cangateway.sh
-├── config.ini -> ../../config/decision-module.ini
-├── source_gateway
-│   ├── CANGateway.cpp
-│   └── CRC.cpp
-└── source_kcity
-    ├── Communicator.cpp
-    ├── MainModule.cpp
-    ├── PathManager.cpp
-    ├── PathViewer.py
-    ├── Viewer.py
-    └── __pycache__
+## Build Commands
 
-4 directories, 14 files
-```
-
-## Tech Stack
-- Language: C/C++, Python, Shell
-- Framework / Library: Platform and module-specific dependencies
-- Build Tool: Project-specific scripts
-
-## Getting Started
-### Prerequisites
-- Compiler/toolchain and shell environment for this module
-
-### Build / Installation
 ```bash
 cd katech-automotive/projects/autonomous-driving-stack/modules/decision-module
-# Use project-level build procedure
+./build.sh       # builds run_kcity (wrapper to bulid.sh)
+./cangateway.sh  # builds run_gateway
 ```
 
-### Run
+Outputs:
+
+- `build/run_kcity`
+- `build/run_gateway`
+
+## Dependencies
+
+- Shared sources from `../common/src/`
+- Shared headers from `../common/include/`
+- Optional private sources from `../common/src/private/decision-module/`
+
+## Private/Public Behavior
+
+- Default build compiles public stubs that print missing private implementation and exit.
+- Full behavior requires:
+
 ```bash
-cd katech-automotive/projects/autonomous-driving-stack/modules/decision-module
-./build.sh
+USE_PRIVATE_IMPL=1 ./build.sh
+USE_PRIVATE_IMPL=1 ./cangateway.sh
 ```
 
-## License
-- Refer to the repository-level `LICENSE` and policy documents.
+## Extra Project-Level Script
+
+From project root, `scripts/build_decision_gateway.sh` can cross-compile and emit `artifacts/decision-module/run_gateway`.

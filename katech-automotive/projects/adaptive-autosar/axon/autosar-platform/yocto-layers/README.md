@@ -1,43 +1,17 @@
-# Yocto Layers
+# AXON yocto-layers (Public Placeholder)
 
-## Overview
-This module contains Adaptive AUTOSAR platform, integration, and sample-application assets.
-It is structured for platform bring-up, integration, and module-level validation.
+This directory is a placeholder for AXON-specific Yocto layer content.
 
-## Features
-- Clear module boundaries with directory-level ownership
-- Relative-path based navigation and execution flow
-- Documentation aligned with current repository layout
-- Platform/integration separation for AUTOSAR workflows
+## Why It Looks Empty
 
-## Architecture
-```text
-yocto-layers
-└── README.md
+Public snapshot intentionally excludes the real layer sources. Keeping this directory in place preserves expected paths used by setup/build scripts.
 
-0 directories, 1 file
-```
+## Local Restore Workflow
 
-## Tech Stack
-- Language: Mixed source and configuration assets
-- Framework / Library: Platform and module-specific dependencies
-- Build Tool: Project-specific scripts
+1. Sync private Yocto layer sources from approved internal storage.
+2. Place them under this directory.
+3. Run parent-level setup/build scripts from `adaptive-autosar`.
 
-## Getting Started
-### Prerequisites
-- Compiler/toolchain and shell environment for this module
+## Reminder
 
-### Build / Installation
-```bash
-cd katech-automotive/projects/adaptive-autosar/axon/autosar-platform/yocto-layers
-# Use project-level build procedure
-```
-
-### Run
-```bash
-cd katech-automotive/projects/adaptive-autosar/axon/autosar-platform/yocto-layers
-# Follow module scripts and integration workflow
-```
-
-## License
-- Refer to the repository-level `LICENSE` and policy documents.
+Only structure and non-sensitive documentation belong in this public repository. Private layers, keys, and proprietary recipes must remain out of Git tracking.

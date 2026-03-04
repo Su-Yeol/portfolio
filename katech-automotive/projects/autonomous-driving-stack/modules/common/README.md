@@ -1,56 +1,43 @@
-# Common
+# Common Module
 
-## Overview
-This module provides autonomous-driving functional components and integration scripts.
-It is organized for incremental module build and verification workflows.
+Shared headers and source files used by `aeb-control`, `control-module`, and `decision-module`.
 
-## Features
-- Clear module boundaries with directory-level ownership
-- Relative-path based navigation and execution flow
-- Documentation aligned with current repository layout
-- Module-oriented build and runtime organization
+## Key Responsibilities
 
-## Architecture
+- INI-style key/value config parsing (`ConfigParser.cpp`)
+- CAN specification provider and typed getters (`CanSpecProvider.h`, `CanSpecConfigLoader.cpp`)
+- CRC helpers (`CrcProviderPublic.cpp`, `CrcProviderPrivate.cpp`)
+- Bit/byte packing helpers (`SignalCodec.h`)
+
+## Configuration
+
+Default CAN spec file path:
+
+- `./common/config/can_spec.ini`
+
+Override at runtime:
+
+```bash
+export AUTODRIVE_CAN_SPEC=/path/to/can_spec.ini
+```
+
+## Structure
+
 ```text
-common
-├── README.md
-├── config
-│   └── can_spec.ini
-├── include
-│   ├── CanSpecProvider.h
-│   ├── CrcProvider.h
-│   ├── SignalCodec.h
-│   └── modules
-└── src
+common/
+├── config/can_spec.ini
+├── include/
+│   ├── CanSpecProvider.h
+│   ├── CrcProvider.h
+│   └── SignalCodec.h
+└── src/
     ├── CanSpecConfigLoader.cpp
     ├── ConfigParser.cpp
-    ├── CrcProviderPrivate.cpp
     ├── CrcProviderPublic.cpp
-    └── private
-
-5 directories, 9 files
+    ├── CrcProviderPrivate.cpp
+    └── private/
 ```
 
-## Tech Stack
-- Language: C/C++
-- Framework / Library: Platform and module-specific dependencies
-- Build Tool: Project-specific scripts
+## Private Extension Point
 
-## Getting Started
-### Prerequisites
-- Compiler/toolchain and shell environment for this module
-
-### Build / Installation
-```bash
-cd katech-automotive/projects/autonomous-driving-stack/modules/common
-# Use project-level build procedure
-```
-
-### Run
-```bash
-cd katech-automotive/projects/autonomous-driving-stack/modules/common
-# Follow module scripts and integration workflow
-```
-
-## License
-- Refer to the repository-level `LICENSE` and policy documents.
+`src/private/` contains implementation files used when modules are built with `USE_PRIVATE_IMPL=1`.

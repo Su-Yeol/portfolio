@@ -1,62 +1,39 @@
 # Firmware Profiles
 
-## Overview
-This project contains EMG prosthetic firmware profiles and supporting tooling for inspection and validation.
-It focuses on profile-level behavior differences and maintainable naming conventions.
+This directory stores profile-specific firmware behavior variants used by `korec_rehab_cli`.
 
-## Features
-- Clear module boundaries with directory-level ownership
-- Relative-path based navigation and execution flow
-- Documentation aligned with current repository layout
-- Firmware profile grouping by behavior and role
+## Structure
 
-## Architecture
 ```text
-firmware_profiles
-├── README.md
-├── profile_default
-│   ├── profile_default_control.c
-│   └── profile_default_diag_board.c
-├── profile_double_lock
-│   ├── profile_double_lock_control.c
-│   └── profile_double_lock_diag_board.c
-├── profile_lock_mode
-│   ├── profile_lock_mode_control.c
-│   └── profile_lock_mode_diag_board.c
-├── profile_offset
-│   ├── profile_offset_control_baseline.c
-│   ├── profile_offset_control_overlap.c
-│   └── profile_offset_diag_board.c
-└── transport_serial
-    └── transport_serial_profile.c
-
-5 directories, 11 files
+src/firmware_profiles/
+├── profile_default/
+├── profile_double_lock/
+├── profile_lock_mode/
+├── profile_offset/
+└── transport_serial/
 ```
 
-## Tech Stack
-- Language: C/C++
-- Framework / Library: Platform and module-specific dependencies
-- Build Tool: Project-specific scripts
+## Naming Convention
 
-## Getting Started
-### Prerequisites
-- Compiler/toolchain and shell environment for this module
+- `<profile>_control.c`: control-flow oriented variant
+- `<profile>_diag_board*.c`: diagnostic-board oriented variant
+- `transport_serial_*.c`: transport profile variant
 
-### Build / Installation
+## How It Is Used
+
+- Catalog entries are defined in `src/profile_catalog.c`.
+- `korec_rehab_cli list` prints `[category] name` from the catalog.
+- `korec_rehab_cli show <name>` prints the source content of the selected profile file.
+- `korec_rehab_cli validate` runs token checks against these files.
+
+## Adding a New Profile
+
+1. Add source file under the correct category directory.
+2. Register it in `src/profile_catalog.c`.
+3. Rebuild and run validation:
+
 ```bash
-cd korec-rehab/src/firmware_profiles
-# Use project-level build procedure
+cd korec-rehab
+make
+./korec_rehab_cli validate
 ```
-
-### Run
-```bash
-cd korec-rehab/src/firmware_profiles
-# Follow module scripts and integration workflow
-```
-
-## Design Notes
-- Profile files are grouped by functional behavior for easier comparison.
-- Naming uses role-first semantics to reduce ambiguity in profile selection.
-
-## License
-- Refer to the repository-level `LICENSE` and policy documents.

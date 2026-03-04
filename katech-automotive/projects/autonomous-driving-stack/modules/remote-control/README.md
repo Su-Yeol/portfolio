@@ -1,49 +1,24 @@
-# Remote Control
+# Remote Control Module
 
-## Overview
-This module provides autonomous-driving functional components and integration scripts.
-It is organized for incremental module build and verification workflows.
+Remote control examples for UDP/CAN communication.
 
-## Features
-- Clear module boundaries with directory-level ownership
-- Relative-path based navigation and execution flow
-- Documentation aligned with current repository layout
-- Module-oriented build and runtime organization
+## Contents
 
-## Architecture
-```text
-remote-control
-├── README.md
-├── output
-│   ├── remotePC
-│   └── remoteS32G
-└── src
-    ├── remotePC.cpp
-    └── remoteS32G.cpp
+- `src/remotePC.cpp`: sender-side style sample
+- `src/remoteS32G.cpp`: receiver-side style sample
+- `output/remotePC`, `output/remoteS32G`: prebuilt binaries currently included in this snapshot
 
-2 directories, 5 files
-```
+## Build (Manual)
 
-## Tech Stack
-- Language: C/C++
-- Framework / Library: Platform and module-specific dependencies
-- Build Tool: Project-specific scripts
+No dedicated build script is provided in this folder. Example manual build:
 
-## Getting Started
-### Prerequisites
-- Compiler/toolchain and shell environment for this module
-
-### Build / Installation
 ```bash
 cd katech-automotive/projects/autonomous-driving-stack/modules/remote-control
-# Use project-level build procedure
+g++ -std=c++17 -g src/remotePC.cpp -I../common/include -o output/remotePC
+g++ -std=c++17 -g src/remoteS32G.cpp -I../common/include -o output/remoteS32G
 ```
 
-### Run
-```bash
-cd katech-automotive/projects/autonomous-driving-stack/modules/remote-control
-# Follow module scripts and integration workflow
-```
+## Notes
 
-## License
-- Refer to the repository-level `LICENSE` and policy documents.
+- Source files include hardcoded IP/port constants; adjust before runtime testing.
+- Existing `output/*` binaries may be architecture-specific build artifacts from previous environments.

@@ -1,62 +1,59 @@
 # Katech Automotive
 
-## Overview
-This directory contains project-specific source, configuration, and documentation assets.
-The structure is maintained for clear module ownership and reproducible workflows.
+Automotive software engineering track covering Adaptive AUTOSAR platform bring-up, autonomous driving module integration, deterministic time synchronization, and TSN-based networking — all targeting embedded Linux on automotive-grade SoCs.
 
-## Features
-- Clear module boundaries with directory-level ownership
-- Relative-path based navigation and execution flow
-- Documentation aligned with current repository layout
+## Stack
 
-## Architecture
-```text
-katech-automotive
-├── DATA_POLICY.md
-├── LICENSE
-├── PROJECTS.md
-├── README.md
-├── SECURITY.md
-├── archive
-│   ├── private-local
-│   └── umsd-package
-├── docs
-│   └── migration
-├── projects
-│   ├── adaptive-autosar
-│   ├── autonomous-driving-stack
-│   ├── time-synchronization-daemon
-│   └── tsn-communication-stack
-└── scripts
-    ├── 10base-t1s
-    ├── build_axon_integration.sh
-    ├── build_axon_platform.sh
-    ├── env
-    └── refactor_iso26262_layout.sh
+![C++](https://img.shields.io/badge/C++-00599C?style=flat&logo=cplusplus&logoColor=white)
+![C](https://img.shields.io/badge/C-00599C?style=flat&logo=c&logoColor=white)
+![Shell](https://img.shields.io/badge/Shell-4EAA25?style=flat&logo=gnubash&logoColor=white)
+![Yocto](https://img.shields.io/badge/Yocto-4D9955?style=flat)
+![CMake](https://img.shields.io/badge/CMake-064F8C?style=flat&logo=cmake&logoColor=white)
+![Docker](https://img.shields.io/badge/Docker-2496ED?style=flat&logo=docker&logoColor=white)
+![AUTOSAR](https://img.shields.io/badge/Adaptive_AUTOSAR-0070C0?style=flat)
+![TSN](https://img.shields.io/badge/TSN%2FgPTP-FF8C00?style=flat)
 
-13 directories, 8 files
-```
+**Target hardware:** NXP S32G · Axon
 
-## Tech Stack
-- Language: C/C++, Python, Shell
-- Framework / Library: Platform and module-specific dependencies
-- Build Tool: CMake
+---
 
-## Getting Started
-### Prerequisites
-- Compiler/toolchain and shell environment for this module
+## Projects
 
-### Build / Installation
+| Project | Focus | Entry Point |
+|---|---|---|
+| [Adaptive AUTOSAR](projects/adaptive-autosar/) | Platform/BSP bring-up, Yocto integration, UCM deployment | `s32g/scripts/run_docker.sh` |
+| [Autonomous Driving Stack](projects/autonomous-driving-stack/) | AEB / control / decision / remote-control modules with CAN gateway | `modules/*/build.sh` |
+| [Time Synchronization Daemon](projects/time-synchronization-daemon/) | `linuxptp` / `gPTP` / Open-AVB source mirrors and packaged artifacts | artifact tar inspection |
+| [TSN Communication Stack](projects/tsn-communication-stack/) | PHC clock-sync verification tools for target boards | `tools/get_phc*` |
+
+---
+
+## Quick Start
+
 ```bash
-cd katech-automotive
-# Use project-level build procedure
+# Adaptive AUTOSAR — S32G Docker build
+cd projects/adaptive-autosar/s32g/scripts
+./run_docker.sh
+
+# Autonomous Driving — module build
+cd projects/autonomous-driving-stack/modules/decision-module
+./build.sh
+
+# TSN — inspect packaged artifact
+cd projects/time-synchronization-daemon
+tar -tzf artifacts/tar/240527_open-avb_RF.tar.gz | head
 ```
 
-### Run
-```bash
-cd katech-automotive
-# Follow module scripts and integration workflow
-```
+## Supporting Docs
 
-## License
-- Refer to the repository-level `LICENSE` and policy documents.
+| File | Purpose |
+|---|---|
+| [PROJECTS.md](PROJECTS.md) | Short project summaries and keyword index |
+| [DATA_POLICY.md](DATA_POLICY.md) | Public/private data handling policy |
+| [SECURITY.md](SECURITY.md) | Security reporting and disclosure |
+
+## Public/Private Boundary
+
+- `archive/private-local/` and generated build artifacts are excluded from public tracking.
+- Build wrappers, orchestration scripts, and structural layout are fully public.
+- Runtime modules that require private implementation compile as stubs and print a notice on execution.
