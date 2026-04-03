@@ -44,6 +44,21 @@ cd projects/time-synchronization-daemon
 tar -tzf artifacts/tar/240527_open-avb_RF.tar.gz | head
 ```
 
+## ISO 26262 Functional Safety
+
+ISO 26262 기능안전 프로세스 산출물 (Part 2–9) 문서 구조가 포함되어 있습니다.
+
+| Category | Documents | Path |
+|---|---|---|
+| Full Index | 전체 산출물 목록 | [docs/iso26262-index.md](docs/iso26262-index.md) |
+| Safety Management (Part 2) | Safety Plan, Safety Case, Confirmation Review | [docs/safety/](docs/safety/) |
+| Concept Phase (Part 3) | Item Definition, HARA, Safety Goals, FSC | [docs/concept/](docs/concept/) |
+| System Level (Part 4) | TSC, System Design, Requirements Allocation | [docs/system/](docs/system/) |
+| SW Level (Part 6) | Per-project SW safety docs | Each project `docs/iso26262/` |
+| Supporting Processes (Part 8) | CM, Change Mgmt, Verification, Tool Qual | [docs/process/](docs/process/) |
+| Safety Analysis (Part 9) | FMEA, FTA, Dependent Failure Analysis | [docs/analysis/](docs/analysis/) |
+| Traceability | Requirements Traceability Matrix | [docs/traceability/](docs/traceability/) |
+
 ## Supporting Docs
 
 | File | Purpose |

@@ -48,6 +48,21 @@ cd katech-automotive/projects/adaptive-autosar/s32g/scripts
 ./run_docker.sh
 ```
 
+## ISO 26262 Documentation
+
+ISO 26262 Part 6 SW 수준 기능안전 산출물:
+
+| Document | Path |
+|---|---|
+| SW Safety Requirements | [docs/iso26262/sw-safety-requirements.md](docs/iso26262/sw-safety-requirements.md) |
+| SW Architecture | [docs/iso26262/sw-architecture.md](docs/iso26262/sw-architecture.md) |
+| SW Unit Design | [docs/iso26262/sw-unit-design.md](docs/iso26262/sw-unit-design.md) |
+| SW Unit Test | [docs/iso26262/sw-unit-test.md](docs/iso26262/sw-unit-test.md) |
+| SW Integration Test | [docs/iso26262/sw-integration-test.md](docs/iso26262/sw-integration-test.md) |
+| SW Verification Report | [docs/iso26262/sw-verification-report.md](docs/iso26262/sw-verification-report.md) |
+
+공통 안전 문서는 [docs/iso26262-index.md](../../docs/iso26262-index.md) 참조.
+
 ## Public Snapshot Note
 
 - `ara-api/` and `yocto-layers/` directories are placeholder stubs that document where private/vendor content is expected.

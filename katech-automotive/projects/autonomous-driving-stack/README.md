@@ -63,6 +63,35 @@ cd katech-automotive/projects/autonomous-driving-stack
 - Without `USE_PRIVATE_IMPL=1`, major runtime binaries print `"private implementation is not available"` and exit.
 - Private implementation files are expected under `modules/common/src/private/`.
 
+## ISO 26262 Documentation
+
+ISO 26262 Part 6 SW 수준 기능안전 산출물:
+
+### Project Level
+
+| Document | Path |
+|---|---|
+| SW Safety Requirements | [docs/iso26262/sw-safety-requirements.md](docs/iso26262/sw-safety-requirements.md) |
+| SW Architecture | [docs/iso26262/sw-architecture.md](docs/iso26262/sw-architecture.md) |
+| SW Unit Design | [docs/iso26262/sw-unit-design.md](docs/iso26262/sw-unit-design.md) |
+| SW Unit Test | [docs/iso26262/sw-unit-test.md](docs/iso26262/sw-unit-test.md) |
+| SW Integration Test | [docs/iso26262/sw-integration-test.md](docs/iso26262/sw-integration-test.md) |
+| SW Verification Report | [docs/iso26262/sw-verification-report.md](docs/iso26262/sw-verification-report.md) |
+
+### Module Level
+
+각 모듈별 ISO 26262 문서는 `modules/<module>/docs/iso26262/` 에 위치:
+
+| Module | Path |
+|---|---|
+| AEB Control | [modules/aeb-control/docs/iso26262/](modules/aeb-control/docs/iso26262/) |
+| Control Module | [modules/control-module/docs/iso26262/](modules/control-module/docs/iso26262/) |
+| Decision Module | [modules/decision-module/docs/iso26262/](modules/decision-module/docs/iso26262/) |
+| Remote Control | [modules/remote-control/docs/iso26262/](modules/remote-control/docs/iso26262/) |
+| Common | [modules/common/docs/iso26262/](modules/common/docs/iso26262/) |
+
+공통 안전 문서는 [docs/iso26262-index.md](../../docs/iso26262-index.md) 참조.
+
 ## Public Snapshot Note
 
 `build_decision_kcity.sh` requires `modules/decision-module/include/` and will fail in this snapshot when that path is absent.
