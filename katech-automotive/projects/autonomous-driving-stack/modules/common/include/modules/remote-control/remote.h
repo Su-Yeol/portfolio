@@ -16,9 +16,12 @@
 #define BufferSize 8192
 
 
+// cppcheck-suppress ctuOneDefinitionRuleViolation ; each module builds as independent binary
 class CANClass
 {
     public:
+        CANClass() : FrameFd{}, sock{-1}, nbytes{0}, addr{}, ifr{}, addrlen{0} {}
+
         void SetSocket(const std::string &ifname, const int canfd);
         void RecieveCANFD();
         void SendCANFD();
@@ -32,9 +35,12 @@ class CANClass
         socklen_t addrlen;
 };
 
+// cppcheck-suppress ctuOneDefinitionRuleViolation
 class UDPClass
 {
 public:
+    UDPClass() : Buffer{}, sock{-1}, Addr{}, nbytes{0}, addrlen{0} {}
+
     void SetSocket(const std::string &ip, const int port);
     void Receive(const uint16_t buffersize);
     void Send(const uint16_t SendByte);
@@ -47,5 +53,6 @@ private:
     ssize_t nbytes;
     socklen_t addrlen;
 };
+
 
 #endif

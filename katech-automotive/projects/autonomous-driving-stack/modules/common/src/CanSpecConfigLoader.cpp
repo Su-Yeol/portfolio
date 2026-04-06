@@ -1,6 +1,5 @@
 #include "CanSpecProvider.h"
 
-#include <algorithm>
 #include <cstdlib>
 #include <fstream>
 #include <sstream>
@@ -106,7 +105,7 @@ namespace
  */
     double ParseF64(const std::string &raw, double fallback)
     {
-        std::string token = Trim(raw);
+        const std::string token = Trim(raw);
         if (token.empty())
         {
             return fallback;

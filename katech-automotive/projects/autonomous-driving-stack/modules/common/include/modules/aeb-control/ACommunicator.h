@@ -8,10 +8,13 @@
 MODULES_COMMON_COMM_EXTERN_FLAGS
 MODULES_COMMON_COMM_EXTERN_STATE(GPSStruct, VehicleStruct, GlobalPathStruct, LocalPathStruct, ControlStruct)
 
+// cppcheck-suppress ctuOneDefinitionRuleViolation ; each module builds as independent binary
 class CANClass
 {
 
 public:
+    CANClass() : FrameFd{}, Frame{}, sock{-1}, nbytes{0}, addr{}, ifr{}, addrlen{0} {}
+
     void SetSocket(const std::string &ifname, const int canfd);
 
     void ReceiveCANFD();
@@ -31,7 +34,7 @@ public:
 private:
     int sock;
 
-    uint16_t nbytes;
+    ssize_t nbytes;
 
     struct sockaddr_can addr;
 
@@ -40,10 +43,13 @@ private:
     socklen_t addrlen;
 };
 
+// cppcheck-suppress ctuOneDefinitionRuleViolation
 class UDPClass
 {
 
 public:
+    UDPClass() : ReceiveBuffer{}, SendBuffer{}, sock{-1}, ServerAddr{}, ClientAddr{}, nbytes{0}, addrlen{0} {}
+
     void SetServerSocket(const std::string &ip, const uint16_t port);
 
     void SetClientSocket(const std::string &ip, const uint16_t port);
@@ -63,15 +69,18 @@ private:
 
     struct sockaddr_in ServerAddr, ClientAddr;
 
-    uint16_t nbytes;
+    ssize_t nbytes;
 
     socklen_t addrlen;
 };
 
+// cppcheck-suppress ctuOneDefinitionRuleViolation
 class TCPClass
 {
 
 public:
+    TCPClass() : SendBuffer{}, ServerSock{-1}, ClientSock{-1}, ServerAddr{}, ClientAddr{}, ClientAddrSize{0} {}
+
     void SetServerSocket(const std::string &ip, const uint16_t port);
     void Send(const uint16_t SendByte);
     void CloseSocket();

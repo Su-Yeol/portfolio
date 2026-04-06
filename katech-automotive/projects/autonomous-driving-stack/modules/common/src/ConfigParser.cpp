@@ -1,7 +1,6 @@
 #include "modules/shared/config_parser.h"
 
 #include <fstream>
-#include <iostream>
 #include <stdexcept>
 
 /**
@@ -23,8 +22,8 @@ CConfigParser::CConfigParser(const std::string &path)
             if (std::string::npos == line.find(delimiter)) {
                 delimiter = "=";
             }
-            std::string token1 = line.substr(0, line.find(delimiter));
-            std::string token2 = line.substr(line.find(delimiter) + delimiter.length(), line.length());
+            const std::string token1 = line.substr(0, line.find(delimiter));
+            const std::string token2 = line.substr(line.find(delimiter) + delimiter.length(), line.length());
             m_table[token1] = token2;
         }
         openFile.close();
