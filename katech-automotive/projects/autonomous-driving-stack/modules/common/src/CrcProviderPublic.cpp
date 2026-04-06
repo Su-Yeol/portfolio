@@ -13,6 +13,11 @@ namespace
             std::uint8_t data_id_l,
             std::uint8_t data_id_h) const override
         {
+            // ASIL D: Defensive null-pointer check (SWREQ-CMN-CRC-002)
+            if (payload == nullptr && payload_len > 0)
+            {
+                return seed;
+            }
             auto crc = seed;
             for (std::size_t i = 0; i < payload_len; ++i)
             {

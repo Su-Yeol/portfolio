@@ -102,6 +102,34 @@ namespace signal_codec
         buffer[offset + 3] = Byte3(value);
     }
 
+    // --- Safe variants with bounds checking (ASIL D: SWREQ-CMN-SIG-004) ---
+
+    inline bool WriteU16LeSafe(std::uint8_t *buffer, std::size_t buffer_size,
+                               std::size_t offset, std::uint16_t value)
+    {
+        if (buffer == nullptr || (offset + 2) > buffer_size)
+        {
+            return false;
+        }
+        buffer[offset] = Byte0(value);
+        buffer[offset + 1] = Byte1(value);
+        return true;
+    }
+
+    inline bool WriteU32LeSafe(std::uint8_t *buffer, std::size_t buffer_size,
+                               std::size_t offset, std::uint32_t value)
+    {
+        if (buffer == nullptr || (offset + 4) > buffer_size)
+        {
+            return false;
+        }
+        buffer[offset] = Byte0(value);
+        buffer[offset + 1] = Byte1(value);
+        buffer[offset + 2] = Byte2(value);
+        buffer[offset + 3] = Byte3(value);
+        return true;
+    }
+
 }
 
 #endif

@@ -1,0 +1,62 @@
+---
+# ISO 26262 Static Analysis Configuration
+# Reference: PRC-VER-001 Section 3, MISRA C++:2008 / AUTOSAR C++14
+# Tool: clang-tidy (open-source baseline)
+# Note: For full MISRA certification, commercial tools (Polyspace, LDRA, QAC) are recommended.
+
+Checks: >
+  -*,
+  bugprone-*,
+  cert-*,
+  cppcoreguidelines-*,
+  clang-analyzer-*,
+  misc-*,
+  modernize-*,
+  readability-*,
+  performance-*,
+  -modernize-use-trailing-return-type,
+  -readability-magic-numbers,
+  -cppcoreguidelines-avoid-magic-numbers,
+  -readability-identifier-length,
+  -cppcoreguidelines-pro-bounds-pointer-arithmetic,
+  -cppcoreguidelines-pro-bounds-constant-array-index,
+  -modernize-use-nodiscard,
+  -bugprone-easily-swappable-parameters
+
+WarningsAsErrors: >
+  bugprone-null-dereference,
+  bugprone-use-after-move,
+  bugprone-infinite-loop,
+  cert-err33-c,
+  clang-analyzer-core.NullDereference,
+  clang-analyzer-core.UndefinedBinaryOperatorResult
+
+HeaderFilterRegex: 'modules/(common|aeb-control|control-module|decision-module|remote-control)/.*'
+
+CheckOptions:
+  # AUTOSAR C++14 naming conventions
+  - key: readability-identifier-naming.ClassCase
+    value: CamelCase
+  - key: readability-identifier-naming.FunctionCase
+    value: CamelCase
+  - key: readability-identifier-naming.VariableCase
+    value: camelBack
+  - key: readability-identifier-naming.MemberPrefix
+    value: 'm_'
+  - key: readability-identifier-naming.ConstantCase
+    value: UPPER_CASE
+  - key: readability-identifier-naming.GlobalConstantCase
+    value: UPPER_CASE
+  - key: readability-identifier-naming.NamespaceCase
+    value: lower_case
+  - key: readability-identifier-naming.EnumCase
+    value: CamelCase
+  - key: readability-identifier-naming.EnumConstantCase
+    value: CamelCase
+  - key: readability-identifier-naming.TypedefCase
+    value: CamelCase
+  # MISRA-adjacent limits
+  - key: readability-function-cognitive-complexity.Threshold
+    value: 25
+  - key: cppcoreguidelines-avoid-do-while.IgnoreMacros
+    value: true
