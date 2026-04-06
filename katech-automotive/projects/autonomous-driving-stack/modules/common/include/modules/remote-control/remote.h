@@ -26,7 +26,7 @@ class CANClass
         struct canfd_frame FrameFd;
     private:
         int sock;
-        uint16_t nbytes;
+        ssize_t nbytes;
         struct sockaddr_can addr;
         struct ifreq ifr;
         socklen_t addrlen;
@@ -44,7 +44,7 @@ public:
 private:
     int sock;
     struct sockaddr_in Addr;
-    uint16_t nbytes;
+    ssize_t nbytes;
     socklen_t addrlen;
 };
 

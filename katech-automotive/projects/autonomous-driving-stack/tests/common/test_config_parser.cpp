@@ -152,3 +152,64 @@ TEST(ConfigParser, IntBoundaryValues)
     EXPECT_EQ(parser.GetInt("negative"), -100);
     EXPECT_EQ(parser.GetInt("large"), 2147483647);
 }
+
+// --- Branch coverage enhancement tests ---
+
+// UT-PARSE-011: Multiple entries parsed correctly
+TEST(ConfigParser, MultipleEntriesAllAccessible)
+{
+    TempIniFile ini("multi.ini",
+                    "a = 1\n"
+                    "b = 2\n"
+                    "c = 3\n"
+                    "d = 4\n"
+                    "e = 5\n");
+
+    CConfigParser parser(ini.Path());
+    EXPECT_TRUE(parser.IsSuccess());
+    EXPECT_EQ(parser.GetInt("a"), 1);
+    EXPECT_EQ(parser.GetInt("e"), 5);
+    EXPECT_TRUE(parser.Contain("c"));
+    EXPECT_FALSE(parser.Contain("f"));
+}
+
+// UT-PARSE-012: Float precision
+TEST(ConfigParser, FloatPrecision)
+{
+    TempIniFile ini("float_precision.ini",
+                    "pi = 3.14159\n"
+                    "neg = -0.001\n"
+                    "zero_f = 0.0\n");
+
+    CConfigParser parser(ini.Path());
+    EXPECT_FLOAT_EQ(parser.GetFloat("pi"), 3.14159f);
+    EXPECT_FLOAT_EQ(parser.GetFloat("neg"), -0.001f);
+    EXPECT_FLOAT_EQ(parser.GetFloat("zero_f"), 0.0f);
+}
+
+// UT-PARSE-013: GetBool with non-t/T first char returns false
+TEST(ConfigParser, GetBoolNonTruthy)
+{
+    TempIniFile ini("bool_edge.ini",
+                    "yes = yes\n"
+                    "one = 1\n"
+                    "False = False\n");
+
+    CConfigParser parser(ini.Path());
+    EXPECT_FALSE(parser.GetBool("yes"));    // 'y' != 't'/'T'
+    EXPECT_FALSE(parser.GetBool("one"));    // '1' != 't'/'T'
+    EXPECT_FALSE(parser.GetBool("False"));  // 'F' != 't'/'T'
+}
+
+// UT-PARSE-014: Line with only delimiter
+TEST(ConfigParser, LineWithOnlyDelimiter)
+{
+    TempIniFile ini("delimiter_only.ini",
+                    "=value_no_key\n"
+                    "key_no_value=\n"
+                    "normal = ok\n");
+
+    CConfigParser parser(ini.Path());
+    EXPECT_TRUE(parser.IsSuccess());
+    EXPECT_EQ(parser.GetString("normal"), "ok");
+}

@@ -70,7 +70,7 @@ void CANClass::SetSocket(const std::string &ifname, const int canfd)
     memset(&addr, 0, sizeof(addr));
     addr.can_family = AF_CAN;
     addr.can_ifindex = ifr.ifr_ifindex;
-    if (bind(sock, (struct sockaddr *)&addr, sizeof(addr)) < 0)
+    if (bind(sock, reinterpret_cast<struct sockaddr *>(&addr), sizeof(addr)) < 0)
     {
         perror("<CAN> Error in socket bind");
         close(sock);
@@ -100,7 +100,7 @@ void CANClass::SetSocket(const std::string &ifname, const int canfd)
 void CANClass::RecieveCANFD()
 {
     addrlen = sizeof(addr);
-    if ((nbytes = recvfrom(sock, &FrameFd, sizeof(FrameFd), 0, (struct sockaddr *)&addr, &addrlen)) < 0)
+    if ((nbytes = recvfrom(sock, &FrameFd, sizeof(FrameFd), 0, reinterpret_cast<struct sockaddr *>(&addr), &addrlen)) < 0)
         perror("<CANFD> Read Error");
 }
 
@@ -145,15 +145,16 @@ void CANClass::CloseSocket()
  */
 void UDPClass::SetSocket(const std::string &ip, const int port)
 {
+    (void)ip;  // Receiver binds to INADDR_ANY, ip unused
     if ((sock = socket(AF_INET, SOCK_DGRAM, 0)) < 0)
         perror("<UDP> socket Open Error");
 
     memset(&Addr, 0, sizeof(Addr));
     Addr.sin_family = AF_INET;
-    Addr.sin_addr.s_addr = INADDR_ANY;
-    Addr.sin_port = htons(port);
+    Addr.sin_addr.s_addr = htonl(INADDR_ANY);
+    Addr.sin_port = htons(static_cast<uint16_t>(port));
 
-    if (bind(sock, (struct sockaddr *)&Addr, sizeof(Addr)) < 0)
+    if (bind(sock, reinterpret_cast<struct sockaddr *>(&Addr), sizeof(Addr)) < 0)
         perror("<UDP> bind Error");
 }
 
@@ -169,7 +170,7 @@ void UDPClass::SetSocket(const std::string &ip, const int port)
 void UDPClass::Receive(const uint16_t buffersize)
 {
     addrlen = sizeof(Addr);
-    if ((nbytes = recvfrom(sock, Buffer, buffersize, 0, (struct sockaddr *)&Addr, &addrlen)) < 0)
+    if ((nbytes = recvfrom(sock, Buffer, buffersize, 0, reinterpret_cast<struct sockaddr *>(&Addr), &addrlen)) < 0)
         perror("<UDP> Receive Error");
 }
 
@@ -184,7 +185,7 @@ void UDPClass::Receive(const uint16_t buffersize)
  */
 void UDPClass::Send(const uint16_t SendByte)
 {
-    if (sendto(sock, Buffer, SendByte, 0, (struct sockaddr *)&Addr, sizeof(Addr)) < 0)
+    if (sendto(sock, Buffer, SendByte, 0, reinterpret_cast<struct sockaddr *>(&Addr), sizeof(Addr)) < 0)
         perror("<UDP> Send Error");
 }
 

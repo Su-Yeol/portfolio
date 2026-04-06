@@ -38,7 +38,17 @@ void CreateTestCanSpecIni()
         << "signed_value = -42\n"
         << "gateway.crc_test.payload = 0,0,211,123,117,137,226,0,0,0,0,0,0,0,0,0,0,28,1,0,0,0,0,0\n"
         << "gateway.crc_test.length = 22\n"
-        << "list_values = 100,200,300,400,500\n";
+        << "list_values = 100,200,300,400,500\n"
+        // Edge cases for branch coverage
+        << "empty_value = \n"
+        << "invalid_number = not_a_number\n"
+        << "hex_upper = 0X1A\n"
+        << "whitespace_value =   42  \n"
+        << "# This is a comment line\n"
+        << "\n"  // empty line
+        << "empty_list = ,,,\n"
+        << "invalid_float = abc\n"
+        << "hex_signed = 0xFF\n";
     out.close();
 }
 
@@ -164,4 +174,56 @@ TEST_F(CanSpecConfigLoaderTest, SingletonReturnsConsistentInstance)
     const ICanSpecProvider &ref1 = GetCanSpecProvider();
     const ICanSpecProvider &ref2 = GetCanSpecProvider();
     EXPECT_EQ(&ref1, &ref2);
+}
+
+// --- Branch coverage enhancement tests ---
+
+// UT-CFG-014: Empty value returns fallback
+TEST_F(CanSpecConfigLoaderTest, EmptyValueReturnsFallback)
+{
+    EXPECT_EQ(spec_.GetU32("empty_value", 77), static_cast<std::uint32_t>(77));
+    EXPECT_EQ(spec_.GetI32("empty_value", -99), -99);
+    EXPECT_DOUBLE_EQ(spec_.GetF64("empty_value", 1.23), 1.23);
+}
+
+// UT-CFG-015: Invalid number returns fallback (catch branch)
+TEST_F(CanSpecConfigLoaderTest, InvalidNumberReturnsFallback)
+{
+    EXPECT_EQ(spec_.GetU32("invalid_number", 55), static_cast<std::uint32_t>(55));
+    EXPECT_EQ(spec_.GetI32("invalid_number", -55), -55);
+    EXPECT_DOUBLE_EQ(spec_.GetF64("invalid_float", 9.99), 9.99);
+}
+
+// UT-CFG-016: Hex with uppercase 0X prefix
+TEST_F(CanSpecConfigLoaderTest, HexUppercasePrefix)
+{
+    EXPECT_EQ(spec_.GetU32("hex_upper", 0), static_cast<std::uint32_t>(0x1A));
+    EXPECT_EQ(spec_.GetI32("hex_signed", 0), static_cast<std::int32_t>(0xFF));
+}
+
+// UT-CFG-017: Whitespace trimming
+TEST_F(CanSpecConfigLoaderTest, WhitespaceTrimmedCorrectly)
+{
+    EXPECT_EQ(spec_.GetU32("whitespace_value", 0), static_cast<std::uint32_t>(42));
+}
+
+// UT-CFG-018: Empty list entries filtered
+TEST_F(CanSpecConfigLoaderTest, EmptyListEntriesFiltered)
+{
+    std::vector<std::uint32_t> fallback = {999};
+    auto result = spec_.GetU32List("empty_list", fallback);
+    // All entries are empty after split, so fallback is returned
+    EXPECT_EQ(result, fallback);
+}
+
+// UT-CFG-019: GetI32 fallback for missing key
+TEST_F(CanSpecConfigLoaderTest, GetI32FallbackOnMissingKey)
+{
+    EXPECT_EQ(spec_.GetI32("nonexistent.signed", -123), -123);
+}
+
+// UT-CFG-020: GetU8 fallback for missing key
+TEST_F(CanSpecConfigLoaderTest, GetU8FallbackOnMissingKey)
+{
+    EXPECT_EQ(spec_.GetU8("nonexistent.byte", 0xAA), static_cast<std::uint8_t>(0xAA));
 }
