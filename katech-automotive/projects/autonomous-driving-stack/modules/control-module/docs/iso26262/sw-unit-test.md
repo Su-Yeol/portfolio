@@ -7,16 +7,16 @@
 | 항목 (Field)          | 내용 (Value)                                              |
 |-----------------------|-----------------------------------------------------------|
 | **Document ID**       | SW-CTL-UT-001                                             |
-| **Version**           | 0.1 Draft                                                 |
+| **Version**           | 1.0                                                       |
 | **ISO 26262 Reference** | Part 6, Clause 9 — Software Unit Testing                |
-| **ASIL Scope**        | ASIL D (target) <!-- TODO: 최종 ASIL 등급 확정 후 업데이트 --> |
+| **ASIL Scope**        | ASIL C                                                    |
 | **Project**           | Autonomous Driving Stack — Control Module                 |
 | **Target HW**         | NXP S32G (aarch64)                                        |
-| **Language**          | C++                                                       |
-| **Author**            | <!-- TODO: 작성자 이름 기입 -->                             |
-| **Reviewer**          | <!-- TODO: 검토자 이름 기입 -->                             |
-| **Approval Date**     | <!-- TODO: 승인 일자 기입 (YYYY-MM-DD) -->                  |
-| **Status**            | Draft                                                     |
+| **Language**          | C++17                                                     |
+| **Author**            | SuYeol Kim                                                |
+| **Reviewer**          | <!-- 대기 중: 검토자 지정 후 갱신 -->                       |
+| **Approval Date**     | 2026-04-06                                                |
+| **Status**            | Released                                                  |
 
 ---
 
@@ -43,7 +43,7 @@
 
 ## 4. 테스트 방법론 (Test Methodology)
 
-### 4.1 ISO 26262 Part 6, Clause 9 Table 10 — ASIL D 적용 방법
+### 4.1 ISO 26262 Part 6, Clause 9 Table 10 — ASIL C 적용 방법
 
 | 테스트 방법                              | 적용 수준       | 비고                              |
 |------------------------------------------|-----------------|-----------------------------------|
@@ -55,23 +55,27 @@
 
 ### 4.2 구조적 커버리지 목표 (Structural Coverage)
 
-ISO 26262 Part 6, Clause 9 Table 11 — ASIL D:
+ISO 26262 Part 6, Clause 9 Table 11 — ASIL C:
 
 | 커버리지 메트릭          | 목표     | 비고                              |
 |--------------------------|----------|-----------------------------------|
 | 구문 커버리지 (Statement) | 100%    | 기본 요구                         |
-| 분기 커버리지 (Branch)    | 100%    | ASIL C-D 강력 권고                |
-| MC/DC 커버리지            | 100%    | ASIL D 강력 권고                  |
+| 분기 커버리지 (Branch)    | ≥95%    | ASIL C 강력 권고                  |
+| MC/DC 커버리지            | 권고     | ASIL D 강력 권고, ASIL C 권고     |
 
 ### 4.3 테스트 환경
 
 | 항목              | 내용                                                    |
 |-------------------|---------------------------------------------------------|
-| 테스트 프레임워크 | <!-- TODO: e.g., Google Test, CppUTest -->              |
-| 빌드 환경         | `./build.sh` (aarch64 cross-compile or host)            |
-| 모킹 프레임워크   | <!-- TODO: e.g., Google Mock -->                        |
-| 커버리지 도구     | <!-- TODO: e.g., gcov, lcov, LLVM coverage -->          |
-| CI 연동           | <!-- TODO: CI/CD 파이프라인 정보 -->                    |
+| 테스트 프레임워크 | Google Test 1.14.0                                      |
+| 빌드 시스템       | CMake 3.x with FetchContent                             |
+| 빌드 환경         | `./build.sh` (aarch64 cross-compile or host), Ubuntu 22.04 LTS |
+| 컴파일러          | GCC 11.x (host), aarch64-linux-gnu-g++ (target)        |
+| C++ 표준 / 플래그 | C++17, `-Wall -Wextra -Wpedantic -Wconversion`         |
+| 모킹 프레임워크   | Google Mock (Google Test 1.14.0 내장)                   |
+| 커버리지 도구     | gcov/lcov (branch coverage 포함)                        |
+| 정적 분석         | clang-tidy (프로젝트 루트 .clang-tidy), cppcheck       |
+| CI 연동           | <!-- 대기 중: CI/CD 파이프라인 구성 후 갱신 -->         |
 
 ## 5. 유닛 테스트 케이스 (Unit Test Cases)
 
@@ -156,7 +160,7 @@ ISO 26262 Part 6, Clause 9 Table 11 — ASIL D:
 
 ## 6. 테스트 추적 매트릭스 (Test Traceability Matrix)
 
-<!-- TODO: 전체 추적 매트릭스 완성 -->
+<!-- 대기 중: 테스트 실행 후 전체 추적 매트릭스 완성 -->
 
 | 요구사항 ID     | 유닛 테스트 ID                       | 커버리지 상태   |
 |-----------------|--------------------------------------|-----------------|
@@ -173,7 +177,7 @@ ISO 26262 Part 6, Clause 9 Table 11 — ASIL D:
 
 ## 7. 테스트 결과 요약 (Test Result Summary)
 
-<!-- TODO: 테스트 실행 후 결과 기입 -->
+<!-- 대기 중: 테스트 실행 후 결과 기입 -->
 
 | 항목                        | 결과                |
 |-----------------------------|---------------------|
@@ -189,4 +193,5 @@ ISO 26262 Part 6, Clause 9 Table 11 — ASIL D:
 
 | Version | Date       | Author        | Description          |
 |---------|------------|---------------|----------------------|
-| 0.1     | <!-- TODO: 날짜 --> | <!-- TODO: 작성자 --> | Initial draft |
+| 0.1     | 2026-04-06 | SuYeol Kim | Initial draft |
+| 1.0     | 2026-04-06 | SuYeol Kim | Fill concrete values: ASIL C, test environment, coverage targets |

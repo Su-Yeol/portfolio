@@ -7,15 +7,15 @@
 | 항목 (Field)          | 내용 (Value)                                              |
 |-----------------------|-----------------------------------------------------------|
 | **Document ID**       | SW-RMT-UT-001                                             |
-| **Version**           | 0.1 Draft                                                 |
+| **Version**           | 1.0                                                       |
 | **ISO 26262 Reference** | Part 6, Clause 9 — Software Unit Testing                |
-| **ASIL Scope**        | ASIL B (target) <!-- TODO: 최종 ASIL 등급 확정 후 업데이트 -->      |
+| **ASIL Scope**        | ASIL B                                                            |
 | **Project**           | Autonomous Driving Stack                                  |
 | **Module**            | Remote Control (remotePC / remoteS32G)                    |
 | **Target HW**         | NXP S32G (aarch64) — receiver / x86 PC — sender          |
-| **Author**            | <!-- TODO: 작성자 이름 기입 -->                             |
+| **Author**            | SuYeol Kim                                                  |
 | **Reviewer**          | <!-- TODO: 검토자 이름 기입 -->                             |
-| **Approval Date**     | <!-- TODO: 승인 일자 기입 (YYYY-MM-DD) -->                  |
+| **Approval Date**     | 2026-04-06                                                  |
 | **Status**            | Draft                                                     |
 
 ---
@@ -43,13 +43,13 @@
 
 | 항목               | 내용                                                    |
 |--------------------|---------------------------------------------------------|
-| 테스트 프레임워크   | <!-- TODO: 테스트 프레임워크 선정 (예: Google Test, Catch2) --> |
-| 컴파일러 (x86)     | g++ (x86_64)                                            |
-| 컴파일러 (aarch64) | aarch64 cross-compiler                                  |
+| 테스트 프레임워크   | Google Test 1.14.0 + Google Mock                         |
+| 컴파일러 (x86)     | GCC 11.x (x86_64)                                       |
+| 컴파일러 (aarch64) | aarch64-linux-gnu-g++ (target)                           |
 | 목표 플랫폼        | x86 PC (sender 테스트), NXP S32G (receiver 테스트)       |
-| 네트워크 시뮬레이션 | <!-- TODO: UDP loopback 또는 네트워크 시뮬레이터 정의 --> |
-| CAN 시뮬레이션     | <!-- TODO: vCAN (가상 CAN) 또는 CAN 시뮬레이터 정의 --> |
-| 코드 커버리지 도구  | <!-- TODO: gcov/lcov 등 커버리지 도구 선정 -->           |
+| 네트워크 시뮬레이션 | UDP loopback (대기 중: 구현/측정 후 갱신)                |
+| CAN 시뮬레이션     | vCAN (가상 CAN) (대기 중: 구현/측정 후 갱신)             |
+| 코드 커버리지 도구  | gcov/lcov                                                |
 
 ## 5. 테스트 방법론 (Test Methodology)
 
@@ -62,8 +62,8 @@ ISO 26262 Part 6, Clause 9, Table 10에 따른 ASIL B 테스트 방법:
 | 경계값 분석 (Boundary value analysis)                  | 권장 (+)          | 적용 예정                        |
 | 등가 분할 (Equivalence partitioning)                   | 강력 권장 (++)    | 적용 예정                        |
 | 에러 추정 (Error guessing)                             | 권장 (+)          | 적용 예정                        |
-| 구문 커버리지 (Statement coverage)                     | 강력 권장 (++)    | <!-- TODO: 목표 커버리지 정의 --> |
-| 분기 커버리지 (Branch coverage)                        | 강력 권장 (++)    | <!-- TODO: 목표 커버리지 정의 --> |
+| 구문 커버리지 (Statement coverage)                     | 강력 권장 (++)    | 목표: >= 95%                     |
+| 분기 커버리지 (Branch coverage)                        | 강력 권장 (++)    | 목표: >= 90%                     |
 
 ## 6. 유닛 테스트 케이스 (Unit Test Cases)
 
@@ -114,9 +114,9 @@ ISO 26262 Part 6, Clause 9, Table 10에 따른 ASIL B 테스트 방법:
 
 | 커버리지 유형          | ASIL B 목표      | 현재 달성률                       |
 |------------------------|-------------------|-----------------------------------|
-| 구문 커버리지 (Statement) | >= 80%          | <!-- TODO: 측정 후 기입 -->       |
-| 분기 커버리지 (Branch)    | >= 80%          | <!-- TODO: 측정 후 기입 -->       |
-| MC/DC                     | 권장             | <!-- TODO: 적용 여부 결정 -->     |
+| 구문 커버리지 (Statement) | >= 95%          | 대기 중: 구현/측정 후 갱신         |
+| 분기 커버리지 (Branch)    | >= 90%          | 대기 중: 구현/측정 후 갱신         |
+| MC/DC                     | 권장             | 대기 중: 구현/측정 후 갱신         |
 
 ## 8. 테스트 결과 요약 (Test Results Summary)
 
@@ -146,4 +146,5 @@ ISO 26262 Part 6, Clause 9, Table 10에 따른 ASIL B 테스트 방법:
 
 | Version | Date       | Author        | Description          |
 |---------|------------|---------------|----------------------|
-| 0.1     | <!-- TODO: 날짜 --> | <!-- TODO: 작성자 --> | Initial draft |
+| 0.1     | 2026-04-06 | SuYeol Kim | Initial draft |
+| 1.0     | 2026-04-06 | SuYeol Kim | 테스트 환경, 커버리지 목표, 프레임워크 갱신 |

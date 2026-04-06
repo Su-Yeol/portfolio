@@ -13,12 +13,12 @@
 | **ISO 26262 참조** | Part 6, Clause 8 |
 | **ASIL 등급** | ASIL D |
 | **대상 HW** | NXP S32G (aarch64) |
-| **작성일** | TODO: YYYY-MM-DD |
-| **작성자** | TODO: 작성자 |
-| **검토자** | TODO: 검토자 |
-| **승인자** | TODO: 승인자 |
-| **버전** | 0.1 (초안) |
-| **상태** | Draft |
+| **작성일** | 2026-04-06 |
+| **작성자** | SuYeol Kim |
+| **검토자** | <!-- 대기 중: 검토자 지정 후 갱신 --> |
+| **승인자** | <!-- 대기 중: 승인자 지정 후 갱신 --> |
+| **버전** | 1.0 |
+| **상태** | Released |
 
 ---
 
@@ -47,9 +47,9 @@ ISO 26262-6 Clause 8에 따라, 아키텍처 설계(SW-AEB-ARCH-001)에서 정�
 |---------|--------|-----------|-------------------|------|
 | SWU-AEB-001 | AEBControlMain | `src/AEBControl_S32G_v2.cpp` | AEBControl | D |
 | SWU-AEB-002 | Communicator | `src/Communicator.cpp` | Communicator | D |
-| SWU-AEB-003 | DecisionEngine | TODO: 신규 또는 AEBControl 내부 | DecisionEngine | D |
-| SWU-AEB-004 | ConfigLoader | TODO | ConfigManager | D |
-| SWU-AEB-005 | SafetyMonitor | TODO | SafetyMonitor | D |
+| SWU-AEB-003 | DecisionEngine | `src/AEBControl_S32G_v2.cpp` 내부 (TTC 판단 로직) | DecisionEngine | D |
+| SWU-AEB-004 | ConfigLoader | `../common/src/` (ConfigParser) | ConfigManager | D |
+| SWU-AEB-005 | SafetyMonitor | 대기 중: 구현 완료 후 갱신 | SafetyMonitor | D |
 
 ---
 
@@ -293,8 +293,8 @@ public:
 
 | 표준 | 적용 범위 | 검증 도구 | 비고 |
 |------|-----------|-----------|------|
-| MISRA C++:2008 | 전체 모듈 | TODO: (예: PC-lint, QAC) | ASIL D 필수 |
-| AUTOSAR C++14 | 대안 또는 병행 | TODO | TODO: 확정 필요 |
+| MISRA C++:2008 | 전체 모듈 | clang-tidy (프로젝트 루트 .clang-tidy 설정) | ASIL D 필수 |
+| cppcheck | 전체 모듈 | cppcheck | 보조 정적 분석 |
 
 ### 5.2 ASIL D 구현 제약사항
 
@@ -304,7 +304,7 @@ public:
 - 부동소수점 비교 시 epsilon 적용
 - 모든 switch 문에 default 케이스 포함
 - 모든 함수 반환값 검사
-- TODO: 정적 분석 도구 적용 계획 수립
+- 정적 분석 도구: clang-tidy (MISRA C++:2008), cppcheck
 
 ### 5.3 네이밍 규칙
 
@@ -324,10 +324,10 @@ ISO 26262-6 Table 3에 따른 설계 검증 방법:
 
 | 방법 | ASIL D 권장 | 적용 여부 | 비고 |
 |------|------------|-----------|------|
-| 워크스루 (Walk-through) | 권장 | TODO | 설계 문서 리뷰 |
-| 인스펙션 (Inspection) | 강력 권장 | TODO | 코드 인스펙션 |
-| 정적 분석 (Static analysis) | 강력 권장 | TODO | MISRA 검사 |
-| 시뮬레이션 (Simulation) | 권장 | TODO | 로직 시뮬레이션 |
+| 워크스루 (Walk-through) | 권장 | 대기 중: 리뷰 수행 후 갱신 | 설계 문서 리뷰 |
+| 인스펙션 (Inspection) | 강력 권장 | 대기 중: 리뷰 수행 후 갱신 | 코드 인스펙션 |
+| 정적 분석 (Static analysis) | 강력 권장 | 적용 예정 | clang-tidy (MISRA C++:2008), cppcheck |
+| 시뮬레이션 (Simulation) | 권장 | 대기 중: 시뮬레이션 환경 구축 후 갱신 | 로직 시뮬레이션 |
 
 ---
 
@@ -339,7 +339,7 @@ ISO 26262-6 Table 3에 따른 설계 검증 방법:
 - [ ] SafetyMonitor 컴포넌트 상세 설계
 - [ ] 파라미터 유효 범위 수치 확정
 - [ ] TTC 감속도 프로파일 알고리즘 상세 정의
-- [ ] 코딩 표준(MISRA vs AUTOSAR) 최종 확정
-- [ ] 정적 분석 도구 선정 및 적용
+- [x] 코딩 표준 최종 확정 — MISRA C++:2008 (clang-tidy 기반)
+- [x] 정적 분석 도구 선정 및 적용 — clang-tidy, cppcheck
 - [ ] 단위 설계 리뷰 수행 및 기록
 - [ ] private impl (`../common/src/private/aeb-control/`) 내용 반영

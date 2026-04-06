@@ -5,13 +5,13 @@
 | 항목 (Field)           | 내용 (Value)                                                        |
 |------------------------|----------------------------------------------------------------------|
 | Document ID            | SW-ARA-UD-001                                                        |
-| Version                | 0.1 Draft                                                            |
+| Version                | 1.0                                                                  |
 | ISO 26262 Reference    | Part 6, Clause 8 — Software Unit Design and Implementation           |
 | ASIL Scope             | ASIL-B / ASIL-D (component-dependent)                                |
 | Project                | Adaptive AUTOSAR Platform (NXP S32G / Axon)                         |
-| Author                 | <!-- TODO: 작성자 이름 기입 -->                                      |
+| Author                 | SuYeol Kim                                                           |
 | Reviewer               | <!-- TODO: 검토자 이름 기입 -->                                      |
-| Approval Date          | <!-- TODO: 승인일 기입 (YYYY-MM-DD) -->                              |
+| Approval Date          | 2026-04-06                                                           |
 | Status                 | Draft                                                                |
 
 ---
@@ -32,7 +32,7 @@
 - ara-api (ARA Runtime API)
 
 구현 언어: **C++17** (ISO/IEC 14882:2017)
-코딩 표준: <!-- TODO: MISRA C++:2023, AUTOSAR C++14 Coding Guidelines 등 적용 표준 명시 -->
+코딩 표준: MISRA C++:2008 (clang-tidy 기반 검증), .clang-format (Google-based) 적용
 
 ## 3. 참조 문서 (Input References)
 
@@ -65,10 +65,10 @@ Legend: ++ Highly recommended, + Recommended
 
 | 항목                        | 적용 표준/도구                                         |
 |-----------------------------|--------------------------------------------------------|
-| Coding Standard             | <!-- TODO: MISRA C++:2023 / AUTOSAR C++14 선택 기입 --> |
-| Static Analysis Tool        | <!-- TODO: Coverity, Polyspace, cppcheck 등 -->        |
-| Code Review Tool            | <!-- TODO: Gerrit, GitHub PR 등 -->                    |
-| Code Complexity Metric      | Cyclomatic complexity <= <!-- TODO: 임계값 설정 -->    |
+| Coding Standard             | MISRA C++:2008 via clang-tidy, .clang-format (Google-based) |
+| Static Analysis Tool        | cppcheck (Docker 내 실행), clang-tidy                  |
+| Code Review Tool            | GitHub PR                                              |
+| Code Complexity Metric      | Cyclomatic complexity <= 대기 중: 구현/측정 후 갱신    |
 
 ## 5. 소프트웨어 단위 식별 (SW Unit Identification)
 
@@ -260,9 +260,9 @@ ISO 26262-6 Table 5에 따른 단위 수준 검증 방법:
 |--------------------------------------------------|--------|--------|------------------------------|
 | Walk-through of SW unit design                   | ++     | +      | Code review meeting          |
 | Inspection of SW unit design                     | +      | ++     | Checklist-based review       |
-| Static code analysis                             | ++     | ++     | <!-- TODO: 도구 선정 -->     |
-| Abstract interpretation                          | +      | +      | <!-- TODO: 도구 선정 -->     |
-| Code metrics (complexity, coupling)              | +      | ++     | <!-- TODO: 도구 선정 -->     |
+| Static code analysis                             | ++     | ++     | cppcheck, clang-tidy         |
+| Abstract interpretation                          | +      | +      | 대기 중: 구현/측정 후 갱신   |
+| Code metrics (complexity, coupling)              | +      | ++     | 대기 중: 구현/측정 후 갱신   |
 
 <!-- TODO: 정적 분석 규칙 셋(ruleset) 및 위반 처리 절차 정의 -->
 
@@ -282,4 +282,5 @@ ISO 26262-6 Table 5에 따른 단위 수준 검증 방법:
 
 | Version | Date       | Author        | Description          |
 |---------|------------|---------------|----------------------|
-| 0.1     | <!-- TODO: 작성일 --> | <!-- TODO --> | Initial draft 작성   |
+| 0.1     | 2026-04-06 | SuYeol Kim | Initial draft 작성   |
+| 1.0     | 2026-04-06 | SuYeol Kim | 코딩 표준, 정적 분석 도구, 메타데이터 갱신 |

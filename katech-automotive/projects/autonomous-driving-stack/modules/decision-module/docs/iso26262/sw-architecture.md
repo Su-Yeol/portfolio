@@ -7,13 +7,13 @@
 | **Document ID** | SW-DEC-ARCH-001 |
 | **Module** | Decision Module (K-City / CAN Gateway) |
 | **ISO 26262 Reference** | Part 6, Clause 7 (Software architectural design) |
-| **ASIL** | B–D (기능별 상이) |
+| **ASIL** | B~C (기능별 상이) |
 | **Target HW** | NXP S32G (aarch64) |
-| **Author** | TODO: 작성자 |
+| **Author** | SuYeol Kim |
 | **Reviewer** | TODO: 검토자 |
 | **Approval** | TODO: 승인자 |
-| **Version** | 0.1 (Draft) |
-| **Date** | TODO: YYYY-MM-DD |
+| **Version** | 1.0 |
+| **Date** | 2026-04-06 |
 | **Status** | Draft |
 
 ---
@@ -83,9 +83,9 @@
 
 | Component | Source File | 역할 | ASIL |
 |-----------|------------|------|------|
-| MainModule | `source_kcity/MainModule.cpp` | 주행 판단 메인 로직, 센서 데이터 통합 | TODO |
-| Communicator | `source_kcity/Communicator.cpp` | 외부 모듈 통신 (센서, 경로 계획) | TODO |
-| PathManager | `source_kcity/PathManager.cpp` | 경로 관리 및 추종 판단 | TODO |
+| MainModule | `source_kcity/MainModule.cpp` | 주행 판단 메인 로직, 센서 데이터 통합 | ASIL C |
+| Communicator | `source_kcity/Communicator.cpp` | 외부 모듈 통신 (센서, 경로 계획) | ASIL B |
+| PathManager | `source_kcity/PathManager.cpp` | 경로 관리 및 추종 판단 | ASIL C |
 | PathViewer | `source_kcity/PathViewer.py` | 경로 시각화 (비안전, QM) | QM |
 | Viewer | `source_kcity/Viewer.py` | 상태 시각화 (비안전, QM) | QM |
 
@@ -93,16 +93,16 @@
 
 | Component | Source File | 역할 | ASIL |
 |-----------|------------|------|------|
-| CANGateway | `source_gateway/CANGateway.cpp` | CAN 메시지 송수신 및 게이트웨이 처리 | TODO |
-| CRC | `source_gateway/CRC.cpp` | CAN 메시지 CRC 무결성 검증 | TODO |
+| CANGateway | `source_gateway/CANGateway.cpp` | CAN 메시지 송수신 및 게이트웨이 처리 | ASIL B |
+| CRC | `source_gateway/CRC.cpp` | CAN 메시지 CRC 무결성 검증 | ASIL B |
 
 ### 4.3 공통 라이브러리 (Common Library)
 
 | Component | Location | 역할 | ASIL |
 |-----------|---------|------|------|
-| Common Sources | `../common/src/` | 공유 유틸리티 및 데이터 구조 | TODO |
-| Common Headers | `../common/include/` | 공유 인터페이스 정의 | TODO |
-| Private Impl | `../common/src/private/decision-module/` | 비공개 구현부 (선택적) | TODO |
+| Common Sources | `../common/src/` | 공유 유틸리티 및 데이터 구조 | ASIL B |
+| Common Headers | `../common/include/` | 공유 인터페이스 정의 | ASIL B |
+| Private Impl | `../common/src/private/decision-module/` | 비공개 구현부 (선택적) | ASIL B |
 
 > TODO: 공통 라이브러리의 개별 컴포넌트 목록을 작성할 것
 
@@ -114,8 +114,8 @@
 
 | Interface | Direction | Protocol | Data | 비고 |
 |-----------|----------|----------|------|------|
-| GPS 수신 | Input | TODO: UDP/Serial | 위치 좌표, 속도, 방위 | TODO: 메시지 포맷 정의 |
-| LiDAR (Ibeo) 수신 | Input | TODO: Ethernet/UDP | 장애물 좌표, 분류 | TODO: 메시지 포맷 정의 |
+| GPS 수신 | Input | UDP/Serial | 위치 좌표, 속도, 방위 | 대기 중: 구현/측정 후 갱신 |
+| LiDAR (Ibeo) 수신 | Input | Ethernet/UDP | 장애물 좌표, 분류 | 대기 중: 구현/측정 후 갱신 |
 | Path Planning 수신 | Input | TODO | 경로 Waypoints | TODO: 인터페이스 정의 |
 | Pedestrian Detection 수신 | Input | TODO | 보행자 위치, 신뢰도 | TODO: 인터페이스 정의 |
 | Vehicle Control 출력 | Output | CAN Bus | 조향, 가감속 명령 | CAN Gateway 경유 |
@@ -159,11 +159,11 @@ ISO 26262 Part 6, Clause 7.4.4에 따른 안전 메커니즘:
 
 | ID | 안전 메커니즘 | 대상 오류 | 검출/대응 | ASIL |
 |----|-------------|----------|----------|------|
-| SM-DEC-001 | CRC 검증 | CAN 메시지 손상 | 검출 + 메시지 폐기 | TODO |
-| SM-DEC-002 | GPS 신호 타임아웃 감시 | GPS 신호 유실 | 검출 + Safe State 전환 | TODO |
-| SM-DEC-003 | LiDAR 데이터 유효성 검사 | 센서 데이터 오류 | 검출 + Fallback | TODO |
-| SM-DEC-004 | 경로 계획 데이터 범위 검사 | 비정상 경로 데이터 | 검출 + 이전 경로 유지 | TODO |
-| SM-DEC-005 | Watchdog 타이머 | 소프트웨어 행(Hang) | 검출 + 시스템 리셋 | TODO |
+| SM-DEC-001 | CRC 검증 | CAN 메시지 손상 | 검출 + 메시지 폐기 | ASIL B |
+| SM-DEC-002 | GPS 신호 타임아웃 감시 | GPS 신호 유실 | 검출 + Safe State 전환 | ASIL B |
+| SM-DEC-003 | LiDAR 데이터 유효성 검사 | 센서 데이터 오류 | 검출 + Fallback | ASIL C |
+| SM-DEC-004 | 경로 계획 데이터 범위 검사 | 비정상 경로 데이터 | 검출 + 이전 경로 유지 | ASIL C |
+| SM-DEC-005 | Watchdog 타이머 | 소프트웨어 행(Hang) | 검출 + 시스템 리셋 | ASIL B |
 
 > TODO: 각 안전 메커니즘의 상세 설계 및 FMEA 결과 반영
 
@@ -203,4 +203,5 @@ ISO 26262 Part 6, Clause 7.4.7에 따른 검증:
 
 | Version | Date | Author | Description |
 |---------|------|--------|-------------|
-| 0.1 | TODO | TODO | Initial draft |
+| 0.1 | 2026-04-06 | SuYeol Kim | Initial draft |
+| 1.0 | 2026-04-06 | SuYeol Kim | ASIL/메타데이터/센서/빌드 정보 갱신 |

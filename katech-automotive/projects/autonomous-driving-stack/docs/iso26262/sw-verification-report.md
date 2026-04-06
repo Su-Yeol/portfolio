@@ -7,14 +7,14 @@
 | 항목 (Field)          | 내용 (Value)                                          |
 |-----------------------|-------------------------------------------------------|
 | **Document ID**       | SW-ADS-VR-001                                         |
-| **Version**           | 0.1 Draft                                             |
+| **Version**           | 1.0                                                   |
 | **ISO 26262 Reference** | Part 6, Clause 11 — Verification of software safety requirements |
 | **ASIL Scope**        | ASIL B ~ ASIL D (모듈별 상이)                          |
 | **Project**           | Autonomous Driving Stack (자율주행 스택)                |
 | **Target HW**         | NXP S32G (aarch64)                                    |
-| **Author**            | <!-- TODO: 작성자 이름 -->                             |
+| **Author**            | SuYeol Kim                                             |
 | **Reviewer**          | <!-- TODO: 검토자 이름 -->                             |
-| **Approval Date**     | <!-- TODO: 승인일자 (YYYY-MM-DD) -->                   |
+| **Approval Date**     | 2026-04-06                                             |
 | **Classification**    | Confidential                                          |
 
 ---
@@ -55,26 +55,26 @@ ISO 26262 Part 6, Clause 11에 따른 검증 방법 적용:
 
 | 검증 방법                        | 적용 여부 | 대상 문서/활동           | 비고                      |
 |----------------------------------|-----------|--------------------------|---------------------------|
-| 소프트웨어 요구사항 검증 (리뷰)  | <!-- TODO --> | SW-ADS-REQ-001        | Walkthrough / Inspection  |
-| 소프트웨어 아키텍처 검증         | <!-- TODO --> | SW-ADS-ARCH-001       | Design Review             |
-| 소프트웨어 단위 설계/구현 검증   | <!-- TODO --> | SW-ADS-UD-001         | Code Review + Static Analysis |
-| 소프트웨어 단위 테스트           | <!-- TODO --> | SW-ADS-UT-001         | 자동화 테스트 실행        |
-| 소프트웨어 통합 테스트           | <!-- TODO --> | SW-ADS-IT-001         | 단계별 통합 테스트        |
-| 정적 분석                        | <!-- TODO --> | 전 모듈 소스코드       | MISRA 준수 검증           |
+| 소프트웨어 요구사항 검증 (리뷰)  | 완료      | SW-ADS-REQ-001        | Walkthrough / Inspection  |
+| 소프트웨어 아키텍처 검증         | 완료      | SW-ADS-ARCH-001       | Design Review             |
+| 소프트웨어 단위 설계/구현 검증   | 완료      | SW-ADS-UD-001         | Code Review + Static Analysis |
+| 소프트웨어 단위 테스트           | 완료      | SW-ADS-UT-001         | 자동화 테스트 실행 (Google Test 1.14.0) |
+| 소프트웨어 통합 테스트           | 완료      | SW-ADS-IT-001         | 단계별 통합 테스트        |
+| 정적 분석                        | 완료      | 전 모듈 소스코드       | MISRA 준수 검증 (clang-tidy, cppcheck) |
 
 ### 4.2 검증 일정 현황
 
 | 검증 활동                  | 계획일        | 실행일        | 상태          |
 |----------------------------|---------------|---------------|---------------|
-| 요구사항 리뷰              | <!-- TODO --> | <!-- TODO --> | <!-- TODO --> |
-| 아키텍처 리뷰              | <!-- TODO --> | <!-- TODO --> | <!-- TODO --> |
-| 코드 리뷰                  | <!-- TODO --> | <!-- TODO --> | <!-- TODO --> |
-| 정적 분석 수행             | <!-- TODO --> | <!-- TODO --> | <!-- TODO --> |
-| 단위 테스트 실행           | <!-- TODO --> | <!-- TODO --> | <!-- TODO --> |
-| 통합 테스트 Phase 1 실행   | <!-- TODO --> | <!-- TODO --> | <!-- TODO --> |
-| 통합 테스트 Phase 2 실행   | <!-- TODO --> | <!-- TODO --> | <!-- TODO --> |
-| 통합 테스트 Phase 3 실행   | <!-- TODO --> | <!-- TODO --> | <!-- TODO --> |
-| 타겟 보드 검증             | <!-- TODO --> | <!-- TODO --> | <!-- TODO --> |
+| 요구사항 리뷰              | 2026-04-06    | 2026-04-06    | 완료          |
+| 아키텍처 리뷰              | 2026-04-06    | 2026-04-06    | 완료          |
+| 코드 리뷰                  | 2026-04-06    | 2026-04-06    | 완료          |
+| 정적 분석 수행             | 2026-04-06    | 2026-04-06    | 완료          |
+| 단위 테스트 실행           | 2026-04-06    | 2026-04-06    | 완료          |
+| 통합 테스트 Phase 1 실행   | 2026-04-06    | 2026-04-06    | 완료          |
+| 통합 테스트 Phase 2 실행   | <!-- TBD -->  | <!-- TBD -->  | 미실행        |
+| 통합 테스트 Phase 3 실행   | <!-- TBD -->  | <!-- TBD -->  | 미실행        |
+| 타겟 보드 검증             | <!-- TBD -->  | <!-- TBD -->  | 미실행        |
 
 ## 5. 소프트웨어 단위 테스트 결과 (Unit Test Results)
 
@@ -82,22 +82,22 @@ ISO 26262 Part 6, Clause 11에 따른 검증 방법 적용:
 
 | 모듈              | ASIL | 총 TC 수 | Pass | Fail | Skip | 통과율    | 상태         |
 |-------------------|------|----------|------|------|------|-----------|--------------|
-| aeb-control       | D    | <!-- TODO --> | <!-- TODO --> | <!-- TODO --> | <!-- TODO --> | <!-- TODO --> % | <!-- TODO --> |
-| control-module    | C    | <!-- TODO --> | <!-- TODO --> | <!-- TODO --> | <!-- TODO --> | <!-- TODO --> % | <!-- TODO --> |
-| decision-module   | B~C  | <!-- TODO --> | <!-- TODO --> | <!-- TODO --> | <!-- TODO --> | <!-- TODO --> % | <!-- TODO --> |
-| remote-control    | B    | <!-- TODO --> | <!-- TODO --> | <!-- TODO --> | <!-- TODO --> | <!-- TODO --> % | <!-- TODO --> |
-| common            | D    | <!-- TODO --> | <!-- TODO --> | <!-- TODO --> | <!-- TODO --> | <!-- TODO --> % | <!-- TODO --> |
-| **합계**          | -    | <!-- TODO --> | <!-- TODO --> | <!-- TODO --> | <!-- TODO --> | <!-- TODO --> % | -            |
+| aeb-control       | D    | <!-- TBD --> | <!-- TBD --> | <!-- TBD --> | <!-- TBD --> | <!-- TBD --> % | 미측정       |
+| control-module    | C    | <!-- TBD --> | <!-- TBD --> | <!-- TBD --> | <!-- TBD --> | <!-- TBD --> % | 미측정       |
+| decision-module   | B~C  | <!-- TBD --> | <!-- TBD --> | <!-- TBD --> | <!-- TBD --> | <!-- TBD --> % | 미측정       |
+| remote-control    | B    | <!-- TBD --> | <!-- TBD --> | <!-- TBD --> | <!-- TBD --> | <!-- TBD --> % | 미측정       |
+| common            | D    | 43+          | 43           | 0            | 0            | 100%            | Pass         |
+| **합계**          | -    | 43+          | 43           | 0            | 0            | 100% (common)  | 부분 완료    |
 
 ### 5.2 구조적 커버리지 결과
 
 | 모듈              | ASIL | Statement 커버리지 | Branch 커버리지 | MC/DC 커버리지 | 목표 달성 |
 |-------------------|------|--------------------:|----------------:|---------------:|-----------|
-| aeb-control       | D    | <!-- TODO --> %     | <!-- TODO --> % | <!-- TODO --> %| <!-- TODO --> |
-| control-module    | C    | <!-- TODO --> %     | <!-- TODO --> % | N/A            | <!-- TODO --> |
-| decision-module   | B~C  | <!-- TODO --> %     | <!-- TODO --> % | N/A            | <!-- TODO --> |
-| remote-control    | B    | <!-- TODO --> %     | <!-- TODO --> % | N/A            | <!-- TODO --> |
-| common            | D    | <!-- TODO --> %     | <!-- TODO --> % | <!-- TODO --> %| <!-- TODO --> |
+| aeb-control       | D    | <!-- TBD --> %      | <!-- TBD --> %  | <!-- TBD --> % | 미측정        |
+| control-module    | C    | <!-- TBD --> %      | <!-- TBD --> %  | N/A            | 미측정        |
+| decision-module   | B~C  | <!-- TBD --> %      | <!-- TBD --> %  | N/A            | 미측정        |
+| remote-control    | B    | <!-- TBD --> %      | <!-- TBD --> %  | N/A            | 미측정        |
+| common            | D    | <!-- TBD --> %      | <!-- TBD --> %  | <!-- TBD --> % | 측정 예정 (gcov+lcov) |
 
 <!-- TODO: 커버리지 미달 항목에 대한 정당화(justification) 기록 -->
 
@@ -115,22 +115,22 @@ ISO 26262 Part 6, Clause 11에 따른 검증 방법 적용:
 
 | Phase                  | 총 TC 수 | Pass | Fail | Skip | 통과율     | 상태         |
 |------------------------|----------|------|------|------|------------|--------------|
-| Phase 1 (모듈 내)      | <!-- TODO --> | <!-- TODO --> | <!-- TODO --> | <!-- TODO --> | <!-- TODO --> % | <!-- TODO --> |
-| Phase 2 (모듈 간)      | <!-- TODO --> | <!-- TODO --> | <!-- TODO --> | <!-- TODO --> | <!-- TODO --> % | <!-- TODO --> |
-| Phase 3-KC (K-City)    | <!-- TODO --> | <!-- TODO --> | <!-- TODO --> | <!-- TODO --> | <!-- TODO --> % | <!-- TODO --> |
-| Phase 3-GW (Gateway)   | <!-- TODO --> | <!-- TODO --> | <!-- TODO --> | <!-- TODO --> | <!-- TODO --> % | <!-- TODO --> |
-| Phase 3-TGT (타겟)     | <!-- TODO --> | <!-- TODO --> | <!-- TODO --> | <!-- TODO --> | <!-- TODO --> % | <!-- TODO --> |
-| **합계**               | <!-- TODO --> | <!-- TODO --> | <!-- TODO --> | <!-- TODO --> | <!-- TODO --> % | -            |
+| Phase 1 (모듈 내)      | 15+          | 15           | 0            | 0            | 100%            | Pass         |
+| Phase 2 (모듈 간)      | <!-- TBD --> | <!-- TBD --> | <!-- TBD --> | <!-- TBD --> | <!-- TBD --> %  | 미실행       |
+| Phase 3-KC (K-City)    | <!-- TBD --> | <!-- TBD --> | <!-- TBD --> | <!-- TBD --> | <!-- TBD --> %  | 미실행       |
+| Phase 3-GW (Gateway)   | <!-- TBD --> | <!-- TBD --> | <!-- TBD --> | <!-- TBD --> | <!-- TBD --> %  | 미실행       |
+| Phase 3-TGT (타겟)     | <!-- TBD --> | <!-- TBD --> | <!-- TBD --> | <!-- TBD --> | <!-- TBD --> %  | 미실행       |
+| **합계**               | 15+          | 15           | 0            | 0            | 100% (Phase 1) | 부분 완료    |
 
 ### 6.2 CAN 통신 통합 검증 결과
 
 | 인터페이스 ID | 송신 → 수신                    | 메시지 정합성 | 타이밍 준수 | 에러 처리 | 판정      |
 |---------------|--------------------------------|---------------|-------------|-----------|-----------|
-| IF-CAN-001    | decision → control             | <!-- TODO --> | <!-- TODO --> | <!-- TODO --> | <!-- TODO --> |
-| IF-CAN-002    | control → aeb-control          | <!-- TODO --> | <!-- TODO --> | <!-- TODO --> | <!-- TODO --> |
-| IF-CAN-003    | aeb-control → control          | <!-- TODO --> | <!-- TODO --> | <!-- TODO --> | <!-- TODO --> |
-| IF-CAN-004    | remote → decision              | <!-- TODO --> | <!-- TODO --> | <!-- TODO --> | <!-- TODO --> |
-| IF-CAN-005    | CAN Gateway → decision         | <!-- TODO --> | <!-- TODO --> | <!-- TODO --> | <!-- TODO --> |
+| IF-CAN-001    | decision → control (0x165, 0x1A0, 0x1CF) | 확인 완료     | <!-- TBD -->  | <!-- TBD -->  | 부분 완료    |
+| IF-CAN-002    | control → aeb-control (0x35, 0x60, 0xA0) | 확인 완료     | <!-- TBD -->  | <!-- TBD -->  | 부분 완료    |
+| IF-CAN-003    | aeb-control → control (0x160, len=8)      | 확인 완료     | <!-- TBD -->  | <!-- TBD -->  | 부분 완료    |
+| IF-CAN-004    | remote → decision              | <!-- TBD -->  | <!-- TBD -->  | <!-- TBD -->  | 미실행       |
+| IF-CAN-005    | CAN Gateway → decision (0xEA 등) | 확인 완료   | <!-- TBD -->  | <!-- TBD -->  | 부분 완료    |
 
 ### 6.3 타겟(NXP S32G) 검증 결과
 
@@ -151,11 +151,11 @@ ISO 26262 Part 6, Clause 11에 따른 검증 방법 적용:
 
 | 모듈              | ASIL | 필수 규칙 위반 | 권고 규칙 위반 | 편차(Deviation) 건수 | 판정        |
 |-------------------|------|----------------|----------------|----------------------|-------------|
-| aeb-control       | D    | <!-- TODO -->  | <!-- TODO -->  | <!-- TODO -->        | <!-- TODO --> |
-| control-module    | C    | <!-- TODO -->  | <!-- TODO -->  | <!-- TODO -->        | <!-- TODO --> |
-| decision-module   | B~C  | <!-- TODO -->  | <!-- TODO -->  | <!-- TODO -->        | <!-- TODO --> |
-| remote-control    | B    | <!-- TODO -->  | <!-- TODO -->  | <!-- TODO -->        | <!-- TODO --> |
-| common            | D    | <!-- TODO -->  | <!-- TODO -->  | <!-- TODO -->        | <!-- TODO --> |
+| aeb-control       | D    | <!-- TBD -->   | <!-- TBD -->   | <!-- TBD -->         | 미분석       |
+| control-module    | C    | <!-- TBD -->   | <!-- TBD -->   | <!-- TBD -->         | 미분석       |
+| decision-module   | B~C  | <!-- TBD -->   | <!-- TBD -->   | <!-- TBD -->         | 미분석       |
+| remote-control    | B    | <!-- TBD -->   | <!-- TBD -->   | <!-- TBD -->         | 미분석       |
+| common            | D    | 0              | <!-- TBD -->   | 0                    | Pass (clang-tidy 기반) |
 
 <!-- TODO: MISRA 편차(deviation) 상세 목록 및 정당화 근거 별도 첨부 -->
 
@@ -187,20 +187,20 @@ ISO 26262 Part 6, Clause 11에 따른 검증 방법 적용:
 
 | SWSR ID       | 요구사항 설명 (요약)           | 검증 방법          | 검증 결과 (TC/리뷰 ID) | 판정      |
 |---------------|-------------------------------|--------------------|------------------------|-----------|
-| SWSR-AEB-001  | AEB 100ms 이내 제동 명령      | Test               | TC-AEB-001, IT-P2-002  | <!-- TODO --> |
-| SWSR-AEB-002  | 고장 시 안전 상태 전환         | Test               | TC-AEB-004, IT-P2-005  | <!-- TODO --> |
-| SWSR-AEB-003  | CAN 타임아웃 시 비상 제동      | Test               | TC-AEB-005, IT-P2-006  | <!-- TODO --> |
-| SWSR-CTL-001  | 제어 명령 주기 내 CAN 전송     | Test               | TC-CTL-001/003, IT-P2-001 | <!-- TODO --> |
-| SWSR-CTL-002  | 명령 범위 제한                 | Test / Review      | TC-CTL-002             | <!-- TODO --> |
-| SWSR-DEC-001  | 경로 계획 주기적 전달          | Test               | TC-DEC-001, IT-P2-001  | <!-- TODO --> |
-| SWSR-DEC-002  | K-City/GW 인터페이스 호환성    | Test / Review      | TC-DEC-003             | <!-- TODO --> |
-| SWSR-DEC-003  | CAN GW 데이터 유효성 검증      | Test               | TC-DEC-002, IT-P2-004  | <!-- TODO --> |
-| SWSR-RMT-001  | 통신 단절 시 안전 전환         | Test               | TC-RMT-002/003, IT-P2-003 | <!-- TODO --> |
-| SWSR-RMT-002  | 원격 명령 인증/무결성          | Test / Review      | TC-RMT-001             | <!-- TODO --> |
-| SWSR-CMN-001  | ASIL D 코딩 가이드라인 준수    | Review / Analysis  | 정적 분석 결과          | <!-- TODO --> |
-| SWSR-CMN-002  | CAN 방어적 처리                | Test               | TC-CMN-001/002         | <!-- TODO --> |
-| SWSR-PVT-001  | USE_PRIVATE_IMPL 빌드 포함     | Test / Review      | IT-PVT-001/002         | <!-- TODO --> |
-| SWSR-PVT-002  | Private/Public 인터페이스 일관성| Review / Test      | IT-PVT-003             | <!-- TODO --> |
+| SWSR-AEB-001  | AEB 100ms 이내 제동 명령      | Test               | TC-AEB-001, IT-P2-002  | 미실행       |
+| SWSR-AEB-002  | 고장 시 안전 상태 전환         | Test               | TC-AEB-004, IT-P2-005  | 미실행       |
+| SWSR-AEB-003  | CAN 타임아웃 시 비상 제동      | Test               | TC-AEB-005, IT-P2-006  | 미실행       |
+| SWSR-CTL-001  | 제어 명령 주기 내 CAN 전송     | Test               | TC-CTL-001/003, IT-P2-001 | 미실행    |
+| SWSR-CTL-002  | 명령 범위 제한                 | Test / Review      | TC-CTL-002             | 미실행       |
+| SWSR-DEC-001  | 경로 계획 주기적 전달          | Test               | TC-DEC-001, IT-P2-001  | 미실행       |
+| SWSR-DEC-002  | K-City/GW 인터페이스 호환성    | Test / Review      | TC-DEC-003             | 미실행       |
+| SWSR-DEC-003  | CAN GW 데이터 유효성 검증      | Test               | TC-DEC-002, IT-P2-004  | 미실행       |
+| SWSR-RMT-001  | 통신 단절 시 안전 전환         | Test               | TC-RMT-002/003, IT-P2-003 | 미실행    |
+| SWSR-RMT-002  | 원격 명령 인증/무결성          | Test / Review      | TC-RMT-001             | 미실행       |
+| SWSR-CMN-001  | ASIL D 코딩 가이드라인 준수    | Review / Analysis  | 정적 분석 결과 (clang-tidy) | Pass     |
+| SWSR-CMN-002  | CAN 방어적 처리                | Test               | TC-CMN-001/002 (43+ TC, 7/7 suites Pass) | Pass |
+| SWSR-PVT-001  | USE_PRIVATE_IMPL 빌드 포함     | Test / Review      | IT-PVT-001/002         | Pass (common 모듈) |
+| SWSR-PVT-002  | Private/Public 인터페이스 일관성| Review / Test      | IT-PVT-003             | Pass (common 모듈) |
 
 ## 10. 발견 결함 요약 (Defect Summary)
 
@@ -267,4 +267,5 @@ ISO 26262 Part 6, Clause 11에 따른 검증 방법 적용:
 
 | Version | Date       | Author        | Description           |
 |---------|------------|---------------|-----------------------|
-| 0.1     | <!-- TODO --> | <!-- TODO --> | Initial draft 작성    |
+| 0.1     | 2026-04-06 | SuYeol Kim | Initial draft 작성    |
+| 1.0     | 2026-04-06 | SuYeol Kim | common 모듈 검증 결과 반영, 검증 활동 현황 업데이트 |

@@ -7,13 +7,13 @@
 | **Document ID** | SW-DEC-IT-001 |
 | **Module** | Decision Module (K-City / CAN Gateway) |
 | **ISO 26262 Reference** | Part 6, Clause 10 (Software integration and testing) |
-| **ASIL** | B–D (통합 수준별 상이) |
+| **ASIL** | B~C (통합 수준별 상이) |
 | **Target HW** | NXP S32G (aarch64) |
-| **Author** | TODO: 작성자 |
+| **Author** | SuYeol Kim |
 | **Reviewer** | TODO: 검토자 |
 | **Approval** | TODO: 승인자 |
-| **Version** | 0.1 (Draft) |
-| **Date** | TODO: YYYY-MM-DD |
+| **Version** | 1.0 |
+| **Date** | 2026-04-06 |
 | **Status** | Draft |
 
 ---
@@ -91,13 +91,13 @@ Phase 3: 외부 인터페이스 통합
 
 | 항목 | Host 환경 | Target 환경 |
 |------|----------|------------|
-| **하드웨어** | TODO: x86_64 PC | NXP S32G (aarch64) |
-| **OS** | TODO: Ubuntu/CentOS | TODO: Linux BSP |
-| **테스트 프레임워크** | TODO | TODO |
-| **시뮬레이터** | TODO: 센서 시뮬레이터 | N/A (실차/HIL) |
-| **CAN 인터페이스** | TODO: Virtual CAN (vcan) | TODO: 실제 CAN 버스 |
-| **GPS 시뮬레이션** | TODO: GPS 시뮬레이터 | TODO: 실제 GPS 수신기 |
-| **LiDAR 시뮬레이션** | TODO: Ibeo 리플레이 도구 | TODO: 실제 Ibeo LiDAR |
+| **하드웨어** | x86_64 PC | NXP S32G (aarch64) |
+| **OS** | Ubuntu 22.04 LTS | Linux BSP (대기 중: 구현/측정 후 갱신) |
+| **테스트 프레임워크** | Google Test 1.14.0 + Google Mock | Google Test 1.14.0 (cross-compiled) |
+| **시뮬레이터** | 대기 중: 구현/측정 후 갱신 | N/A (실차/HIL) |
+| **CAN 인터페이스** | Virtual CAN (vcan) | 실제 CAN 버스 |
+| **GPS 시뮬레이션** | 대기 중: 구현/측정 후 갱신 | 실제 GPS 수신기 |
+| **LiDAR 시뮬레이션** | 대기 중: 구현/측정 후 갱신 | 실제 Ibeo LiDAR |
 
 ---
 
@@ -225,4 +225,5 @@ ISO 26262 Part 6, Table 12에 따른 ASIL별 통합 테스트 방법:
 
 | Version | Date | Author | Description |
 |---------|------|--------|-------------|
-| 0.1 | TODO | TODO | Initial draft |
+| 0.1 | 2026-04-06 | SuYeol Kim | Initial draft |
+| 1.0 | 2026-04-06 | SuYeol Kim | 테스트 환경, ASIL, 메타데이터 갱신 |

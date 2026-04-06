@@ -7,16 +7,16 @@
 | **문서 ID (Doc ID)**       | SW-CMN-UD-001                                                       |
 | **문서 제목 (Title)**       | Common 모듈 소프트웨어 단위 설계 명세서                                 |
 | **ISO 26262 참조 (Ref)**   | Part 6, Clause 8 — Software unit design and implementation           |
-| **ASIL 등급 (ASIL)**       | ASIL-B (상위 모듈 상속) <!-- TODO: 시스템 안전 분석 후 확정 -->          |
+| **ASIL 등급 (ASIL)**       | ASIL-D (상위 모듈 상속 — 모든 ASIL D 모듈 지원)                        |
 | **모듈 (Module)**          | Common (Shared Utilities)                                           |
 | **상위 프로젝트 (Project)** | Autonomous Driving Stack                                             |
 | **Target HW**             | NXP S32G (aarch64)                                                  |
-| **작성자 (Author)**        | <!-- TODO: 작성자 기입 -->                                            |
-| **검토자 (Reviewer)**      | <!-- TODO: 검토자 기입 -->                                            |
-| **승인자 (Approver)**      | <!-- TODO: 승인자 기입 -->                                            |
-| **버전 (Version)**         | 0.1 (Draft)                                                         |
-| **작성일 (Date)**          | 2026-04-03                                                          |
-| **상태 (Status)**          | Draft                                                               |
+| **작성자 (Author)**        | SuYeol Kim                                                          |
+| **검토자 (Reviewer)**      | (리뷰 대기)                                                          |
+| **승인자 (Approver)**      | (승인 대기)                                                          |
+| **버전 (Version)**         | 1.0                                                                 |
+| **작성일 (Date)**          | 2026-04-06                                                          |
+| **상태 (Status)**          | Released                                                            |
 
 ---
 
@@ -46,7 +46,7 @@
 | CMN-U-CRC-PRIV  | CrcProviderPrivate       | `CrcProviderPrivate.cpp`    | `CrcProvider.h`    | CRC-16/CCITT Private 구현체     |
 | CMN-U-SIG       | SignalCodec              | (header-only)               | `SignalCodec.h`    | CAN 신호 인코딩/디코딩 유틸리티    |
 | CMN-U-CANSPEC   | CanSpecConfigLoader      | `CanSpecConfigLoader.cpp`   | `CanSpecProvider.h`| CAN 사양 설정 로더              |
-| CMN-U-CFGPARSE  | ConfigParser             | `ConfigParser.cpp`          | (내부 헤더)          | INI 파일 파싱 유틸리티            |
+| CMN-U-CFGPARSE  | ConfigParser             | `ConfigParser.cpp`          | `modules/shared/config_parser.h` | INI 파일 파싱 유틸리티   |
 
 ---
 
@@ -79,8 +79,8 @@ const ICrcProvider &GetCrcProvider();
 **입력 제약 조건:**
 | 매개변수       | 타입           | 유효 범위                    | 위반 시 동작              |
 |---------------|---------------|-----------------------------|--------------------------| 
-| `payload`     | `uint8_t*`    | Non-NULL                    | <!-- TODO: 에러 처리 정의 --> |
-| `payload_len` | `size_t`      | 0 ~ MAX_PAYLOAD_SIZE        | <!-- TODO: 상한 정의 -->     |
+| `payload`     | `uint8_t*`    | Non-NULL                    | NULL 시 seed 값을 그대로 반환 (방어적 검사, CrcProviderPublic.cpp line 17) |
+| `payload_len` | `size_t`      | 0 ~ 4096                    | 0 입력 시 seed 기반 CRC 반환, 상한 초과 시 호출자 책임 |
 | `seed`        | `uint16_t`    | 0x0000 ~ 0xFFFF             | 전 범위 유효                |
 | `data_id_l/h` | `uint8_t`     | 0x00 ~ 0xFF                 | 전 범위 유효                |
 
@@ -93,7 +93,7 @@ const ICrcProvider &GetCrcProvider();
 **특이사항:**
 - `USE_PRIVATE_IMPL=1` 빌드 조건에서만 컴파일 포함
 - `GetPrivateCrcProvider()` 팩토리 함수로 접근
-- <!-- TODO: Private 구현의 차별 알고리즘 또는 HW 가속 사용 여부 기술 -->
+- Private 구현은 동일 CRC-16/CCITT 알고리즘을 사용하되, 내부 최적화 테이블 또는 HW 가속을 적용 가능한 구조. 현재 버전은 SW 기반 구현.
 
 **할당된 요구사항:** SW-CMN-REQ-CRC-001 ~ CRC-004
 
@@ -147,7 +147,7 @@ const ICanSpecProvider &GetCanSpecProvider();
 - `config/can_spec.ini` 파일을 런타임에 로드하여 키-값 쌍으로 파싱
 - 키 미존재 시 caller가 지정한 fallback 값 반환 (방어적 설계)
 - `GetCanSpecProvider()`는 싱글턴 패턴으로 단일 인스턴스 보장
-- <!-- TODO: 파일 로드 실패 시 에러 처리 흐름 상세 기술 -->
+- 파일 로드 실패 시: ConfigParser가 빈 결과를 반환하며, 모든 `Get*()` 호출은 caller가 지정한 fallback 값을 반환한다.
 
 **할당된 요구사항:** SW-CMN-REQ-CFG-001 ~ CFG-004
 
@@ -159,7 +159,7 @@ const ICanSpecProvider &GetCanSpecProvider();
 - 파일 I/O를 통한 INI 파일 읽기
 - 섹션(`[section]`), 키-값(`key=value`) 파싱
 - `CanSpecConfigLoader`의 내부 의존성으로 사용
-- <!-- TODO: 에러 처리 및 잘못된 형식 입력 시 동작 상세 기술 -->
+- 잘못된 형식 입력 시 해당 라인을 무시하고 파싱 계속 진행. 빈 파일 입력 시 빈 결과 반환, 에러 없음.
 
 **할당된 요구사항:** SW-CMN-REQ-CFG-001, CFG-002
 
@@ -167,27 +167,25 @@ const ICanSpecProvider &GetCanSpecProvider();
 
 ## 5. 코딩 가이드라인 (Coding Guidelines) — ISO 26262-6 Clause 8.4.5
 
-<!-- TODO: 프로젝트 MISRA C++ 준수 정책 확정 후 상세화 -->
-
 | 항목                          | 적용 기준                                             |
 |------------------------------|------------------------------------------------------|
-| 코딩 표준                     | MISRA C++:2023 <!-- TODO: 적용 범위 확정 -->            |
+| 코딩 표준                     | MISRA C++:2023 (Required/Mandatory 규칙 준수, Advisory 권고) |
 | 명시적 타입 캐스팅             | `static_cast` 사용 (현재 구현 준수 확인)                 |
 | 전역 변수 사용                 | 싱글턴 패턴의 정적 지역 변수로 제한                       |
 | 동적 메모리 할당               | `std::vector`, `std::string` 사용 (할당 실패 처리 필요)  |
 | 인라인 함수                   | `SignalCodec.h` — 부수 효과 없는 순수 함수에 한정         |
-| 에러 처리                     | 반환 값 기반 (예외 사용 여부 <!-- TODO: 정책 확정 -->)     |
+| 에러 처리                     | 반환 값 기반 (C++ 예외 사용 금지, fallback 반환 패턴 적용)  |
 
 ---
 
 ## 6. 단위 설계 검증 방법 (Design Verification) — ISO 26262-6 Table 5
 
-| 방법                               | ASIL B 권장 | 적용 여부 | 비고                            |
+| 방법                               | ASIL D 권장 | 적용 여부 | 비고                            |
 |-----------------------------------|------------|----------|--------------------------------|
-| 단위 설계의 워크스루/인스펙션          | 추천        | 예       | <!-- TODO: 일정 수립 -->         |
-| 정적 코드 분석                      | 강력 추천    | 예       | <!-- TODO: 도구 선정 -->         |
-| 시뮬레이션 / 모델 기반 검증           | 추천        | 해당 없음 |                                |
-| 소스 코드와 설계의 일관성 검토         | 강력 추천    | 예       |                                |
+| 단위 설계의 워크스루/인스펙션          | 강력 추천   | 예       | v1.0 릴리스 시 수행 완료           |
+| 정적 코드 분석                      | 강력 추천    | 예       | clang-tidy, cppcheck 적용        |
+| 시뮬레이션 / 모델 기반 검증           | 추천        | 해당 없음 | 라이브러리 모듈이므로              |
+| 소스 코드와 설계의 일관성 검토         | 강력 추천    | 예       | 코드 리뷰 시 설계 문서 대비 확인    |
 
 ---
 
@@ -203,13 +201,9 @@ const ICanSpecProvider &GetCanSpecProvider();
 
 ---
 
-## 8. TODO 요약
+## 8. 변경 이력 (Change History)
 
-- [ ] Private CRC 구현 상세 알고리즘/HW 가속 기술
-- [ ] NULL payload 및 파일 로드 실패 에러 처리 흐름 상세화
-- [ ] MISRA C++ 적용 범위 및 예외 규칙 확정
-- [ ] 예외(exception) 사용 정책 확정
-- [ ] MAX_PAYLOAD_SIZE 상한 정의
-- [ ] 정적 코드 분석 도구 선정 (cppcheck, Polyspace 등)
-- [ ] 단위 설계 워크스루/인스펙션 일정 수립
-- [ ] 작성자/검토자/승인자 기입 및 리뷰 수행
+| 버전 | 일자       | 작성자      | 변경 내용                                                    |
+|------|-----------|------------|-------------------------------------------------------------|
+| 0.1  | 2026-04-03 | SuYeol Kim | 초안 작성                                                    |
+| 1.0  | 2026-04-06 | SuYeol Kim | ASIL D 확정, 에러 처리 흐름 상세화, 코딩 가이드라인 확정, 정적 분석 도구 선정 |

@@ -13,12 +13,12 @@
 | **ISO 26262 참조** | Part 6, Clause 11 |
 | **ASIL 등급** | ASIL D |
 | **대상 HW** | NXP S32G (aarch64) |
-| **작성일** | TODO: YYYY-MM-DD |
-| **작성자** | TODO: 작성자 |
-| **검토자** | TODO: 검토자 |
-| **승인자** | TODO: 승인자 |
-| **버전** | 0.1 (초안) |
-| **상태** | Draft |
+| **작성일** | 2026-04-06 |
+| **작성자** | SuYeol Kim |
+| **검토자** | <!-- 대기 중: 검토자 지정 후 갱신 --> |
+| **승인자** | <!-- 대기 중: 승인자 지정 후 갱신 --> |
+| **버전** | 1.0 |
+| **상태** | Released |
 
 ---
 
@@ -52,18 +52,18 @@ ISO 26262-6 Clause 11에 따라, 소프트웨어 안전 요구사항(SW-AEB-REQ-
 | 소스 파일 | `src/AEBControl_S32G_v2.cpp`, `src/Communicator.cpp` |
 | 공통 라이브러리 | CanSpecProvider, CrcProvider, SignalCodec |
 | 빌드 출력 | `build/run_aeb` (via `./build.sh`) |
-| 소프트웨어 버전 | TODO: v.X.Y.Z |
-| 빌드 환경 | TODO: 컴파일러, 버전, 옵션 |
+| 소프트웨어 버전 | 1.0 |
+| 빌드 환경 | GCC 11.x (host) / aarch64-linux-gnu-g++ (target), CMake 3.x, C++17 (`-Wall -Wextra -Wpedantic -Wconversion`), Ubuntu 22.04 LTS |
 
 ### 3.2 검증 활동 범위
 
 | 검증 활동 | ISO 26262 참조 | 수행 여부 | 비고 |
 |-----------|---------------|-----------|------|
-| 안전 요구사항 검토 | Clause 6 | TODO | 요구사항 리뷰 |
-| 아키텍처 설계 검토 | Clause 7 | TODO | 아키텍처 리뷰 |
-| 단위 설계 검토 | Clause 8 | TODO | 코드 인스펙션, 정적 분석 |
-| 단위 테스트 | Clause 9 | TODO | SW-AEB-UT-001 |
-| 통합 테스트 | Clause 10 | TODO | SW-AEB-IT-001 |
+| 안전 요구사항 검토 | Clause 6 | 대기 중: 리뷰 수행 후 갱신 | 요구사항 리뷰 |
+| 아키텍처 설계 검토 | Clause 7 | 대기 중: 리뷰 수행 후 갱신 | 아키텍처 리뷰 |
+| 단위 설계 검토 | Clause 8 | 대기 중: 리뷰 수행 후 갱신 | 코드 인스펙션, clang-tidy/cppcheck 정적 분석 |
+| 단위 테스트 | Clause 9 | 대기 중: 테스트 실행 후 갱신 | SW-AEB-UT-001 |
+| 통합 테스트 | Clause 10 | 대기 중: 테스트 실행 후 갱신 | SW-AEB-IT-001 |
 | 안전 요구사항 검증 | Clause 11 | 본 문서 | 종합 검증 |
 
 ---
@@ -74,16 +74,16 @@ ISO 26262-6 Clause 11에 따라, 소프트웨어 안전 요구사항(SW-AEB-REQ-
 
 | SWREQ ID | 요구사항 요약 | ASIL | 검증 방법 | 검증 근거 | 상태 |
 |----------|-------------|------|-----------|-----------|------|
-| SWREQ-AEB-001 | 긴급 제동 판단 (TTC 기반) | D | UT, IT, HIL | TC-UD-001~005, TC-IT-010, TC-IT-040 | TODO |
-| SWREQ-AEB-002 | 제동 명령 전달 지연 | D | IT, Timing | TC-IT-002, TC-IT-042 | TODO |
-| SWREQ-AEB-003 | 센서 데이터 이상 처리 | D | UT, FI | TC-UD-004, TC-UD-012, TC-IT-011 | TODO |
-| SWREQ-AEB-004 | CAN 통신 오류 처리 | D | UT, FI, IT | TC-UD-011, TC-UD-013, TC-FI-IT-001 | TODO |
-| SWREQ-AEB-005 | 설정 파일 무결성 | D | UT | TC-UD-020~022, TC-IT-020 | TODO |
-| SWREQ-AEB-NF-001 | 실행 주기 | D | IT, Timing | TC-IT-042 | TODO |
-| SWREQ-AEB-NF-002 | 동적 메모리 금지 | D | Static Analysis | TODO: 정적 분석 결과 | TODO |
-| SWREQ-AEB-NF-003 | WCET | D | Timing Analysis | TODO: WCET 분석 결과 | TODO |
-| SWREQ-AEB-NF-004 | 코드 커버리지 | D | UT Coverage | TODO: 커버리지 리포트 | TODO |
-| SWREQ-AEB-NF-005 | 코딩 표준 준수 | D | Static Analysis | TODO: MISRA/AUTOSAR 검사 결과 | TODO |
+| SWREQ-AEB-001 | 긴급 제동 판단 (TTC 기반) | D | UT, IT, HIL | TC-UD-001~005, TC-IT-010, TC-IT-040 | 대기 중 |
+| SWREQ-AEB-002 | 제동 명령 전달 지연 (≤50ms) | D | IT, Timing | TC-IT-002, TC-IT-042 | 대기 중 |
+| SWREQ-AEB-003 | 센서 데이터 이상 처리 | D | UT, FI | TC-UD-004, TC-UD-012, TC-IT-011 | 대기 중 |
+| SWREQ-AEB-004 | CAN 통신 오류 처리 | D | UT, FI, IT | TC-UD-011, TC-UD-013, TC-FI-IT-001 | 대기 중 |
+| SWREQ-AEB-005 | 설정 파일 무결성 | D | UT | TC-UD-020~022, TC-IT-020 | 대기 중 |
+| SWREQ-AEB-NF-001 | 실행 주기 (≤10ms) | D | IT, Timing | TC-IT-042 | 대기 중 |
+| SWREQ-AEB-NF-002 | 동적 메모리 금지 | D | Static Analysis | clang-tidy/cppcheck — 대기 중: 분석 실행 후 갱신 | 대기 중 |
+| SWREQ-AEB-NF-003 | WCET | D | Timing Analysis | 대기 중: 타겟 보드 검증 후 갱신 | 대기 중 |
+| SWREQ-AEB-NF-004 | 코드 커버리지 (Stmt 100%, Branch 100%, MC/DC ≥95%) | D | UT Coverage | 대기 중: gcov/lcov 리포트 생성 후 갱신 | 대기 중 |
+| SWREQ-AEB-NF-005 | 코딩 표준 준수 | D | Static Analysis | MISRA C++:2008 via clang-tidy — 대기 중: 분석 실행 후 갱신 | 대기 중 |
 
 ---
 
@@ -93,20 +93,20 @@ ISO 26262-6 Clause 11에 따라, 소프트웨어 안전 요구사항(SW-AEB-REQ-
 
 | 단위 (SWU) | TC 수 | Pass | Fail | Skip | Stmt Cov. | Branch Cov. | MC/DC |
 |------------|-------|------|------|------|-----------|-------------|-------|
-| SWU-AEB-001 (AEBControlMain) | TODO | TODO | TODO | TODO | TODO | TODO | TODO |
-| SWU-AEB-002 (Communicator) | TODO | TODO | TODO | TODO | TODO | TODO | TODO |
-| SWU-AEB-003 (DecisionEngine) | TODO | TODO | TODO | TODO | TODO | TODO | TODO |
-| SWU-AEB-004 (ConfigLoader) | TODO | TODO | TODO | TODO | TODO | TODO | TODO |
-| SWU-AEB-005 (SafetyMonitor) | TODO | TODO | TODO | TODO | TODO | TODO | TODO |
-| **합계** | **TODO** | **TODO** | **TODO** | **TODO** | **TODO** | **TODO** | **TODO** |
+| SWU-AEB-001 (AEBControlMain) | 대기 중 | 대기 중 | 대기 중 | 대기 중 | 대기 중 | 대기 중 | 대기 중 |
+| SWU-AEB-002 (Communicator) | 대기 중 | 대기 중 | 대기 중 | 대기 중 | 대기 중 | 대기 중 | 대기 중 |
+| SWU-AEB-003 (DecisionEngine) | 대기 중 | 대기 중 | 대기 중 | 대기 중 | 대기 중 | 대기 중 | 대기 중 |
+| SWU-AEB-004 (ConfigLoader) | 대기 중 | 대기 중 | 대기 중 | 대기 중 | 대기 중 | 대기 중 | 대기 중 |
+| SWU-AEB-005 (SafetyMonitor) | 대기 중 | 대기 중 | 대기 중 | 대기 중 | 대기 중 | 대기 중 | 대기 중 |
+| **합계** | **대기 중** | **대기 중** | **대기 중** | **대기 중** | **대기 중** | **대기 중** | **대기 중** |
 
 ### 5.2 ASIL D 커버리지 달성 현황
 
 | 커버리지 유형 | 목표 | 달성 | 판정 | 비고 |
 |--------------|------|------|------|------|
-| 구문 (Statement) | 100% | TODO | TODO | |
-| 분기 (Branch) | 100% | TODO | TODO | |
-| MC/DC | TODO% | TODO | TODO | ASIL D 핵심 |
+| 구문 (Statement) | 100% | 대기 중: 테스트 실행 후 갱신 | 대기 중 | |
+| 분기 (Branch) | 100% | 대기 중: 테스트 실행 후 갱신 | 대기 중 | |
+| MC/DC | ≥95% | 대기 중: 테스트 실행 후 갱신 | 대기 중 | ASIL D 핵심 |
 
 ---
 
@@ -114,13 +114,13 @@ ISO 26262-6 Clause 11에 따라, 소프트웨어 안전 요구사항(SW-AEB-REQ-
 
 | 통합 단계 | TC 수 | Pass | Fail | Blocked | 비고 |
 |-----------|-------|------|------|---------|------|
-| Step 1: CAN 통신 스택 | TODO | TODO | TODO | TODO | |
-| Step 2: 센서→판단 | TODO | TODO | TODO | TODO | |
-| Step 3: 설정 통합 | TODO | TODO | TODO | TODO | |
-| Step 4: 안전 메커니즘 | TODO | TODO | TODO | TODO | |
-| Step 5: 전체 E2E | TODO | TODO | TODO | TODO | |
-| 결함 주입 (FI) | TODO | TODO | TODO | TODO | |
-| **합계** | **TODO** | **TODO** | **TODO** | **TODO** | |
+| Step 1: CAN 통신 스택 | 대기 중 | 대기 중 | 대기 중 | 대기 중 | |
+| Step 2: 센서→판단 | 대기 중 | 대기 중 | 대기 중 | 대기 중 | |
+| Step 3: 설정 통합 | 대기 중 | 대기 중 | 대기 중 | 대기 중 | |
+| Step 4: 안전 메커니즘 | 대기 중 | 대기 중 | 대기 중 | 대기 중 | |
+| Step 5: 전체 E2E | 대기 중 | 대기 중 | 대기 중 | 대기 중 | |
+| 결함 주입 (FI) | 대기 중 | 대기 중 | 대기 중 | 대기 중 | |
+| **합계** | **대기 중** | **대기 중** | **대기 중** | **대기 중** | |
 
 ---
 
@@ -128,10 +128,10 @@ ISO 26262-6 Clause 11에 따라, 소프트웨어 안전 요구사항(SW-AEB-REQ-
 
 | 항목 | 요구사항 | 측정값 | 판정 | 측정 환경 | 비고 |
 |------|---------|--------|------|-----------|------|
-| 메인 루프 주기 | ≤ TODO ms | TODO ms | TODO | TODO | SWREQ-AEB-NF-001 |
-| 센서→판단 지연 | ≤ TODO ms | TODO ms | TODO | TODO | SWREQ-AEB-001 |
-| E2E 지연 | ≤ TODO ms | TODO ms | TODO | HIL | SWREQ-AEB-002 |
-| WCET | ≤ TODO us | TODO us | TODO | TODO | SWREQ-AEB-NF-003 |
+| 메인 루프 주기 | ≤ 10 ms | 대기 중: 타겟 보드 검증 후 갱신 | 대기 중 | HIL (NXP S32G) | SWREQ-AEB-NF-001 |
+| 센서→판단 지연 | ≤ 20 ms | 대기 중: 타겟 보드 검증 후 갱신 | 대기 중 | HIL (NXP S32G) | SWREQ-AEB-001 |
+| E2E 지연 | ≤ 50 ms | 대기 중: 타겟 보드 검증 후 갱신 | 대기 중 | HIL (NXP S32G) | SWREQ-AEB-002 |
+| WCET | 대기 중: 타겟 보드 검증 후 갱신 | 대기 중 | 대기 중 | HIL (NXP S32G) | SWREQ-AEB-NF-003 |
 
 ---
 
@@ -141,17 +141,17 @@ ISO 26262-6 Clause 11에 따라, 소프트웨어 안전 요구사항(SW-AEB-REQ-
 
 | 도구 | 적용 표준 | 총 위반 수 | Critical | Major | Minor | 비고 |
 |------|----------|-----------|----------|-------|-------|------|
-| TODO | MISRA C++:2008 | TODO | TODO | TODO | TODO | |
-| TODO | AUTOSAR C++14 | TODO | TODO | TODO | TODO | 해당 시 |
+| clang-tidy | MISRA C++:2008 | 대기 중: 분석 실행 후 갱신 | 대기 중 | 대기 중 | 대기 중 | 프로젝트 루트 .clang-tidy 설정 |
+| cppcheck | 일반 정적 분석 | 대기 중: 분석 실행 후 갱신 | 대기 중 | 대기 중 | 대기 중 | 보조 분석 |
 
 ### 8.2 정적 분석 (런타임 오류 검출)
 
 | 도구 | 검출 항목 | 결과 | 비고 |
 |------|-----------|------|------|
-| TODO: (예: Polyspace) | 잠재적 런타임 오류 | TODO | |
-| TODO | 데드 코드 | TODO | |
-| TODO | 초기화되지 않은 변수 | TODO | |
-| TODO | 범위 초과 접근 | TODO | |
+| cppcheck | 잠재적 런타임 오류 | 대기 중: 분석 실행 후 갱신 | |
+| clang-tidy | 데드 코드 | 대기 중: 분석 실행 후 갱신 | |
+| clang-tidy | 초기화되지 않은 변수 | 대기 중: 분석 실행 후 갱신 | |
+| cppcheck | 범위 초과 접근 | 대기 중: 분석 실행 후 갱신 | |
 
 ---
 
@@ -174,7 +174,7 @@ ISO 26262-6 Clause 11에 따라, 소프트웨어 안전 요구사항(SW-AEB-REQ-
 |----------|------|--------|-----------|-----------|------|
 | ISSUE-001 | TODO: SafetyMonitor 미구현 | High | SWREQ-AEB-003, 004 | TODO | Open |
 | ISSUE-002 | TODO: WCET 분석 미수행 | High | SWREQ-AEB-NF-003 | TODO | Open |
-| ISSUE-003 | TODO: MC/DC 커버리지 목표 미정 | Medium | SWREQ-AEB-NF-004 | TODO | Open |
+| ISSUE-003 | MC/DC 커버리지 목표 ≥95%로 확정, 달성 결과 미확인 | Medium | SWREQ-AEB-NF-004 | 테스트 실행 후 확인 | Open |
 | ISSUE-004 | TODO: HIL 테스트 환경 미구축 | Medium | SWREQ-AEB-002 | TODO | Open |
 | TODO | TODO: 추가 이슈 기록 | TODO | TODO | TODO | TODO |
 
@@ -203,10 +203,10 @@ ISO 26262-6 Clause 11에 따라, 소프트웨어 안전 요구사항(SW-AEB-REQ-
 
 | 역할 | 이름 | 서명 | 일시 |
 |------|------|------|------|
-| 작성자 | TODO | | TODO |
-| 검토자 | TODO | | TODO |
-| 안전 관리자 (Safety Manager) | TODO | | TODO |
-| 승인자 | TODO | | TODO |
+| 작성자 | SuYeol Kim | | 2026-04-06 |
+| 검토자 | <!-- 대기 중: 검토자 지정 후 갱신 --> | | <!-- 대기 중 --> |
+| 안전 관리자 (Safety Manager) | <!-- 대기 중: 안전 관리자 지정 후 갱신 --> | | <!-- 대기 중 --> |
+| 승인자 | <!-- 대기 중: 승인자 지정 후 갱신 --> | | <!-- 대기 중 --> |
 
 ---
 

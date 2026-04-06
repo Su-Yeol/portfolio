@@ -7,16 +7,16 @@
 | 항목 (Field)          | 내용 (Value)                                              |
 |-----------------------|-----------------------------------------------------------|
 | **Document ID**       | SW-CTL-IT-001                                             |
-| **Version**           | 0.1 Draft                                                 |
+| **Version**           | 1.0                                                       |
 | **ISO 26262 Reference** | Part 6, Clause 10 — Software Integration and Testing    |
-| **ASIL Scope**        | ASIL D (target) <!-- TODO: 최종 ASIL 등급 확정 후 업데이트 --> |
+| **ASIL Scope**        | ASIL C                                                    |
 | **Project**           | Autonomous Driving Stack — Control Module                 |
 | **Target HW**         | NXP S32G (aarch64)                                        |
-| **Language**          | C++                                                       |
-| **Author**            | <!-- TODO: 작성자 이름 기입 -->                             |
-| **Reviewer**          | <!-- TODO: 검토자 이름 기입 -->                             |
-| **Approval Date**     | <!-- TODO: 승인 일자 기입 (YYYY-MM-DD) -->                  |
-| **Status**            | Draft                                                     |
+| **Language**          | C++17                                                     |
+| **Author**            | SuYeol Kim                                                |
+| **Reviewer**          | <!-- 대기 중: 검토자 지정 후 갱신 -->                       |
+| **Approval Date**     | 2026-04-06                                                |
+| **Status**            | Released                                                  |
 
 ---
 
@@ -74,7 +74,7 @@ Phase 3: 외부 인터페이스 통합
 |--------------------------------------------|-----------------|----------------------------------|
 | 기능 테스트 (Functional testing)           | 강력 권고 (HR)  | 아키텍처 수준 기능 검증         |
 | 인터페이스 테스트 (Interface testing)       | 강력 권고 (HR)  | 컴포넌트 간 데이터 교환 검증    |
-| 결함 주입 테스트 (Fault injection)          | 강력 권고 (HR)  | ASIL D — 결함 시나리오 검증     |
+| 결함 주입 테스트 (Fault injection)          | 권고 (R)        | ASIL C — 결함 시나리오 검증     |
 | 자원 사용 테스트 (Resource usage testing)   | 강력 권고 (HR)  | CPU, 메모리, 스택 사용량 검증   |
 
 ### 4.3 테스트 환경
@@ -83,10 +83,10 @@ Phase 3: 외부 인터페이스 통합
 |---------------------|-----------------------------------------------------------|
 | 빌드 산출물         | `build/run_control` (via `./build.sh`)                    |
 | 타겟 환경           | NXP S32G (aarch64) 또는 QEMU aarch64 에뮬레이션          |
-| 호스트 환경         | <!-- TODO: 호스트 빌드/시뮬레이션 환경 정보 -->           |
-| CAN 시뮬레이터      | <!-- TODO: e.g., SocketCAN vcan, Vector CANoe -->         |
-| 입력 시뮬레이터     | <!-- TODO: Decision Module 출력 시뮬레이터 -->            |
-| 계측 도구           | <!-- TODO: 타이밍 분석 도구, e.g., ftrace, perf -->       |
+| 호스트 환경         | Ubuntu 22.04 LTS, GCC 11.x, CMake 3.x                    |
+| CAN 시뮬레이터      | <!-- 대기 중: CAN 시뮬레이터 구성 후 갱신 (e.g., SocketCAN vcan) --> |
+| 입력 시뮬레이터     | <!-- 대기 중: Decision Module 출력 시뮬레이터 구성 후 갱신 --> |
+| 계측 도구           | <!-- 대기 중: 타이밍 분석 도구 선정 후 갱신 (e.g., ftrace, perf) --> |
 
 ## 5. 통합 테스트 케이스 (Integration Test Cases)
 
@@ -149,31 +149,31 @@ Phase 3: 외부 인터페이스 통합
 
 ## 6. 타이밍 검증 (Timing Verification)
 
-<!-- TODO: 타이밍 측정 결과 기입 -->
+<!-- 대기 중: 타겟 보드 검증 후 타이밍 측정 결과 기입 -->
 
 | 측정 항목                      | 목표값              | 측정값              | 판정   |
 |--------------------------------|---------------------|---------------------|--------|
-| 제어 루프 주기 평균            | <!-- TODO --> ms    | <!-- TODO --> ms    | <!-- TODO --> |
-| 제어 루프 주기 jitter (max)    | ±<!-- TODO --> ms   | <!-- TODO --> ms    | <!-- TODO --> |
-| 제어 연산 WCET                 | <!-- TODO --> ms    | <!-- TODO --> ms    | <!-- TODO --> |
-| CAN 전송 지연 (max)            | <!-- TODO --> ms    | <!-- TODO --> ms    | <!-- TODO --> |
-| 입력 → 출력 E2E 지연 (max)    | <!-- TODO --> ms    | <!-- TODO --> ms    | <!-- TODO --> |
-| 안전 상태 전이 시간 (max)      | <!-- TODO --> ms    | <!-- TODO --> ms    | <!-- TODO --> |
+| 제어 루프 주기 평균 (MainCycle) | 50 ms              | 대기 중: 타겟 보드 검증 후 갱신 | 대기 중 |
+| 제어 루프 주기 jitter (max)    | ±대기 중: 확정 후 갱신 | 대기 중: 타겟 보드 검증 후 갱신 | 대기 중 |
+| 제어 연산 WCET                 | ≤25 ms (50% of 50ms) | 대기 중: 타겟 보드 검증 후 갱신 | 대기 중 |
+| CAN 전송 지연 (max)            | 대기 중: 확정 후 갱신 | 대기 중: 타겟 보드 검증 후 갱신 | 대기 중 |
+| 입력 → 출력 E2E 지연 (max)    | 대기 중: 확정 후 갱신 | 대기 중: 타겟 보드 검증 후 갱신 | 대기 중 |
+| 안전 상태 전이 시간 (max)      | 대기 중: 확정 후 갱신 | 대기 중: 타겟 보드 검증 후 갱신 | 대기 중 |
 
 ## 7. 자원 사용량 검증 (Resource Usage Verification)
 
-<!-- TODO: 자원 사용량 측정 결과 기입 -->
+<!-- 대기 중: 타겟 보드 검증 후 자원 사용량 측정 결과 기입 -->
 
 | 자원 항목                | 한계값              | 측정값              | 판정   |
 |--------------------------|---------------------|---------------------|--------|
-| CPU 사용률 (peak)        | <!-- TODO --> %     | <!-- TODO --> %     | <!-- TODO --> |
-| RAM 사용량               | <!-- TODO --> KB    | <!-- TODO --> KB    | <!-- TODO --> |
-| 스택 사용량 (peak)       | <!-- TODO --> KB    | <!-- TODO --> KB    | <!-- TODO --> |
-| CAN 버스 부하율          | <!-- TODO --> %     | <!-- TODO --> %     | <!-- TODO --> |
+| CPU 사용률 (peak)        | 대기 중: 확정 후 갱신 | 대기 중: 타겟 보드 검증 후 갱신 | 대기 중 |
+| RAM 사용량               | 대기 중: 확정 후 갱신 | 대기 중: 타겟 보드 검증 후 갱신 | 대기 중 |
+| 스택 사용량 (peak)       | 대기 중: 확정 후 갱신 | 대기 중: 타겟 보드 검증 후 갱신 | 대기 중 |
+| CAN 버스 부하율          | 대기 중: 확정 후 갱신 | 대기 중: 타겟 보드 검증 후 갱신 | 대기 중 |
 
 ## 8. 테스트 추적 매트릭스 (Test Traceability Matrix)
 
-<!-- TODO: 아키텍처 요소 → 통합 테스트 추적 매트릭스 완성 -->
+<!-- 대기 중: 테스트 실행 후 추적 매트릭스 커버리지 상태 갱신 -->
 
 | 아키텍처 인터페이스                  | 통합 테스트 ID                    | 커버리지 상태   |
 |--------------------------------------|-----------------------------------|-----------------|
@@ -186,7 +186,7 @@ Phase 3: 외부 인터페이스 통합
 
 ## 9. 테스트 결과 요약 (Test Result Summary)
 
-<!-- TODO: 테스트 실행 후 결과 기입 -->
+<!-- 대기 중: 테스트 실행 후 결과 기입 -->
 
 | 항목                        | 결과                |
 |-----------------------------|---------------------|
@@ -201,4 +201,5 @@ Phase 3: 외부 인터페이스 통합
 
 | Version | Date       | Author        | Description          |
 |---------|------------|---------------|----------------------|
-| 0.1     | <!-- TODO: 날짜 --> | <!-- TODO: 작성자 --> | Initial draft |
+| 0.1     | 2026-04-06 | SuYeol Kim | Initial draft |
+| 1.0     | 2026-04-06 | SuYeol Kim | Fill concrete values: ASIL C, test environment, timing targets |

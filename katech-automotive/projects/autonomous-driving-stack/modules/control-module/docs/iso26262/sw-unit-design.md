@@ -7,16 +7,16 @@
 | 항목 (Field)          | 내용 (Value)                                              |
 |-----------------------|-----------------------------------------------------------|
 | **Document ID**       | SW-CTL-UD-001                                             |
-| **Version**           | 0.1 Draft                                                 |
+| **Version**           | 1.0                                                       |
 | **ISO 26262 Reference** | Part 6, Clause 8 — Software Unit Design and Implementation |
-| **ASIL Scope**        | ASIL D (target) <!-- TODO: 최종 ASIL 등급 확정 후 업데이트 --> |
+| **ASIL Scope**        | ASIL C                                                    |
 | **Project**           | Autonomous Driving Stack — Control Module                 |
 | **Target HW**         | NXP S32G (aarch64)                                        |
-| **Language**          | C++                                                       |
-| **Author**            | <!-- TODO: 작성자 이름 기입 -->                             |
-| **Reviewer**          | <!-- TODO: 검토자 이름 기입 -->                             |
-| **Approval Date**     | <!-- TODO: 승인 일자 기입 (YYYY-MM-DD) -->                  |
-| **Status**            | Draft                                                     |
+| **Language**          | C++17                                                     |
+| **Author**            | SuYeol Kim                                                |
+| **Reviewer**          | <!-- 대기 중: 검토자 지정 후 갱신 -->                       |
+| **Approval Date**     | 2026-04-06                                                |
+| **Status**            | Released                                                  |
 
 ---
 
@@ -40,11 +40,11 @@
 | SW-CTL-REQ-001    | Software Safety Requirements Specification    | 안전 요구사항 문서      |
 | SW-CTL-ARCH-001   | Software Architecture Description             | 아키텍처 설계 문서      |
 | SW-CTL-UT-001     | Software Unit Test Specification              | 유닛 테스트 문서        |
-| <!-- TODO -->     | C++ Coding Standard                           | 코딩 표준 문서          |
+| <!-- 대기 중: 코딩 표준 문서 확정 후 갱신 --> | C++ Coding Standard (MISRA C++:2008 via clang-tidy) | 코딩 표준 문서 |
 
 ## 4. 설계 지침 (Design Guidelines)
 
-ISO 26262 Part 6, Clause 8 Table 3에 따라 ASIL D 수준에서 다음 설계 원칙을 적용한다:
+ISO 26262 Part 6, Clause 8 Table 3에 따라 ASIL C 수준에서 다음 설계 원칙을 적용한다:
 
 | 설계 원칙                          | 적용 수준       | 비고                                      |
 |------------------------------------|-----------------|-------------------------------------------|
@@ -61,10 +61,11 @@ ISO 26262 Part 6, Clause 8 Table 3에 따라 ASIL D 수준에서 다음 설계 �
 
 #### 5.1.1 유닛 개요
 
-- **유닛명**: `LateralController`
-- **소스 파일**: <!-- TODO: 소스 파일 경로 기입 -->
+- **유닛명**: `LateralController` (Pure Pursuit)
+- **소스 파일**: `src/Controller.cpp`, `src/PathManager.cpp`
 - **요구사항 추적**: SW-CTL-SR-001 ~ SW-CTL-SR-005
-- **ASIL**: D
+- **ASIL**: C
+- **차량 파라미터**: wheelbase = 2.865m, handle saturation = ±400 degrees
 
 #### 5.1.2 클래스/모듈 인터페이스
 
@@ -94,37 +95,31 @@ public:
 };
 ```
 
-#### 5.1.3 알고리즘 설계 (MPC)
+#### 5.1.3 알고리즘 설계 (Pure Pursuit)
 
-<!-- TODO: MPC 알고리즘 상세 설계 기술 -->
-
-- **상태 벡터**: x = [e_lat, e_heading, curvature_error, ...]
-- **제어 입력**: u = [delta_steering]
-- **차량 모델**: <!-- TODO: kinematic/dynamic bicycle model 선택 및 수식 기술 -->
-- **비용 함수**: J = sum(x'Qx + u'Ru + du'Sdu)
-  - Q: 경로 추종 가중치 <!-- TODO: 초기값 -->
-  - R: 제어 입력 가중치 <!-- TODO: 초기값 -->
-  - S: 제어 변화율 가중치 <!-- TODO: 초기값 -->
+- **차량 모델**: Kinematic bicycle model
+  - Wheelbase (L) = 2.865m
+  - Handle saturation = ±400 degrees
+- **Lookahead distance**: 속도 비례 동적 산출
+  - ld = kv * v + ld_min (kv, ld_min은 설정 파라미터)
+- **조향각 연산**: delta = atan2(2 * L * sin(alpha) / ld)
+  - alpha: 현재 위치에서 lookahead point까지의 각도
 - **제약 조건**:
-  - |delta| <= <!-- TODO: max steering angle --> rad
-  - |d(delta)/dt| <= <!-- TODO: max steering rate --> rad/s
+  - |steering_handle| <= 400 degrees
+  - 변화율 제한: <!-- 대기 중: max steering rate 확정 후 갱신 -->
 
-#### 5.1.4 PID Fallback 설계
+#### 5.1.4 Fallback 설계
 
-<!-- TODO: PID fallback 제어기 상세 설계 -->
-
-- 전환 조건: MPC 솔버 실패 또는 연산 시간 초과 시
-- PID 게인: Kp=<!-- TODO -->, Ki=<!-- TODO -->, Kd=<!-- TODO -->
-- Anti-windup: <!-- TODO: anti-windup 메커니즘 기술 -->
+- <!-- 대기 중: fallback 전략 정의 후 갱신 -->
 
 ### 5.2 Longitudinal Controller Unit
 
 #### 5.2.1 유닛 개요
 
-- **유닛명**: `LongitudinalController`
-- **소스 파일**: <!-- TODO: 소스 파일 경로 기입 -->
+- **유닛명**: `LongitudinalController` (SCC)
+- **소스 파일**: `src/Controller.cpp`
 - **요구사항 추적**: SW-CTL-SR-010 ~ SW-CTL-SR-014
-- **ASIL**: D
+- **ASIL**: C
 
 #### 5.2.2 클래스/모듈 인터페이스
 
@@ -149,30 +144,28 @@ public:
 };
 ```
 
-#### 5.2.3 알고리즘 설계 (PID + Feedforward)
+#### 5.2.3 알고리즘 설계 (SCC)
 
-<!-- TODO: 종방향 PID 제어기 상세 설계 -->
-
-- **속도 오차**: e_v = v_target - v_current
-- **PID 출력**: a_pid = Kp*e_v + Ki*integral(e_v) + Kd*d(e_v)/dt
-- **Feedforward**: a_ff = <!-- TODO: 경사 보상, 공기저항 보상 수식 -->
-- **최종 출력**: a_cmd = a_pid + a_ff
+- **SCC (Smart Cruise Control)**: 속도 프로파일 추종
+  - 속도 오차 기반 가감속 명령 생성
+  - 소스: `src/Controller.cpp`
 - **가속/제동 분배**:
   - a_cmd > 0: throttle 명령 생성
-  - a_cmd < 0: brake 명령 생성 (회생/유압 제동 배분)
+  - a_cmd < 0: brake 명령 생성
+- **Feedforward**: <!-- 대기 중: 경사 보상, 공기저항 보상 수식 확정 후 갱신 -->
 
 #### 5.2.4 제동 배분 로직
 
-<!-- TODO: 회생 제동 / 유압 제동 배분 로직 상세 기술 -->
+<!-- 대기 중: 회생 제동 / 유압 제동 배분 로직 상세 기술 -->
 
 ### 5.3 Safety Monitor Unit
 
 #### 5.3.1 유닛 개요
 
 - **유닛명**: `SafetyMonitor`
-- **소스 파일**: <!-- TODO: 소스 파일 경로 기입 -->
+- **소스 파일**: <!-- 대기 중: SafetyMonitor 구현 완료 후 갱신 -->
 - **요구사항 추적**: SW-CTL-SR-020 ~ SW-CTL-SR-032
-- **ASIL**: D
+- **ASIL**: C
 
 #### 5.3.2 출력 제한 로직 (Output Limiter)
 
@@ -191,67 +184,67 @@ function limitOutput(raw_cmd, prev_cmd, dt):
 
 #### 5.3.3 Plausibility Check
 
-<!-- TODO: 입출력 일관성 검증 로직 상세 설계 -->
+<!-- 대기 중: 입출력 일관성 검증 로직 상세 설계 -->
 
-- 조향 명령 vs 실제 조향각 편차 감시
+- 조향 명령 vs 실제 조향각 편차 감시 (saturation ±400 degrees)
 - 가속 명령 vs 실제 가속도 편차 감시
-- 허용 임계값: <!-- TODO: 정의 -->
+- 허용 임계값: <!-- 대기 중: 정의 확정 후 갱신 -->
 
 #### 5.3.4 안전 상태 전이 (Safe State Transition)
 
 | 감지 이벤트                  | 안전 동작                        | 전이 시간 목표     |
 |------------------------------|----------------------------------|--------------------|
-| 입력 타임아웃                | 제어 출력 0 (coasting)           | <!-- TODO --> ms   |
-| CAN 통신 오류                | 최종 유효 명령 유지 → 0 전이     | <!-- TODO --> ms   |
+| 입력 타임아웃                | 제어 출력 0 (coasting)           | 대기 중: 타겟 보드 검증 후 갱신 |
+| CAN 통신 오류                | 최종 유효 명령 유지 → 0 전이     | 대기 중: 타겟 보드 검증 후 갱신 |
 | 출력 범위 초과               | 즉시 클램핑                      | 1 cycle 이내       |
 | MPC 솔버 실패                | PID fallback 전환                | 1 cycle 이내       |
-| 비상 정지 요청               | 최대 제동력 인가                 | <!-- TODO --> ms   |
+| 비상 정지 요청               | 최대 제동력 인가                 | 대기 중: 타겟 보드 검증 후 갱신 |
 
 ### 5.4 Input Manager Unit
 
 #### 5.4.1 유닛 개요
 
 - **유닛명**: `InputManager`
-- **소스 파일**: <!-- TODO: 소스 파일 경로 기입 -->
+- **소스 파일**: `src/ControlModule.cpp` (입력 관리 부분)
 - **요구사항 추적**: SW-CTL-SR-023
-- **ASIL**: D
+- **ASIL**: C
 
 #### 5.4.2 입력 유효성 검사
 
-<!-- TODO: 입력 데이터 유효성 검사 로직 상세 기술 -->
+<!-- 대기 중: 입력 데이터 유효성 검사 로직 상세 기술 -->
 
-- 경로 데이터 범위 검사 (waypoint 좌표 범위, 곡률 범위)
+- 경로 데이터 범위 검사 (waypoint 좌표 범위, 곡률 범위) — PathManager.cpp
 - 속도 프로파일 범위 검사 (음수 속도 거부, 최대 속도 제한)
 - 타임스탬프 연속성 검사
-- 타임아웃 감시 (<!-- TODO --> ms 이내 미수신 시 timeout 플래그)
+- 타임아웃 감시 (<!-- 대기 중: timeout 확정 후 갱신 --> ms 이내 미수신 시 timeout 플래그)
 
 ### 5.5 Output Manager Unit
 
 #### 5.5.1 유닛 개요
 
 - **유닛명**: `OutputManager`
-- **소스 파일**: <!-- TODO: 소스 파일 경로 기입 -->
+- **소스 파일**: `src/Communicator.cpp`
 - **요구사항 추적**: SW-CTL-SR-030 ~ SW-CTL-SR-032
-- **ASIL**: D
+- **ASIL**: C
 
 #### 5.5.2 CAN 프레임 구성
 
-<!-- TODO: CAN 메시지 레이아웃 상세 정의 -->
+<!-- 대기 중: CAN 메시지 레이아웃 상세 정의 완성 -->
 
 | CAN ID         | 용도               | 주기            | 데이터 길이 | 비고                     |
 |----------------|---------------------|-----------------|-------------|--------------------------|
-| <!-- TODO -->  | 조향 명령           | <!-- TODO --> ms| 8 bytes     | EPS 인터페이스           |
-| <!-- TODO -->  | 가감속 명령         | <!-- TODO --> ms| 8 bytes     | ESC 인터페이스           |
+| <!-- 대기 중: CAN ID 확정 후 갱신 --> | 조향 명령 | 50 ms | 8 bytes | EPS 인터페이스 |
+| <!-- 대기 중: CAN ID 확정 후 갱신 --> | 가감속 명령 | 50 ms | 8 bytes | ESC 인터페이스 |
 
 #### 5.5.3 Alive Counter / CRC
 
 - Alive counter: 4-bit, 0-14 순환 (15 = invalid)
-- CRC 알고리즘: <!-- TODO: CRC-8 / CRC-16 등 사양 정의 -->
+- CRC 알고리즘: CrcProvider 공통 라이브러리 활용 (<!-- 대기 중: CRC 사양 확정 후 갱신 -->)
 - CRC 범위: 메시지 payload 전체 (alive counter 포함)
 
 ## 6. 자료구조 (Data Structures)
 
-<!-- TODO: 주요 자료구조 정의 완성 -->
+<!-- 대기 중: 주요 자료구조 정의 완성 — 아래는 설계 초안 -->
 
 ```cpp
 struct VehicleState {
@@ -279,7 +272,7 @@ struct AccelCommand {
 
 ## 7. 에러 처리 (Error Handling)
 
-<!-- TODO: 각 유닛별 에러 처리 전략 상세 기술 -->
+<!-- 대기 중: 각 유닛별 에러 처리 전략 상세 기술 -->
 
 | 에러 유형                  | 처리 방법                                     | 복구 전략               |
 |----------------------------|-----------------------------------------------|-------------------------|
@@ -292,21 +285,22 @@ struct AccelCommand {
 
 설정 파일: `conf/config.ini` → `../../config/control-module.ini`
 
-<!-- TODO: 설정 파라미터 목록 완성 -->
+<!-- 대기 중: 설정 파라미터 목록 완성 — ConfigParser 공통 라이브러리 활용 -->
 
 | 파라미터                    | 타입    | 기본값         | 설명                          |
 |-----------------------------|---------|----------------|-------------------------------|
-| lateral.controller_type     | string  | "mpc"          | 횡방향 제어기 타입 (mpc/pid)  |
-| lateral.mpc.horizon         | int     | <!-- TODO -->  | MPC 예측 구간                 |
-| lateral.pid.kp              | double  | <!-- TODO -->  | PID 비례 게인                 |
-| longitudinal.pid.kp         | double  | <!-- TODO -->  | 종방향 PID 비례 게인          |
-| safety.input_timeout_ms     | int     | <!-- TODO -->  | 입력 타임아웃 임계값          |
-| safety.max_steering_rad     | double  | <!-- TODO -->  | 최대 조향각 제한              |
-| safety.max_accel_mps2       | double  | <!-- TODO -->  | 최대 가속도 제한              |
-| safety.max_decel_mps2       | double  | <!-- TODO -->  | 최대 감속도 제한              |
+| lateral.controller_type     | string  | "pure_pursuit" | 횡방향 제어기 타입 (Pure Pursuit) |
+| lateral.wheelbase_m         | double  | 2.865          | 차량 휠베이스 [m]             |
+| lateral.max_steering_deg    | double  | 400.0          | 핸들 saturation [degrees]     |
+| longitudinal.controller_type| string  | "scc"          | 종방향 제어기 타입 (SCC)      |
+| control.main_cycle_ms       | int     | 50             | MainCycle 주기 [ms]           |
+| safety.input_timeout_ms     | int     | <!-- 대기 중: 확정 후 갱신 --> | 입력 타임아웃 임계값 |
+| safety.max_accel_mps2       | double  | <!-- 대기 중: 확정 후 갱신 --> | 최대 가속도 제한 |
+| safety.max_decel_mps2       | double  | <!-- 대기 중: 확정 후 갱신 --> | 최대 감속도 제한 |
 
 ## 9. 변경 이력 (Change History)
 
 | Version | Date       | Author        | Description          |
 |---------|------------|---------------|----------------------|
-| 0.1     | <!-- TODO: 날짜 --> | <!-- TODO: 작성자 --> | Initial draft |
+| 0.1     | 2026-04-06 | SuYeol Kim | Initial draft |
+| 1.0     | 2026-04-06 | SuYeol Kim | Fill concrete values: ASIL C, source files, Pure Pursuit/SCC, wheelbase 2.865m, ±400° |

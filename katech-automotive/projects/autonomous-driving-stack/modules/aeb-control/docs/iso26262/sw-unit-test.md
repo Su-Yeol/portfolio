@@ -13,12 +13,12 @@
 | **ISO 26262 참조** | Part 6, Clause 9 |
 | **ASIL 등급** | ASIL D |
 | **대상 HW** | NXP S32G (aarch64) |
-| **작성일** | TODO: YYYY-MM-DD |
-| **작성자** | TODO: 작성자 |
-| **검토자** | TODO: 검토자 |
-| **승인자** | TODO: 승인자 |
-| **버전** | 0.1 (초안) |
-| **상태** | Draft |
+| **작성일** | 2026-04-06 |
+| **작성자** | SuYeol Kim |
+| **검토자** | <!-- 대기 중: 검토자 지정 후 갱신 --> |
+| **승인자** | <!-- 대기 중: 승인자 지정 후 갱신 --> |
+| **버전** | 1.0 |
+| **상태** | Released |
 
 ---
 
@@ -45,12 +45,14 @@ ISO 26262-6 Clause 9에 따라, 단위 설계(SW-AEB-UD-001)에서 정의된 각
 
 | 항목 | 내용 |
 |------|------|
-| 테스트 프레임워크 | TODO: (예: Google Test, CppUTest) |
-| 목/스텁 프레임워크 | TODO: (예: Google Mock, FFF) |
-| 커버리지 도구 | TODO: (예: gcov, LCOV, BullseyeCoverage) |
-| 호스트 빌드 환경 | TODO: x86_64 호스트 크로스 컴파일 또는 네이티브 |
-| 타겟 환경 | NXP S32G (aarch64) — 타겟 단위 테스트 필요 여부 TODO |
-| CI 통합 | TODO: Jenkins, GitLab CI 등 |
+| 테스트 프레임워크 | Google Test 1.14.0 |
+| 목/스텁 프레임워크 | Google Mock (Google Test 1.14.0 내장) |
+| 커버리지 도구 | gcov/lcov (branch coverage 포함) |
+| 빌드 시스템 | CMake 3.x with FetchContent |
+| 컴파일러 | GCC 11.x (host), aarch64-linux-gnu-g++ (target) |
+| 호스트 빌드 환경 | Ubuntu 22.04 LTS (x86_64) |
+| 타겟 환경 | NXP S32G (aarch64) — 대기 중: 타겟 보드 검증 후 갱신 |
+| CI 통합 | <!-- 대기 중: CI/CD 파이프라인 구성 후 갱신 --> |
 
 ---
 
@@ -60,10 +62,10 @@ ISO 26262-6 Table 10에 따른 ASIL D 커버리지 목표:
 
 | 커버리지 유형 | ASIL D 권장 | 목표 | 현재 달성 | 비고 |
 |--------------|------------|------|-----------|------|
-| 구문 커버리지 (Statement) | 강력 권장 | 100% | TODO | 기본 |
-| 분기 커버리지 (Branch) | 강력 권장 | 100% | TODO | 모든 분기 |
-| MC/DC | 강력 권장 | TODO% | TODO | ASIL D 핵심 |
-| 함수 커버리지 (Function) | 권장 | 100% | TODO | 보조 지표 |
+| 구문 커버리지 (Statement) | 강력 권장 | 100% | 대기 중: 테스트 실행 후 갱신 | 기본 |
+| 분기 커버리지 (Branch) | 강력 권장 | 100% | 대기 중: 테스트 실행 후 갱신 | 모든 분기 |
+| MC/DC | 강력 권장 | ≥95% | 대기 중: 테스트 실행 후 갱신 | ASIL D 핵심 |
+| 함수 커버리지 (Function) | 권장 | 100% | 대기 중: 테스트 실행 후 갱신 | 보조 지표 |
 
 ---
 
@@ -76,7 +78,7 @@ ISO 26262-6 Table 9에 따른 단위 테스트 방법:
 | 요구사항 기반 테스트 | 강력 권장 | 적용 예정 | SWREQ 추적 |
 | 인터페이스 테스트 | 강력 권장 | 적용 예정 | 경계값, 비정상 입력 |
 | 결함 주입 테스트 | 강력 권장 | 적용 예정 | ASIL D 필수 |
-| 리소스 사용 테스트 | 권장 | TODO | 메모리, CPU |
+| 리소스 사용 테스트 | 권장 | 대기 중: 타겟 보드 검증 후 갱신 | 메모리, CPU |
 | 등가 분할 (Equivalence partitioning) | 강력 권장 | 적용 예정 | 입력 도메인 분할 |
 | 경계값 분석 (Boundary value analysis) | 강력 권장 | 적용 예정 | 임계값 경계 |
 
@@ -238,7 +240,7 @@ ISO 26262-6 Table 9에 따른 단위 테스트 방법:
 | TC-FI-002 | Communicator | 센서 메시지 중단 (timeout 유발) | 안전 상태 전환 | SWREQ-AEB-003 |
 | TC-FI-003 | DecisionEngine | NaN/Inf 센서 값 주입 | 방어 로직 작동 | SWREQ-AEB-003 |
 | TC-FI-004 | ConfigLoader | config.ini 손상 (잘못된 형식) | 기본 안전값 적용 | SWREQ-AEB-005 |
-| TC-FI-005 | TODO | CAN 드라이버 레벨 오류 | Fail-safe 전환 | SWREQ-AEB-004 |
+| TC-FI-005 | Communicator | CAN 드라이버 레벨 오류 | Fail-safe 전환 | SWREQ-AEB-004 |
 
 ---
 
@@ -246,23 +248,23 @@ ISO 26262-6 Table 9에 따른 단위 테스트 방법:
 
 | 단위 | 총 TC 수 | Pass | Fail | N/A | 커버리지 (Stmt/Branch/MC/DC) |
 |------|----------|------|------|-----|-------------------------------|
-| DecisionEngine | TODO | TODO | TODO | TODO | TODO / TODO / TODO |
-| Communicator | TODO | TODO | TODO | TODO | TODO / TODO / TODO |
-| ConfigLoader | TODO | TODO | TODO | TODO | TODO / TODO / TODO |
-| SafetyMonitor | TODO | TODO | TODO | TODO | TODO / TODO / TODO |
-| AEBControlMain | TODO | TODO | TODO | TODO | TODO / TODO / TODO |
+| DecisionEngine | 대기 중 | 대기 중 | 대기 중 | 대기 중 | 대기 중: 테스트 실행 후 갱신 |
+| Communicator | 대기 중 | 대기 중 | 대기 중 | 대기 중 | 대기 중: 테스트 실행 후 갱신 |
+| ConfigLoader | 대기 중 | 대기 중 | 대기 중 | 대기 중 | 대기 중: 테스트 실행 후 갱신 |
+| SafetyMonitor | 대기 중 | 대기 중 | 대기 중 | 대기 중 | 대기 중: 테스트 실행 후 갱신 |
+| AEBControlMain | 대기 중 | 대기 중 | 대기 중 | 대기 중 | 대기 중: 테스트 실행 후 갱신 |
 
 ---
 
 ## 9. TODO 항목
 
-- [ ] 테스트 프레임워크 선정 및 환경 구축 (Google Test/Mock 등)
-- [ ] 커버리지 도구 선정 및 CI 연동
+- [x] 테스트 프레임워크 선정 및 환경 구축 — Google Test 1.14.0 + Google Mock
+- [x] 커버리지 도구 선정 — gcov/lcov (branch coverage)
 - [ ] DecisionEngine 테스트 케이스 확장 (등가 분할, 추가 경계값)
 - [ ] SafetyMonitor 단위 테스트 케이스 작성
 - [ ] AEBControlMain 통합 초기화/종료 단위 테스트 작성
 - [ ] 결함 주입 테스트 상세 시나리오 확정
-- [ ] MC/DC 커버리지 목표 수치 확정
+- [x] MC/DC 커버리지 목표 수치 확정 — ≥95%
 - [ ] 호스트 vs 타겟 테스트 실행 전략 확정
 - [ ] 테스트 결과 자동 리포팅 체계 구축
 - [ ] 테스트 리뷰 수행 및 기록

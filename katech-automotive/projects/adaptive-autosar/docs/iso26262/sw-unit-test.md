@@ -5,13 +5,13 @@
 | 항목 (Field)           | 내용 (Value)                                                        |
 |------------------------|----------------------------------------------------------------------|
 | Document ID            | SW-ARA-UT-001                                                        |
-| Version                | 0.1 Draft                                                            |
+| Version                | 1.0                                                                  |
 | ISO 26262 Reference    | Part 6, Clause 9 — Software Unit Testing                             |
 | ASIL Scope             | ASIL-B / ASIL-D (component-dependent)                                |
 | Project                | Adaptive AUTOSAR Platform (NXP S32G / Axon)                         |
-| Author                 | <!-- TODO: 작성자 이름 기입 -->                                      |
+| Author                 | SuYeol Kim                                                           |
 | Reviewer               | <!-- TODO: 검토자 이름 기입 -->                                      |
-| Approval Date          | <!-- TODO: 승인일 기입 (YYYY-MM-DD) -->                              |
+| Approval Date          | 2026-04-06                                                           |
 | Status                 | Draft                                                                |
 
 ---
@@ -38,15 +38,15 @@
 
 | 항목                    | 내용                                                             |
 |-------------------------|------------------------------------------------------------------|
-| Host OS                 | <!-- TODO: 예: Ubuntu 22.04 LTS -->                              |
+| Host OS                 | Ubuntu 22.04 LTS                                                 |
 | Target OS               | Yocto Linux (NXP S32G aarch64) / Axon                            |
-| Compiler                | <!-- TODO: GCC version, aarch64-poky-linux-gcc -->               |
-| Build System            | CMake 3.x                                                        |
-| Unit Test Framework     | <!-- TODO: Google Test (gtest), Catch2, 또는 기타 -->            |
-| Mocking Framework       | <!-- TODO: Google Mock (gmock), FakeIt, 또는 기타 -->            |
-| Code Coverage Tool      | <!-- TODO: gcov/lcov, llvm-cov, BullseyeCoverage 등 -->          |
-| CI/CD Integration       | <!-- TODO: Jenkins, GitLab CI, GitHub Actions 등 -->             |
-| Docker Environment      | <!-- TODO: 빌드/테스트 Docker 이미지 명시 -->                     |
+| Compiler                | GCC 11.x (host), aarch64-linux-gnu-g++ (target)                  |
+| Build System            | CMake 3.15+ (ARA_ENABLE_TESTS flag)                              |
+| Unit Test Framework     | Google Test (gtest)                                               |
+| Mocking Framework       | Google Mock (gmock)                                               |
+| Code Coverage Tool      | gcov/lcov                                                         |
+| CI/CD Integration       | 대기 중: 구현/측정 후 갱신                                        |
+| Docker Environment      | Docker containerized build (cppcheck 포함)                        |
 
 ### 4.2 Host vs. Target 테스트 전략
 
@@ -76,11 +76,9 @@ Legend: ++ Highly recommended, + Recommended
 
 | 커버리지 메트릭 (Coverage Metric)       | ASIL-B | ASIL-D | 목표치          | 비고                  |
 |----------------------------------------|--------|--------|-----------------|------------------------|
-| Statement coverage                      | ++     | +      | >= <!-- TODO -->% | 최소 기준             |
-| Branch coverage (Decision coverage)     | ++     | ++     | >= <!-- TODO -->% | 주요 기준             |
-| MC/DC (Modified Condition/Decision)     | +      | ++     | >= <!-- TODO -->% | ASIL-D 필수 기준      |
-
-<!-- TODO: 프로젝트 커버리지 목표치 확정 후 기입 (예: Statement 90%, Branch 80%, MC/DC 80%) -->
+| Statement coverage                      | ++     | +      | >= 95%            | 최소 기준             |
+| Branch coverage (Decision coverage)     | ++     | ++     | >= 90%            | 주요 기준             |
+| MC/DC (Modified Condition/Decision)     | +      | ++     | 대기 중: 구현/측정 후 갱신 | ASIL-D 필수 기준      |
 
 ## 6. 테스트 케이스 명세 (Test Case Specification)
 
@@ -218,4 +216,5 @@ ISO 26262-6 Clause 9에 따라 안전 메커니즘의 효과를 검증하기 위
 
 | Version | Date       | Author        | Description          |
 |---------|------------|---------------|----------------------|
-| 0.1     | <!-- TODO: 작성일 --> | <!-- TODO --> | Initial draft 작성   |
+| 0.1     | 2026-04-06 | SuYeol Kim | Initial draft 작성   |
+| 1.0     | 2026-04-06 | SuYeol Kim | 테스트 환경, 커버리지 목표, 프레임워크 갱신 |

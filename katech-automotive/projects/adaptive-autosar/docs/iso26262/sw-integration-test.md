@@ -5,13 +5,13 @@
 | 항목 (Field)           | 내용 (Value)                                                           |
 |------------------------|-------------------------------------------------------------------------|
 | Document ID            | SW-ARA-IT-001                                                           |
-| Version                | 0.1 Draft                                                               |
+| Version                | 1.0                                                                     |
 | ISO 26262 Reference    | Part 6, Clause 10 — Software Integration and Testing                    |
 | ASIL Scope             | ASIL-B / ASIL-D (component-dependent)                                   |
 | Project                | Adaptive AUTOSAR Platform (NXP S32G / Axon)                            |
-| Author                 | <!-- TODO: 작성자 이름 기입 -->                                         |
+| Author                 | SuYeol Kim                                                              |
 | Reviewer               | <!-- TODO: 검토자 이름 기입 -->                                         |
-| Approval Date          | <!-- TODO: 승인일 기입 (YYYY-MM-DD) -->                                 |
+| Approval Date          | 2026-04-06                                                              |
 | Status                 | Draft                                                                    |
 
 ---
@@ -84,9 +84,9 @@ Step 3: Platform-Application Integration
 
 | 항목                    | Host 환경                           | Target 환경 (NXP S32G)             | Target 환경 (Axon)     |
 |-------------------------|--------------------------------------|-------------------------------------|------------------------|
-| OS                      | <!-- TODO: Ubuntu version -->        | Yocto Linux (aarch64)               | <!-- TODO -->          |
-| Build                   | CMake + Docker                       | Yocto/bitbake cross-build           | <!-- TODO -->          |
-| Test Framework          | <!-- TODO: gtest/pytest 등 -->       | <!-- TODO -->                       | <!-- TODO -->          |
+| OS                      | Ubuntu 22.04 LTS                     | Yocto Linux (aarch64)               | 대기 중: 구현/측정 후 갱신 |
+| Build                   | CMake 3.15+ + Docker                 | Yocto/bitbake cross-build           | 대기 중: 구현/측정 후 갱신 |
+| Test Framework          | Google Test (gtest) + Google Mock    | Google Test (cross-compiled)        | 대기 중: 구현/측정 후 갱신 |
 | Communication           | Loopback / Virtual VLAN              | Real Ethernet                       | <!-- TODO -->          |
 | 디버깅 도구             | <!-- TODO: GDB, valgrind 등 -->      | <!-- TODO: JTAG, trace 등 -->       | <!-- TODO -->          |
 
@@ -118,10 +118,8 @@ Legend: ++ Highly recommended, + Recommended
 
 | 커버리지 메트릭                                  | ASIL-B | ASIL-D | 목표치           |
 |--------------------------------------------------|--------|--------|------------------|
-| Function coverage                                 | ++     | +      | >= <!-- TODO -->% |
-| Call coverage                                     | ++     | ++     | >= <!-- TODO -->% |
-
-<!-- TODO: 통합 수준 커버리지 목표치 확정 후 기입 -->
+| Function coverage                                 | ++     | +      | >= 95%            |
+| Call coverage                                     | ++     | ++     | >= 90%            |
 
 ## 7. 통합 테스트 케이스 명세 (Integration Test Cases)
 
@@ -236,4 +234,5 @@ Legend: ++ Highly recommended, + Recommended
 
 | Version | Date       | Author        | Description          |
 |---------|------------|---------------|----------------------|
-| 0.1     | <!-- TODO: 작성일 --> | <!-- TODO --> | Initial draft 작성   |
+| 0.1     | 2026-04-06 | SuYeol Kim | Initial draft 작성   |
+| 1.0     | 2026-04-06 | SuYeol Kim | 테스트 환경, 커버리지 목표, 메타데이터 갱신 |

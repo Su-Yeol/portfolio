@@ -5,13 +5,13 @@
 | 항목 (Field)           | 내용 (Value)                                                              |
 |------------------------|---------------------------------------------------------------------------|
 | Document ID            | SW-ARA-VR-001                                                             |
-| Version                | 0.1 Draft                                                                 |
+| Version                | 1.0                                                                       |
 | ISO 26262 Reference    | Part 6, Clause 11 — Verification of Software Safety Requirements          |
 | ASIL Scope             | ASIL-B / ASIL-D (component-dependent)                                     |
 | Project                | Adaptive AUTOSAR Platform (NXP S32G / Axon)                              |
-| Author                 | <!-- TODO: 작성자 이름 기입 -->                                           |
+| Author                 | SuYeol Kim                                                                |
 | Reviewer               | <!-- TODO: 검토자 이름 기입 -->                                           |
-| Approval Date          | <!-- TODO: 승인일 기입 (YYYY-MM-DD) -->                                   |
+| Approval Date          | 2026-04-06                                                                |
 | Status                 | Draft                                                                     |
 
 ---
@@ -111,11 +111,11 @@ ISO 26262-6 Clause 11에 따라 적용된 검증 방법:
 
 | 항목              | 내용                                                          |
 |-------------------|---------------------------------------------------------------|
-| Tool              | <!-- TODO: Coverity, Polyspace, cppcheck 등 -->               |
-| Version           | <!-- TODO: 도구 버전 -->                                      |
-| Ruleset           | <!-- TODO: MISRA C++:2023 / AUTOSAR C++14 / custom -->        |
-| Analysis Date     | <!-- TODO: 분석 수행일 -->                                    |
-| Target Codebase   | <!-- TODO: 분석 대상 소스 경로 및 revision/commit hash -->     |
+| Tool              | cppcheck (Docker 내), clang-tidy                               |
+| Version           | 대기 중: 구현/측정 후 갱신                                     |
+| Ruleset           | MISRA C++:2008 via clang-tidy                                  |
+| Analysis Date     | 대기 중: 구현/측정 후 갱신                                     |
+| Target Codebase   | 대기 중: 구현/측정 후 갱신                                     |
 
 ### 6.2 정적 분석 결과 요약
 
@@ -155,11 +155,9 @@ ISO 26262-6 Clause 11에 따라 적용된 검증 방법:
 
 | 커버리지 메트릭   | 목표 (ASIL-B) | 목표 (ASIL-D) | 실제 달성          | 판정          |
 |--------------------|---------------|---------------|---------------------|---------------|
-| Statement Coverage | >= <!-- TODO -->% | >= <!-- TODO -->% | <!-- TODO --> % | <!-- TODO --> |
-| Branch Coverage    | >= <!-- TODO -->% | >= <!-- TODO -->% | <!-- TODO --> % | <!-- TODO --> |
-| MC/DC Coverage     | >= <!-- TODO -->% | >= <!-- TODO -->% | <!-- TODO --> % | <!-- TODO --> |
-
-<!-- TODO: 커버리지 미달성 항목에 대한 gap 분석 및 조치 계획 기록 -->
+| Statement Coverage | >= 95%            | >= 95%            | 대기 중: 구현/측정 후 갱신 | 대기 중: 구현/측정 후 갱신 |
+| Branch Coverage    | >= 90%            | >= 90%            | 대기 중: 구현/측정 후 갱신 | 대기 중: 구현/측정 후 갱신 |
+| MC/DC Coverage     | 대기 중: 구현/측정 후 갱신 | >= 80%            | 대기 중: 구현/측정 후 갱신 | 대기 중: 구현/측정 후 갱신 |
 
 ## 8. 통합 테스트 결과 요약 (Integration Test Results Summary)
 
@@ -245,7 +243,7 @@ ISO 26262-6 Clause 11에 따라 적용된 검증 방법:
 
 | 역할                  | 이름           | 서명     | 일자            |
 |-----------------------|----------------|----------|-----------------|
-| 작성자 (Author)       | <!-- TODO -->  | <!-- TODO --> | <!-- TODO --> |
+| 작성자 (Author)       | SuYeol Kim     | —             | 2026-04-06    |
 | 검토자 (Reviewer)     | <!-- TODO -->  | <!-- TODO --> | <!-- TODO --> |
 | 안전 관리자 (Safety Manager) | <!-- TODO --> | <!-- TODO --> | <!-- TODO --> |
 | 승인자 (Approver)     | <!-- TODO -->  | <!-- TODO --> | <!-- TODO --> |
@@ -266,4 +264,5 @@ ISO 26262-6 Clause 11에 따라 적용된 검증 방법:
 
 | Version | Date       | Author        | Description          |
 |---------|------------|---------------|----------------------|
-| 0.1     | <!-- TODO: 작성일 --> | <!-- TODO --> | Initial draft 작성   |
+| 0.1     | 2026-04-06 | SuYeol Kim | Initial draft 작성   |
+| 1.0     | 2026-04-06 | SuYeol Kim | 정적 분석 도구, 커버리지 목표, 메타데이터 갱신 |

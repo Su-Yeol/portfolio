@@ -7,15 +7,15 @@
 | 항목 (Field)          | 내용 (Value)                                              |
 |-----------------------|-----------------------------------------------------------|
 | **Document ID**       | SW-RMT-UD-001                                             |
-| **Version**           | 0.1 Draft                                                 |
+| **Version**           | 1.0                                                       |
 | **ISO 26262 Reference** | Part 6, Clause 8 — Software Unit Design and Implementation |
-| **ASIL Scope**        | ASIL B (target) <!-- TODO: 최종 ASIL 등급 확정 후 업데이트 -->      |
+| **ASIL Scope**        | ASIL B                                                            |
 | **Project**           | Autonomous Driving Stack                                  |
 | **Module**            | Remote Control (remotePC / remoteS32G)                    |
 | **Target HW**         | NXP S32G (aarch64) — receiver / x86 PC — sender          |
-| **Author**            | <!-- TODO: 작성자 이름 기입 -->                             |
+| **Author**            | SuYeol Kim                                                  |
 | **Reviewer**          | <!-- TODO: 검토자 이름 기입 -->                             |
-| **Approval Date**     | <!-- TODO: 승인 일자 기입 (YYYY-MM-DD) -->                  |
+| **Approval Date**     | 2026-04-06                                                  |
 | **Status**            | Draft                                                     |
 
 ---
@@ -140,7 +140,7 @@ ISO 26262 Part 6, Clause 8 Table 8에 따른 코딩 가이드라인 적용:
 
 | 항목                                    | 적용 기준           | 현재 상태                          |
 |-----------------------------------------|---------------------|------------------------------------|
-| MISRA C++ 적용                           | ASIL B 권장         | <!-- TODO: 정적 분석 수행 여부 --> |
+| MISRA C++:2008 적용                      | ASIL B 권장         | 적용 예정 (clang-tidy MISRA 체커) |
 | 방어적 프로그래밍 (Defensive programming) | ASIL B 권장         | try-catch 적용 (부분)              |
 | 명시적 타입 캐스팅                        | ASIL B 권장         | <!-- TODO: 검토 필요 -->           |
 | 동적 메모리 할당 제한                     | ASIL B 권장         | <!-- TODO: new/delete 사용 검토 --> |
@@ -159,4 +159,5 @@ ISO 26262 Part 6, Clause 8 Table 8에 따른 코딩 가이드라인 적용:
 
 | Version | Date       | Author        | Description          |
 |---------|------------|---------------|----------------------|
-| 0.1     | <!-- TODO: 날짜 --> | <!-- TODO: 작성자 --> | Initial draft |
+| 0.1     | 2026-04-06 | SuYeol Kim | Initial draft |
+| 1.0     | 2026-04-06 | SuYeol Kim | 메타데이터, ASIL, 코딩 가이드라인 갱신 |

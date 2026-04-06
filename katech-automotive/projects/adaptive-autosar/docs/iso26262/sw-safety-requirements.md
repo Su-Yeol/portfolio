@@ -5,13 +5,13 @@
 | 항목 (Field)           | 내용 (Value)                                                        |
 |------------------------|----------------------------------------------------------------------|
 | Document ID            | SW-ARA-REQ-001                                                       |
-| Version                | 0.1 Draft                                                            |
+| Version                | 1.0                                                                  |
 | ISO 26262 Reference    | Part 6, Clause 6 — Specification of Software Safety Requirements     |
 | ASIL Scope             | ASIL-B / ASIL-D (component-dependent)                                |
 | Project                | Adaptive AUTOSAR Platform (NXP S32G / Axon)                         |
-| Author                 | <!-- TODO: 작성자 이름 기입 -->                                      |
+| Author                 | SuYeol Kim                                                           |
 | Reviewer               | <!-- TODO: 검토자 이름 기입 -->                                      |
-| Approval Date          | <!-- TODO: 승인일 기입 (YYYY-MM-DD) -->                              |
+| Approval Date          | 2026-04-06                                                           |
 | Status                 | Draft                                                                |
 
 ---
@@ -189,4 +189,5 @@ TSR에서 SwRS로의 도출은 다음 절차를 따른다:
 
 | Version | Date       | Author        | Description          |
 |---------|------------|---------------|----------------------|
-| 0.1     | <!-- TODO: 작성일 --> | <!-- TODO --> | Initial draft 작성   |
+| 0.1     | 2026-04-06 | SuYeol Kim | Initial draft 작성   |
+| 1.0     | 2026-04-06 | SuYeol Kim | 메타데이터 갱신 |

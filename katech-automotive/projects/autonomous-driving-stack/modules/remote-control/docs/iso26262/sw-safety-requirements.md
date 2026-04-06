@@ -7,15 +7,15 @@
 | 항목 (Field)          | 내용 (Value)                                              |
 |-----------------------|-----------------------------------------------------------|
 | **Document ID**       | SW-RMT-REQ-001                                            |
-| **Version**           | 0.1 Draft                                                 |
+| **Version**           | 1.0                                                       |
 | **ISO 26262 Reference** | Part 6, Clause 6 — Specification of Software Safety Requirements |
-| **ASIL Scope**        | ASIL B (target) <!-- TODO: 최종 ASIL 등급 확정 후 업데이트 -->      |
+| **ASIL Scope**        | ASIL B                                                            |
 | **Project**           | Autonomous Driving Stack                                  |
 | **Module**            | Remote Control (remotePC / remoteS32G)                    |
 | **Target HW**         | NXP S32G (aarch64) — receiver / x86 PC — sender          |
-| **Author**            | <!-- TODO: 작성자 이름 기입 -->                             |
+| **Author**            | SuYeol Kim                                                  |
 | **Reviewer**          | <!-- TODO: 검토자 이름 기입 -->                             |
-| **Approval Date**     | <!-- TODO: 승인 일자 기입 (YYYY-MM-DD) -->                  |
+| **Approval Date**     | 2026-04-06                                                  |
 | **Status**            | Draft                                                     |
 
 ---
@@ -137,4 +137,5 @@
 
 | Version | Date       | Author        | Description          |
 |---------|------------|---------------|----------------------|
-| 0.1     | <!-- TODO: 날짜 --> | <!-- TODO: 작성자 --> | Initial draft |
+| 0.1     | 2026-04-06 | SuYeol Kim | Initial draft |
+| 1.0     | 2026-04-06 | SuYeol Kim | 메타데이터, ASIL 갱신 |

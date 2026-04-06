@@ -7,13 +7,13 @@
 | **Document ID** | SW-DEC-UT-001 |
 | **Module** | Decision Module (K-City / CAN Gateway) |
 | **ISO 26262 Reference** | Part 6, Clause 9 (Software unit testing) |
-| **ASIL** | B–D (단위별 상이) |
+| **ASIL** | B~C (단위별 상이) |
 | **Target HW** | NXP S32G (aarch64) |
-| **Author** | TODO: 작성자 |
+| **Author** | SuYeol Kim |
 | **Reviewer** | TODO: 검토자 |
 | **Approval** | TODO: 승인자 |
-| **Version** | 0.1 (Draft) |
-| **Date** | TODO: YYYY-MM-DD |
+| **Version** | 1.0 |
+| **Date** | 2026-04-06 |
 | **Status** | Draft |
 
 ---
@@ -39,13 +39,13 @@
 
 | 항목 | 내용 |
 |------|------|
-| **테스트 프레임워크** | TODO: (예: Google Test, Catch2) |
-| **컴파일러** | TODO: (예: GCC aarch64-linux-gnu, 호스트용 GCC) |
-| **Host 테스트 환경** | TODO: (예: x86_64 Linux, CI 파이프라인) |
+| **테스트 프레임워크** | Google Test 1.14.0 |
+| **컴파일러** | GCC 11.x (host), aarch64-linux-gnu-g++ (target) |
+| **Host 테스트 환경** | Ubuntu 22.04 LTS (x86_64) |
 | **Target 테스트 환경** | NXP S32G (aarch64) |
-| **코드 커버리지 도구** | TODO: (예: gcov, lcov, LLVM Coverage) |
-| **정적 분석 도구** | TODO: (예: cppcheck, Polyspace) |
-| **Mock/Stub 프레임워크** | TODO: (예: Google Mock, FFF) |
+| **코드 커버리지 도구** | gcov/lcov |
+| **정적 분석 도구** | clang-tidy, cppcheck |
+| **Mock/Stub 프레임워크** | Google Mock (Google Test 1.14.0 포함) |
 
 ---
 
@@ -69,7 +69,10 @@ ISO 26262 Part 6, Table 10에 따른 ASIL별 테스트 방법 적용:
 | Branch Coverage | + | ++ | ++ | ++ |
 | MC/DC | + | + | ++ | ++ |
 
-> TODO: 본 모듈의 ASIL 등급에 따라 적용할 커버리지 목표를 확정할 것
+**본 모듈 커버리지 목표 (ASIL B~C):**
+- Statement Coverage: >= 95%
+- Branch Coverage: >= 90%
+- MC/DC: 대기 중: 구현/측정 후 갱신
 
 ---
 
@@ -156,11 +159,11 @@ ISO 26262 Part 6, Table 10에 따른 ASIL별 테스트 방법 적용:
 
 ## 8. 미해결 사항 (Open Items)
 
-- [ ] TODO: 테스트 프레임워크 선정 및 환경 구축
-- [ ] TODO: Mock/Stub 전략 확정 (센서 입력, CAN 인터페이스)
-- [ ] TODO: 커버리지 목표치 확정 (ASIL 등급별)
-- [ ] TODO: CI 파이프라인에 단위 테스트 통합
-- [ ] TODO: Host(x86_64) 테스트와 Target(aarch64) 테스트 전략 구분
+- [x] 테스트 프레임워크 선정: Google Test 1.14.0 + Google Mock (CMake FetchContent 사용)
+- [x] 커버리지 목표치 확정: Statement >= 95%, Branch >= 90%
+- [ ] TODO: Mock/Stub 전략 확정 (센서 입력, CAN 인터페이스) — 대기 중: 구현/측정 후 갱신
+- [ ] TODO: CI 파이프라인에 단위 테스트 통합 — 대기 중: 구현/측정 후 갱신
+- [ ] TODO: Host(x86_64) 테스트와 Target(aarch64) 테스트 전략 구분 — 대기 중: 구현/측정 후 갱신
 
 ---
 
@@ -168,4 +171,5 @@ ISO 26262 Part 6, Table 10에 따른 ASIL별 테스트 방법 적용:
 
 | Version | Date | Author | Description |
 |---------|------|--------|-------------|
-| 0.1 | TODO | TODO | Initial draft |
+| 0.1 | 2026-04-06 | SuYeol Kim | Initial draft |
+| 1.0 | 2026-04-06 | SuYeol Kim | 테스트 환경, 커버리지 목표, 프레임워크 정보 갱신 |

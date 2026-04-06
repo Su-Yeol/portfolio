@@ -7,13 +7,13 @@
 | **Document ID** | SW-DEC-UD-001 |
 | **Module** | Decision Module (K-City / CAN Gateway) |
 | **ISO 26262 Reference** | Part 6, Clause 8 (Software unit design and implementation) |
-| **ASIL** | B–D (단위별 상이) |
+| **ASIL** | B~C (단위별 상이) |
 | **Target HW** | NXP S32G (aarch64) |
-| **Author** | TODO: 작성자 |
+| **Author** | SuYeol Kim |
 | **Reviewer** | TODO: 검토자 |
 | **Approval** | TODO: 승인자 |
-| **Version** | 0.1 (Draft) |
-| **Date** | TODO: YYYY-MM-DD |
+| **Version** | 1.0 |
+| **Date** | 2026-04-06 |
 | **Status** | Draft |
 
 ---
@@ -42,11 +42,11 @@ ISO 26262 Part 6, Clause 8.4.5에 따른 코딩 가이드라인:
 
 | 항목 | 기준 | 적용 여부 |
 |------|------|----------|
-| MISRA C++:2008 | 안전 관련 C++ 코딩 규칙 | TODO |
-| AUTOSAR C++14 Guidelines | AUTOSAR C++ 코딩 표준 | TODO |
-| 정적 분석 도구 | TODO: (예: Polyspace, cppcheck, clang-tidy) | TODO |
-| 코드 복잡도 상한 | Cyclomatic Complexity ≤ TODO | TODO |
-| 함수 길이 상한 | TODO: xx lines | TODO |
+| MISRA C++:2008 | 안전 관련 C++ 코딩 규칙 | 적용 (clang-tidy MISRA 체커 활용) |
+| AUTOSAR C++14 Guidelines | AUTOSAR C++ 코딩 표준 | 참조 적용 |
+| 정적 분석 도구 | clang-tidy, cppcheck | 적용 |
+| 코드 복잡도 상한 | Cyclomatic Complexity ≤ 대기 중: 구현/측정 후 갱신 | 대기 중: 구현/측정 후 갱신 |
+| 함수 길이 상한 | 대기 중: 구현/측정 후 갱신 lines | 대기 중: 구현/측정 후 갱신 |
 
 > TODO: 프로젝트에 적용할 코딩 가이드라인을 확정하고 정적 분석 설정을 문서화할 것
 
@@ -62,8 +62,8 @@ ISO 26262 Part 6, Clause 8.4.5에 따른 코딩 가이드라인:
 |------|------|
 | **Unit ID** | SWU-DEC-K-001 |
 | **역할** | 주행 판단 메인 루프, 센서 데이터 통합 및 판단 실행 |
-| **ASIL** | TODO |
-| **입력** | Communicator로부터 센서 데이터, PathManager로부터 경로 정보 |
+| **ASIL** | ASIL C |
+| **입력** | Communicator로부터 센서 데이터 (GPS, LiDAR/Ibeo, Radar, Mobileye), PathManager로부터 경로 정보 |
 | **출력** | 주행 제어 명령 (조향각, 가감속) |
 | **안전 요구사항** | SWR-DEC-001, SWR-DEC-002, SWR-DEC-003, SWR-DEC-004 |
 
@@ -95,8 +95,8 @@ TODO: 의사 코드 또는 상태 다이어그램
 | 항목 | 내용 |
 |------|------|
 | **Unit ID** | SWU-DEC-K-002 |
-| **역할** | GPS, LiDAR(Ibeo), Path Planning, Pedestrian Detection 모듈과의 통신 |
-| **ASIL** | TODO |
+| **역할** | GPS, LiDAR(Ibeo), Radar, Mobileye, Path Planning, Pedestrian Detection 모듈과의 통신 |
+| **ASIL** | ASIL B |
 | **입력** | 외부 센서/모듈 데이터 (네트워크/IPC) |
 | **출력** | 파싱된 센서 데이터를 MainModule에 전달 |
 | **안전 요구사항** | SWR-DEC-001, SWR-DEC-003, SWR-DEC-004 |
@@ -125,7 +125,7 @@ TODO: 통신 프로토콜별 수신 및 파싱 로직 기술
 |------|------|
 | **Unit ID** | SWU-DEC-K-003 |
 | **역할** | 경로 데이터 관리, Waypoint 추종, 경로 이탈 판단 |
-| **ASIL** | TODO |
+| **ASIL** | ASIL C |
 | **입력** | 경로 Waypoints, 현재 GPS 위치 |
 | **출력** | 추종 목표점, 조향 명령 기초 데이터 |
 | **안전 요구사항** | SWR-DEC-001 |
@@ -161,8 +161,8 @@ TODO: 경로 추종 알고리즘 설계 기술
 | 항목 | 내용 |
 |------|------|
 | **Unit ID** | SWU-DEC-G-001 |
-| **역할** | CAN 버스 메시지 송수신, 프로토콜 변환, 게이트웨이 처리 |
-| **ASIL** | TODO |
+| **역할** | CAN 버스 메시지 송수신 (CAN ID: 0x165, 0x1A0, 0x1CF, 0x35, 0x60, 0xA0, 0xEA), 프로토콜 변환, 게이트웨이 처리 |
+| **ASIL** | ASIL B |
 | **입력** | Decision Module 제어 명령, 외부 CAN 메시지 |
 | **출력** | CAN 프레임 (차량 제어 명령) |
 | **안전 요구사항** | SWR-DEC-005 |
@@ -185,7 +185,7 @@ TODO: CAN 메시지 처리 흐름 기술
 |------|------|
 | **Unit ID** | SWU-DEC-G-002 |
 | **역할** | CAN 메시지 CRC 계산 및 검증 |
-| **ASIL** | TODO |
+| **ASIL** | ASIL B |
 | **입력** | CAN 메시지 바이트 배열 |
 | **출력** | CRC 값 (계산), 유효성 판정 (검증) |
 | **안전 요구사항** | SWR-DEC-005 |
@@ -241,4 +241,5 @@ ISO 26262 Part 6, Clause 8.4.6에 따른 검증:
 
 | Version | Date | Author | Description |
 |---------|------|--------|-------------|
-| 0.1 | TODO | TODO | Initial draft |
+| 0.1 | 2026-04-06 | SuYeol Kim | Initial draft |
+| 1.0 | 2026-04-06 | SuYeol Kim | ASIL 등급, 코딩 가이드라인, 센서/CAN 정보 갱신 |

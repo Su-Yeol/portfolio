@@ -7,14 +7,14 @@
 | 항목 (Field)          | 내용 (Value)                                          |
 |-----------------------|-------------------------------------------------------|
 | **Document ID**       | SW-ADS-UT-001                                         |
-| **Version**           | 0.1 Draft                                             |
+| **Version**           | 1.0                                                   |
 | **ISO 26262 Reference** | Part 6, Clause 9 — Software unit testing            |
 | **ASIL Scope**        | ASIL B ~ ASIL D (모듈별 상이)                          |
 | **Project**           | Autonomous Driving Stack (자율주행 스택)                |
 | **Target HW**         | NXP S32G (aarch64)                                    |
-| **Author**            | <!-- TODO: 작성자 이름 -->                             |
+| **Author**            | SuYeol Kim                                             |
 | **Reviewer**          | <!-- TODO: 검토자 이름 -->                             |
-| **Approval Date**     | <!-- TODO: 승인일자 (YYYY-MM-DD) -->                   |
+| **Approval Date**     | 2026-04-06                                             |
 | **Classification**    | Confidential                                          |
 
 ---
@@ -41,7 +41,7 @@
 | SW-ADS-ARCH-001 | Software Architecture Description             | 아키텍처 설계서          |
 | SW-ADS-UD-001   | Software Unit Design Specification            | 단위 설계 명세서         |
 | SW-ADS-IT-001   | Software Integration Test Specification       | 통합 테스트 명세서       |
-| <!-- TODO -->   | Test Framework Configuration                  | 테스트 프레임워크 설정   |
+| PRC-VER-001     | Verification Plan (Google Test 1.14.0)        | 테스트 프레임워크 설정   |
 
 ## 4. 단위 테스트 방법론 (Unit Test Methods)
 
@@ -63,9 +63,9 @@ ISO 26262 Part 6, Table 10에 따른 커버리지 기준:
 
 | 커버리지 메트릭             | ASIL B | ASIL C | ASIL D | 도구               |
 |-----------------------------|--------|--------|--------|--------------------|
-| 구문 커버리지 (Statement)    | ++     | ++     | ++     | <!-- TODO: gcov/llvm-cov 등 --> |
-| 분기 커버리지 (Branch)       | +      | ++     | ++     | <!-- TODO -->      |
-| MC/DC 커버리지              | +      | +      | ++     | <!-- TODO -->      |
+| 구문 커버리지 (Statement)    | ++     | ++     | ++     | gcov + lcov        |
+| 분기 커버리지 (Branch)       | +      | ++     | ++     | gcov + lcov (--rc lcov_branch_coverage=1) |
+| MC/DC 커버리지              | +      | +      | ++     | gcov + lcov (수동 분석 병행) |
 
 **프로젝트 목표 커버리지:**
 
@@ -77,7 +77,7 @@ ISO 26262 Part 6, Table 10에 따른 커버리지 기준:
 | remote-control   | B    | ≥ 95%    | ≥ 90%  | -        |
 | common           | D    | 100%      | 100%   | ≥ 95%    |
 
-<!-- TODO: 커버리지 미달 시 정당화(justification) 절차 기술 -->
+**커버리지 미달 시 정당화 절차:** 커버리지 목표 미달 항목이 발생한 경우, 해당 코드 경로의 도달 불가능성(unreachable path) 또는 방어적 코드(defensive code) 여부를 분석하고, 정당화 사유를 SW-ADS-VR-001 검증 보고서에 기록한다. 정당화 사유는 ASIL 등급에 따라 검토자 승인을 받아야 한다.
 
 ## 5. 테스트 환경 (Test Environment)
 
@@ -85,25 +85,25 @@ ISO 26262 Part 6, Table 10에 따른 커버리지 기준:
 
 | 항목              | 내용                                              |
 |-------------------|---------------------------------------------------|
-| 호스트 OS         | <!-- TODO: Ubuntu/CentOS 버전 -->                 |
-| 컴파일러          | <!-- TODO: GCC/Clang 버전 -->                     |
-| 테스트 프레임워크 | <!-- TODO: Google Test, CUnit, Unity 등 -->       |
-| 목(Mock) 프레임워크 | <!-- TODO: Google Mock, CMock 등 -->            |
-| 커버리지 도구     | <!-- TODO: gcov, lcov, llvm-cov 등 -->            |
-| 빌드 시스템       | <!-- TODO: CMake/Make 구성 -->                    |
-| CI/CD             | <!-- TODO: Jenkins/GitLab CI 등 -->               |
+| 호스트 OS         | Ubuntu 22.04 LTS                                  |
+| 컴파일러          | GCC 11.x (x86_64), C++17 표준                     |
+| 테스트 프레임워크 | Google Test 1.14.0 (CMake FetchContent로 자동 획득) |
+| 목(Mock) 프레임워크 | Google Mock (Google Test 1.14.0 포함)           |
+| 커버리지 도구     | gcov + lcov (branch coverage 활성화)              |
+| 빌드 시스템       | CMake 3.x (FetchContent for GoogleTest)           |
+| CI/CD             | GitHub Actions (계획 중)                          |
 
 ### 5.2 타겟 테스트 환경
 
 | 항목              | 내용                                              |
 |-------------------|---------------------------------------------------|
 | 타겟 HW           | NXP S32G (aarch64)                                |
-| 타겟 OS           | <!-- TODO: Linux 커널 버전 -->                    |
-| 크로스 컴파일러   | <!-- TODO: aarch64 cross-toolchain 버전 -->       |
-| 전송 방식         | <!-- TODO: SSH/SCP/JTAG 등 -->                    |
-| CAN 인터페이스    | <!-- TODO: 가상 CAN / 실물 CAN -->                |
+| 타겟 OS           | Linux (NXP S32G BSP)                              |
+| 크로스 컴파일러   | aarch64-linux-gnu-g++ (GCC 11.x cross-compiler)  |
+| 전송 방식         | SSH/SCP 기반 바이너리 전송                         |
+| CAN 인터페이스    | 실물 CAN (SocketCAN) + 가상 CAN (vcan, 호스트 테스트용) |
 
-<!-- TODO: 호스트-타겟 간 테스트 결과 차이 관리 방안 기술 -->
+**호스트-타겟 간 테스트 결과 차이 관리:** 호스트(x86_64)와 타겟(aarch64) 간 아키텍처 차이(바이트 오더, 정수 크기 등)로 인한 테스트 결과 불일치 가능성을 관리한다. 호스트에서 전체 단위 테스트를 수행하고, 타겟에서는 CAN 통신 및 타이밍 관련 핵심 테스트를 재실행하여 동일 결과를 확인한다. 차이 발생 시 SW-ADS-VR-001에 기록하고 원인 분석을 수행한다.
 
 ## 6. 테스트 케이스 설계 (Test Case Design)
 
@@ -186,24 +186,31 @@ ISO 26262 Part 6, Table 10에 따른 커버리지 기준:
 ### 7.1 호스트 단위 테스트 실행
 
 ```bash
-# 예시: Module-local 빌드 및 테스트 실행
-# <!-- TODO: 실제 빌드/테스트 명령어로 교체 -->
+# Module-local 빌드 및 테스트 실행 (CMake 3.x)
 cd modules/<module-name>
-mkdir build && cd build
-cmake -DUSE_PRIVATE_IMPL=ON -DENABLE_TESTING=ON ..
-make
+mkdir -p build && cd build
+cmake -DUSE_PRIVATE_IMPL=ON \
+      -DENABLE_TESTING=ON \
+      -DCMAKE_CXX_STANDARD=17 \
+      -DCMAKE_BUILD_TYPE=Debug \
+      ..
+cmake --build . --parallel $(nproc)
 ctest --output-on-failure
 ```
 
 ### 7.2 커버리지 리포트 생성
 
 ```bash
-# <!-- TODO: 실제 커버리지 수집 명령어로 교체 -->
-lcov --capture --directory . --output-file coverage.info
-genhtml coverage.info --output-directory coverage_report
+# gcov + lcov 기반 커버리지 리포트 생성 (branch coverage 활성화)
+lcov --capture --directory . --output-file coverage.info \
+     --rc lcov_branch_coverage=1
+lcov --remove coverage.info '/usr/*' '*/googletest/*' '*/test/*' \
+     --output-file coverage_filtered.info --rc lcov_branch_coverage=1
+genhtml coverage_filtered.info --output-directory coverage_report \
+       --branch-coverage
 ```
 
-<!-- TODO: CI/CD 파이프라인에서의 자동화된 테스트 실행 절차 기술 -->
+**CI/CD 자동화:** GitHub Actions 워크플로우를 통해 PR 생성 시 자동으로 빌드, 단위 테스트 실행, 커버리지 리포트 생성을 수행할 예정이다. 워크플로우는 `.github/workflows/` 디렉토리에 정의하며, 호스트(x86_64) 환경에서 전체 모듈에 대한 단위 테스트를 수행한다.
 
 ## 8. 합격 기준 (Pass Criteria)
 
@@ -232,4 +239,5 @@ genhtml coverage.info --output-directory coverage_report
 
 | Version | Date       | Author        | Description           |
 |---------|------------|---------------|-----------------------|
-| 0.1     | <!-- TODO --> | <!-- TODO --> | Initial draft 작성    |
+| 0.1     | 2026-04-06 | SuYeol Kim | Initial draft 작성    |
+| 1.0     | 2026-04-06 | SuYeol Kim | 구현 세부사항 반영, 테스트 환경/도구/절차 확정 |

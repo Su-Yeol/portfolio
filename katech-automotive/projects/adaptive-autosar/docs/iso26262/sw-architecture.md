@@ -5,13 +5,13 @@
 | 항목 (Field)           | 내용 (Value)                                                              |
 |------------------------|---------------------------------------------------------------------------|
 | Document ID            | SW-ARA-ARCH-001                                                           |
-| Version                | 0.1 Draft                                                                 |
+| Version                | 1.0                                                                       |
 | ISO 26262 Reference    | Part 6, Clause 7 — Software Architectural Design                          |
 | ASIL Scope             | ASIL-B / ASIL-D (component-dependent)                                     |
 | Project                | Adaptive AUTOSAR Platform (NXP S32G / Axon)                              |
-| Author                 | <!-- TODO: 작성자 이름 기입 -->                                           |
+| Author                 | SuYeol Kim                                                                |
 | Reviewer               | <!-- TODO: 검토자 이름 기입 -->                                           |
-| Approval Date          | <!-- TODO: 승인일 기입 (YYYY-MM-DD) -->                                   |
+| Approval Date          | 2026-04-06                                                                |
 | Status                 | Draft                                                                     |
 
 ---
@@ -35,7 +35,7 @@ Target Hardware:
 - **NXP S32G (aarch64)**: Vehicle gateway / domain controller — Cortex-A53 cluster
 - **Axon**: Application processor target
 
-Build System: CMake + Yocto (bitbake) + Docker containerized build environment
+Build System: CMake 3.15+ + Yocto (bitbake) + Docker containerized build environment
 
 ## 3. 참조 문서 (Input References)
 
@@ -231,7 +231,7 @@ Legend: ++ Highly recommended, + Recommended, o No recommendation
 
 | 항목                   | 내용                                                         |
 |------------------------|--------------------------------------------------------------|
-| Build System           | CMake 3.x + Yocto/bitbake                                    |
+| Build System           | CMake 3.15+ + Yocto/bitbake                                  |
 | Containerization       | Docker (빌드 환경 재현성 보장)                                 |
 | Cross-compilation      | aarch64-poky-linux (NXP S32G target)                          |
 | CI/CD                  | <!-- TODO: CI 파이프라인 기술 -->                              |
@@ -263,4 +263,5 @@ Legend: ++ Highly recommended, + Recommended, o No recommendation
 
 | Version | Date       | Author        | Description          |
 |---------|------------|---------------|----------------------|
-| 0.1     | <!-- TODO: 작성일 --> | <!-- TODO --> | Initial draft 작성   |
+| 0.1     | 2026-04-06 | SuYeol Kim | Initial draft 작성   |
+| 1.0     | 2026-04-06 | SuYeol Kim | 메타데이터, 빌드 환경, 플랫폼 정보 갱신 |

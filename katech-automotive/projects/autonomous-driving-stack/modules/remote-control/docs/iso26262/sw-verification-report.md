@@ -7,15 +7,15 @@
 | 항목 (Field)          | 내용 (Value)                                              |
 |-----------------------|-----------------------------------------------------------|
 | **Document ID**       | SW-RMT-VR-001                                             |
-| **Version**           | 0.1 Draft                                                 |
+| **Version**           | 1.0                                                       |
 | **ISO 26262 Reference** | Part 6, Clause 11 — Verification of Software Safety Requirements |
-| **ASIL Scope**        | ASIL B (target) <!-- TODO: 최종 ASIL 등급 확정 후 업데이트 -->      |
+| **ASIL Scope**        | ASIL B                                                            |
 | **Project**           | Autonomous Driving Stack                                  |
 | **Module**            | Remote Control (remotePC / remoteS32G)                    |
 | **Target HW**         | NXP S32G (aarch64) — receiver / x86 PC — sender          |
-| **Author**            | <!-- TODO: 작성자 이름 기입 -->                             |
+| **Author**            | SuYeol Kim                                                  |
 | **Reviewer**          | <!-- TODO: 검토자 이름 기입 -->                             |
-| **Approval Date**     | <!-- TODO: 승인 일자 기입 (YYYY-MM-DD) -->                  |
+| **Approval Date**     | 2026-04-06                                                  |
 | **Status**            | Draft                                                     |
 
 ---
@@ -87,9 +87,9 @@ ISO 26262 Part 6, Clause 11에 따른 검증 방법 적용 상태:
 
 | 커버리지 유형           | 목표      | 달성률                        | 판정              |
 |------------------------|-----------|-------------------------------|-------------------|
-| 구문 커버리지 (Statement) | >= 80%  | <!-- TODO: 측정값 기입 -->    | <!-- TODO -->    |
-| 분기 커버리지 (Branch)    | >= 80%  | <!-- TODO: 측정값 기입 -->    | <!-- TODO -->    |
-| MC/DC                     | 권장    | <!-- TODO: 측정값 기입 -->    | <!-- TODO -->    |
+| 구문 커버리지 (Statement) | >= 95%  | 대기 중: 구현/측정 후 갱신    | 대기 중: 구현/측정 후 갱신 |
+| 분기 커버리지 (Branch)    | >= 90%  | 대기 중: 구현/측정 후 갱신    | 대기 중: 구현/측정 후 갱신 |
+| MC/DC                     | 권장    | 대기 중: 구현/측정 후 갱신    | 대기 중: 구현/측정 후 갱신 |
 
 ### 5.3 실패 테스트 케이스 분석
 
@@ -129,9 +129,9 @@ ISO 26262 Part 6, Clause 11에 따른 검증 방법 적용 상태:
 
 | 분석 도구             | 대상 파일                        | 위반 건수 (총) | Critical | Major | Minor |
 |-----------------------|----------------------------------|---------------|----------|-------|-------|
-| <!-- TODO: 도구명 --> | src/remotePC.cpp                 | <!-- TODO --> | —        | —     | —     |
-| <!-- TODO: 도구명 --> | src/remoteS32G.cpp               | <!-- TODO --> | —        | —     | —     |
-| <!-- TODO: 도구명 --> | common/include/.../remote.h      | <!-- TODO --> | —        | —     | —     |
+| clang-tidy (MISRA C++:2008) | src/remotePC.cpp                 | 대기 중: 구현/측정 후 갱신 | —        | —     | —     |
+| clang-tidy (MISRA C++:2008) | src/remoteS32G.cpp               | 대기 중: 구현/측정 후 갱신 | —        | —     | —     |
+| cppcheck              | common/include/.../remote.h      | 대기 중: 구현/측정 후 갱신 | —        | —     | —     |
 
 ### 7.2 주요 정적 분석 발견 사항
 
@@ -204,7 +204,7 @@ ISO 26262 Part 6, Clause 11에 따른 검증 방법 적용 상태:
 
 | 역할       | 이름                    | 서명     | 날짜                   |
 |------------|-------------------------|----------|------------------------|
-| 작성자      | <!-- TODO: 이름 기입 --> | —       | <!-- TODO: 날짜 기입 --> |
+| 작성자      | SuYeol Kim               | —       | 2026-04-06               |
 | 검토자      | <!-- TODO: 이름 기입 --> | —       | <!-- TODO: 날짜 기입 --> |
 | 승인자      | <!-- TODO: 이름 기입 --> | —       | <!-- TODO: 날짜 기입 --> |
 
@@ -212,4 +212,5 @@ ISO 26262 Part 6, Clause 11에 따른 검증 방법 적용 상태:
 
 | Version | Date       | Author        | Description          |
 |---------|------------|---------------|----------------------|
-| 0.1     | <!-- TODO: 날짜 --> | <!-- TODO: 작성자 --> | Initial draft |
+| 0.1     | 2026-04-06 | SuYeol Kim | Initial draft |
+| 1.0     | 2026-04-06 | SuYeol Kim | 메타데이터, ASIL, 커버리지 목표, 분석 도구 갱신 |

@@ -7,14 +7,14 @@
 | 항목 (Field)          | 내용 (Value)                                          |
 |-----------------------|-------------------------------------------------------|
 | **Document ID**       | SW-ADS-ARCH-001                                       |
-| **Version**           | 0.1 Draft                                             |
+| **Version**           | 1.0                                                   |
 | **ISO 26262 Reference** | Part 6, Clause 7 — Software architectural design   |
 | **ASIL Scope**        | ASIL B ~ ASIL D (모듈별 상이)                          |
 | **Project**           | Autonomous Driving Stack (자율주행 스택)                |
 | **Target HW**         | NXP S32G (aarch64)                                    |
-| **Author**            | <!-- TODO: 작성자 이름 -->                             |
+| **Author**            | SuYeol Kim                                             |
 | **Reviewer**          | <!-- TODO: 검토자 이름 -->                             |
-| **Approval Date**     | <!-- TODO: 승인일자 (YYYY-MM-DD) -->                   |
+| **Approval Date**     | 2026-04-06                                             |
 | **Classification**    | Confidential                                          |
 
 ---
@@ -50,7 +50,7 @@ ISO 26262 Part 6, Clause 7.4.1에 따른 설계 원칙:
 4. **높은 응집도 (High Cohesion)**: 각 모듈 내 관련 기능 집중
 5. **방어적 프로그래밍 (Defensive Programming)**: CAN 메시지 유효성 검증, 범위 확인
 
-<!-- TODO: ASIL 분해(decomposition) 적용 시 상세 근거 기술 -->
+**ASIL 분해 적용:** aeb-control(ASIL D)과 control-module(ASIL C) 간 CAN 메시지 기반 인터페이스를 통해 기능 분리를 수행한다. decision-module은 ASIL B~C로 분해되어, 경로 계획(ASIL C)과 Gateway 데이터 처리(ASIL B)를 분리 설계한다. common 모듈은 전 모듈에서 사용되므로 최고 ASIL D 수준으로 설계/검증한다.
 
 ## 5. 소프트웨어 아키텍처 개요 (Architecture Overview)
 
@@ -105,7 +105,7 @@ ISO 26262 Part 6, Clause 7.4.1에 따른 설계 원칙:
 | `USE_PRIVATE_IMPL=ON`  | 안전 필수 구현부 포함 빌드 (배포용)                       |
 | `USE_PRIVATE_IMPL=OFF` | Public stub만 포함 빌드 (오픈소스/데모용)                 |
 
-<!-- TODO: CMake/Makefile 기반 빌드 체인 상세 구조 기술 -->
+**빌드 체인:** CMake 3.x 기반 빌드 시스템을 사용한다. 각 모듈은 독립적인 `CMakeLists.txt`를 보유하며, `FetchContent`를 통해 Google Test 1.14.0을 자동 획득한다. 컴파일러는 호스트(GCC 11.x, x86_64)와 타겟(aarch64-linux-gnu-g++)을 지원하며, C++17 표준을 적용한다. `cmake/CompilerWarnings.cmake`에서 `-Wall -Wextra -Wpedantic -Wconversion -Wsign-conversion` 경고 플래그를 전 모듈에 적용한다.
 
 ## 6. 모듈 간 인터페이스 (Inter-module Interfaces)
 
@@ -113,11 +113,11 @@ ISO 26262 Part 6, Clause 7.4.1에 따른 설계 원칙:
 
 | 인터페이스 ID | 송신 모듈        | 수신 모듈         | CAN ID       | 주기        | 설명                    |
 |---------------|------------------|-------------------|--------------|-------------|-------------------------|
-| IF-CAN-001    | decision-module  | control-module    | <!-- TODO --> | <!-- TODO --> ms | 경로/속도 명령 전송     |
-| IF-CAN-002    | control-module   | aeb-control       | <!-- TODO --> | <!-- TODO --> ms | 현재 제어 상태 공유     |
-| IF-CAN-003    | aeb-control      | control-module    | <!-- TODO --> | <!-- TODO --> ms | AEB 개입 명령           |
-| IF-CAN-004    | remote-control   | decision-module   | <!-- TODO --> | <!-- TODO --> ms | 원격 조종 명령          |
-| IF-CAN-005    | CAN Gateway      | decision-module   | <!-- TODO --> | <!-- TODO --> ms | 외부 센서/인프라 데이터 |
+| IF-CAN-001    | decision-module  | control-module    | 0x165, 0x1A0, 0x1CF | 50 ms | 경로/속도 명령 전송     |
+| IF-CAN-002    | control-module   | aeb-control       | 0x35, 0x60, 0xA0   | 50 ms | 현재 제어 상태 공유     |
+| IF-CAN-003    | aeb-control      | control-module    | 0x160 (len=8)       | 10 ms | AEB 개입 명령           |
+| IF-CAN-004    | remote-control   | decision-module   | <!-- TBD -->        | <!-- TBD --> ms | 원격 조종 명령          |
+| IF-CAN-005    | CAN Gateway      | decision-module   | 0xEA 등             | 이벤트 기반 | 외부 센서/인프라 데이터 |
 
 <!-- TODO: CAN DBC 파일 참조 및 메시지 상세 레이아웃 기술 -->
 
@@ -125,9 +125,10 @@ ISO 26262 Part 6, Clause 7.4.1에 따른 설계 원칙:
 
 | 인터페이스 ID | 제공 모듈 | 사용 모듈        | API / 함수명          | 설명                      |
 |---------------|-----------|------------------|-----------------------|---------------------------|
-| IF-API-001    | common    | 전 모듈          | <!-- TODO -->         | CAN 메시지 파싱 유틸리티   |
-| IF-API-002    | common    | 전 모듈          | <!-- TODO -->         | 로깅/진단 공통 함수        |
-| IF-API-003    | common    | aeb-control      | <!-- TODO -->         | 타이머/스케줄러 유틸리티   |
+| IF-API-001    | common    | 전 모듈          | GetCanSpecProvider() -> ICanSpecProvider | CAN spec 조회 유틸리티     |
+| IF-API-002    | common    | 전 모듈          | GetCrcProvider() -> ICrcProvider         | CRC-16/CCITT 계산          |
+| IF-API-003    | common    | aeb-control      | signal_codec::WriteU16Le/WriteU32Le/WriteU16LeSafe/WriteU32LeSafe | 시그널 인코딩 |
+| IF-API-004    | common    | 전 모듈          | CConfigParser                            | INI 설정 파일 파싱         |
 
 <!-- TODO: 각 API의 함수 시그니처, 파라미터, 반환값 상세 기술 -->
 
@@ -137,10 +138,10 @@ ISO 26262 Part 6, Clause 7.4.1에 따른 설계 원칙:
 
 | 태스크명             | 소속 모듈        | 우선순위      | 주기           | 설명                    |
 |----------------------|------------------|---------------|----------------|-------------------------|
-| <!-- TODO -->        | aeb-control      | <!-- TODO --> | <!-- TODO --> ms | AEB 판단 루프           |
-| <!-- TODO -->        | control-module   | <!-- TODO --> | <!-- TODO --> ms | 제어 출력 루프           |
-| <!-- TODO -->        | decision-module  | <!-- TODO --> | <!-- TODO --> ms | 경로 계획 루프           |
-| <!-- TODO -->        | remote-control   | <!-- TODO --> | <!-- TODO --> ms | 원격 명령 수신 루프      |
+| AEB MainCycle        | aeb-control      | 높음 (RT)     | 10 ms            | AEB 판단 루프           |
+| Control MainCycle    | control-module   | 높음          | 50 ms            | 제어 출력 루프           |
+| Decision MainCycle   | decision-module  | 보통          | 50 ms            | 경로 계획 루프           |
+| Remote RxLoop        | remote-control   | 보통          | 이벤트 기반      | 원격 명령 수신 루프      |
 
 <!-- TODO: 태스크 간 동기화 메커니즘 (뮤텍스, 세마포어, 메시지 큐 등) 기술 -->
 
@@ -188,7 +189,17 @@ module/
 └── CMakeLists.txt      # 조건부 빌드 설정
 ```
 
-<!-- TODO: 실제 디렉토리 구조와 대조하여 정확한 분리 구조 기술 -->
+**실제 디렉토리 구조 예시 (common 모듈):**
+```
+modules/common/
+├── include/           # Public 헤더 (CrcProvider.h, CanSpecProvider.h, SignalCodec.h)
+├── src/
+│   ├── public/        # Public 구현 (CrcProviderPublic.cpp)
+│   └── private/       # Safety-critical 구현 (CrcProviderPrivate.cpp)
+├── config/            # can_spec.ini 등 설정 파일
+├── test/              # Google Test 기반 단위/통합 테스트
+└── CMakeLists.txt     # CMake 빌드 설정 (FetchContent for GoogleTest)
+```
 <!-- TODO: Private/Public 전환 시 인터페이스 일관성 보장 방안 기술 -->
 
 ## 10. 아키텍처 설계 검증 기준 (Verification Criteria)
@@ -205,10 +216,11 @@ ISO 26262 Part 6, Table 3에 따른 아키텍처 설계 검증 방법:
 
 (`++` = highly recommended, `+` = recommended)
 
-<!-- TODO: 아키텍처 리뷰 체크리스트 작성 및 첨부 -->
+아키텍처 리뷰는 PRC-CR-001 Code Review Checklist (ISO 26262-6 Table 3 기반)를 사용하여 수행한다.
 
 ## 11. 변경 이력 (Change History)
 
 | Version | Date       | Author        | Description           |
 |---------|------------|---------------|-----------------------|
-| 0.1     | <!-- TODO --> | <!-- TODO --> | Initial draft 작성    |
+| 0.1     | 2026-04-06 | SuYeol Kim | Initial draft 작성    |
+| 1.0     | 2026-04-06 | SuYeol Kim | 구현 세부사항 반영, CAN ID/API/태스크 정보 확정 |

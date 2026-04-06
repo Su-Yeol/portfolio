@@ -7,13 +7,13 @@
 | **Document ID** | SW-DEC-VR-001 |
 | **Module** | Decision Module (K-City / CAN Gateway) |
 | **ISO 26262 Reference** | Part 6, Clause 11 (Verification of software safety requirements) |
-| **ASIL** | B–D (기능별 상이) |
+| **ASIL** | B~C (기능별 상이) |
 | **Target HW** | NXP S32G (aarch64) |
-| **Author** | TODO: 작성자 |
+| **Author** | SuYeol Kim |
 | **Reviewer** | TODO: 검토자 |
 | **Approval** | TODO: 승인자 |
-| **Version** | 0.1 (Draft) |
-| **Date** | TODO: YYYY-MM-DD |
+| **Version** | 1.0 |
+| **Date** | 2026-04-06 |
 | **Status** | Draft |
 
 ---
@@ -101,9 +101,9 @@
 
 | 커버리지 기준 | 목표 (ASIL별) | K-City 달성 | Gateway 달성 | 판정 |
 |-------------|-------------|------------|-------------|------|
-| Statement Coverage | TODO% | TODO% | TODO% | TODO |
-| Branch Coverage | TODO% | TODO% | TODO% | TODO |
-| MC/DC | TODO% | TODO% | TODO% | TODO |
+| Statement Coverage | >= 95% | 대기 중: 구현/측정 후 갱신 | 대기 중: 구현/측정 후 갱신 | 대기 중: 구현/측정 후 갱신 |
+| Branch Coverage | >= 90% | 대기 중: 구현/측정 후 갱신 | 대기 중: 구현/측정 후 갱신 | 대기 중: 구현/측정 후 갱신 |
+| MC/DC | 대기 중: 구현/측정 후 갱신 | 대기 중: 구현/측정 후 갱신 | 대기 중: 구현/측정 후 갱신 | 대기 중: 구현/측정 후 갱신 |
 
 ---
 
@@ -139,16 +139,16 @@
 
 | 도구 | 대상 | 결과 | 미해결 항목 | 비고 |
 |------|------|------|-----------|------|
-| TODO: cppcheck | 전체 C++ 소스 | TODO | TODO | TODO |
-| TODO: clang-tidy | 전체 C++ 소스 | TODO | TODO | TODO |
-| TODO: MISRA Checker | 안전 관련 소스 | TODO | TODO | TODO |
+| cppcheck | 전체 C++ 소스 | 대기 중: 구현/측정 후 갱신 | 대기 중: 구현/측정 후 갱신 | 정적 분석 |
+| clang-tidy | 전체 C++ 소스 | 대기 중: 구현/측정 후 갱신 | 대기 중: 구현/측정 후 갱신 | 정적 분석 |
+| MISRA C++:2008 (clang-tidy) | 안전 관련 소스 | 대기 중: 구현/측정 후 갱신 | 대기 중: 구현/측정 후 갱신 | MISRA 준수 검증 |
 
 ### 7.2 코딩 가이드라인 준수 현황
 
 | 가이드라인 | 전체 규칙 | 준수 | 위반 | 면제(Deviation) | 비고 |
 |-----------|----------|------|------|----------------|------|
-| TODO: MISRA C++ | TODO | TODO | TODO | TODO | TODO |
-| TODO: AUTOSAR C++14 | TODO | TODO | TODO | TODO | TODO |
+| MISRA C++:2008 | 대기 중: 구현/측정 후 갱신 | 대기 중: 구현/측정 후 갱신 | 대기 중: 구현/측정 후 갱신 | 대기 중: 구현/측정 후 갱신 | clang-tidy MISRA 체커 |
+| AUTOSAR C++14 | 참조 적용 | 대기 중: 구현/측정 후 갱신 | 대기 중: 구현/측정 후 갱신 | 대기 중: 구현/측정 후 갱신 | 참조 표준 |
 
 > TODO: 위반 사항에 대한 면제 근거를 작성할 것
 
@@ -249,4 +249,5 @@
 
 | Version | Date | Author | Description |
 |---------|------|--------|-------------|
-| 0.1 | TODO | TODO | Initial draft |
+| 0.1 | 2026-04-06 | SuYeol Kim | Initial draft |
+| 1.0 | 2026-04-06 | SuYeol Kim | 정적 분석 도구, 커버리지 목표, ASIL, 메타데이터 갱신 |
